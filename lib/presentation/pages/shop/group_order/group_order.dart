@@ -51,7 +51,7 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
       ref.read(shopOrderProvider.notifier).generateShareLink(
           widget.shop.translation?.title ?? "",
           widget.shop.logoImg ?? "",
-          widget.shop.type ?? "");
+          widget.shop.type );
     });
 
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
@@ -232,10 +232,10 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                                   .read(shopOrderProvider.notifier)
                                   .deleteUser(context, index);
                             },
-                            isDeleteButton: LocalStorage.getUserId() ==
-                                    state.cart?.ownerId
-                                ? index != 0
-                                : false,
+                            isDeleteButton:
+                                LocalStorage.getUserId() == state.cart?.ownerId
+                                    ? index != 0
+                                    : false,
                           );
                         }),
                   ],
@@ -247,9 +247,58 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                           bottom: 16.h,
                         ),
                         child: CustomButton(
-                          title: AppHelpers.getTranslation(TrKeys.order),
+                          title: (state.cart?.userCarts
+                                      ?.where(
+                                        (element) =>
+                                            element.userId ==
+                                            state.cart?.ownerId,
+                                      )
+                                      .isNotEmpty ??
+                                  false)
+                              ? (state.cart?.userCarts
+                                          ?.where(
+                                            (element) =>
+                                                element.userId ==
+                                                state.cart?.ownerId,
+                                          )
+                                          .single
+                                          .status ??
+                                      true)
+                                  ? AppHelpers.getTranslation(TrKeys.done)
+                                  : AppHelpers.getTranslation(TrKeys.order)
+                              : AppHelpers.getTranslation(TrKeys.order),
                           onPressed: () {
-                            bool check = true;
+                            if ((state.cart?.userCarts
+                                        ?.where(
+                                          (element) =>
+                                              element.userId ==
+                                              state.cart?.ownerId,
+                                        )
+                                        .isNotEmpty ??
+                                    false) &&
+                                (state.cart?.userCarts
+                                        ?.where(
+                                          (element) =>
+                                              element.userId ==
+                                              state.cart?.ownerId,
+                                        )
+                                        .single
+                                        .status ??
+                                    true)) {
+                              event.changeStatus(
+                                  context,
+                                  (state.cart?.userCarts
+                                      ?.where(
+                                        (element) =>
+                                            element.userId ==
+                                            state.cart?.ownerId,
+                                      )
+                                      .single
+                                      .uuid));
+                              setState(() {});
+                              return;
+                            }
+                            bool check = false;
                             bool checkProduct = false;
                             for (UserCart cart in state.cart!.userCarts!) {
                               if (cart.status ?? true) {
@@ -269,29 +318,33 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                                     Navigator.pop(context);
                                   },
                                   onTap: () {
-                                    for (UserCart cart in state.cart!.userCarts!) {
-                                      if (cart.cartDetails?.isNotEmpty ?? false) {
+                                    for (UserCart cart
+                                        in state.cart!.userCarts!) {
+                                      if (cart.cartDetails?.isNotEmpty ??
+                                          false) {
                                         checkProduct = true;
                                         break;
                                       }
                                     }
-                                   if(!checkProduct){
-                                     Navigator.pop(context);
-                                     AppHelpers.showCheckTopSnackBarInfo(
-                                       context,
-                                       AppHelpers.getTranslation(TrKeys.needSelectProduct),
-                                     );
-                                   }else{
-                                     Navigator.pop(context);
-                                     context.pushRoute(const OrderRoute());
-                                   }
+                                    if (!checkProduct) {
+                                      Navigator.pop(context);
+                                      AppHelpers.showCheckTopSnackBarInfo(
+                                        context,
+                                        AppHelpers.getTranslation(
+                                            TrKeys.needSelectProduct),
+                                      );
+                                    } else {
+                                      Navigator.pop(context);
+                                      context.pushRoute(const OrderRoute());
+                                    }
                                   },
                                 ),
                               );
                             } else if (!checkProduct) {
                               AppHelpers.showCheckTopSnackBarInfo(
                                 context,
-                                AppHelpers.getTranslation(TrKeys.needSelectProduct),
+                                AppHelpers.getTranslation(
+                                    TrKeys.needSelectProduct),
                               );
                             } else {
                               Navigator.pop(context);
@@ -313,8 +366,7 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                     borderColor: AppStyle.black,
                     background: AppStyle.transparent,
                     onPressed: () {
-                      if (LocalStorage.getUserId() ==
-                          state.cart?.ownerId) {
+                      if (LocalStorage.getUserId() == state.cart?.ownerId) {
                         event.deleteCart(context);
                       } else {
                         event.deleteUser(context, 0,

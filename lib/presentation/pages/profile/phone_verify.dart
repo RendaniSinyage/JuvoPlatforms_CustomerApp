@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:riverpodtemp/application/register/register_provider.dart';
 import 'package:riverpodtemp/infrastructure/models/data/user.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
@@ -12,6 +14,8 @@ import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
 import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
 import 'package:riverpodtemp/presentation/pages/auth/confirmation/register_confirmation_page.dart';
 import 'package:riverpodtemp/presentation/theme/app_style.dart';
+
+import '../../../infrastructure/services/app_constants.dart';
 
 class PhoneVerify extends ConsumerWidget {
   const PhoneVerify({super.key});
@@ -46,15 +50,74 @@ class PhoneVerify extends ConsumerWidget {
                       AppBarBottomSheet(
                         title: AppHelpers.getTranslation(TrKeys.phoneNumber),
                       ),
-                      OutlinedBorderTextField(
-                        label: AppHelpers.getTranslation(TrKeys.phoneNumber)
-                            .toUpperCase(),
-                        onChanged: event.setEmail,
-                        isError: state.isEmailInvalid,
-                        descriptionText: state.isEmailInvalid
-                            ? AppHelpers.getTranslation(TrKeys.emailIsNotValid)
-                            : null,
-                      )
+                      if (AppConstants.isSpecificNumberEnabled)
+                        Directionality(
+                          textDirection:
+                              isLtr ? TextDirection.ltr : TextDirection.rtl,
+                          child: IntlPhoneField(
+                            onChanged: (phoneNum) {
+                              event.setEmail(phoneNum.completeNumber);
+                            },
+                            disableLengthCheck: !AppConstants.isNumberLengthAlwaysSame,
+                            validator: (s) {
+                              if (AppConstants.isNumberLengthAlwaysSame &&
+                                  (s?.isValidNumber() ?? true)) {
+                                return AppHelpers.getTranslation(
+                                    TrKeys.phoneNumberIsNotValid);
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.phone,
+                            initialCountryCode: AppConstants.countryCodeISO,
+                            invalidNumberMessage: AppHelpers.getTranslation(
+                                TrKeys.phoneNumberIsNotValid),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            showCountryFlag: AppConstants.showFlag,
+                            showDropdownIcon: AppConstants.showArrowIcon,
+                            autovalidateMode:
+                                AppConstants.isNumberLengthAlwaysSame
+                                    ? AutovalidateMode.onUserInteraction
+                                    : AutovalidateMode.disabled,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                              counterText: '',
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide.merge(
+                                      const BorderSide(
+                                          color: AppStyle.differBorderColor),
+                                      const BorderSide(
+                                          color: AppStyle.differBorderColor))),
+                              errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide.merge(
+                                      const BorderSide(
+                                          color: AppStyle.differBorderColor),
+                                      const BorderSide(
+                                          color: AppStyle.differBorderColor))),
+                              border: const UnderlineInputBorder(),
+                              focusedErrorBorder: const UnderlineInputBorder(),
+                              disabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide.merge(
+                                      const BorderSide(
+                                          color: AppStyle.differBorderColor),
+                                      const BorderSide(
+                                          color: AppStyle.differBorderColor))),
+                              focusedBorder: const UnderlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                      if (!AppConstants.isSpecificNumberEnabled)
+                        OutlinedBorderTextField(
+                          label: AppHelpers.getTranslation(TrKeys.phoneNumber)
+                              .toUpperCase(),
+                          onChanged: event.setEmail,
+                          isError: state.isEmailInvalid,
+                          descriptionText: state.isEmailInvalid
+                              ? AppHelpers.getTranslation(
+                                  TrKeys.emailIsNotValid)
+                              : null,
+                        )
                     ],
                   ),
                   Padding(

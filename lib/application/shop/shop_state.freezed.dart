@@ -12,7 +12,7 @@ part of 'shop_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ShopState {
@@ -29,9 +29,12 @@ mixin _$ShopState {
   bool get isMapLoading => throw _privateConstructorUsedError;
   bool get isGroupOrder => throw _privateConstructorUsedError;
   bool get isJoinOrder => throw _privateConstructorUsedError;
+  bool get isSearchEnabled => throw _privateConstructorUsedError;
   bool get isTodayWorkingDay => throw _privateConstructorUsedError;
   bool get isTomorrowWorkingDay => throw _privateConstructorUsedError;
+  bool get isNestedScrollDisabled => throw _privateConstructorUsedError;
   String get userUuid => throw _privateConstructorUsedError;
+  String get searchText => throw _privateConstructorUsedError;
   TimeOfDay get startTodayTime => throw _privateConstructorUsedError;
   TimeOfDay get endTodayTime => throw _privateConstructorUsedError;
   int get currentIndex => throw _privateConstructorUsedError;
@@ -39,7 +42,8 @@ mixin _$ShopState {
   Set<Marker> get shopMarkers => throw _privateConstructorUsedError;
   List<LatLng> get polylineCoordinates => throw _privateConstructorUsedError;
   ShopData? get shopData => throw _privateConstructorUsedError;
-  List<ProductData> get products => throw _privateConstructorUsedError;
+  List<Product> get products => throw _privateConstructorUsedError;
+  List<Product> get popularProducts => throw _privateConstructorUsedError;
   List<ProductData> get categoryProducts => throw _privateConstructorUsedError;
   List<CategoryData>? get category => throw _privateConstructorUsedError;
   List<BrandData>? get brands => throw _privateConstructorUsedError;
@@ -71,9 +75,12 @@ abstract class $ShopStateCopyWith<$Res> {
       bool isMapLoading,
       bool isGroupOrder,
       bool isJoinOrder,
+      bool isSearchEnabled,
       bool isTodayWorkingDay,
       bool isTomorrowWorkingDay,
+      bool isNestedScrollDisabled,
       String userUuid,
+      String searchText,
       TimeOfDay startTodayTime,
       TimeOfDay endTodayTime,
       int currentIndex,
@@ -81,7 +88,8 @@ abstract class $ShopStateCopyWith<$Res> {
       Set<Marker> shopMarkers,
       List<LatLng> polylineCoordinates,
       ShopData? shopData,
-      List<ProductData> products,
+      List<Product> products,
+      List<Product> popularProducts,
       List<ProductData> categoryProducts,
       List<CategoryData>? category,
       List<BrandData>? brands,
@@ -116,9 +124,12 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
     Object? isMapLoading = null,
     Object? isGroupOrder = null,
     Object? isJoinOrder = null,
+    Object? isSearchEnabled = null,
     Object? isTodayWorkingDay = null,
     Object? isTomorrowWorkingDay = null,
+    Object? isNestedScrollDisabled = null,
     Object? userUuid = null,
+    Object? searchText = null,
     Object? startTodayTime = null,
     Object? endTodayTime = null,
     Object? currentIndex = null,
@@ -127,6 +138,7 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
     Object? polylineCoordinates = null,
     Object? shopData = freezed,
     Object? products = null,
+    Object? popularProducts = null,
     Object? categoryProducts = null,
     Object? category = freezed,
     Object? brands = freezed,
@@ -187,6 +199,10 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
           ? _value.isJoinOrder
           : isJoinOrder // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSearchEnabled: null == isSearchEnabled
+          ? _value.isSearchEnabled
+          : isSearchEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       isTodayWorkingDay: null == isTodayWorkingDay
           ? _value.isTodayWorkingDay
           : isTodayWorkingDay // ignore: cast_nullable_to_non_nullable
@@ -195,9 +211,17 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
           ? _value.isTomorrowWorkingDay
           : isTomorrowWorkingDay // ignore: cast_nullable_to_non_nullable
               as bool,
+      isNestedScrollDisabled: null == isNestedScrollDisabled
+          ? _value.isNestedScrollDisabled
+          : isNestedScrollDisabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       userUuid: null == userUuid
           ? _value.userUuid
           : userUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      searchText: null == searchText
+          ? _value.searchText
+          : searchText // ignore: cast_nullable_to_non_nullable
               as String,
       startTodayTime: null == startTodayTime
           ? _value.startTodayTime
@@ -230,7 +254,11 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
       products: null == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
-              as List<ProductData>,
+              as List<Product>,
+      popularProducts: null == popularProducts
+          ? _value.popularProducts
+          : popularProducts // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       categoryProducts: null == categoryProducts
           ? _value.categoryProducts
           : categoryProducts // ignore: cast_nullable_to_non_nullable
@@ -281,9 +309,12 @@ abstract class _$$ShopStateImplCopyWith<$Res>
       bool isMapLoading,
       bool isGroupOrder,
       bool isJoinOrder,
+      bool isSearchEnabled,
       bool isTodayWorkingDay,
       bool isTomorrowWorkingDay,
+      bool isNestedScrollDisabled,
       String userUuid,
+      String searchText,
       TimeOfDay startTodayTime,
       TimeOfDay endTodayTime,
       int currentIndex,
@@ -291,7 +322,8 @@ abstract class _$$ShopStateImplCopyWith<$Res>
       Set<Marker> shopMarkers,
       List<LatLng> polylineCoordinates,
       ShopData? shopData,
-      List<ProductData> products,
+      List<Product> products,
+      List<Product> popularProducts,
       List<ProductData> categoryProducts,
       List<CategoryData>? category,
       List<BrandData>? brands,
@@ -324,9 +356,12 @@ class __$$ShopStateImplCopyWithImpl<$Res>
     Object? isMapLoading = null,
     Object? isGroupOrder = null,
     Object? isJoinOrder = null,
+    Object? isSearchEnabled = null,
     Object? isTodayWorkingDay = null,
     Object? isTomorrowWorkingDay = null,
+    Object? isNestedScrollDisabled = null,
     Object? userUuid = null,
+    Object? searchText = null,
     Object? startTodayTime = null,
     Object? endTodayTime = null,
     Object? currentIndex = null,
@@ -335,6 +370,7 @@ class __$$ShopStateImplCopyWithImpl<$Res>
     Object? polylineCoordinates = null,
     Object? shopData = freezed,
     Object? products = null,
+    Object? popularProducts = null,
     Object? categoryProducts = null,
     Object? category = freezed,
     Object? brands = freezed,
@@ -395,6 +431,10 @@ class __$$ShopStateImplCopyWithImpl<$Res>
           ? _value.isJoinOrder
           : isJoinOrder // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSearchEnabled: null == isSearchEnabled
+          ? _value.isSearchEnabled
+          : isSearchEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       isTodayWorkingDay: null == isTodayWorkingDay
           ? _value.isTodayWorkingDay
           : isTodayWorkingDay // ignore: cast_nullable_to_non_nullable
@@ -403,9 +443,17 @@ class __$$ShopStateImplCopyWithImpl<$Res>
           ? _value.isTomorrowWorkingDay
           : isTomorrowWorkingDay // ignore: cast_nullable_to_non_nullable
               as bool,
+      isNestedScrollDisabled: null == isNestedScrollDisabled
+          ? _value.isNestedScrollDisabled
+          : isNestedScrollDisabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       userUuid: null == userUuid
           ? _value.userUuid
           : userUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      searchText: null == searchText
+          ? _value.searchText
+          : searchText // ignore: cast_nullable_to_non_nullable
               as String,
       startTodayTime: null == startTodayTime
           ? _value.startTodayTime
@@ -438,7 +486,11 @@ class __$$ShopStateImplCopyWithImpl<$Res>
       products: null == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
-              as List<ProductData>,
+              as List<Product>,
+      popularProducts: null == popularProducts
+          ? _value._popularProducts
+          : popularProducts // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       categoryProducts: null == categoryProducts
           ? _value._categoryProducts
           : categoryProducts // ignore: cast_nullable_to_non_nullable
@@ -484,9 +536,12 @@ class _$ShopStateImpl extends _ShopState {
       this.isMapLoading = false,
       this.isGroupOrder = false,
       this.isJoinOrder = false,
+      this.isSearchEnabled = false,
       this.isTodayWorkingDay = false,
       this.isTomorrowWorkingDay = false,
+      this.isNestedScrollDisabled = false,
       this.userUuid = "",
+      this.searchText = "",
       this.startTodayTime = const TimeOfDay(hour: 0, minute: 0),
       this.endTodayTime = const TimeOfDay(hour: 0, minute: 0),
       this.currentIndex = 0,
@@ -494,7 +549,8 @@ class _$ShopStateImpl extends _ShopState {
       final Set<Marker> shopMarkers = const {},
       final List<LatLng> polylineCoordinates = const [],
       this.shopData = null,
-      final List<ProductData> products = const [],
+      final List<Product> products = const [],
+      final List<Product> popularProducts = const [],
       final List<ProductData> categoryProducts = const [],
       final List<CategoryData>? category = const [],
       final List<BrandData>? brands = const [],
@@ -504,6 +560,7 @@ class _$ShopStateImpl extends _ShopState {
       : _shopMarkers = shopMarkers,
         _polylineCoordinates = polylineCoordinates,
         _products = products,
+        _popularProducts = popularProducts,
         _categoryProducts = categoryProducts,
         _category = category,
         _brands = brands,
@@ -552,13 +609,22 @@ class _$ShopStateImpl extends _ShopState {
   final bool isJoinOrder;
   @override
   @JsonKey()
+  final bool isSearchEnabled;
+  @override
+  @JsonKey()
   final bool isTodayWorkingDay;
   @override
   @JsonKey()
   final bool isTomorrowWorkingDay;
   @override
   @JsonKey()
+  final bool isNestedScrollDisabled;
+  @override
+  @JsonKey()
   final String userUuid;
+  @override
+  @JsonKey()
+  final String searchText;
   @override
   @JsonKey()
   final TimeOfDay startTodayTime;
@@ -593,13 +659,22 @@ class _$ShopStateImpl extends _ShopState {
   @override
   @JsonKey()
   final ShopData? shopData;
-  final List<ProductData> _products;
+  final List<Product> _products;
   @override
   @JsonKey()
-  List<ProductData> get products {
+  List<Product> get products {
     if (_products is EqualUnmodifiableListView) return _products;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_products);
+  }
+
+  final List<Product> _popularProducts;
+  @override
+  @JsonKey()
+  List<Product> get popularProducts {
+    if (_popularProducts is EqualUnmodifiableListView) return _popularProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_popularProducts);
   }
 
   final List<ProductData> _categoryProducts;
@@ -660,7 +735,7 @@ class _$ShopStateImpl extends _ShopState {
 
   @override
   String toString() {
-    return 'ShopState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, isCategoryLoading: $isCategoryLoading, isPopularLoading: $isPopularLoading, isProductLoading: $isProductLoading, isProductCategoryLoading: $isProductCategoryLoading, isPopularProduct: $isPopularProduct, isLike: $isLike, showWeekTime: $showWeekTime, showBranch: $showBranch, isMapLoading: $isMapLoading, isGroupOrder: $isGroupOrder, isJoinOrder: $isJoinOrder, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, userUuid: $userUuid, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, currentIndex: $currentIndex, subCategoryIndex: $subCategoryIndex, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, shopData: $shopData, products: $products, categoryProducts: $categoryProducts, category: $category, brands: $brands, branches: $branches, brandIds: $brandIds, sortIndex: $sortIndex)';
+    return 'ShopState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, isCategoryLoading: $isCategoryLoading, isPopularLoading: $isPopularLoading, isProductLoading: $isProductLoading, isProductCategoryLoading: $isProductCategoryLoading, isPopularProduct: $isPopularProduct, isLike: $isLike, showWeekTime: $showWeekTime, showBranch: $showBranch, isMapLoading: $isMapLoading, isGroupOrder: $isGroupOrder, isJoinOrder: $isJoinOrder, isSearchEnabled: $isSearchEnabled, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isNestedScrollDisabled: $isNestedScrollDisabled, userUuid: $userUuid, searchText: $searchText, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, currentIndex: $currentIndex, subCategoryIndex: $subCategoryIndex, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, shopData: $shopData, products: $products, popularProducts: $popularProducts, categoryProducts: $categoryProducts, category: $category, brands: $brands, branches: $branches, brandIds: $brandIds, sortIndex: $sortIndex)';
   }
 
   @override
@@ -694,12 +769,18 @@ class _$ShopStateImpl extends _ShopState {
                 other.isGroupOrder == isGroupOrder) &&
             (identical(other.isJoinOrder, isJoinOrder) ||
                 other.isJoinOrder == isJoinOrder) &&
+            (identical(other.isSearchEnabled, isSearchEnabled) ||
+                other.isSearchEnabled == isSearchEnabled) &&
             (identical(other.isTodayWorkingDay, isTodayWorkingDay) ||
                 other.isTodayWorkingDay == isTodayWorkingDay) &&
             (identical(other.isTomorrowWorkingDay, isTomorrowWorkingDay) ||
                 other.isTomorrowWorkingDay == isTomorrowWorkingDay) &&
+            (identical(other.isNestedScrollDisabled, isNestedScrollDisabled) ||
+                other.isNestedScrollDisabled == isNestedScrollDisabled) &&
             (identical(other.userUuid, userUuid) ||
                 other.userUuid == userUuid) &&
+            (identical(other.searchText, searchText) ||
+                other.searchText == searchText) &&
             (identical(other.startTodayTime, startTodayTime) ||
                 other.startTodayTime == startTodayTime) &&
             (identical(other.endTodayTime, endTodayTime) ||
@@ -715,6 +796,8 @@ class _$ShopStateImpl extends _ShopState {
             (identical(other.shopData, shopData) ||
                 other.shopData == shopData) &&
             const DeepCollectionEquality().equals(other._products, _products) &&
+            const DeepCollectionEquality()
+                .equals(other._popularProducts, _popularProducts) &&
             const DeepCollectionEquality()
                 .equals(other._categoryProducts, _categoryProducts) &&
             const DeepCollectionEquality().equals(other._category, _category) &&
@@ -741,9 +824,12 @@ class _$ShopStateImpl extends _ShopState {
         isMapLoading,
         isGroupOrder,
         isJoinOrder,
+        isSearchEnabled,
         isTodayWorkingDay,
         isTomorrowWorkingDay,
+        isNestedScrollDisabled,
         userUuid,
+        searchText,
         startTodayTime,
         endTodayTime,
         currentIndex,
@@ -752,6 +838,7 @@ class _$ShopStateImpl extends _ShopState {
         const DeepCollectionEquality().hash(_polylineCoordinates),
         shopData,
         const DeepCollectionEquality().hash(_products),
+        const DeepCollectionEquality().hash(_popularProducts),
         const DeepCollectionEquality().hash(_categoryProducts),
         const DeepCollectionEquality().hash(_category),
         const DeepCollectionEquality().hash(_brands),
@@ -782,9 +869,12 @@ abstract class _ShopState extends ShopState {
       final bool isMapLoading,
       final bool isGroupOrder,
       final bool isJoinOrder,
+      final bool isSearchEnabled,
       final bool isTodayWorkingDay,
       final bool isTomorrowWorkingDay,
+      final bool isNestedScrollDisabled,
       final String userUuid,
+      final String searchText,
       final TimeOfDay startTodayTime,
       final TimeOfDay endTodayTime,
       final int currentIndex,
@@ -792,7 +882,8 @@ abstract class _ShopState extends ShopState {
       final Set<Marker> shopMarkers,
       final List<LatLng> polylineCoordinates,
       final ShopData? shopData,
-      final List<ProductData> products,
+      final List<Product> products,
+      final List<Product> popularProducts,
       final List<ProductData> categoryProducts,
       final List<CategoryData>? category,
       final List<BrandData>? brands,
@@ -828,11 +919,17 @@ abstract class _ShopState extends ShopState {
   @override
   bool get isJoinOrder;
   @override
+  bool get isSearchEnabled;
+  @override
   bool get isTodayWorkingDay;
   @override
   bool get isTomorrowWorkingDay;
   @override
+  bool get isNestedScrollDisabled;
+  @override
   String get userUuid;
+  @override
+  String get searchText;
   @override
   TimeOfDay get startTodayTime;
   @override
@@ -848,7 +945,9 @@ abstract class _ShopState extends ShopState {
   @override
   ShopData? get shopData;
   @override
-  List<ProductData> get products;
+  List<Product> get products;
+  @override
+  List<Product> get popularProducts;
   @override
   List<ProductData> get categoryProducts;
   @override

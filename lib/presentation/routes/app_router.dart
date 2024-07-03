@@ -21,6 +21,8 @@ import 'package:riverpodtemp/presentation/pages/order/orders_page.dart';
 import 'package:riverpodtemp/presentation/pages/parcel/parcel_list_page.dart';
 import 'package:riverpodtemp/presentation/pages/parcel/parcel_order_page.dart';
 import 'package:riverpodtemp/presentation/pages/parcel/widgets/info_screen.dart';
+import 'package:riverpodtemp/presentation/pages/policy_term/policy_page.dart';
+import 'package:riverpodtemp/presentation/pages/policy_term/term_page.dart';
 import 'package:riverpodtemp/presentation/pages/profile/address_list.dart';
 import 'package:riverpodtemp/presentation/pages/profile/notification_page.dart';
 import 'package:riverpodtemp/presentation/pages/profile/profile_page.dart';
@@ -102,6 +104,8 @@ class AppRouter extends _$AppRouter {
         path: '/parcel_progress_page', page: ParcelProgressRoute.page),
     MaterialRoute(path: '/sub_category_page', page: SubCategoryRoute.page),
     MaterialRoute(path: '/address_list_page', page: AddressListRoute.page),
+    MaterialRoute(path: '/term', page: TermRoute.page),
+    MaterialRoute(path: '/policy', page: PolicyRoute.page),
   ];
 }
 

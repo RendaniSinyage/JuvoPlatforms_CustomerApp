@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
@@ -13,8 +15,9 @@ import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
 import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
 import 'package:riverpodtemp/presentation/pages/auth/reset/reset_password_page.dart';
 
-import '../../../theme/app_style.dart';
+import '../../../../infrastructure/services/app_constants.dart';
 import '../../../../application/login/login_provider.dart';
+import '../../../theme/app_style.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -25,8 +28,6 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final GlobalKey<FormState> key = GlobalKey<FormState>();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,22 +61,86 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         AppBarBottomSheet(
                           title: AppHelpers.getTranslation(TrKeys.login),
                         ),
-                        OutlinedBorderTextField(
-                          label:
-                              AppHelpers.getTranslation(TrKeys.emailOrPhoneNumber)
-                                  .toUpperCase(),
-                          onChanged: event.setEmail,
-                          isError: state.isEmailNotValid,
-                          validation: (s){
-                            if(s?.isEmpty ?? true){
-                              return AppHelpers.getTranslation(TrKeys.emailIsNotValid);
-                            }
-                            return null;
-                          },
-                          descriptionText: state.isEmailNotValid
-                              ? AppHelpers.getTranslation(TrKeys.emailIsNotValid)
-                              : null,
-                        ),
+                        if (AppConstants.isSpecificNumberEnabled)
+                          Directionality(
+                            textDirection:
+                                isLtr ? TextDirection.ltr : TextDirection.rtl,
+                            child: IntlPhoneField(
+                              onChanged: (phoneNum) {
+                                event.setEmail(phoneNum.completeNumber);
+                              },
+                              disableLengthCheck: !AppConstants.isNumberLengthAlwaysSame,
+                              validator: (s) {
+                                if (AppConstants.isNumberLengthAlwaysSame &&
+                                    (s?.isValidNumber() ?? true)) {
+                                  return AppHelpers.getTranslation(
+                                      TrKeys.phoneNumberIsNotValid);
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.phone,
+                              initialCountryCode: AppConstants.countryCodeISO,
+                              invalidNumberMessage: AppHelpers.getTranslation(
+                                  TrKeys.phoneNumberIsNotValid),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              showCountryFlag: AppConstants.showFlag,
+                              showDropdownIcon: AppConstants.showArrowIcon,
+                              autovalidateMode:
+                                  AppConstants.isNumberLengthAlwaysSame
+                                      ? AutovalidateMode.onUserInteraction
+                                      : AutovalidateMode.disabled,
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: InputDecoration(
+                                counterText: '',
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.merge(
+                                        const BorderSide(
+                                            color: AppStyle.differBorderColor),
+                                        const BorderSide(
+                                            color:
+                                                AppStyle.differBorderColor))),
+                                errorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.merge(
+                                        const BorderSide(
+                                            color: AppStyle.differBorderColor),
+                                        const BorderSide(
+                                            color:
+                                                AppStyle.differBorderColor))),
+                                border: const UnderlineInputBorder(),
+                                focusedErrorBorder:
+                                    const UnderlineInputBorder(),
+                                disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.merge(
+                                        const BorderSide(
+                                            color: AppStyle.differBorderColor),
+                                        const BorderSide(
+                                            color:
+                                                AppStyle.differBorderColor))),
+                                focusedBorder: const UnderlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        if (!AppConstants.isSpecificNumberEnabled)
+                          OutlinedBorderTextField(
+                            label: AppHelpers.getTranslation(
+                                    TrKeys.emailOrPhoneNumber)
+                                .toUpperCase(),
+                            onChanged: event.setEmail,
+                            isError: state.isEmailNotValid,
+                            validation: (s) {
+                              if (s?.isEmpty ?? true) {
+                                return AppHelpers.getTranslation(
+                                    TrKeys.emailIsNotValid);
+                              }
+                              return null;
+                            },
+                            descriptionText: state.isEmailNotValid
+                                ? AppHelpers.getTranslation(
+                                    TrKeys.emailIsNotValid)
+                                : null,
+                          ),
                         34.verticalSpace,
                         OutlinedBorderTextField(
                           label: AppHelpers.getTranslation(TrKeys.password)
@@ -87,7 +152,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               state.showPassword
                                   ? FlutterRemix.eye_line
                                   : FlutterRemix.eye_close_line,
-                              color: isDarkMode ? AppStyle.black : AppStyle.hintColor,
+                              color: isDarkMode
+                                  ? AppStyle.black
+                                  : AppStyle.hintColor,
                               size: 20.r,
                             ),
                             onPressed: () =>
@@ -96,8 +163,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           onChanged: event.setPassword,
                           isError: state.isPasswordNotValid,
                           descriptionText: state.isPasswordNotValid
-                              ? AppHelpers.getTranslation(
-                                  TrKeys.passwordShouldContainMinimum8Characters)
+                              ? AppHelpers.getTranslation(TrKeys
+                                  .passwordShouldContainMinimum8Characters)
                               : null,
                         ),
                         30.verticalSpace,
@@ -154,10 +221,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         isLoading: state.isLoading,
                         title: 'Login',
                         onPressed: () {
-                          if(key.currentState?.validate() ?? false){
+                          if (key.currentState?.validate() ?? false) {
                             event.login(context);
                           }
-
                         },
                       ),
                       32.verticalSpace,
@@ -183,14 +249,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ]),
                       22.verticalSpace,
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          SocialButton(
-                              iconData: FlutterRemix.apple_fill,
-                              onPressed: () {
-                                event.loginWithApple(context);
-                              },
-                              title: "Apple"),
+                          if (Theme.of(context).platform == TargetPlatform.iOS)
+                            SocialButton(
+                                iconData: FlutterRemix.apple_fill,
+                                onPressed: () {
+                                  event.loginWithApple(context);
+                                },
+                                title: "Apple"),
                           SocialButton(
                               iconData: FlutterRemix.facebook_fill,
                               onPressed: () {

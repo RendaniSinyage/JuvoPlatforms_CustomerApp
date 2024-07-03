@@ -689,12 +689,12 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
     }
   }
 
-  generateShareLink(String shopName, String shopLogo, String type) async {
+  generateShareLink(String shopName, String shopLogo, String? type) async {
     final productLink =
-        "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=$type";
+        "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=${type ?? 'shop'}";
 
     const dynamicLink =
-        ' https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';
+        'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';
 
     final dataShare = {
       "dynamicLinkInfo": {
@@ -703,12 +703,12 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
         "androidInfo": {
           "androidPackageName": AppConstants.androidPackageName,
           "androidFallbackLink":
-              "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=$type"
+              "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=${type ?? 'shop'}"
         },
         "iosInfo": {
           "iosBundleId": AppConstants.iosPackageName,
           "iosFallbackLink":
-              "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=$type"
+              "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=${type ?? 'shop'}"
         },
         "socialMetaTagInfo": {
           "socialTitle": AppHelpers.getTranslation(TrKeys.groupOrder),
@@ -722,5 +722,10 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
         await http.post(Uri.parse(dynamicLink), body: jsonEncode(dataShare));
 
     state = state.copyWith(shareLink: jsonDecode(res.body)['shortLink']);
+
+    debugPrint("share link shop_order_notifier: ${state.shareLink}\n$dataShare");
+
+
+
   }
 }

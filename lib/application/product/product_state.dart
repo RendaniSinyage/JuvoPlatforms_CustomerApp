@@ -21,6 +21,7 @@ class ProductState with _$ProductState {
     @Default([]) List<int> selectedIndexes,
     @Default('') String activeImageUrl,
     @Default(null) ProductData? productData,
+    @Default(null) Galleries? selectImage,
     Stocks? selectedStock,
 
   }) = _ProductState;

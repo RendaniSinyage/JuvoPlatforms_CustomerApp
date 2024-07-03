@@ -40,6 +40,16 @@ class AppConstants {
   static const String heroTagSelectAddress = 'heroTagSelectAddress';
   static const String heroTagSelectCurrency = 'heroTagSelectCurrency';
 
+
+  /// auth phone fields
+  static const bool isSpecificNumberEnabled = false;
+  static const bool isNumberLengthAlwaysSame = true;
+  static const String countryCodeISO = 'UZ';
+  static const bool showFlag = true;
+  static const bool showArrowIcon = true;
+
+
+
   /// app strings
   static const String emptyString = '';
 

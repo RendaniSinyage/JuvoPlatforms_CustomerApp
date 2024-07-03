@@ -23,6 +23,7 @@ import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
 import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
 import 'package:riverpodtemp/presentation/components/web_view.dart';
 import 'package:riverpodtemp/presentation/pages/order/order_check/price_information.dart';
+import 'package:riverpodtemp/presentation/pages/order/order_screen/widgets/image_dialog.dart';
 import 'package:riverpodtemp/presentation/pages/profile/phone_verify.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
@@ -34,7 +35,6 @@ import 'widgets/card_and_promo.dart';
 import 'widgets/delivery_info.dart';
 import 'widgets/order_button.dart';
 import 'widgets/order_info.dart';
-import 'widgets/payment_method.dart';
 
 class OrderCheck extends StatefulWidget {
   final bool isActive;
@@ -110,8 +110,12 @@ class _OrderCheckState extends State<OrderCheck> {
       event.createOrder(
           context: context,
           data: OrderBodyData(
+              paymentId: ((AppHelpers.getPaymentType() == "admin")
+                  ? (paymentState.payments[paymentState.currentIndex].id)
+                  : state.shopData?.shopPayments?[paymentState.currentIndex]
+                      ?.payment?.id),
               username: state.username,
-              phone: state.phoneNumber,
+              phone: state.phoneNumber ?? LocalStorage.getPhone(),
               notes: state.notes,
               cartId: stateOrderShop.cart?.id ?? 0,
               shopId: state.shopData?.id ?? 0,
@@ -148,13 +152,11 @@ class _OrderCheckState extends State<OrderCheck> {
             eventShopOrder.getCart(context, () {});
             eventOrderList.fetchActiveOrders(context);
           },
-          onWebview: (s) async {
+          onWebview: (s) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => WebViewPage(url: s)),
-            ).whenComplete(() {
-              print("object");
-            });
+            ).whenComplete(() {});
           });
     }
   }
@@ -247,46 +249,6 @@ class _OrderCheckState extends State<OrderCheck> {
             PriceInformation(isOrder: widget.isOrder, state: state),
             const DeliveryInfo(),
             26.verticalSpace,
-            if (AppConstants.payLater
-                    .contains(state.orderData?.transaction?.status) &&
-                state.orderData?.transaction?.tag != "cash" &&
-                state.orderData?.status != "cancelled")
-              Padding(
-                padding: EdgeInsets.only(bottom: 16.r, left: 16.r, right: 16.r),
-                child: CustomButton(
-                    isLoading: state.isButtonLoading,
-                    title: AppHelpers.getTranslation(TrKeys.pay),
-                    onPressed: () {
-                      AppHelpers.showCustomModalBottomSheet(
-                        paddingTop: MediaQuery.of(context).padding.top,
-                        context: context,
-                        modal: PaymentMethods(
-                          payLater: (payment) async {
-                            event.payOrder(
-                                context,
-                                state.orderData?.id,
-                                payment.id ?? 0,
-                                payment.tag ?? "",
-                                state.orderData?.totalPrice ?? 0,
-                                onSuccess: (url) async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => WebViewPage(url: url)),
-                              );
-                              if(context.mounted) {
-                                event.showOrder(
-                                  context, state.orderData?.id ?? 0, true);
-                              }
-                            });
-                          },
-                        ),
-                        isDarkMode: false,
-                        isDrag: true,
-                        radius: 12,
-                      );
-                    }),
-              ),
             Padding(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).padding.bottom,
@@ -347,7 +309,7 @@ class _OrderCheckState extends State<OrderCheck> {
                   }
                 },
                 isRefund: (state.orderData?.refunds?.isEmpty ?? true) ||
-                    state.orderData?.refunds?.first.status == "canceled",
+                    state.orderData?.refunds?.last.status == "canceled",
                 repeatOrder: () {
                   event.repeatOrder(
                     context: context,
@@ -361,6 +323,16 @@ class _OrderCheckState extends State<OrderCheck> {
                     },
                   );
                 },
+                showImage: state.orderData?.afterDeliveredImage != null
+                    ? () {
+                        AppHelpers.showAlertDialog(
+                          context: context,
+                          child: ImageDialog(
+                            img: state.orderData?.afterDeliveredImage,
+                          ),
+                        );
+                      }
+                    : null,
               ),
             ),
           ],

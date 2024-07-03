@@ -12,6 +12,7 @@ class OrderActiveModel {
     this.coupon,
     this.rate,
     this.tax,
+    this.tips,
     this.commissionFee,
     this.status,
     this.location,
@@ -33,6 +34,7 @@ class OrderActiveModel {
     this.review,
     this.refunds,
     this.ponumHistories,
+    this.afterDeliveredImage,
   });
 
   int? id;
@@ -47,6 +49,8 @@ class OrderActiveModel {
   Location? location;
   AddressModel? address;
   String? deliveryType;
+  num? tips;
+  String? afterDeliveredImage;
   num? deliveryFee;
   CurrencyModel? currencyModel;
   DeliveryMan? deliveryMan;
@@ -68,11 +72,13 @@ class OrderActiveModel {
       OrderActiveModel(
         id: json["data"]["id"],
         userId: json["data"]["user_id"],
+        afterDeliveredImage: json["data"]["image_after_delivered"],
         totalPrice: json["data"]["total_price"],
         originPrice: json["data"]["origin_price"],
         coupon: json["data"]?["coupon"]?["price"],
         rate: json["data"]["rate"],
         tax: json["data"]["tax"],
+        tips: json["data"]["tips"],
         currencyModel: json["data"]["currency"] != null
             ? CurrencyModel.fromJson(json["data"]["currency"])
             : null,
@@ -116,11 +122,13 @@ class OrderActiveModel {
     return OrderActiveModel(
       id: json["id"] ?? 0,
       userId: json["user_id"],
+      afterDeliveredImage: json["image_after_delivered"],
       totalPrice: json["total_price"],
       originPrice: json["origin_price"],
       coupon: json["coupon"]?["price"],
       rate: json["rate"],
       tax: json["tax"],
+      tips: json["tips"],
       currencyModel: json["currency"] != null
           ? CurrencyModel.fromJson(json["currency"])
           : null,
@@ -159,8 +167,10 @@ class OrderActiveModel {
         "origin_price": originPrice,
         "rate": rate,
         "tax": tax,
+        "tips": tips,
         "commission_fee": commissionFee,
         "status": status,
+        "image_after_delivered": afterDeliveredImage,
         "location": location?.toJson(),
         "address": address,
         "delivery_type": deliveryType,

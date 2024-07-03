@@ -9,6 +9,7 @@ import 'package:riverpodtemp/infrastructure/models/data/notification_list_data.d
 import 'package:riverpodtemp/infrastructure/models/models.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import '../../../domain/handlers/handlers.dart';
+import '../models/data/translation.dart';
 
 class SettingsRepository implements SettingsRepositoryFacade {
   @override
@@ -97,6 +98,46 @@ class SettingsRepository implements SettingsRepositoryFacade {
       );
     } catch (e) {
       debugPrint('==> get faq failure: $e');
+      return ApiResult.failure(
+          error: (e.runtimeType == DioException)
+              ? ((e as DioException).response?.data["message"] == "Bad request."
+                  ? (e.response?.data["params"] as Map).values.first[0]
+                  : e.response?.data["message"])
+              : "",
+          statusCode: NetworkExceptions.getDioStatus(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<Translation>> getTerm() async {
+    try {
+      final client = inject<HttpService>().client(requireAuth: false);
+      final response = await client.get('/api/v1/rest/term');
+      return ApiResult.success(
+        data: Translation.fromJson(response.data["data"]["translation"]),
+      );
+    } catch (e) {
+      debugPrint('==> get term failure: $e');
+      return ApiResult.failure(
+          error: (e.runtimeType == DioException)
+              ? ((e as DioException).response?.data["message"] == "Bad request."
+                  ? (e.response?.data["params"] as Map).values.first[0]
+                  : e.response?.data["message"])
+              : "",
+          statusCode: NetworkExceptions.getDioStatus(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<Translation>> getPolicy() async {
+    try {
+      final client = inject<HttpService>().client(requireAuth: false);
+      final response = await client.get('/api/v1/rest/policy');
+      return ApiResult.success(
+        data: Translation.fromJson(response.data["data"]["translation"]),
+      );
+    } catch (e) {
+      debugPrint('==> get policy failure: $e');
       return ApiResult.failure(
           error: (e.runtimeType == DioException)
               ? ((e as DioException).response?.data["message"] == "Bad request."

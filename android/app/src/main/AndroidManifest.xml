@@ -69,7 +69,6 @@
                 <data
                     android:host="foodyman.page.link"
                     android:scheme="https" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -15,7 +15,7 @@ class AuthRepository implements AuthRepositoryFacade {
     required String email,
     required String password,
   }) async {
-    final data = LoginModel(email: email, password: password).toJson();
+    final data = LoginModel(email: email.replaceAll('+', ""), password: password).toJson();
     try {
       final client = inject<HttpService>().client(requireAuth: false);
       final response = await client.post(
@@ -71,7 +71,7 @@ class AuthRepository implements AuthRepositoryFacade {
 
   @override
   Future<ApiResult<RegisterResponse>> sendOtp({required String phone}) async {
-    final data = {'phone': phone};
+    final data = {'phone': phone.replaceAll('+', "")};
     try {
       final client = inject<HttpService>().client(requireAuth: false);
       final response = await client.post(
@@ -118,7 +118,7 @@ class AuthRepository implements AuthRepositoryFacade {
   Future<ApiResult<RegisterResponse>> forgotPassword({
     required String email,
   }) async {
-    final data = {'email': email};
+    final data = {'email': email.replaceAll('+', "")};
     try {
       final client = inject<HttpService>().client(requireAuth: false);
       final response = await client.post(
@@ -146,7 +146,7 @@ class AuthRepository implements AuthRepositoryFacade {
     try {
       final client = inject<HttpService>().client(requireAuth: false);
       final response = await client.post(
-        '/api/v1/auth/forgot/email-password/$verifyCode?email=$email',
+        '/api/v1/auth/forgot/email-password/$verifyCode?email=${email.replaceAll('+', "")}',
       );
 
       return ApiResult.success(
@@ -171,7 +171,7 @@ class AuthRepository implements AuthRepositoryFacade {
     try {
       final client = inject<HttpService>().client(requireAuth: false);
       final response = await client.post('/api/v1/auth/forgot/password/confirm',
-          data: {"phone": phone, "type": "firebase"});
+          data: {"phone": phone.replaceAll('+', ""), "type": "firebase"});
 
       return ApiResult.success(
         data: VerifyData.fromJson(response.data["data"]),
@@ -193,7 +193,7 @@ class AuthRepository implements AuthRepositoryFacade {
     required String email,
   }) async {
     final data = SignUpRequest(
-      email: email,
+      email: email.replaceAll('+', ""),
     );
     try {
       final client = inject<HttpService>().client(requireAuth: false);
@@ -220,7 +220,7 @@ class AuthRepository implements AuthRepositoryFacade {
     final data = {
       "firstname": user.firstname,
       "lastname": user.lastname,
-      "phone": user.phone,
+      "phone": user.phone?.replaceAll('+', ""),
       "email": user.email,
       "password": user.password,
       "password_conformation": user.conPassword,
@@ -252,7 +252,7 @@ class AuthRepository implements AuthRepositoryFacade {
     final data = {
       "firstname": user.firstname,
       "lastname": user.lastname,
-      "phone": user.phone,
+      "phone": user.phone?.replaceAll('+', ""),
       "email": user.email,
       "password": user.password,
       "password_conformation": user.conPassword,

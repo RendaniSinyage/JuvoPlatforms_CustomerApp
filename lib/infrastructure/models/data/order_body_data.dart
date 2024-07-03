@@ -7,6 +7,7 @@ class OrderBodyData {
   final int cartId;
   final String? note;
   final int shopId;
+  final int? paymentId;
   final num deliveryFee;
   final DeliveryTypeEnum deliveryType;
   final String? coupon;
@@ -21,6 +22,7 @@ class OrderBodyData {
   OrderBodyData({
     required this.cartId,
     required this.shopId,
+    required this.paymentId,
     required this.deliveryFee,
     required this.deliveryType,
     this.coupon,
@@ -42,6 +44,7 @@ class OrderBodyData {
       "shop_id": shopId,
       if (username != null) "username": username,
       if (phone != null) "phone": phone,
+      if (paymentId != null) "payment_id": paymentId,
       "delivery_fee": deliveryFee,
       // "address_id": addressId,
       "delivery_type":

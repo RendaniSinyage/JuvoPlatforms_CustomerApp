@@ -7,9 +7,9 @@ import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import '../theme/app_style.dart';
 
 class CustomNetworkImage extends StatelessWidget {
-  final String url;
-  final double height;
-  final double width;
+  final String? url;
+  final double? height;
+  final double? width;
   final double radius;
   final Color bgColor;
   final BoxFit fit;
@@ -18,8 +18,8 @@ class CustomNetworkImage extends StatelessWidget {
   const CustomNetworkImage({
     super.key,
     required this.url,
-    required this.height,
-    required this.width,
+     this.height,
+     this.width,
     required this.radius,
     this.fit = BoxFit.cover,
     this.bgColor = AppStyle.mainBack,
@@ -32,7 +32,7 @@ class CustomNetworkImage extends StatelessWidget {
       borderRadius: BorderRadius.circular(radius),
       child: AppHelpers.checkIsSvg(url)
           ? SvgPicture.network(
-              url,
+              url ?? "",
               width: width,
               height: height,
               fit: BoxFit.cover,
@@ -46,7 +46,7 @@ class CustomNetworkImage extends StatelessWidget {
           :  CachedNetworkImage(
                   height: height,
                   width: width,
-                  imageUrl: url,
+                  imageUrl: url ?? "",
                   fit: fit,
                   progressIndicatorBuilder: (context, url, progress) {
                     return Container(

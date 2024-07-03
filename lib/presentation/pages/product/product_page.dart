@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:riverpodtemp/application/shop/shop_provider.dart';
 import 'package:riverpodtemp/application/shop_order/shop_order_notifier.dart';
 import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
 import 'package:riverpodtemp/infrastructure/models/data/product_data.dart';
+import 'package:riverpodtemp/infrastructure/models/data/review_data.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
@@ -20,7 +22,9 @@ import 'package:riverpodtemp/presentation/components/loading.dart';
 import 'package:riverpodtemp/presentation/components/title_icon.dart';
 import 'package:riverpodtemp/presentation/pages/product/widgets/w_ingredient.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
+import '../../../application/shop/shop_state.dart';
 import '../shop/widgets/bonus_screen.dart';
+import 'widgets/images_list_one.dart';
 import 'widgets/p_main_button.dart';
 import 'widgets/w_product_extras.dart';
 
@@ -46,9 +50,11 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   late bool isLtr;
   late ProductNotifier event;
   late ShopOrderNotifier eventOrderShop;
+  late PageController controller;
 
   @override
   void initState() {
+    controller = PageController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.productId != null) {
         ref.read(productProvider.notifier).getProductDetailsById(
@@ -75,10 +81,16 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     super.didChangeDependencies();
   }
 
+  @override
+  void deactivate() {
+    controller.dispose();
+    super.deactivate();
+  }
   void checkShopOrder(
       {required ProductNotifier event,
       required ProductState state,
-      required ShopOrderNotifier eventOrderShop}) {
+      required ShopOrderNotifier eventOrderShop,
+      required ShopState shopState}) {
     AppHelpers.showAlertDialog(
         context: context,
         child: Column(
@@ -112,27 +124,22 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               context,
                               ref.watch(shopOrderProvider).cart?.shopId ??
                                   (state.productData!.shopId ?? 0), () {
-                            Navigator.pop(context);
                             eventOrderShop.getCart(
                               context,
                               () {},
                               cartId: widget.cartId,
-                              shopId: ref
-                                  .watch(shopProvider)
-                                  .shopData
-                                  ?.id
-                                  .toString(),
-                              userUuid: ref.watch(shopProvider).userUuid,
+                              shopId: shopState.shopData?.id.toString(),
+                              userUuid: shopState.userUuid,
                             );
+                            Navigator.pop(context);
                           },
-                              isGroupOrder:
-                                  ref.watch(shopProvider).userUuid.isNotEmpty,
+                              isGroupOrder: shopState.userUuid.isNotEmpty,
                               cartId: ref
                                   .watch(shopOrderProvider)
                                   .cart
                                   ?.id
                                   .toString(),
-                              userUuid: ref.watch(shopProvider).userUuid);
+                              userUuid: shopState.userUuid);
                         });
                       });
                 })),
@@ -146,11 +153,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(productProvider);
     final stateOrderShop = ref.watch(shopOrderProvider);
+    final stateShop = ref.watch(shopProvider);
     ref.listen(productProvider, (previous, next) {
       if (next.isCheckShopOrder &&
           (next.isCheckShopOrder != (previous?.isCheckShopOrder ?? false))) {
         checkShopOrder(
-            event: event, state: state, eventOrderShop: eventOrderShop);
+            event: event,
+            state: state,
+            eventOrderShop: eventOrderShop,
+            shopState: stateShop);
       }
     });
     return Directionality(
@@ -213,11 +224,40 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                             ],
                           ),
                           20.verticalSpace,
-                          CustomNetworkImage(
-                              url: state.productData?.img ?? "",
-                              height: 200.h,
-                              width: double.infinity,
-                              radius: 10.r),
+                          Stack(
+                            children: [
+                              SizedBox(
+                                height: 200.r,
+                                child: PageView.builder(
+                                    itemCount:
+                                        state.productData?.galleries?.length ??
+                                            0,
+                                    controller: controller,
+                                    onPageChanged: (index) {
+                                      event.changeImage(state
+                                              .productData?.galleries?[index] ??
+                                          Galleries());
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return CustomNetworkImage(
+                                          url: state.selectImage?.path ??
+                                              state.activeImageUrl,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          radius: 10);
+                                    }),
+                              ),
+                              if((state.productData?.galleries?.length ?? 0) > 1)
+                              Positioned(
+                                bottom: 8.r,
+                                child: ImagesOneList(
+                                  list: state.productData?.galleries,
+                                  selectImageId: state.selectImage?.id,
+                                ),
+                              )
+                            ],
+                          ),
                           state.selectedStock?.bonus != null
                               ? Padding(
                                   padding: EdgeInsets.only(top: 12.h),

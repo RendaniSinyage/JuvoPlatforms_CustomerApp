@@ -188,7 +188,7 @@ class CartOrderItem extends StatelessWidget {
                                             children: [
                                           TextSpan(
                                             text:
-                                                " ${cart?.stock?.product?.unit?.translation?.title}",
+                                                " ${cart?.stock?.product?.unit?.translation?.title ?? ''}",
                                             style: AppStyle.interSemi(
                                               size: 14,
                                               color: AppStyle.textGrey,

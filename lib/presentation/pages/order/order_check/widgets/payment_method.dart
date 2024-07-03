@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
 import 'package:riverpodtemp/application/payment_methods/payment_provider.dart';
 import 'package:riverpodtemp/application/payment_methods/payment_state.dart';
 import 'package:riverpodtemp/infrastructure/models/data/payment_data.dart';
@@ -18,10 +17,10 @@ import '../../../../components/select_item.dart';
 
 class PaymentMethods extends ConsumerStatefulWidget {
   final ValueChanged<PaymentData>? payLater;
-  const PaymentMethods({
-    this.payLater,
-    super.key,
-  });
+  final Function(PaymentData, num)? tips;
+  final num? tipPrice;
+
+  const PaymentMethods({this.payLater, this.tips, this.tipPrice, super.key});
 
   @override
   ConsumerState<PaymentMethods> createState() => _PaymentMethodsState();
@@ -31,6 +30,16 @@ class _PaymentMethodsState extends ConsumerState<PaymentMethods> {
   final bool isLtr = LocalStorage.getLangLtr();
   late PaymentNotifier event;
   late PaymentState state;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(paymentProvider.notifier)
+          .fetchPayments(context, withOutCash: widget.tipPrice != null);
+    });
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -79,40 +88,17 @@ class _PaymentMethodsState extends ConsumerState<PaymentMethods> {
                                 TrKeys.paymentMethods),
                           ),
                           24.verticalSpace,
-                          ((AppHelpers.getPaymentType() == "admin")
-                                  ? (state.payments.isNotEmpty)
-                                  : (ref
-                                          .watch(orderProvider)
-                                          .shopData
-                                          ?.shopPayments
-                                          ?.isNotEmpty ??
-                                      false))
+                          (state.payments.isNotEmpty)
                               ? ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount:
-                                      (AppHelpers.getPaymentType() == "admin")
-                                          ? (state.payments.length)
-                                          : (ref
-                                                  .watch(orderProvider)
-                                                  .shopData
-                                                  ?.shopPayments
-                                                  ?.length ??
-                                              0),
+                                  itemCount: state.payments.length,
                                   itemBuilder: (context, index) {
                                     return SelectItem(
                                       onTap: () => event.change(index),
                                       isActive: state.currentIndex == index,
-                                      title: (AppHelpers.getPaymentType() ==
-                                              "admin")
-                                          ? (state.payments[index].tag ?? "")
-                                          : (ref
-                                                  .watch(orderProvider)
-                                                  .shopData
-                                                  ?.shopPayments?[index]
-                                                  ?.payment
-                                                  ?.tag ??
-                                              ""),
+                                      title: AppHelpers.getTranslation(
+                                          state.payments[index].tag ?? ""),
                                     );
                                   })
                               : Center(
@@ -130,20 +116,39 @@ class _PaymentMethodsState extends ConsumerState<PaymentMethods> {
                                     ),
                                   ),
                                 ),
-                        if (widget.payLater != null)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 32.r),
-                      child: CustomButton(
-                          title: AppHelpers.getTranslation(TrKeys.pay),
-                          onPressed: () {
-                            context.popRoute();
-                            widget.payLater?.call(PaymentData(
-                                id: state
-                                    .payments[state.currentIndex].id,
-                                tag: state
-                                    .payments[state.currentIndex].tag));
-                          }),
-                    )
+                          if (widget.payLater != null)
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 32.r),
+                              child: CustomButton(
+                                  title: AppHelpers.getTranslation(TrKeys.pay),
+                                  onPressed: () {
+                                    context.popRoute();
+                                    widget.payLater?.call(PaymentData(
+                                        id: state
+                                            .payments[state.currentIndex].id,
+                                        tag: AppHelpers.getTranslation(state
+                                            .payments[state.currentIndex]
+                                            .tag)));
+                                  }),
+                            ),
+                          if (widget.tips != null)
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 32.r),
+                              child: CustomButton(
+                                  title: AppHelpers.getTranslation(TrKeys.pay),
+                                  onPressed: () {
+                                    context.popRoute();
+                                    widget.tips?.call(
+                                      PaymentData(
+                                          id: state
+                                              .payments[state.currentIndex].id,
+                                          tag: AppHelpers.getTranslation(state
+                                              .payments[state.currentIndex]
+                                              .tag)),
+                                      widget.tipPrice ?? 0,
+                                    );
+                                  }),
+                            )
                         ],
                       ),
                     ),

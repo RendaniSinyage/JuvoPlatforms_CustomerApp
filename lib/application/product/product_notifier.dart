@@ -27,6 +27,10 @@ class ProductNotifier extends StateNotifier<ProductState> {
     state = state.copyWith(currentIndex: index);
   }
 
+  void changeImage(Galleries image) {
+    state = state.copyWith(selectImage: image);
+  }
+
   Future<void> getProductDetails(
     BuildContext context,
     ProductData productData,
@@ -39,6 +43,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
       isCheckShopOrder: false,
       productData: productData,
       activeImageUrl: '${productData.img}',
+      selectImage: Galleries(path: productData.img),
       initialStocks: stocks,
     );
     generateShareLink(shopType, shopId);
@@ -402,6 +407,8 @@ class ProductNotifier extends StateNotifier<ProductState> {
     final res =
         await http.post(Uri.parse(dynamicLink), body: jsonEncode(dataShare));
     shareLink = jsonDecode(res.body)['shortLink'];
+    debugPrint("share link product_notifier: $shareLink \n$dataShare");
+
   }
 
   Future shareProduct() async {

@@ -147,6 +147,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    PolicyRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PolicyPage(),
+      );
+    },
     ProfileRoute.name: (routeData) {
       final args = routeData.argsAs<ProfileRouteArgs>(
           orElse: () => const ProfileRouteArgs());
@@ -354,6 +360,12 @@ abstract class _$AppRouter extends RootStackRouter {
           shopId: args.shopId,
           cartId: args.cartId,
         ),
+      );
+    },
+    TermRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TermPage(),
       );
     },
     UiTypeRoute.name: (routeData) {
@@ -764,6 +776,20 @@ class ParcelProgressRouteArgs {
   String toString() {
     return 'ParcelProgressRouteArgs{key: $key, parcelId: $parcelId}';
   }
+}
+
+/// generated route for
+/// [PolicyPage]
+class PolicyRoute extends PageRouteInfo<void> {
+  const PolicyRoute({List<PageRouteInfo>? children})
+      : super(
+          PolicyRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PolicyRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -1523,6 +1549,20 @@ class SubCategoryRouteArgs {
   String toString() {
     return 'SubCategoryRouteArgs{key: $key, category: $category, shopId: $shopId, cartId: $cartId}';
   }
+}
+
+/// generated route for
+/// [TermPage]
+class TermRoute extends PageRouteInfo<void> {
+  const TermRoute({List<PageRouteInfo>? children})
+      : super(
+          TermRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TermRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

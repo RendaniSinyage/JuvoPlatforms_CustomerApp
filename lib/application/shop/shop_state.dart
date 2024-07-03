@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:riverpodtemp/infrastructure/models/models.dart';
 import 'package:riverpodtemp/infrastructure/models/response/branches_response.dart';
 
+import '../../infrastructure/models/response/all_products_response.dart';
+
 part 'shop_state.freezed.dart';
 
 @freezed
@@ -24,9 +26,12 @@ class ShopState with _$ShopState {
     @Default(false) bool isMapLoading,
     @Default(false) bool isGroupOrder,
     @Default(false) bool isJoinOrder,
+    @Default(false) bool isSearchEnabled,
     @Default(false) bool isTodayWorkingDay,
     @Default(false) bool isTomorrowWorkingDay,
+    @Default(false) bool isNestedScrollDisabled,
     @Default("") String userUuid,
+    @Default("") String searchText,
     @Default(TimeOfDay(hour: 0, minute: 0)) TimeOfDay startTodayTime,
     @Default(TimeOfDay(hour: 0, minute: 0)) TimeOfDay endTodayTime,
     @Default(0) int currentIndex,
@@ -34,7 +39,8 @@ class ShopState with _$ShopState {
     @Default({}) Set<Marker> shopMarkers,
     @Default([]) List<LatLng> polylineCoordinates,
     @Default(null) ShopData? shopData,
-    @Default([]) List<ProductData> products,
+    @Default([]) List<Product> products,
+    @Default([]) List<Product> popularProducts,
     @Default([]) List<ProductData> categoryProducts,
     @Default([]) List<CategoryData>? category,
     @Default([]) List<BrandData>? brands,

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
-import 'package:upgrader/upgrader.dart';
 import 'domain/di/dependency_manager.dart';
 import 'presentation/app_widget.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -19,7 +18,8 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await Upgrader.clearSavedSettings();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: SystemUiOverlay.values);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(

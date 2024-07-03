@@ -1,8 +1,8 @@
 import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
 import 'package:riverpodtemp/infrastructure/models/data/bonus_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
+import 'package:riverpodtemp/infrastructure/models/models.dart';
 
-import 'review_data.dart';
+
 import 'translation.dart';
 
 class ProductData {
@@ -89,6 +89,12 @@ class ProductData {
       _stocks = [];
       json['stocks'].forEach((v) {
         _stocks?.add(Stocks.fromJson(v));
+      });
+    }
+    if (json['galleries'] != null) {
+      _galleries = [];
+      json['galleries'].forEach((v) {
+        _galleries?.add(Galleries.fromJson(v));
       });
     }
   }

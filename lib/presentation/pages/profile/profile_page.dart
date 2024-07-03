@@ -32,8 +32,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'edit_profile_page.dart';
 import '../../../../application/edit_profile/edit_profile_provider.dart';
 import 'language_page.dart';
+import 'reservation_shops.dart';
 import 'widgets/profile_item.dart';
-
 
 @RoutePage()
 class ProfilePage extends ConsumerStatefulWidget {
@@ -283,6 +283,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                                     .pushRoute(const NotificationListRoute());
                               },
                             ),
+                            if (AppHelpers.getReservationEnable())
+                              ProfileItem(
+                                isLtr: isLtr,
+                                title: AppHelpers.getTranslation(
+                                    TrKeys.reservation),
+                                icon: FlutterRemix.reserved_line,
+                                onTap: () async {
+                                  AppHelpers.showAlertDialog(
+                                    context: context,
+                                    child: const SizedBox(
+                                        child: ReservationShops()),
+                                  );
+                                },
+                              ),
                             ProfileItem(
                               isLtr: isLtr,
                               title: AppHelpers.getTranslation(
@@ -409,11 +423,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                                   TrKeys.privacyPolicy),
                               icon: FlutterRemix.information_line,
                               onTap: () async {
-                                // ignore: deprecated_member_use
-                                await launch(
-                                  "${AppConstants.webUrl}/privacy",
-                                  enableJavaScript: true,
-                                );
+                                context.pushRoute(const PolicyRoute());
                               },
                             ),
                             ProfileItem(
@@ -421,22 +431,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               title: AppHelpers.getTranslation(TrKeys.terms),
                               icon: FlutterRemix.file_info_line,
                               onTap: () async {
-                                // ignore: deprecated_member_use
-                                await launch(
-                                  "${AppConstants.webUrl}/terms",
-                                  enableJavaScript: true,
-                                );
+                                context.pushRoute(const TermRoute());
                               },
                             ),
-                            ProfileItem(
-                              isLtr: isLtr,
-                              title: AppHelpers.getTranslation(
-                                  TrKeys.signUpToDeliver),
-                              icon: FlutterRemix.external_link_line,
-                              onTap: () {
-                                context.pushRoute(const HelpRoute());
-                              },
-                            ),
+                            // ProfileItem(
+                            //   isLtr: isLtr,
+                            //   title: AppHelpers.getTranslation(
+                            //       TrKeys.signUpToDeliver),
+                            //   icon: FlutterRemix.external_link_line,
+                            //   onTap: () {
+                            //     context.pushRoute(const HelpRoute());
+                            //   },
+                            // ),
                             ProfileItem(
                               isLtr: isLtr,
                               title: AppHelpers.getTranslation(
@@ -445,10 +451,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               onTap: () {
                                 AppHelpers.showAlertDialog(
                                   context: context,
-                                  child:  DeleteScreen(
-                                    isDeleteAccount: true, onDelete: () {
+                                  child: DeleteScreen(
+                                    isDeleteAccount: true,
+                                    onDelete: () {
                                       time.cancel();
-                                  },
+                                    },
                                   ),
                                 );
                               },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:riverpodtemp/application/payment_methods/payment_provider.dart';
@@ -22,22 +23,25 @@ class OrderButton extends StatelessWidget {
   final VoidCallback repeatOrder;
   final VoidCallback callShop;
   final VoidCallback callDriver;
+  final VoidCallback? showImage;
   final VoidCallback sendSmsDriver;
   final bool isRefund;
 
-  const OrderButton(
-      {super.key,
-      required this.isOrder,
-      required this.orderStatus,
-      required this.createOrder,
-      required this.isLoading,
-      required this.cancelOrder,
-      required this.callShop,
-      required this.callDriver,
-      required this.sendSmsDriver,
-      required this.isRefund,
-      required this.repeatOrder,
-      required this.isRepeatLoading});
+  const OrderButton({
+    super.key,
+    required this.isOrder,
+    required this.orderStatus,
+    required this.createOrder,
+    required this.isLoading,
+    required this.cancelOrder,
+    required this.callShop,
+    required this.callDriver,
+    required this.sendSmsDriver,
+    required this.isRefund,
+    required this.repeatOrder,
+    required this.isRepeatLoading,
+    required this.showImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +101,35 @@ class OrderButton extends StatelessWidget {
           return isRefund
               ? Column(
                   children: [
+                    if(showImage!= null)
+                    GestureDetector(
+                      onTap: showImage,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 8.h),
+                        decoration: BoxDecoration(
+                          color: AppStyle.transparent,
+                          border: Border.all(color: AppStyle.black,width: 2),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        padding: REdgeInsets.all(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppHelpers.getTranslation(TrKeys.orderImage),
+                              style: AppStyle.interNormal(
+                                size: 14.sp,
+                                color: AppStyle.black,
+                                letterSpacing: -0.3,
+                              ),
+                            ),
+                            12.horizontalSpace,
+                            const Icon(FlutterRemix.gallery_fill),
+                          ],
+                        ),
+                      ),
+                    ),
+                    10.verticalSpace,
                     CustomButton(
                       isLoading: isRepeatLoading,
                       background: AppStyle.transparent,

@@ -247,9 +247,7 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
               rightTitleColor: AppStyle.red,
               onRightTap: state.currentIndexOne == 0
                   ? () {}
-                  : () {
-                      event.changeOne(0);
-                    },
+                  : () => event.changeOne(0),
             ),
             24.verticalSpace,
             state.currentIndexOne == 0 &&
@@ -259,9 +257,7 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
                     itemCount: 2,
                     itemBuilder: (context, index) {
                       return SelectItem(
-                        onTap: () {
-                          event.changeOne(index);
-                        },
+                        onTap: () => event.changeOne(index),
                         isActive: state.currentIndexOne == index,
                         title: list.elementAt(index),
                       );
@@ -300,6 +296,7 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
                                                           0,
                                                       minute: 0),
                                                   DateTime.now());
+                                              Navigator.pop(context);
                                             },
                                             isActive:
                                                 state.selectIndex == index,
@@ -351,6 +348,7 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
                                                   minute: 0),
                                               DateTime.now().add(
                                                   const Duration(days: 1)));
+                                          Navigator.pop(context);
                                         },
                                         isActive: state.selectIndex == index,
                                         title:
@@ -408,28 +406,18 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
                                           ref.read(orderProvider.notifier).setTimeAndDay(
                                               TimeOfDay(
                                                   hour: int.tryParse(getSingleDayTime(
-                                                              stateOrder
-                                                                  .shopData
-                                                                  ?.shopWorkingDays?[
-                                                                      i]
-                                                                  .from,
-                                                              stateOrder
-                                                                  .shopData
-                                                                  ?.shopWorkingDays?[
-                                                                      i]
-                                                                  .to)[index]
+                                                              stateOrder.shopData?.shopWorkingDays?[i].from,
+                                                      stateOrder.shopData?.shopWorkingDays?[i].to)[index]
                                                           .substring(
                                                               0,
-                                                              getSingleDayTime(
-                                                                      stateOrder
-                                                                          .shopData
-                                                                          ?.shopWorkingDays?[i]
-                                                                          .from,
+                                                      getSingleDayTime(stateOrder.shopData?.shopWorkingDays?[i].from,
                                                                       stateOrder.shopData?.shopWorkingDays?[i].to)[index]
                                                                   .indexOf(":"))) ??
                                                       0,
                                                   minute: 0),
                                               DateFormat("EEEE, MMM dd").parse(_tabs[indexTab + 2].text ?? ""));
+                                          Navigator.pop(context);
+
                                         },
                                         isActive: state.selectIndex == index,
                                         title: getSingleDayTime(

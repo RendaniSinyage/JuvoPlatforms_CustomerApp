@@ -69,7 +69,7 @@ class _RegisterConfirmationPageState
         Navigator.pop(context);
         AppHelpers.showCustomModalBottomSheet(
           context: context,
-          modal: const RegisterPage(
+          modal:  RegisterPage(
             isOnlyEmail: false,
           ),
           isDarkMode: isDarkMode,

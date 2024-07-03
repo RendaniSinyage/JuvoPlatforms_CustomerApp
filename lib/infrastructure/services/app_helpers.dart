@@ -286,6 +286,16 @@ class AppHelpers {
     return false;
   }
 
+  static bool getReservationEnable() {
+    final List<SettingsData> settings = LocalStorage.getSettingsList();
+    for (final setting in settings) {
+      if (setting.key == 'reservation_enable_for_user') {
+        return setting.value == "1";
+      }
+    }
+    return false;
+  }
+
   static String? getAppAddressName() {
     final List<SettingsData> settings = LocalStorage.getSettingsList();
     for (final setting in settings) {
@@ -298,12 +308,11 @@ class AppHelpers {
 
   static String getTranslation(String trKey) {
     final Map<String, dynamic> translations = LocalStorage.getTranslations();
-    for (final key in translations.keys) {
-      if (trKey == key) {
-        return translations[key];
-      }
-    }
-    return trKey;
+    return translations[trKey] ??
+        (trKey.isNotEmpty
+            ? trKey.replaceAll(".", " ").replaceAll("_", " ").replaceFirst(
+            trKey.substring(0, 1), trKey.substring(0, 1).toUpperCase())
+            : '');
   }
 
   static String getTranslationReverse(String trKey) {
@@ -465,5 +474,12 @@ extension TimeOfDayExtension on TimeOfDay {
         return TimeOfDay(hour: newHour, minute: newMinute);
       }
     }
+  }
+}
+
+extension ExtendedIterable<E> on Iterable<E> {
+  Iterable mapIndexed<T>(T Function(E e, int i) f) {
+    var i = 0;
+    return map((e) => f(e, i++));
   }
 }

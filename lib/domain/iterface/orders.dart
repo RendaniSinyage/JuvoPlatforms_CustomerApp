@@ -8,7 +8,11 @@ import '../../infrastructure/models/data/get_calculate_data.dart';
 
 abstract class OrdersRepositoryFacade {
   Future<ApiResult<GetCalculateModel>> getCalculate(
-      {required int cartId, required double lat, required double long,required DeliveryTypeEnum type, String? coupon});
+      {required int cartId,
+      required double lat,
+      required double long,
+      required DeliveryTypeEnum type,
+      String? coupon});
 
   Future<ApiResult<OrderActiveModel>> createOrder(OrderBodyData orderBody);
 
@@ -26,7 +30,7 @@ abstract class OrdersRepositoryFacade {
 
   Future<ApiResult<void>> cancelOrder(num orderId);
 
-  Future<ApiResult<void>> refundOrder(num orderId,String title);
+  Future<ApiResult<void>> refundOrder(num orderId, String title);
 
   Future<ApiResult<void>> addReview(
     num orderId, {
@@ -34,13 +38,15 @@ abstract class OrdersRepositoryFacade {
     required String comment,
   });
 
-  Future<ApiResult<String>> process(
-      num orderId,String name);
+  Future<ApiResult<String>> process(OrderBodyData orderBody, String name);
+
+  Future<ApiResult<String>> tipProcess(int? orderId, String paymentName,int? paymentId, num? tips);
 
   Future<ApiResult<CouponResponse>> checkCoupon({
     required String coupon,
     required int shopId,
   });
 
-  Future<ApiResult<CashbackResponse>> checkCashback({required double amount,required int shopId});
+  Future<ApiResult<CashbackResponse>> checkCashback(
+      {required double amount, required int shopId});
 }

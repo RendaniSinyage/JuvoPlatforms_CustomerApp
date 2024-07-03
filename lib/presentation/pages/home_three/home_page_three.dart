@@ -25,7 +25,6 @@ import 'package:riverpodtemp/presentation/pages/home_three/widgets/market_three_
 import 'package:riverpodtemp/presentation/pages/home_three/widgets/shop_see_all.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
-import 'package:upgrader/upgrader.dart';
 import 'app_bar_home_three.dart';
 import 'category_screen_three.dart';
 import 'filter_category_shop_three.dart';
@@ -124,66 +123,64 @@ class _HomePageState extends ConsumerState<HomePageThree> {
     final event = ref.read(homeProvider.notifier);
     final bool isDarkMode = LocalStorage.getAppThemeMode();
     final bool isLtr = LocalStorage.getLangLtr();
-    return UpgradeAlert(
-      child: Directionality(
-        textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
-        child: Scaffold(
-          backgroundColor: isDarkMode ? AppStyle.mainBackDark : AppStyle.white,
-          body: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            physics: const BouncingScrollPhysics(),
-            controller: _restaurantController,
-            header: WaterDropMaterialHeader(
-              distance: 160.h,
-              backgroundColor: AppStyle.white,
-              color: AppStyle.textGrey,
-            ),
-            onLoading: () => _onLoading(),
-            onRefresh: () => _onRefresh(),
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(bottom: 120.r),
-              children: [
-                AppBarThree(state: state, event: event),
-                12.verticalSpace,
-                Padding(
-                  padding: REdgeInsets.symmetric(horizontal: 12),
-                  child: SearchTextField(
-                    isRead: true,
-                    isBorder: true,
-                    onTap: () {
-                      context.pushRoute(SearchRoute());
-                    },
-                    suffixIcon: const Icon(
-                      FlutterRemix.equalizer_fill,
-                      color: AppStyle.black,
-                    ),
+    return Directionality(
+      textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: isDarkMode ? AppStyle.mainBackDark : AppStyle.white,
+        body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          physics: const BouncingScrollPhysics(),
+          controller: _restaurantController,
+          header: WaterDropMaterialHeader(
+            distance: 160.h,
+            backgroundColor: AppStyle.white,
+            color: AppStyle.textGrey,
+          ),
+          onLoading: () => _onLoading(),
+          onRefresh: () => _onRefresh(),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(bottom: 120.r),
+            children: [
+              AppBarThree(state: state, event: event),
+              12.verticalSpace,
+              Padding(
+                padding: REdgeInsets.symmetric(horizontal: 12),
+                child: SearchTextField(
+                  isRead: true,
+                  isBorder: true,
+                  onTap: () {
+                    context.pushRoute(SearchRoute());
+                  },
+                  suffixIcon: const Icon(
+                    FlutterRemix.equalizer_fill,
+                    color: AppStyle.black,
                   ),
                 ),
-                12.verticalSpace,
-                state.isBannerLoading
-                    ? const BannerShimmer()
-                    : BannerThree(
-                        bannerController: _bannerController,
-                        pageController: _pageController,
-                        banners: state.banners,
-                        notifier: event,
-                      ),
-                CategoryScreenThree(
+              ),
+              12.verticalSpace,
+              state.isBannerLoading
+                  ? const BannerShimmer()
+                  : BannerThree(
+                bannerController: _bannerController,
+                pageController: _pageController,
+                banners: state.banners,
+                notifier: event,
+              ),
+              CategoryScreenThree(
+                state: state,
+                categoryController: _categoryController,
+                event: event,
+                restaurantController: _restaurantController,
+              ),
+              state.selectIndexCategory == -1
+                  ? _body(state, event, context)
+                  : FilterCategoryShopThree(
                   state: state,
-                  categoryController: _categoryController,
                   event: event,
-                  restaurantController: _restaurantController,
-                ),
-                state.selectIndexCategory == -1
-                    ? _body(state, event, context)
-                    : FilterCategoryShopThree(
-                        state: state,
-                        event: event,
-                        shopController: _restaurantController),
-              ],
-            ),
+                  shopController: _restaurantController),
+            ],
           ),
         ),
       ),

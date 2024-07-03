@@ -77,7 +77,7 @@ class _ParcelProgressPageState extends ConsumerState<ParcelProgressPage> {
           previous?.parcel?.status != next.parcel?.status) {
         AppHelpers.showCustomModalBottomSheet(
           context: context,
-          modal:   const RatingPage(parcel: true,),
+          modal: RatingPage(totalPrice: next.parcel?.totalPrice,parcel: true),
           isDarkMode: false,
         );
       }

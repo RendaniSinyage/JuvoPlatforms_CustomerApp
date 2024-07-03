@@ -36,9 +36,9 @@ class ButtonWidget extends StatelessWidget {
     }
     return ElevatedButton(
         style: ButtonStyle(
-            padding: MaterialStateProperty.all<EdgeInsets>(
+            padding: WidgetStateProperty.all<EdgeInsets>(
                 const EdgeInsets.all(16.0)),
-            backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
+            backgroundColor: WidgetStateProperty.all<Color>(buttonColor)),
         onPressed: onPressed,
         child: Text(
           text!,

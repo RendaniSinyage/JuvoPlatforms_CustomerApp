@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
 
 class OrderPaymentContainer extends StatelessWidget {
@@ -40,7 +41,7 @@ class OrderPaymentContainer extends StatelessWidget {
                 child: icon),
             8.verticalSpace,
             Text(
-              title,
+              AppHelpers.getTranslation(title),
               style: AppStyle.interSemi(
                 size: 13,
                 color: AppStyle.black,

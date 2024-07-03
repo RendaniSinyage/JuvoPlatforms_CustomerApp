@@ -26,7 +26,6 @@ import 'package:riverpodtemp/presentation/pages/home/filter_category_shop.dart';
 import 'package:riverpodtemp/presentation/pages/home_one/widget/door_to_door.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
-import 'package:upgrader/upgrader.dart';
 import 'shimmer/all_shop_shimmer.dart';
 import 'shimmer/banner_shimmer.dart';
 import 'shimmer/news_shop_shimmer.dart';
@@ -133,46 +132,44 @@ class _HomePageState extends ConsumerState<HomePage> {
     final state = ref.watch(homeProvider);
     final bool isDarkMode = LocalStorage.getAppThemeMode();
     final bool isLtr = LocalStorage.getLangLtr();
-    return UpgradeAlert(
-      child: Directionality(
-        textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
-        child: Scaffold(
-          backgroundColor: isDarkMode ? AppStyle.mainBackDark : AppStyle.bgGrey,
-          body: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            physics: const BouncingScrollPhysics(),
-            controller: _restaurantController,
-            scrollController: _controller,
-            header: WaterDropMaterialHeader(
-              distance: 160.h,
-              backgroundColor: AppStyle.white,
-              color: AppStyle.textGrey,
-            ),
-            onLoading: () => _onLoading(),
-            onRefresh: () => _onRefresh(),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 56.h),
-                child: Column(
-                  children: [
-                    AppBarHome(state: state, event: event),
-                    24.verticalSpace,
-                    CategoryScreen(
-                        state: state,
-                        event: event,
-                        categoryController: _categoryController,
-                        restaurantController: _restaurantController,
-                       ),
-                    state.selectIndexCategory == -1
-                        ? _body(state, context)
-                        : FilterCategoryShop(
-                            state: state,
-                            event: event,
-                            shopController: _restaurantController,
-                          ),
-                  ],
-                ),
+    return Directionality(
+      textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: isDarkMode ? AppStyle.mainBackDark : AppStyle.bgGrey,
+        body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          physics: const BouncingScrollPhysics(),
+          controller: _restaurantController,
+          scrollController: _controller,
+          header: WaterDropMaterialHeader(
+            distance: 160.h,
+            backgroundColor: AppStyle.white,
+            color: AppStyle.textGrey,
+          ),
+          onLoading: () => _onLoading(),
+          onRefresh: () => _onRefresh(),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 56.h),
+              child: Column(
+                children: [
+                  AppBarHome(state: state, event: event),
+                  24.verticalSpace,
+                  CategoryScreen(
+                    state: state,
+                    event: event,
+                    categoryController: _categoryController,
+                    restaurantController: _restaurantController,
+                  ),
+                  state.selectIndexCategory == -1
+                      ? _body(state, context)
+                      : FilterCategoryShop(
+                    state: state,
+                    event: event,
+                    shopController: _restaurantController,
+                  ),
+                ],
               ),
             ),
           ),

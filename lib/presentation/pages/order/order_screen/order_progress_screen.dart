@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_remix/flutter_remix.dart';
@@ -34,7 +33,6 @@ import '../../../../application/order/order_state.dart';
 import '../../../components/buttons/pop_button.dart';
 import '../order_check/widgets/refund_info.dart';
 import 'widgets/order_status.dart';
-
 
 @RoutePage()
 class OrderProgressPage extends ConsumerStatefulWidget {
@@ -87,11 +85,11 @@ class _OrderProgressPageState extends ConsumerState<OrderProgressPage> {
     ref.listen(orderProvider, (previous, next) {
       if (AppHelpers.getOrderStatus(next.orderData?.status ?? "") ==
               OrderStatus.delivered &&
-          next.orderData?.review == null &&
+          !(next.orderData?.review != null||next.orderData?.tips!=null) &&
           previous?.orderData?.status != next.orderData?.status) {
         AppHelpers.showCustomModalBottomSheet(
           context: context,
-          modal: const RatingPage(),
+          modal: RatingPage(totalPrice: next.orderData?.totalPrice),
           isDarkMode: false,
         );
       }
@@ -169,7 +167,7 @@ class _OrderProgressPageState extends ConsumerState<OrderProgressPage> {
               16.verticalSpace,
               state.orderData?.refunds?.isNotEmpty ?? false
                   ? RefundInfoScreen(
-                      refundModel: state.orderData?.refunds?.first,
+                      refundModel: state.orderData?.refunds?.last,
                     )
                   : const SizedBox.shrink(),
               OrderMap(

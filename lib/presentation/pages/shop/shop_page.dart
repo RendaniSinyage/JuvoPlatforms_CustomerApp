@@ -55,10 +55,34 @@ class _ShopPageState extends ConsumerState<ShopPage>
   late ShopNotifier event;
   late LikeNotifier eventLike;
   late TextEditingController name;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    // scrollController.addListener(() {
+    //   if (scrollController.offset >
+    //       (144 +
+    //           300.r +
+    //           ((ref
+    //                           .watch(shopProvider)
+    //                           .shopData
+    //                           ?.translation
+    //                           ?.description
+    //                           ?.length ??
+    //                       0) >
+    //                   40
+    //               ? 30
+    //               : 0) +
+    //           (AppHelpers.getGroupOrder() ? 60.r : 0.r) +
+    //           (ref.watch(shopProvider).shopData?.bonus == null ? 0 : 46.r) +
+    //           (ref.watch(shopProvider).endTodayTime.hour > TimeOfDay.now().hour
+    //               ? 0
+    //               : 70.r))+20) {
+    //     ref.read(shopProvider.notifier).enableNestedScroll();
+    //   }
+    // });
+
     ref.refresh(shopProvider);
     name = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -116,7 +140,7 @@ class _ShopPageState extends ConsumerState<ShopPage>
       }
       ref.read(shopProvider.notifier)
         ..checkProductsPopular(context, widget.shopId)
-        ..fetchCategory(context, widget.shopId)
+        // ..fetchCategory(context, widget.shopId)
         ..changeIndex(0);
       if (LocalStorage.getToken().isNotEmpty) {
         ref.read(shopOrderProvider.notifier).getCart(context, () {},
@@ -124,7 +148,6 @@ class _ShopPageState extends ConsumerState<ShopPage>
             shopId: widget.shopId,
             cartId: widget.cartId);
       }
-
       if (widget.productId != null) {
         AppHelpers.showCustomModalBottomDragSheet(
           context: context,
@@ -137,6 +160,12 @@ class _ShopPageState extends ConsumerState<ShopPage>
           radius: 16,
         );
       }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(shopProvider.notifier).fetchProducts(
+          context,
+          widget.shopId,
+        );
+      });
     });
   }
 
@@ -220,15 +249,25 @@ class _ShopPageState extends ConsumerState<ShopPage>
                       (BuildContext context, bool innerBoxIsScrolled) {
                     return [
                       SliverAppBar(
+                        // bottom: PreferredSize(preferredSize: Size(300, 100), child: Container(
+                        //   height: 40,
+                        //   color: Colors.red,
+                        // )),
                         backgroundColor: AppStyle.white,
                         automaticallyImplyLeading: false,
-                        toolbarHeight: (144 + 300.r +
-                                  ((state.shopData?.translation?.description?.length ?? 0) > 40 ? 30 : 0) +
-                                (AppHelpers.getGroupOrder() ? 60.r : 0.r) +
-                                (state.shopData?.bonus == null ? 0 : 46.r) +
-                                (state.endTodayTime.hour > TimeOfDay.now().hour
-                                    ? 0
-                                    : 70.r)),
+                        toolbarHeight: (144 +
+                            300.r +
+                            ((state.shopData?.translation?.description
+                                            ?.length ??
+                                        0) >
+                                    40
+                                ? 30
+                                : 0) +
+                            (AppHelpers.getGroupOrder() ? 60.r : 0.r) +
+                            (state.shopData?.bonus == null ? 0 : 46.r) +
+                            (state.endTodayTime.hour > TimeOfDay.now().hour
+                                ? 0
+                                : 70.r)),
                         elevation: 0.0,
                         flexibleSpace: FlexibleSpaceBar(
                           background: ShopPageAvatar(
@@ -250,12 +289,15 @@ class _ShopPageState extends ConsumerState<ShopPage>
                         ),
                       ),
                     ];
-                  },
+                  },physics:  const AlwaysScrollableScrollPhysics(),
+                  controller: scrollController,
                   body: ShopProductsScreen(
+                    nestedScrollCon: scrollController,
                     isPopularProduct: state.isPopularProduct,
                     listCategory: state.category,
                     currentIndex: state.currentIndex,
                     shopId: widget.shopId,
+
                   ),
                 ),
           floatingActionButtonLocation:

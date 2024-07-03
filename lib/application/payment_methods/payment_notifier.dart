@@ -14,15 +14,24 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
     state = state.copyWith(currentIndex: index);
   }
 
-  Future<void> fetchPayments(BuildContext context) async {
+  Future<void> fetchPayments(
+    BuildContext context, {
+    bool withOutCash = false,
+  }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       state = state.copyWith(isPaymentsLoading: true);
       final response = await _paymentsRepository.getPayments();
       response.when(
         success: (data) {
+          List payments = [];
+          if (withOutCash) {
+            payments = data?.data?.reversed.where((e) => e.tag != "cash").toList() ?? [];
+          } else {
+            payments = data?.data?.reversed.toList() ?? [];
+          }
           state = state.copyWith(
-            payments: data?.data?.reversed.toList() ?? [],
+            payments: payments,
             isPaymentsLoading: false,
           );
         },

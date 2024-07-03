@@ -24,98 +24,112 @@ class AppBarTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonAppBar(
         child: Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: () {
-            if (LocalStorage.getToken().isEmpty) {
-              context.pushRoute(ViewMapRoute());
-              return;
-            }
-            AppHelpers.showCustomModalBottomSheet(
-                context: context,
-                modal: SelectAddressScreen(
-                  addAddress: () async {
-                    await context.pushRoute(ViewMapRoute());
-                  },
-                ),
-                isDarkMode: false);
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: AppStyle.white),
-                padding: EdgeInsets.all(12.r),
-                child: SvgPicture.asset("assets/svgs/adress.svg"),
-              ),
-              10.horizontalSpace,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    AppHelpers.getTranslation(TrKeys.deliveryAddress),
-                    style: AppStyle.interNormal(
-                      size: 12,
-                      color: AppStyle.textGrey,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.sizeOf(context).width - 210.w,
-                        child: Text(
-                          (LocalStorage.getAddressSelected()?.title?.isEmpty ??
-                                  true)
-                              ? LocalStorage.getAddressSelected()?.address ?? ''
-                              : LocalStorage.getAddressSelected()?.title ?? "",
-                          style: AppStyle.interBold(
-                            size: 14,
-                            color: AppStyle.black,
-                          ),
-                          maxLines: 1,
-                        ),
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  if (LocalStorage.getToken().isEmpty) {
+                    context.pushRoute(ViewMapRoute());
+                    return;
+                  }
+                  AppHelpers.showCustomModalBottomSheet(
+                      context: context,
+                      modal: SelectAddressScreen(
+                        addAddress: () async {
+                          await context.pushRoute(ViewMapRoute());
+                        },
                       ),
-                      const Icon(Icons.keyboard_arrow_down_sharp)
-                    ],
-                  ),
-                ],
+                      isDarkMode: false);
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: AppStyle.white),
+                      padding: EdgeInsets.all(12.r),
+                      child: SvgPicture.asset("assets/svgs/adress.svg"),
+                    ),
+                    10.horizontalSpace,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            AppHelpers.getTranslation(TrKeys.deliveryAddress),
+                            style: AppStyle.interNormal(
+                              size: 12,
+                              color: AppStyle.textGrey,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width - 210.w,
+                                child: Text(
+                                  (LocalStorage
+                                      .getAddressSelected()
+                                      ?.title
+                                      ?.isEmpty ??
+                                      true)
+                                      ? LocalStorage.getAddressSelected()
+                                      ?.address ??
+                                      ''
+                                      : LocalStorage.getAddressSelected()?.title ??
+                                      "",
+                                  style: AppStyle.interBold(
+                                    size: 14,
+                                    color: AppStyle.black,
+                                  ),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              const Icon(Icons.keyboard_arrow_down_sharp)
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        10.horizontalSpace,
-        IconButton(
-            onPressed: () {
-              context.pushRoute(SearchRoute());
-            },
-            icon: const Icon(FlutterRemix.search_2_line)),
-        GestureDetector(
-          onTap: () {
-            if (LocalStorage.getToken().isEmpty) {
-              context.replaceRoute(const LoginRoute());
-            } else {
-              context.pushRoute(ProfileRoute());
-            }
-          },
-          child: Container(
-            width: 40.r,
-            height: 40.r,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: CustomNetworkImage(
-              profile: true,
-              url: LocalStorage.getProfileImage(),
-              height: 40.r,
-              width: 40.r,
-              radius: 20.r,
             ),
-          ),
-        )
-      ],
-    ));
+            10.horizontalSpace,
+            GestureDetector(
+              onTap: () {
+                context.pushRoute(SearchRoute());
+              },
+              child: Padding(
+                padding: REdgeInsets.only(top: 16, left: 16, right: 16, bottom: 6),
+                child: const Icon(FlutterRemix.search_2_line),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (LocalStorage.getToken().isEmpty) {
+                  context.router.replace(const LoginRoute());
+                } else {
+                  context.pushRoute(ProfileRoute());
+                }
+              },
+              child: Container(
+                width: 40.r,
+                height: 40.r,
+                decoration: const BoxDecoration(shape: BoxShape.circle),
+                child: CustomNetworkImage(
+                  profile: true,
+                  url: LocalStorage.getProfileImage(),
+                  height: 40.r,
+                  width: 40.r,
+                  radius: 20.r,
+                ),
+              ),
+            )
+          ],
+        ));
   }
 }

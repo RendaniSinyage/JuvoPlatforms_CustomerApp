@@ -1,15 +1,25 @@
 class TrKeys {
   TrKeys._();
   static const String bgPicture = 'bg_picture';
+  static const String helpInfo = 'help.info';
   static const String uiType = 'ui_type';
+  static const String orderImage = 'order.image';
   static const String especiallyForYou = 'especially_for_you';
   static const String workForYou = 'work_for_you';
   static const String readAll = 'read_all';
   static const String offers = 'offers';
+  static const String thisImageWasUploadDriver = 'this.image.was.uploaded.by.driver';
+  static const String price = 'price';
+  static const String customTip = 'custom.tip';
+  static const String tips = 'would.you.like.to.add.a.tip?';
+  static const String deliveryTip = 'delivery.tip';
   static const String parcels = 'parcels';
   static const String home = 'home';
+  static const String privacy = 'privacy';
+  static const String reservation = 'reservation';
   static const String best = 'best';
   static const String game = 'game';
+  static const String custom = 'custom';
   static const String wantToPlayGame = 'want.to.play.game';
   static const String youWin = 'you.win';
   static const String newGame = 'new.game';

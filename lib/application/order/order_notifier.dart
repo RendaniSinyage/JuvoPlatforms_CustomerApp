@@ -26,12 +26,12 @@ import 'package:intl/intl.dart' as intl;
 class OrderNotifier extends StateNotifier<OrderState> {
   final OrdersRepositoryFacade _orderRepository;
   final ShopsRepositoryFacade _shopsRepository;
-  final PaymentsRepositoryFacade _paymentsRepository;
+  final PaymentsRepositoryFacade paymentsRepository;
   final CartRepositoryFacade _cartRepository;
   final DrawRepositoryFacade _drawRouting;
 
   OrderNotifier(this._orderRepository, this._shopsRepository,
-      this._paymentsRepository, this._cartRepository, this._drawRouting)
+      this.paymentsRepository, this._cartRepository, this._drawRouting)
       : super(const OrderState());
 
   void setAddressInfo(
@@ -115,52 +115,6 @@ class OrderNotifier extends StateNotifier<OrderState> {
 
   void setTimeAndDay(TimeOfDay timeOfDay, DateTime day) {
     state = state.copyWith(selectTime: timeOfDay, selectDate: day);
-  }
-
-  Future payOrder(BuildContext context, int? orderId, int paymentId, String tag,
-      num totalPrice,
-      {ValueChanged<String>? onSuccess}) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      state = state.copyWith(isButtonLoading: true);
-      final num wallet = LocalStorage.getWalletData()?.price ?? 0;
-      if (tag == "wallet" && wallet < totalPrice) {
-        AppHelpers.showCheckTopSnackBarInfo(
-            context, AppHelpers.getTranslation(TrKeys.notEnoughMoney));
-        state = state.copyWith(isButtonLoading: false);
-        return;
-      }
-
-      switch (tag) {
-        case 'cash':
-          await _paymentsRepository.createTransaction(
-              orderId: orderId ?? 0, paymentId: paymentId);
-          state = state.copyWith(isButtonLoading: false);
-          showOrder(context, orderId ?? 0, false);
-          break;
-        case 'wallet':
-          await _paymentsRepository.createTransaction(
-              orderId: orderId ?? 0, paymentId: paymentId);
-          state = state.copyWith(isButtonLoading: false);
-          showOrder(context, orderId ?? 0, false);
-          break;
-        default:
-          await _paymentsRepository.createTransaction(
-              orderId: orderId ?? 0, paymentId: paymentId);
-          await makePayment(
-            context,
-            tag,
-            onSuccess,
-            orderId,
-          );
-          state = state.copyWith(isButtonLoading: false);
-          break;
-      }
-    } else {
-      if (context.mounted) {
-        AppHelpers.showNoConnectionSnackBar(context);
-      }
-    }
   }
 
   void checkWorkingDay() {
@@ -424,7 +378,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
         },
         failure: (activeFailure, status) {
           if (isLoading) {
-            state = state.copyWith(isLoading: true);
+            state = state.copyWith(isLoading: false);
           } else {
             state = state.copyWith(isButtonLoading: false);
           }
@@ -462,6 +416,40 @@ class OrderNotifier extends StateNotifier<OrderState> {
     state = state.copyWith(notes: list);
   }
 
+  sendTips({
+    required BuildContext context,
+    required num? price,
+    required PaymentData payment,
+    VoidCallback? onSuccess,
+    ValueChanged<String>? onWebview,
+  }) async {
+    final num wallet = LocalStorage.getWalletData()?.price ?? 0;
+    if (payment.tag == "wallet" && wallet < (price ?? 0)) {
+      AppHelpers.showCheckTopSnackBarInfo(
+          context, AppHelpers.getTranslation(TrKeys.notEnoughMoney));
+      state = state.copyWith(isButtonLoading: false);
+      return;
+    }
+    if (payment.tag?.toLowerCase() != "cash") {
+      final res = await _orderRepository.tipProcess(
+          state.orderData?.id, payment.tag ?? '', payment.id, price);
+      res.map(success: (key) {
+        onSuccess?.call();
+        if (payment.tag?.toLowerCase() != 'wallet') {
+          onWebview?.call(key.data);
+        }
+      }, failure: (e) {
+        state = state.copyWith(isButtonLoading: false);
+        if (context.mounted) {
+          AppHelpers.showCheckTopSnackBar(
+            context,
+            e.error,
+          );
+        }
+      });
+    }
+  }
+
   Future createOrder({
     required BuildContext context,
     required OrderBodyData data,
@@ -485,32 +473,24 @@ class OrderNotifier extends StateNotifier<OrderState> {
             state = state.copyWith(isButtonLoading: false);
             return;
           }
+          if (payment.tag != "cash" && payment.tag != "wallet") {
+            final res = await _orderRepository.process(data, payment.tag ?? '');
+            res.map(success: (key) {
+              onWebview?.call(key.data);
+            }, failure: (e) {
+              state = state.copyWith(isButtonLoading: false);
+              if (context.mounted) {
+                AppHelpers.showCheckTopSnackBar(
+                  context,
+                  e.error,
+                );
+              }
+            });
+            return;
+          }
           final response = await _orderRepository.createOrder(data);
           response.when(
             success: (data) async {
-              switch (payment.tag) {
-                case 'cash':
-                  _paymentsRepository.createTransaction(
-                      orderId: data.id ?? 0, paymentId: payment.id ?? 0);
-                  onSuccess?.call();
-                  break;
-                case 'wallet':
-                  _paymentsRepository.createTransaction(
-                      orderId: data.id ?? 0, paymentId: payment.id ?? 0);
-                  onSuccess?.call();
-                  break;
-                default:
-                  _paymentsRepository.createTransaction(
-                      orderId: data.id ?? 0, paymentId: payment.id ?? 0);
-                  await makePayment(
-                    context,
-                    payment.tag ?? "",
-                    onWebview,
-                    data.id,
-                  );
-                  break;
-              }
-
               final ImageCropperForMarker image = ImageCropperForMarker();
 
               state = state.copyWith(
@@ -574,30 +554,26 @@ class OrderNotifier extends StateNotifier<OrderState> {
         state = state.copyWith(isButtonLoading: false);
         return;
       }
+      if (payment.tag != "cash" && payment.tag != "wallet") {
+        final res =
+            await _orderRepository.process(data, payment.tag ?? "stripe");
+        res.map(success: (key) {
+          onWebview?.call(key.data);
+        }, failure: (e) {
+          state = state.copyWith(isButtonLoading: false);
+          if (context.mounted) {
+            AppHelpers.showCheckTopSnackBar(context, e.error);
+          }
+        });
+        return;
+      }
+
+      ///eref@fsdf.ff
+      ///4242424242424242
+      ///04/44
       final response = await _orderRepository.createOrder(data);
       response.when(
         success: (data) async {
-          switch (payment.tag) {
-            case 'cash':
-              _paymentsRepository.createTransaction(
-                  orderId: data.id ?? 0, paymentId: payment.id ?? 0);
-              break;
-            case 'wallet':
-              _paymentsRepository.createTransaction(
-                  orderId: data.id ?? 0, paymentId: payment.id ?? 0);
-              break;
-            default:
-              _paymentsRepository.createTransaction(
-                  orderId: data.id ?? 0, paymentId: payment.id ?? 0);
-              await makePayment(
-                context,
-                payment.tag ?? "",
-                onWebview,
-                data.id,
-              );
-              break;
-          }
-
           final ImageCropperForMarker image = ImageCropperForMarker();
 
           state = state.copyWith(
@@ -870,42 +846,6 @@ class OrderNotifier extends StateNotifier<OrderState> {
       if (context.mounted) {
         AppHelpers.showNoConnectionSnackBar(context);
       }
-    }
-  }
-
-  Future<void> makePayment(
-    BuildContext context,
-    String name,
-    ValueChanged<String>? onSuccess,
-    int? orderId,
-  ) async {
-    try {
-      final response = await _orderRepository.process(orderId ?? 0, name);
-      response.when(
-        success: (data) async {
-          // ignore: deprecated_member_use
-          // await launch(
-          //   data,
-          //   enableJavaScript: true,
-          // );
-          onSuccess?.call(data);
-          state = state.copyWith(isButtonLoading: false);
-        },
-        failure: (activeFailure, status) {
-          state = state.copyWith(isButtonLoading: false);
-          if (context.mounted) {
-            AppHelpers.showCheckTopSnackBar(
-              context,
-              activeFailure,
-            );
-          }
-        },
-      );
-    } catch (e) {
-      AppHelpers.showCheckTopSnackBar(
-        context,
-        AppHelpers.getTranslation(TrKeys.paymentMethodFailed),
-      );
     }
   }
 

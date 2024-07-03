@@ -6,6 +6,7 @@ import 'package:riverpodtemp/domain/iterface/products.dart';
 import 'package:riverpodtemp/infrastructure/models/models.dart';
 import 'package:riverpodtemp/infrastructure/models/request/product_request.dart';
 import 'package:riverpodtemp/infrastructure/models/request/search_product.dart';
+import 'package:riverpodtemp/infrastructure/models/response/all_products_response.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import '../../../domain/handlers/handlers.dart';
 
@@ -118,6 +119,34 @@ class ProductsRepository implements ProductsRepositoryFacade {
   }
 
   @override
+  Future<ApiResult<AllProductsResponse>> getAllProducts({
+    required String shopId,
+  }) async {
+    try {
+      final client = inject<HttpService>().client(requireAuth: false);
+      final response = await client.get(
+        '/api/v1/rest/shops/$shopId/products',
+        queryParameters: {
+          "lang": LocalStorage.getLanguage()?.locale,
+          "currency_id": LocalStorage.getSelectedCurrency()?.id
+        },
+      );
+      return ApiResult.success(
+        data: AllProductsResponse.fromJson(response.data),
+      );
+    } catch (e) {
+      debugPrint('==> getAllProducts failure: $e');
+      return ApiResult.failure(
+          error: (e.runtimeType == DioException)
+              ? ((e as DioException).response?.data["message"] == "Bad request."
+                  ? (e.response?.data["params"] as Map).values.first[0]
+                  : e.response?.data["message"])
+              : "",
+          statusCode: NetworkExceptions.getDioStatus(e));
+    }
+  }
+
+  @override
   Future<ApiResult<ProductsPaginateResponse>> getProductsShopByCategoryPaginate(
       {String? shopId,
       List<int>? brands,
@@ -133,7 +162,8 @@ class ProductsRepository implements ProductsRepositoryFacade {
       "status": "published",
       "category_id": categoryId,
       "perPage": 6,
-      if (sortIndex != 0 && sortIndex != null) "column": sortIndex == 1 ? "price_asc" : "price_desc",
+      if (sortIndex != 0 && sortIndex != null)
+        "column": sortIndex == 1 ? "price_asc" : "price_desc",
       if (brands?.isNotEmpty ?? false)
         for (int i = 0; i < (brands?.length ?? 0); i++)
           'brand_ids[$i]': brands?[i]

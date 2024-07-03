@@ -12,7 +12,7 @@ part of 'product_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ProductState {
@@ -28,6 +28,7 @@ mixin _$ProductState {
   List<int> get selectedIndexes => throw _privateConstructorUsedError;
   String get activeImageUrl => throw _privateConstructorUsedError;
   ProductData? get productData => throw _privateConstructorUsedError;
+  Galleries? get selectImage => throw _privateConstructorUsedError;
   Stocks? get selectedStock => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -54,6 +55,7 @@ abstract class $ProductStateCopyWith<$Res> {
       List<int> selectedIndexes,
       String activeImageUrl,
       ProductData? productData,
+      Galleries? selectImage,
       Stocks? selectedStock});
 }
 
@@ -82,6 +84,7 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
     Object? selectedIndexes = null,
     Object? activeImageUrl = null,
     Object? productData = freezed,
+    Object? selectImage = freezed,
     Object? selectedStock = freezed,
   }) {
     return _then(_value.copyWith(
@@ -133,6 +136,10 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
           ? _value.productData
           : productData // ignore: cast_nullable_to_non_nullable
               as ProductData?,
+      selectImage: freezed == selectImage
+          ? _value.selectImage
+          : selectImage // ignore: cast_nullable_to_non_nullable
+              as Galleries?,
       selectedStock: freezed == selectedStock
           ? _value.selectedStock
           : selectedStock // ignore: cast_nullable_to_non_nullable
@@ -162,6 +169,7 @@ abstract class _$$ProductStateImplCopyWith<$Res>
       List<int> selectedIndexes,
       String activeImageUrl,
       ProductData? productData,
+      Galleries? selectImage,
       Stocks? selectedStock});
 }
 
@@ -188,6 +196,7 @@ class __$$ProductStateImplCopyWithImpl<$Res>
     Object? selectedIndexes = null,
     Object? activeImageUrl = null,
     Object? productData = freezed,
+    Object? selectImage = freezed,
     Object? selectedStock = freezed,
   }) {
     return _then(_$ProductStateImpl(
@@ -239,6 +248,10 @@ class __$$ProductStateImplCopyWithImpl<$Res>
           ? _value.productData
           : productData // ignore: cast_nullable_to_non_nullable
               as ProductData?,
+      selectImage: freezed == selectImage
+          ? _value.selectImage
+          : selectImage // ignore: cast_nullable_to_non_nullable
+              as Galleries?,
       selectedStock: freezed == selectedStock
           ? _value.selectedStock
           : selectedStock // ignore: cast_nullable_to_non_nullable
@@ -263,6 +276,7 @@ class _$ProductStateImpl extends _ProductState {
       final List<int> selectedIndexes = const [],
       this.activeImageUrl = '',
       this.productData = null,
+      this.selectImage = null,
       this.selectedStock})
       : _typedExtras = typedExtras,
         _initialStocks = initialStocks,
@@ -324,11 +338,14 @@ class _$ProductStateImpl extends _ProductState {
   @JsonKey()
   final ProductData? productData;
   @override
+  @JsonKey()
+  final Galleries? selectImage;
+  @override
   final Stocks? selectedStock;
 
   @override
   String toString() {
-    return 'ProductState(isLoading: $isLoading, isAddLoading: $isAddLoading, isShareLoading: $isShareLoading, isCheckShopOrder: $isCheckShopOrder, currentIndex: $currentIndex, count: $count, stockCount: $stockCount, typedExtras: $typedExtras, initialStocks: $initialStocks, selectedIndexes: $selectedIndexes, activeImageUrl: $activeImageUrl, productData: $productData, selectedStock: $selectedStock)';
+    return 'ProductState(isLoading: $isLoading, isAddLoading: $isAddLoading, isShareLoading: $isShareLoading, isCheckShopOrder: $isCheckShopOrder, currentIndex: $currentIndex, count: $count, stockCount: $stockCount, typedExtras: $typedExtras, initialStocks: $initialStocks, selectedIndexes: $selectedIndexes, activeImageUrl: $activeImageUrl, productData: $productData, selectImage: $selectImage, selectedStock: $selectedStock)';
   }
 
   @override
@@ -359,6 +376,8 @@ class _$ProductStateImpl extends _ProductState {
                 other.activeImageUrl == activeImageUrl) &&
             (identical(other.productData, productData) ||
                 other.productData == productData) &&
+            (identical(other.selectImage, selectImage) ||
+                other.selectImage == selectImage) &&
             (identical(other.selectedStock, selectedStock) ||
                 other.selectedStock == selectedStock));
   }
@@ -378,6 +397,7 @@ class _$ProductStateImpl extends _ProductState {
       const DeepCollectionEquality().hash(_selectedIndexes),
       activeImageUrl,
       productData,
+      selectImage,
       selectedStock);
 
   @JsonKey(ignore: true)
@@ -401,6 +421,7 @@ abstract class _ProductState extends ProductState {
       final List<int> selectedIndexes,
       final String activeImageUrl,
       final ProductData? productData,
+      final Galleries? selectImage,
       final Stocks? selectedStock}) = _$ProductStateImpl;
   const _ProductState._() : super._();
 
@@ -428,6 +449,8 @@ abstract class _ProductState extends ProductState {
   String get activeImageUrl;
   @override
   ProductData? get productData;
+  @override
+  Galleries? get selectImage;
   @override
   Stocks? get selectedStock;
   @override

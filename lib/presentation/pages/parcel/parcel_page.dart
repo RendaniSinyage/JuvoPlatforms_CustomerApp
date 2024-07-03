@@ -199,8 +199,8 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
           children: [
             const PopButton(),
             if (state.types.isNotEmpty &&
-                state.addressFrom != null &&
-                state.addressTo != null)
+                (state.addressFrom?.isNotEmpty??false) &&
+                (state.addressTo?.isNotEmpty??false))
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 16.r),

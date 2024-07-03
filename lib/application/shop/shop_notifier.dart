@@ -16,6 +16,7 @@ import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpodtemp/infrastructure/services/marker_image_cropper.dart';
 import '../../domain/iterface/draw.dart';
+import '../../infrastructure/models/response/all_products_response.dart';
 import '../../infrastructure/services/app_constants.dart';
 import 'shop_state.dart';
 import 'package:intl/intl.dart' as intl;
@@ -40,6 +41,15 @@ class ShopNotifier extends StateNotifier<ShopState> {
 
   void showBranch() {
     state = state.copyWith(showBranch: !state.showBranch);
+  }
+
+  void enableSearch() {
+    state = state.copyWith(isSearchEnabled: !state.isSearchEnabled);
+  }
+
+  void enableNestedScroll({bool? val}) {
+    state = state.copyWith(
+        isNestedScrollDisabled: val ?? !state.isNestedScrollDisabled);
   }
 
   Future<void> getRoutingAll({
@@ -150,6 +160,10 @@ class ShopNotifier extends StateNotifier<ShopState> {
 
   void changeIndex(int index) {
     state = state.copyWith(currentIndex: index);
+  }
+
+  void changeSearchText(String text) {
+    state = state.copyWith(searchText: text);
   }
 
   void changeSubIndex(int index) {
@@ -379,18 +393,24 @@ class ShopNotifier extends StateNotifier<ShopState> {
       page = 1;
       state = state.copyWith(
         isProductLoading: true,
+        isCategoryLoading: true
       );
-      final response = await _productsRepository.getProductsPaginate(
-          page: 1, shopId: shopId);
+      final response = await _productsRepository.getAllProducts(shopId: shopId);
       response.when(
         success: (data) {
+          List<Product> products = [];
+          data.data?.all?.forEach((element) {
+            products.addAll(element.products ?? []);
+          });
+
           state = state.copyWith(
-            products: data.data ?? [],
-            isProductLoading: false,
+            products:
+                products.map((e) => Product.fromJson(e.toJson())).toList(),
+            category: data.data?.all?.map((e) => CategoryData.fromJson(e.toJson())).toList(),
+            popularProducts: data.data?.recommended ?? [],
           );
         },
         failure: (failure, status) {
-          state = state.copyWith(isProductLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
             failure,
@@ -404,6 +424,10 @@ class ShopNotifier extends StateNotifier<ShopState> {
         );
       }
     }
+    state = state.copyWith(
+        isProductLoading: false,
+        isCategoryLoading: false
+    );
   }
 
   Future<void> checkProductsPopular(BuildContext context, String shopId) async {
@@ -445,7 +469,10 @@ class ShopNotifier extends StateNotifier<ShopState> {
       response.when(
         success: (data) {
           state = state.copyWith(
-              products: data.data ?? [],
+              popularProducts: data.data
+                      ?.map((e) => Product.fromJson(e.toJson()))
+                      .toList() ??
+                  [],
               isProductLoading: false,
               isPopularProduct: (data.data ?? []).isNotEmpty);
         },
@@ -555,7 +582,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
           List<ProductData> list = List.from(state.products);
           list.addAll(data.data!.toList());
           state = state.copyWith(
-            products: list,
+            products: list.map((e) => Product.fromJson(e.toJson())).toList(),
           );
           if (data.data?.isEmpty ?? true) {
             controller?.loadNoData();
@@ -592,7 +619,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
           List<ProductData> list = List.from(state.products);
           list.addAll(data.data!.toList());
           state = state.copyWith(
-            products: list,
+            products: list.map((e) => Product.fromJson(e.toJson())).toList(),
           );
           if (data.data?.isEmpty ?? true) {
             controller?.loadNoData();
@@ -694,7 +721,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         await http.post(Uri.parse(dynamicLink), body: jsonEncode(dataShare));
 
     shareLink = jsonDecode(res.body)['shortLink'];
-    debugPrint("share link: $shareLink");
+    debugPrint("share link: shop_notifier $shareLink \n$dataShare");
   }
 
   onShare() async {

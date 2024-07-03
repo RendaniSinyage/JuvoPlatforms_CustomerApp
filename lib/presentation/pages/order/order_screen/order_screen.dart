@@ -147,12 +147,13 @@ class _OrderPageState extends ConsumerState<OrderPage>
     checkCart(ref.watch(shopOrderProvider), state);
     ref.listen(orderProvider, (previous, next) {
       if (AppHelpers.getOrderStatus(next.orderData?.status ?? "") ==
-              OrderStatus.delivered &&
-          next.orderData?.review == null &&
-          previous?.orderData?.status != next.orderData?.status) {
+              OrderStatus.delivered
+          && next.orderData?.review == null
+          && previous?.orderData?.status != next.orderData?.status
+      ) {
         AppHelpers.showCustomModalBottomSheet(
           context: context,
-          modal: const RatingPage(),
+          modal: RatingPage(totalPrice: next.orderData?.totalPrice),
           isDarkMode: isDarkMode,
         );
       }

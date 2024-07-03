@@ -141,49 +141,37 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> initDynamicLinks() async {
     dynamicLinks.onLink.listen((dynamicLinkData) {
-      String link = dynamicLinkData.link.toString();
-      if (link.contains("group")) {
+      Uri link = dynamicLinkData.link;
+      if (link.queryParameters.keys.contains('g')) {
         context.router.popUntilRoot();
         context.pushRoute(
           ShopRoute(
-            shopId: link.substring(
-                link.lastIndexOf("/") + 1, link.lastIndexOf("?")),
-            cartId: link.substring(
-                link.lastIndexOf("g") + 2, link.lastIndexOf("&o")),
-            ownerId: int.tryParse(
-              link.substring(
-                link.lastIndexOf("&o") + 3,
-                link.lastIndexOf("&"),
-              ),
-            ),
+            shopId: link.pathSegments.last,
+            cartId: link.queryParameters['g'],
+            ownerId: int.tryParse(link.queryParameters['o'] ?? ''),
           ),
         );
-      } else if (!link.contains("product") &&
-          (link.contains("shop") || link.contains("restaurant"))) {
+      } else if (!link.queryParameters.keys.contains("product") &&
+          (link.pathSegments.contains("shop") ||
+              link.pathSegments.contains("restaurant"))) {
         context.router.popUntilRoot();
         context.pushRoute(
           ShopRoute(
-            shopId: link.substring(link.lastIndexOf("/") + 1),
+            shopId: link.pathSegments.last,
           ),
         );
-      } else if (link.contains("shop")) {
+      } else if (link.pathSegments.contains("shop")) {
         context.router.popUntilRoot();
-        context.pushRoute(
-          ShopRoute(
-              shopId: link.substring(
-                  link.indexOf("shop/") + 5, link.lastIndexOf("?")),
-              productId:
-                  link.substring(link.indexOf("=") + 1, link.lastIndexOf("/"))),
-        );
-      } else if (link.contains("restaurant")) {
+        context.pushRoute(ShopRoute(
+          shopId: link.pathSegments.last,
+          productId: link.queryParameters['product'],
+        ));
+      } else if (link.pathSegments.contains("restaurant")) {
         context.router.popUntilRoot();
-        context.pushRoute(
-          ShopRoute(
-              shopId: link.substring(
-                  link.indexOf("restaurant/") + 11, link.lastIndexOf("?")),
-              productId:
-                  link.substring(link.indexOf("=") + 1, link.lastIndexOf("/"))),
-        );
+        context.pushRoute(ShopRoute(
+          shopId: link.pathSegments.last,
+          productId: link.queryParameters['product'],
+        ));
       }
     }).onError((error) {
       debugPrint(error.message);
@@ -192,53 +180,35 @@ class _MainPageState extends State<MainPage> {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
-    if (deepLink.toString().contains("group")) {
+    if (deepLink?.queryParameters.keys.contains("g") ?? false) {
       context.router.popUntilRoot();
       context.pushRoute(
         ShopRoute(
-          shopId: deepLink.toString().substring(
-              deepLink.toString().lastIndexOf("/") + 1,
-              deepLink.toString().lastIndexOf("?")),
-          cartId: deepLink.toString().substring(
-              deepLink.toString().lastIndexOf("g") + 2,
-              deepLink.toString().lastIndexOf("&o")),
-          ownerId: int.tryParse(
-            deepLink.toString().substring(
-                  deepLink.toString().lastIndexOf("&o") + 3,
-                  deepLink.toString().lastIndexOf("&"),
-                ),
-          ),
+          shopId: deepLink?.pathSegments.last ?? '',
+          cartId: deepLink?.queryParameters['g'],
+          ownerId: int.tryParse(deepLink?.queryParameters['o'] ?? ""),
         ),
       );
-    } else if (!deepLink.toString().contains("product") &&
-        (deepLink.toString().contains("shop") ||
-            deepLink.toString().contains("restaurant"))) {
+    } else if (!(deepLink?.queryParameters.keys.contains("product") ?? false) &&
+            (deepLink?.pathSegments.contains("shop") ?? false) ||
+        (deepLink?.pathSegments.contains("restaurant") ?? false)) {
       context.pushRoute(
         ShopRoute(
-          shopId: deepLink
-              .toString()
-              .substring(deepLink.toString().lastIndexOf("/") + 1),
+          shopId: deepLink?.pathSegments.last ?? "",
         ),
       );
-    } else if (deepLink.toString().contains("shop")) {
+    } else if (deepLink?.pathSegments.contains("shop") ?? false) {
       context.pushRoute(
         ShopRoute(
-            shopId: deepLink.toString().substring(
-                deepLink.toString().indexOf("shop/") + 5,
-                deepLink.toString().lastIndexOf("?")),
-            productId: deepLink.toString().substring(
-                deepLink.toString().indexOf("="),
-                deepLink.toString().lastIndexOf("/"))),
+            shopId: deepLink?.pathSegments.last ?? "",
+            productId: deepLink?.queryParameters['product']),
       );
-    } else if (deepLink.toString().contains("restaurant")) {
+    } else if (deepLink?.pathSegments.contains("restaurant") ?? false) {
       context.pushRoute(
         ShopRoute(
-            shopId: deepLink.toString().substring(
-                deepLink.toString().indexOf("restaurant/") + 11,
-                deepLink.toString().lastIndexOf("?")),
-            productId: deepLink.toString().substring(
-                deepLink.toString().indexOf("=") + 1,
-                deepLink.toString().lastIndexOf("/"))),
+          shopId: deepLink?.pathSegments.last ?? '',
+          productId: deepLink?.queryParameters['product'],
+        ),
       );
     }
   }

@@ -79,6 +79,18 @@ class PriceInformation extends StatelessWidget {
           ),
         ),
         16.verticalSpace,
+        TitleAndPrice(
+          title: AppHelpers.getTranslation(TrKeys.deliveryTip),
+          rightTitle: AppHelpers.numberFormat(
+              isOrder: isOrder,
+              symbol: state.orderData?.currencyModel?.symbol,
+              number: state.orderData?.tips??0,),
+          textStyle: AppStyle.interRegular(
+            size: 16,
+            color: AppStyle.black,
+          ),
+        ),
+        16.verticalSpace,
         if( isOrder ? state.orderData?.totalDiscount != null : state.calculateData?.totalDiscount != null)
         TitleAndPrice(
           title: AppHelpers.getTranslation(TrKeys.discount),

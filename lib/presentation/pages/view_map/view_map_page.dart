@@ -381,8 +381,10 @@ class _ViewMapPageState extends ConsumerState<ViewMapPage> {
                         child: Opacity(
                           opacity: state.isScrolling ? 0.5 : 1,
                           child: CustomButton(
+                            isLoading:controller.text.isEmpty ,
                             title: AppHelpers.getTranslation(TrKeys.apply),
                             onPressed: () {
+
                               if(widget.isParcel){
                                 Navigator.pop(context,AddressNewModel(
                                   address: AddressInformation(

@@ -245,6 +245,7 @@ class Wallet {
   Wallet({
     String? uuid,
     int? userId,
+    int? id,
     int? currencyId,
     num? price,
     String? createdAt,
@@ -253,6 +254,7 @@ class Wallet {
   }) {
     _uuid = uuid;
     _userId = userId;
+    _id = id;
     _currencyId = currencyId;
     _price = price;
     _createdAt = createdAt;
@@ -263,6 +265,7 @@ class Wallet {
   Wallet.fromJson(dynamic json) {
     _uuid = json['uuid'];
     _userId = json['user_id'];
+    _id = json['id'];
     _currencyId = json['currency_id'];
     _price = json['price'];
     _createdAt = json['created_at'];
@@ -274,6 +277,7 @@ class Wallet {
 
   String? _uuid;
   int? _userId;
+  int? _id;
   int? _currencyId;
   num? _price;
   String? _createdAt;
@@ -283,6 +287,7 @@ class Wallet {
   Wallet copyWith({
     String? uuid,
     int? userId,
+    int? id,
     int? currencyId,
     num? price,
     String? createdAt,
@@ -292,6 +297,7 @@ class Wallet {
       Wallet(
         uuid: uuid ?? _uuid,
         userId: userId ?? _userId,
+        id: id ?? _id,
         currencyId: currencyId ?? _currencyId,
         price: price ?? _price,
         createdAt: createdAt ?? _createdAt,
@@ -302,6 +308,7 @@ class Wallet {
   String? get uuid => _uuid;
 
   int? get userId => _userId;
+  int? get id => _id;
 
   int? get currencyId => _currencyId;
 
@@ -317,6 +324,7 @@ class Wallet {
     final map = <String, dynamic>{};
     map['uuid'] = _uuid;
     map['user_id'] = _userId;
+    map['id'] = _id;
     map['currency_id'] = _currencyId;
     map['price'] = _price;
     map['created_at'] = _createdAt;

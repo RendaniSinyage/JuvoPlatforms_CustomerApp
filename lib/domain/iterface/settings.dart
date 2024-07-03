@@ -3,7 +3,9 @@ import 'package:riverpodtemp/infrastructure/models/data/help_data.dart';
 import 'package:riverpodtemp/infrastructure/models/data/notification_list_data.dart';
 
 import '../../domain/handlers/handlers.dart';
+import '../../infrastructure/models/data/translation.dart';
 import '../../infrastructure/models/models.dart';
+
 abstract class SettingsRepositoryFacade {
   Future<ApiResult<GlobalSettingsResponse>> getGlobalSettings();
 
@@ -13,10 +15,14 @@ abstract class SettingsRepositoryFacade {
 
   Future<ApiResult<NotificationsListModel>> getNotificationList();
 
-
-  Future<ApiResult<dynamic>> updateNotification(List<NotificationData>? notifications);
+  Future<ApiResult<dynamic>> updateNotification(
+      List<NotificationData>? notifications);
 
   Future<ApiResult<HelpModel>> getFaq();
+
+  Future<ApiResult<Translation>> getTerm();
+
+  Future<ApiResult<Translation>> getPolicy();
 
   Future<ApiResult<GenerateImageModel>> getGenerateImage(String name);
 }

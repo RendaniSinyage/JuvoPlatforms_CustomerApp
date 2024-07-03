@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:riverpodtemp/domain/di/dependency_manager.dart';
 import 'package:riverpodtemp/domain/iterface/user.dart';
 import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
 import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
@@ -27,6 +28,34 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       this._userRepository, this._shopsRepository, this._galleryRepository)
       : super(const ProfileState());
   int page = 1;
+
+  getTerm({required BuildContext context}) async {
+    state = state.copyWith(isTermLoading: state.term == null);
+    final res = await settingsRepository.getTerm();
+    res.when(
+      success: (l) {
+        state = state.copyWith(isTermLoading: false, term: l);
+      },
+      failure: (r, s) {
+        state = state.copyWith(isTermLoading: false);
+        AppHelpers.showCheckTopSnackBar(context, r.toString());
+      },
+    );
+  }
+
+  getPolicy({required BuildContext context}) async {
+    state = state.copyWith(isPolicyLoading: state.policy == null);
+    final res = await settingsRepository.getPolicy();
+    res.when(
+      success: (l) {
+        state = state.copyWith(isPolicyLoading: false, policy: l);
+      },
+      failure: (r, s) {
+        state = state.copyWith(isPolicyLoading: false);
+        AppHelpers.showCheckTopSnackBar(context, r.toString());
+      },
+    );
+  }
 
   resetShopData() {
     state = state.copyWith(
@@ -97,28 +126,28 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             LocalStorage.setAddressSelected(AddressData(
                 title: data.data?.addresses?.firstWhere(
                         (element) => element.active ?? false, orElse: () {
-                  return AddressNewModel();
-                }).title ??
+                      return AddressNewModel();
+                    }).title ??
                     "",
                 address: data.data?.addresses
-                    ?.firstWhere((element) => element.active ?? false,
-                    orElse: () {
-                      return AddressNewModel();
-                    })
-                    .address
-                    ?.address ??
+                        ?.firstWhere((element) => element.active ?? false,
+                            orElse: () {
+                          return AddressNewModel();
+                        })
+                        .address
+                        ?.address ??
                     "",
                 location: LocationModel(
                     longitude: data.data?.addresses
                         ?.firstWhere((element) => element.active ?? false,
-                        orElse: () {
+                            orElse: () {
                           return AddressNewModel();
                         })
                         .location
                         ?.last,
                     latitude: data.data?.addresses
                         ?.firstWhere((element) => element.active ?? false,
-                        orElse: () {
+                            orElse: () {
                           return AddressNewModel();
                         })
                         .location

@@ -15,7 +15,6 @@ import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
 import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
 import 'package:riverpodtemp/presentation/pages/auth/register/register_page.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:upgrader/upgrader.dart';
 import '../../../theme/theme.dart';
 import '../../profile/language_page.dart';
 import 'login_screen.dart';
@@ -100,89 +99,87 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final bool isDarkMode = LocalStorage.getAppThemeMode();
     final bool isLtr = LocalStorage.getLangLtr();
-    return UpgradeAlert(
-      child: Directionality(
-        textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor:
-              isDarkMode ? AppStyle.dontHaveAnAccBackDark : AppStyle.white,
-          body: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage(
-                "assets/images/splash.png",
-              ),
-              fit: BoxFit.fill,
-            )),
-            child: SafeArea(
-              child: Padding(
-                padding: REdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            AppHelpers.getAppName() ?? "",
-                            style: AppStyle.interSemi(color: AppStyle.white),
-                          ),
-                        ),
-                        8.horizontalSpace,
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () {
-                            ref.read(mainProvider.notifier).selectIndex(0);
-                            if (AppConstants.isDemo) {
-                              context.pushRoute(UiTypeRoute());
-                              return;
-                            }
-                            context.replaceRoute(const MainRoute());
-                          },
-                          child: Text(
-                            AppHelpers.getTranslation(TrKeys.skip),
-                            style: AppStyle.interSemi(
-                              size: 16.sp,
-                              color: AppStyle.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        CustomButton(
-                          title: AppHelpers.getTranslation(TrKeys.login),
-                          onPressed: () {
-                            AppHelpers.showCustomModalBottomSheet(
-                              context: context,
-                              modal: const LoginScreen(),
-                              isDarkMode: isDarkMode,
-                            );
-                          },
-                        ),
-                        10.verticalSpace,
-                        CustomButton(
-                          title: AppHelpers.getTranslation(TrKeys.register),
-                          onPressed: () {
-                            AppHelpers.showCustomModalBottomSheet(
-                                context: context,
-                                modal: const RegisterPage(
-                                  isOnlyEmail: true,
-                                ),
-                                isDarkMode: isDarkMode,
-                                paddingTop: MediaQuery.of(context).padding.top);
-                          },
-                          background: AppStyle.transparent,
-                          textColor: AppStyle.white,
-                          borderColor: AppStyle.white,
-                        ),
-                        22.verticalSpace,
-                      ],
-                    )
-                  ],
+    return Directionality(
+      textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor:
+        isDarkMode ? AppStyle.dontHaveAnAccBackDark : AppStyle.white,
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/splash.png",
                 ),
+                fit: BoxFit.fill,
+              )),
+          child: SafeArea(
+            child: Padding(
+              padding: REdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          AppHelpers.getAppName() ?? "",
+                          style: AppStyle.interSemi(color: AppStyle.white),
+                        ),
+                      ),
+                      8.horizontalSpace,
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          ref.read(mainProvider.notifier).selectIndex(0);
+                          if (AppConstants.isDemo) {
+                            context.pushRoute(UiTypeRoute());
+                            return;
+                          }
+                          context.replaceRoute(const MainRoute());
+                        },
+                        child: Text(
+                          AppHelpers.getTranslation(TrKeys.skip),
+                          style: AppStyle.interSemi(
+                            size: 16.sp,
+                            color: AppStyle.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CustomButton(
+                        title: AppHelpers.getTranslation(TrKeys.login),
+                        onPressed: () {
+                          AppHelpers.showCustomModalBottomSheet(
+                            context: context,
+                            modal: const LoginScreen(),
+                            isDarkMode: isDarkMode,
+                          );
+                        },
+                      ),
+                      10.verticalSpace,
+                      CustomButton(
+                        title: AppHelpers.getTranslation(TrKeys.register),
+                        onPressed: () {
+                          AppHelpers.showCustomModalBottomSheet(
+                              context: context,
+                              modal: RegisterPage(
+                                isOnlyEmail: true,
+                              ),
+                              isDarkMode: isDarkMode,
+                              paddingTop: MediaQuery.of(context).padding.top);
+                        },
+                        background: AppStyle.transparent,
+                        textColor: AppStyle.white,
+                        borderColor: AppStyle.white,
+                      ),
+                      22.verticalSpace,
+                    ],
+                  )
+                ],
               ),
             ),
           ),

@@ -25,7 +25,7 @@ class ForgotTextButton extends ConsumerWidget {
     final state = ref.watch(appProvider);
     return TextButton(
       style: ButtonStyle(
-        overlayColor: MaterialStateColor.resolveWith(
+        overlayColor: WidgetStateColor.resolveWith(
           (states) => state.isDarkMode
               ? AppStyle.mainBackDark
               : AppStyle.dontHaveAccBtnBack,
