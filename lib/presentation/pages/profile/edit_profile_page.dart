@@ -81,14 +81,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return Directionality(
       textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
       child: KeyboardDismisser(
+      child: Padding(
+      padding: const EdgeInsets.all(16.0),
         child: Container(
           margin: MediaQuery.of(context).viewInsets,
           decoration: BoxDecoration(
               color: AppStyle.bgGrey.withOpacity(0.96),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.r),
-                topRight: Radius.circular(16.r),
-              )),
+              borderRadius: BorderRadius.all(Radius.circular(16.r))),
           width: double.infinity,
           child: state.isLoading
               ? const Loading()
@@ -195,7 +194,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 children: [
                                   SizedBox(
                                     width: (MediaQuery.sizeOf(context).width -
-                                            40) /
+                                            88) /
                                         2,
                                     child: OutlinedBorderTextField(
                                       label: AppHelpers.getTranslation(
@@ -332,6 +331,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 ),
         ),
       ),
-    );
+    ));
   }
 }

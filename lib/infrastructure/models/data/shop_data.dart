@@ -19,6 +19,7 @@ class ShopData {
     this.userId,
     this.tax,
     this.deliveryRange,
+    this.price,
     this.percentage,
     this.phone,
     this.visibility,
@@ -54,6 +55,7 @@ class ShopData {
   int? userId;
   num? tax;
   num? deliveryRange;
+  num? price;
   num? percentage;
   String? avgRate;
   String? rateCount;
@@ -90,6 +92,7 @@ class ShopData {
       // uuid: json["uuid"] ?? 0,
       userId: json["user_id"] ?? 0,
       tax: json["tax"] ?? 0,
+      price: json["price"] ?? 0,
       deliveryRange: json["price_per_km"] ?? 0,
       percentage: json["percentage"] ?? 0,
       phone: json["phone"].toString() ,
@@ -151,6 +154,7 @@ class ShopData {
         "id": id,
         "user_id": userId,
         "tax": tax,
+        "price": price,
         "delivery_range": deliveryRange,
         "percentage": percentage,
         "phone": phone,

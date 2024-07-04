@@ -1,3 +1,5 @@
+//import 'package:flutter/material.dart';
+//import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
 
 class AppConstants {
@@ -42,9 +44,9 @@ class AppConstants {
 
 
   /// auth phone fields
-  static const bool isSpecificNumberEnabled = false;
+  static const bool isSpecificNumberEnabled = true;
   static const bool isNumberLengthAlwaysSame = true;
-  static const String countryCodeISO = 'UZ';
+  static const String countryCodeISO = 'ZA';
   static const bool showFlag = true;
   static const bool showArrowIcon = true;
 
@@ -54,31 +56,39 @@ class AppConstants {
   static const String emptyString = '';
 
   /// api urls
-  static const String drawingBaseUrl = 'https://api.openrouteservice.org';
-  static const String baseUrl = 'https://api.foodyman.org';
-  static const String googleApiKey = 'AIzaSyDZQUsmwnkCmD3HMNFCABo8YSE54FCTFYo';
-  static const String privacyPolicyUrl = '$baseUrl/privacy-policy';
-  static const String adminPageUrl = 'https://admin.foodyman.org';
-  static const String webUrl = 'https://foodyman.org';
-  static const String firebaseWebKey =
-      'AIzaSyDraEPokcqncELQIoXO2Phy0YZUUIaKqMI';
-  static const String uriPrefix = 'https://foodyman.page.link';
-  static const String routingKey =
-      '5b3ce3597851110001cf62480384c1db92764d1b8959761ea2510ac8';
-  static const String androidPackageName = 'com.foodyman';
-  static const String iosPackageName = 'com.foodyman.customer';
-  static const bool isDemo = true;
+  static String drawingBaseUrl = 'https://api.openrouteservice.org';
+  static String baseUrl = 'https://api.juvo.app';
+  static String googleApiKey = 'AIzaSyDJjLCq6HBCe7xae6l0D9DW1MWpE4900GU';
+  static String privacyPolicyUrl = '$baseUrl/privacy-policy';
+  static String adminPageUrl = 'https://admin.juvo.app';
+  static const String webUrl = 'https://food.juvo.app';
+  static const String firebaseWebKey = 'AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk';
+  static String uriPrefix = 'https://juvofood.page.link';
+  static String routingKey = '5b3ce3597851110001cf62480384c1db92764d1b8959761ea2510ac8';
+  static String androidPackageName = 'app.juvo.food';
+  static String iosPackageName = 'app.juvo.food';
+  static bool isDemo = false;
+
+  ///newStores and Recommendation Time
+  static int newShopDays = 60;
+
+  ///Operating time
+  static String isOpen = '6am';
+  static String isClosed = '10pm';
+  static bool isMaintain = false;
+
+  ///Google Maps POI
+  static bool showGooglePOILayer = true;
 
   /// locales
-  static const String localeCodeEn = 'en';
-  static const String chatGpt =
-      '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';
+  static String localeCodeEn = 'en';
+  static String chatGpt = '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';
 
   /// location
-  static const double demoLatitude = 41.304223;
-  static const double demoLongitude = 69.2348277;
-  static const double pinLoadingMin = 0.116666667;
-  static const double pinLoadingMax = 0.611111111;
+  static double demoLatitude = -22.34058;
+  static double demoLongitude = 30.01341;
+  static double pinLoadingMin = 0.116666667;
+  static double pinLoadingMax = 0.611111111;
 
   static const Duration timeRefresh = Duration(seconds: 30);
 

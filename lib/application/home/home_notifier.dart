@@ -14,6 +14,7 @@ import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 
+import '../../infrastructure/services/app_constants.dart';
 import 'home_state.dart';
 
 class HomeNotifier extends StateNotifier<HomeState> {
@@ -23,9 +24,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   HomeNotifier(this._categoriesRepository, this._bannersRepository,
       this._shopsRepository)
-      : super(
-          const HomeState(),
-        );
+      : super(const HomeState());
+
   int categoryIndex = 1;
   int shopIndex = 1;
   int newShopIndex = 1;
@@ -34,6 +34,15 @@ class HomeNotifier extends StateNotifier<HomeState> {
   int bannerIndex = 1;
   int shopRefreshIndex = 1;
   int marketRefreshIndex = 1;
+
+  bool isShopNew(ShopData shop) {
+    final now = DateTime.now();
+    final shopCreatedAt = shop.createdAt != null
+        ? DateTime.tryParse(shop.createdAt.toString()) ?? now
+        : now;
+    final difference = now.difference(shopCreatedAt);
+    return difference.inDays <= AppConstants.newShopDays;
+  }
 
   void setAddress([AddressNewModel? data]) async {
     AddressData? addressData = LocalStorage.getAddressSelected();
@@ -72,7 +81,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     } else {
       state = state.copyWith(selectIndexSubCategory: index);
     }
-    fetchFilterRestaurant(context,isRefresh: true);
+    fetchFilterRestaurant(context, isRefresh: true);
   }
 
   Future<void> fetchCategories(BuildContext context) async {
@@ -213,7 +222,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     if (connected) {
       state = state.copyWith(isShopLoading: true);
       final response =
-          await _shopsRepository.getAllShops(1, isOpen: true, verify: true);
+      await _shopsRepository.getAllShops(1, isOpen: true, verify: true);
       response.when(
         success: (data) async {
           state = state.copyWith(
@@ -266,7 +275,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               marketIndex--;
-
               shopController.loadNoData();
             }
           }
@@ -344,7 +352,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               shopIndex--;
-
               shopController.loadNoData();
             }
           }
@@ -377,8 +384,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
           filterModel: FilterModel(sort: "new"), isOpen: true);
       response.when(
         success: (data) async {
+          final newShops = data.data?.where(isShopNew).toList() ?? [];
           state = state.copyWith(
-              isRestaurantNewLoading: false, newRestaurant: data.data ?? []);
+              isRestaurantNewLoading: false, newRestaurant: newShops);
         },
         failure: (activeFailure, status) {
           state = state.copyWith(isRestaurantNewLoading: false);
@@ -409,15 +417,16 @@ class HomeNotifier extends StateNotifier<HomeState> {
           isOpen: true);
       response.when(
         success: (data) async {
+          final newShops = data.data?.where(isShopNew).toList() ?? [];
           if (isRefresh) {
             state = state.copyWith(
-              newRestaurant: data.data ?? [],
+              newRestaurant: newShops,
             );
             shopController.refreshCompleted();
           } else {
-            if (data.data?.isNotEmpty ?? false) {
+            if (newShops.isNotEmpty) {
               List<ShopData> list = List.from(state.newRestaurant);
-              list.addAll(data.data!);
+              list.addAll(newShops);
               state = state.copyWith(
                 newRestaurant: list,
               );
@@ -483,7 +492,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         shopController.resetNoData();
       }
       final response =
-          await _shopsRepository.getStory(isRefresh ? 1 : ++storyIndex);
+      await _shopsRepository.getStory(isRefresh ? 1 : ++storyIndex);
       response.when(
         success: (data) async {
           if (isRefresh) {
@@ -501,7 +510,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               storyIndex--;
-
               shopController.loadNoData();
             }
           }
@@ -559,7 +567,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         shopIndex = 1;
       }
       final response =
-          await _shopsRepository.getShopsRecommend(isRefresh ? 1 : ++shopIndex);
+      await _shopsRepository.getShopsRecommend(isRefresh ? 1 : ++shopIndex);
       response.when(
         success: (data) async {
           if (isRefresh) {
@@ -577,7 +585,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               shopIndex--;
-
               shopController.loadNoData();
             }
           }
@@ -703,10 +710,10 @@ class HomeNotifier extends StateNotifier<HomeState> {
   }
 
   fetchFilterRestaurant(
-    BuildContext context, {
-    bool? isRefresh,
-    RefreshController? controller,
-  }) async {
+      BuildContext context, {
+        bool? isRefresh,
+        RefreshController? controller,
+      }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       if (isRefresh ?? false) {
@@ -718,7 +725,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           categoryId: state.categories[state.selectIndexCategory].id,
           subCategoryId: (state.selectIndexSubCategory != -1)
               ? (state.categories[state.selectIndexCategory]
-                  .children?[state.selectIndexSubCategory].id)
+              .children?[state.selectIndexSubCategory].id)
               : null,
           page: ++shopRefreshIndex);
       response.when(success: (data) {

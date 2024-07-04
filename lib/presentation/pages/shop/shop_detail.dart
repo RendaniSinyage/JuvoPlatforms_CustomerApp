@@ -99,11 +99,11 @@ class _ShopDetailPageState extends ConsumerState<ShopDetailPage> {
                           );
                         },
                       ),
-                      Text(
+                     /* Text(
                         LocalStorage.getSelectedCurrency()?.symbol ?? "",
                         style: AppStyle.interRegular(
                             color: AppStyle.textGrey, size: 14),
-                      )
+                      )*/
                     ],
                   ),
                 ),

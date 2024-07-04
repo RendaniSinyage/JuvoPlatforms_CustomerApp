@@ -1,73 +1,40 @@
 {
   "project_info": {
-    "project_number": "723986947199",
-    "firebase_url": "https://foodyman-703bd-default-rtdb.firebaseio.com",
-    "project_id": "foodyman-703bd",
-    "storage_bucket": "foodyman-703bd.appspot.com"
+    "project_number": "728921419683",
+    "project_id": "juvofood",
+    "storage_bucket": "juvofood.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723986947199:android:fe33d3535144b38ef5334a",
+        "mobilesdk_app_id": "1:728921419683:android:6b462e1e84c8a43b0db416",
         "android_client_info": {
-          "package_name": "com.foodyman"
+          "package_name": "app.juvo.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "723986947199-00vvfo9d8v103gd34omsp1utfuf4sful.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.foodyman",
-            "certificate_hash": "8abb014e1df3f507dd9f2719cf89dae4bbd03c25"
-          }
-        },
-        {
-          "client_id": "723986947199-8ugns4st8sf0elj2ags5ihc092thtqeg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.foodyman",
-            "certificate_hash": "a1f49ee6a310fae9c7d3deb5731a6ee6ff826efa"
-          }
-        },
-        {
-          "client_id": "723986947199-gjls7luu4sdd66pmquu7fg3ug8loejtl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.foodyman",
-            "certificate_hash": "c90b207229857bd51445a5f84ec7fe9ccb47c3bb"
-          }
-        },
-        {
-          "client_id": "723986947199-oa8fc7e37idtf7akmsrvg21nnkf47bat.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.foodyman",
-            "certificate_hash": "f78eb0789102f5e714676be3a87e47c0b7835131"
-          }
-        },
-        {
-          "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+          "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDraEPokcqncELQIoXO2Phy0YZUUIaKqMI"
+          "current_key": "AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+              "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "723986947199-2n6d95voheiad9857ok5lg6s9f2sg96l.apps.googleusercontent.com",
+              "client_id": "728921419683-dnt2u3lul15ov07msi7kkbjuap64s2lr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.foodyman.post"
+                "bundle_id": "app.juvo.vendor"
               }
             }
           ]
@@ -76,58 +43,42 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723986947199:android:53a92bc02efb46e9f5334a",
+        "mobilesdk_app_id": "1:728921419683:android:6264a3b1b97017f50db416",
         "android_client_info": {
-          "package_name": "org.foodyman.deliveryman"
+          "package_name": "app.juvo.food"
         }
       },
       "oauth_client": [
         {
-          "client_id": "723986947199-cbt0vkf2ho0voq9hqj69qm0oi9pqcdrq.apps.googleusercontent.com",
+          "client_id": "728921419683-0ckp1hkrf4lccv1q8nh3fi4qqksgf3om.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "org.foodyman.deliveryman",
-            "certificate_hash": "3fd1e3274c4e9d19f0ec40b401bc730a8a56ea34"
+            "package_name": "app.juvo.food",
+            "certificate_hash": "b93095ddc06fa1822be369e2b1eeaec004b1ec64"
           }
         },
         {
-          "client_id": "723986947199-ojas2p6kql83hgn9gfsfndtbdbrk3sds.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.foodyman.deliveryman",
-            "certificate_hash": "774a56dc53b038f54d27f38f123f4973b81a1352"
-          }
-        },
-        {
-          "client_id": "723986947199-rhq7ft2d35im5lj955og0744plagspab.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.foodyman.deliveryman",
-            "certificate_hash": "3195a0a2668820525c2820cc2a9beee1c3dabb96"
-          }
-        },
-        {
-          "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+          "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDraEPokcqncELQIoXO2Phy0YZUUIaKqMI"
+          "current_key": "AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+              "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "723986947199-2n6d95voheiad9857ok5lg6s9f2sg96l.apps.googleusercontent.com",
+              "client_id": "728921419683-dnt2u3lul15ov07msi7kkbjuap64s2lr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.foodyman.post"
+                "bundle_id": "app.juvo.vendor"
               }
             }
           ]
@@ -136,58 +87,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723986947199:android:ab9d4f7dac573051f5334a",
+        "mobilesdk_app_id": "1:728921419683:android:657fecede2bc9cf10db416",
         "android_client_info": {
-          "package_name": "org.foodyman.manager"
+          "package_name": "app.juvo.pos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "723986947199-fu627mob2il7a6b4cafp6mje7oaajhog.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.foodyman.manager",
-            "certificate_hash": "3fd1e3274c4e9d19f0ec40b401bc730a8a56ea34"
-          }
-        },
-        {
-          "client_id": "723986947199-qgrcqf68g0lsg47297b1kou33o8slim1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.foodyman.manager",
-            "certificate_hash": "ef20db58f3aac68b67072f930605c43ad4f91e90"
-          }
-        },
-        {
-          "client_id": "723986947199-v2s75b5luktp6rsm1nqfhpp6ebagicvo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.foodyman.manager",
-            "certificate_hash": "ed6c480ac8ea1f262af3397503f7a124d8d76e4e"
-          }
-        },
-        {
-          "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+          "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDraEPokcqncELQIoXO2Phy0YZUUIaKqMI"
+          "current_key": "AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+              "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "723986947199-2n6d95voheiad9857ok5lg6s9f2sg96l.apps.googleusercontent.com",
+              "client_id": "728921419683-dnt2u3lul15ov07msi7kkbjuap64s2lr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.foodyman.post"
+                "bundle_id": "app.juvo.vendor"
               }
             }
           ]
@@ -196,34 +123,106 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723986947199:android:35fb7d5164bc1938f5334a",
+        "mobilesdk_app_id": "1:728921419683:android:f18dd398bdc129630db416",
         "android_client_info": {
-          "package_name": "org.foodyman.pos"
+          "package_name": "app.juvo.single"
         }
       },
       "oauth_client": [
         {
-          "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+          "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDraEPokcqncELQIoXO2Phy0YZUUIaKqMI"
+          "current_key": "AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "723986947199-kg2i0su8ekqia33732hdnmrtrhuina19.apps.googleusercontent.com",
+              "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "723986947199-2n6d95voheiad9857ok5lg6s9f2sg96l.apps.googleusercontent.com",
+              "client_id": "728921419683-dnt2u3lul15ov07msi7kkbjuap64s2lr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.foodyman.post"
+                "bundle_id": "app.juvo.vendor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728921419683:android:4fd3b60d449fb63f0db416",
+        "android_client_info": {
+          "package_name": "app.juvo.vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728921419683-dnt2u3lul15ov07msi7kkbjuap64s2lr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.juvo.vendor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728921419683:android:7c64cb9f34c027900db416",
+        "android_client_info": {
+          "package_name": "com.southriver.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACbWuYUg7UmWtuPODxAsuox5kOP0Ev1Tk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728921419683-qih00tcn49f414s35789vtue5bdlkonp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728921419683-dnt2u3lul15ov07msi7kkbjuap64s2lr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.juvo.vendor"
               }
             }
           ]

@@ -5,7 +5,6 @@ import 'package:riverpodtemp/infrastructure/models/models.dart';
 
 import '../../infrastructure/models/data/translation.dart';
 
-
 part 'profile_state.freezed.dart';
 
 @freezed
@@ -27,6 +26,7 @@ class ProfileState with _$ProfileState {
     @Default(false) bool isPolicyLoading,
     @Default(null) Translation? policy,
     @Default(null) Translation? term,
+    @Default(false) bool isEmptyWallet,  // Add this line
   }) = _ProfileState;
 
   const ProfileState._();

@@ -39,13 +39,12 @@ class _LanguagePageState extends ConsumerState<LanguageScreen> {
     return Directionality(
       textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
       child: KeyboardDismisser(
-        child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+    child: Container(
           decoration: BoxDecoration(
               color: AppStyle.bgGrey.withOpacity(0.96),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.r),
-                topRight: Radius.circular(16.r),
-              )),
+              borderRadius: BorderRadius.all(Radius.circular(16.r))),
           width: double.infinity,
           child: state.isLoading
               ? const Loading()
@@ -62,7 +61,7 @@ class _LanguagePageState extends ConsumerState<LanguageScreen> {
                             height: 4.h,
                             width: 48.w,
                             decoration: BoxDecoration(
-                              color: AppStyle.dragElement,
+                             // color: AppStyle.dragElement,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(40.r),
                               ),
@@ -104,6 +103,6 @@ class _LanguagePageState extends ConsumerState<LanguageScreen> {
                 ),
         ),
       ),
-    );
+    ));
   }
 }

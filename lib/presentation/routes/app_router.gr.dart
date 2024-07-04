@@ -32,6 +32,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    ClosedRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ClosedPage(),
+      );
+    },
     CreateShopRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -58,6 +64,12 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           index: args.index,
         ),
+      );
+    },
+    IntroRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const IntroPage(),
       );
     },
     LikeRoute.name: (routeData) {
@@ -124,6 +136,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OrdersListPage(),
       );
     },
+    OrdersMainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrdersMainPage(),
+      );
+    },
     ParcelListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -131,9 +149,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     ParcelRoute.name: (routeData) {
+      final args = routeData.argsAs<ParcelRouteArgs>(
+          orElse: () => const ParcelRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ParcelPage(),
+        child: ParcelPage(
+          key: args.key,
+          isBackButton: args.isBackButton,
+        ),
       );
     },
     ParcelProgressRoute.name: (routeData) {
@@ -318,6 +341,7 @@ abstract class _$AppRouter extends RootStackRouter {
           cartId: args.cartId,
           shop: args.shop,
           ownerId: args.ownerId,
+          isBackButton: args.isBackButton,
         ),
       );
     },
@@ -396,9 +420,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     WalletHistoryRoute.name: (routeData) {
+      final args = routeData.argsAs<WalletHistoryRouteArgs>(
+          orElse: () => const WalletHistoryRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const WalletHistoryPage(),
+        child: WalletHistoryPage(
+          key: args.key,
+          isBackButton: args.isBackButton,
+        ),
       );
     },
   };
@@ -458,6 +487,20 @@ class ChatRouteArgs {
   String toString() {
     return 'ChatRouteArgs{key: $key, roleId: $roleId, name: $name}';
   }
+}
+
+/// generated route for
+/// [ClosedPage]
+class ClosedRoute extends PageRouteInfo<void> {
+  const ClosedRoute({List<PageRouteInfo>? children})
+      : super(
+          ClosedRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ClosedRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -537,6 +580,20 @@ class InfoRouteArgs {
   String toString() {
     return 'InfoRouteArgs{key: $key, index: $index}';
   }
+}
+
+/// generated route for
+/// [IntroPage]
+class IntroRoute extends PageRouteInfo<void> {
+  const IntroRoute({List<PageRouteInfo>? children})
+      : super(
+          IntroRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'IntroRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -713,6 +770,20 @@ class OrdersListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [OrdersMainPage]
+class OrdersMainRoute extends PageRouteInfo<void> {
+  const OrdersMainRoute({List<PageRouteInfo>? children})
+      : super(
+          OrdersMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrdersMainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ParcelListPage]
 class ParcelListRoute extends PageRouteInfo<void> {
   const ParcelListRoute({List<PageRouteInfo>? children})
@@ -728,16 +799,39 @@ class ParcelListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ParcelPage]
-class ParcelRoute extends PageRouteInfo<void> {
-  const ParcelRoute({List<PageRouteInfo>? children})
-      : super(
+class ParcelRoute extends PageRouteInfo<ParcelRouteArgs> {
+  ParcelRoute({
+    Key? key,
+    bool isBackButton = true,
+    List<PageRouteInfo>? children,
+  }) : super(
           ParcelRoute.name,
+          args: ParcelRouteArgs(
+            key: key,
+            isBackButton: isBackButton,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'ParcelRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<ParcelRouteArgs> page = PageInfo<ParcelRouteArgs>(name);
+}
+
+class ParcelRouteArgs {
+  const ParcelRouteArgs({
+    this.key,
+    this.isBackButton = true,
+  });
+
+  final Key? key;
+
+  final bool isBackButton;
+
+  @override
+  String toString() {
+    return 'ParcelRouteArgs{key: $key, isBackButton: $isBackButton}';
+  }
 }
 
 /// generated route for
@@ -1351,6 +1445,7 @@ class ShopRoute extends PageRouteInfo<ShopRouteArgs> {
     String? cartId,
     ShopData? shop,
     int? ownerId,
+    bool isBackButton = false,
     List<PageRouteInfo>? children,
   }) : super(
           ShopRoute.name,
@@ -1361,6 +1456,7 @@ class ShopRoute extends PageRouteInfo<ShopRouteArgs> {
             cartId: cartId,
             shop: shop,
             ownerId: ownerId,
+            isBackButton: isBackButton,
           ),
           initialChildren: children,
         );
@@ -1378,6 +1474,7 @@ class ShopRouteArgs {
     this.cartId,
     this.shop,
     this.ownerId,
+    this.isBackButton = false,
   });
 
   final Key? key;
@@ -1392,9 +1489,11 @@ class ShopRouteArgs {
 
   final int? ownerId;
 
+  final bool isBackButton;
+
   @override
   String toString() {
-    return 'ShopRouteArgs{key: $key, shopId: $shopId, productId: $productId, cartId: $cartId, shop: $shop, ownerId: $ownerId}';
+    return 'ShopRouteArgs{key: $key, shopId: $shopId, productId: $productId, cartId: $cartId, shop: $shop, ownerId: $ownerId, isBackButton: $isBackButton}';
   }
 }
 
@@ -1667,14 +1766,38 @@ class ViewMapRouteArgs {
 
 /// generated route for
 /// [WalletHistoryPage]
-class WalletHistoryRoute extends PageRouteInfo<void> {
-  const WalletHistoryRoute({List<PageRouteInfo>? children})
-      : super(
+class WalletHistoryRoute extends PageRouteInfo<WalletHistoryRouteArgs> {
+  WalletHistoryRoute({
+    Key? key,
+    bool isBackButton = true,
+    List<PageRouteInfo>? children,
+  }) : super(
           WalletHistoryRoute.name,
+          args: WalletHistoryRouteArgs(
+            key: key,
+            isBackButton: isBackButton,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'WalletHistoryRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<WalletHistoryRouteArgs> page =
+      PageInfo<WalletHistoryRouteArgs>(name);
+}
+
+class WalletHistoryRouteArgs {
+  const WalletHistoryRouteArgs({
+    this.key,
+    this.isBackButton = true,
+  });
+
+  final Key? key;
+
+  final bool isBackButton;
+
+  @override
+  String toString() {
+    return 'WalletHistoryRouteArgs{key: $key, isBackButton: $isBackButton}';
+  }
 }

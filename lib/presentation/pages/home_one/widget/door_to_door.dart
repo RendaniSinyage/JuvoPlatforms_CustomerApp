@@ -18,18 +18,20 @@ class DoorToDoor extends StatelessWidget {
       padding: EdgeInsets.all(30.r),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: AppStyle.doorColor, borderRadius: BorderRadius.circular(24.r)),
+          color: AppStyle.transparent, borderRadius: BorderRadius.circular(24.r),
+	    border: Border.all(color: AppStyle.black), // Add this line
+),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             AppHelpers.getTranslation(TrKeys.doorToDoor),
-            style: AppStyle.interSemi(size: 42),
+            style: AppStyle.interSemi(size: 42, color: AppStyle.black),
           ),
           10.verticalSpace,
           Text(
             AppHelpers.getTranslation(TrKeys.yourPersonalDoor),
-            style: AppStyle.interRegular(size: 16),
+            style: AppStyle.interRegular(size: 16, color: AppStyle.black),
           ),
           20.verticalSpace,
           Image.asset("assets/images/door.png"),
@@ -41,12 +43,13 @@ class DoorToDoor extends StatelessWidget {
                 context.pushRoute(const LoginRoute());
                 return;
               }
-              context.pushRoute(const ParcelRoute());
+              context.pushRoute( ParcelRoute());
               return;
 
             },
             background: AppStyle.transparent,
             borderColor: AppStyle.black,
+		textColor: AppStyle.black,
           )
         ],
       ),

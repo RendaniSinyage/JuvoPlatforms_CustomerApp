@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:remixicon/remixicon.dart';
+
+import '../theme/app_style.dart';
 
 class BadgeItem extends StatelessWidget {
-  const BadgeItem({super.key});
+  final Color? color;
+  final double? size;
+
+  const BadgeItem({super.key, this.color, this.size});
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset("assets/svgs/badge.svg",height: 16.r,);
+    return Icon(
+      Remix.verified_badge_line,
+      size: size ?? 15,
+      color: color ?? AppStyle.starColor,
+    );
   }
 }

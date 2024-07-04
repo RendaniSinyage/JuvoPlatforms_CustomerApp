@@ -408,12 +408,11 @@ class ProductNotifier extends StateNotifier<ProductState> {
         await http.post(Uri.parse(dynamicLink), body: jsonEncode(dataShare));
     shareLink = jsonDecode(res.body)['shortLink'];
     debugPrint("share link product_notifier: $shareLink \n$dataShare");
-
   }
 
   Future shareProduct() async {
     await FlutterShare.share(
-      text: state.productData?.translation?.title ?? "Foodyman",
+      text: state.productData?.translation?.title ?? "Juvo",
       title: state.productData?.translation?.description ?? "",
       linkUrl: shareLink,
     );

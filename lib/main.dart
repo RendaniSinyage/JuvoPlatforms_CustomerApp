@@ -8,6 +8,7 @@ import 'package:riverpodtemp/presentation/theme/theme.dart';
 import 'domain/di/dependency_manager.dart';
 import 'presentation/app_widget.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'utils/app_initializer_widget.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -31,5 +32,11 @@ void main() async {
   );
   await LocalStorage.init();
   setUpDependencies();
-  runApp(ProviderScope(child: AppWidget()));
+  runApp(
+    ProviderScope(
+      child: AppInitializerWidget(
+        child: AppWidget(),
+      ),
+    ),
+  );
 }

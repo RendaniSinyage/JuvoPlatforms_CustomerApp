@@ -26,7 +26,9 @@ import 'widgets/time_and_type.dart';
 
 @RoutePage()
 class ParcelPage extends ConsumerStatefulWidget {
-  const ParcelPage({super.key});
+  final bool isBackButton;
+  const ParcelPage({super.key,
+    this.isBackButton = true});
 
   @override
   ConsumerState<ParcelPage> createState() => _ParcelPageState();
@@ -197,7 +199,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
-            const PopButton(),
+            if(widget.isBackButton) const PopButton(),
             if (state.types.isNotEmpty &&
                 (state.addressFrom?.isNotEmpty??false) &&
                 (state.addressTo?.isNotEmpty??false))
@@ -239,7 +241,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
                     isLoading: state.isLoading,
                   ),
                 ),
-              )
+              ), 180.verticalSpace
           ],
         ),
       ),

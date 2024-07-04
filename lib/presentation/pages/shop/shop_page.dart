@@ -31,6 +31,7 @@ import 'widgets/shop_page_avatar.dart';
 
 @RoutePage()
 class ShopPage extends ConsumerStatefulWidget {
+  final bool isBackButton;
   final ShopData? shop;
   final String shopId;
   final String? cartId;
@@ -44,6 +45,7 @@ class ShopPage extends ConsumerStatefulWidget {
     this.cartId,
     this.shop,
     this.ownerId,
+    this.isBackButton = false,
   });
 
   @override
@@ -118,11 +120,11 @@ class _ShopPageState extends ConsumerState<ShopPage>
                     onPressed: () {
                       event.joinOrder(context, widget.shopId,
                           widget.cartId ?? "", name.text, () {
-                        Navigator.pop(context);
-                        ref
-                            .read(shopOrderProvider.notifier)
-                            .joinGroupOrder(context);
-                      });
+                            Navigator.pop(context);
+                            ref
+                                .read(shopOrderProvider.notifier)
+                                .joinGroupOrder(context);
+                          });
                     });
               })
             ],
@@ -140,7 +142,7 @@ class _ShopPageState extends ConsumerState<ShopPage>
       }
       ref.read(shopProvider.notifier)
         ..checkProductsPopular(context, widget.shopId)
-        // ..fetchCategory(context, widget.shopId)
+      // ..fetchCategory(context, widget.shopId)
         ..changeIndex(0);
       if (LocalStorage.getToken().isNotEmpty) {
         ref.read(shopOrderProvider.notifier).getCart(context, () {},
@@ -148,6 +150,7 @@ class _ShopPageState extends ConsumerState<ShopPage>
             shopId: widget.shopId,
             cartId: widget.cartId);
       }
+
       if (widget.productId != null) {
         AppHelpers.showCustomModalBottomDragSheet(
           context: context,
@@ -219,7 +222,7 @@ class _ShopPageState extends ConsumerState<ShopPage>
                         Expanded(
                           child: CustomButton(
                               title:
-                                  AppHelpers.getTranslation(TrKeys.leaveGroup),
+                              AppHelpers.getTranslation(TrKeys.leaveGroup),
                               onPressed: () {
                                 ref.read(shopOrderProvider.notifier).deleteUser(
                                     context, 0,
@@ -245,195 +248,194 @@ class _ShopPageState extends ConsumerState<ShopPage>
           body: state.isLoading
               ? const Loading()
               : NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return [
-                      SliverAppBar(
-                        // bottom: PreferredSize(preferredSize: Size(300, 100), child: Container(
-                        //   height: 40,
-                        //   color: Colors.red,
-                        // )),
-                        backgroundColor: AppStyle.white,
-                        automaticallyImplyLeading: false,
-                        toolbarHeight: (144 +
-                            300.r +
-                            ((state.shopData?.translation?.description
-                                            ?.length ??
-                                        0) >
-                                    40
-                                ? 30
-                                : 0) +
-                            (AppHelpers.getGroupOrder() ? 60.r : 0.r) +
-                            (state.shopData?.bonus == null ? 0 : 46.r) +
-                            (state.endTodayTime.hour > TimeOfDay.now().hour
-                                ? 0
-                                : 70.r)),
-                        elevation: 0.0,
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: ShopPageAvatar(
-                            workTime: state.endTodayTime.hour >
-                                    TimeOfDay.now().hour
-                                ? "${state.startTodayTime.hour.toString().padLeft(2, '0')}:${state.startTodayTime.minute.toString().padLeft(2, '0')} - ${state.endTodayTime.hour.toString().padLeft(2, '0')}:${state.endTodayTime.minute.toString().padLeft(2, '0')}"
-                                : AppHelpers.getTranslation(TrKeys.close),
-                            onLike: () {
-                              event.onLike();
-                              eventLike.fetchLikeShop(context);
-                            },
-                            isLike: state.isLike,
-                            shop: state.shopData ?? ShopData(),
-                            onShare: event.onShare,
-                            bonus: state.shopData?.bonus,
-                            cartId: widget.cartId,
-                            userUuid: state.userUuid,
-                          ),
-                        ),
-                      ),
-                    ];
-                  },physics:  const AlwaysScrollableScrollPhysics(),
-                  controller: scrollController,
-                  body: ShopProductsScreen(
-                    nestedScrollCon: scrollController,
-                    isPopularProduct: state.isPopularProduct,
-                    listCategory: state.category,
-                    currentIndex: state.currentIndex,
-                    shopId: widget.shopId,
-
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  // bottom: PreferredSize(preferredSize: Size(300, 100), child: Container(
+                  //   height: 40,
+                  //   color: Colors.red,
+                  // )),
+                  backgroundColor: AppStyle.white,
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: (220.r + //from (144 + 300.r +
+                      ((state.shopData?.translation?.description
+                          ?.length ??
+                          0) >
+                          40
+                          ? 30
+                          : 0) +
+                      (AppHelpers.getGroupOrder() ? 60.r : 0.r) +
+                      (state.shopData?.bonus == null ? 0 : 46.r) +
+                      (state.endTodayTime.hour > TimeOfDay.now().hour
+                          ? 0
+                          : 70.r)),
+                  elevation: 0.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: ShopPageAvatar(
+                      workTime: state.endTodayTime.hour >
+                          TimeOfDay.now().hour
+                          ? "${state.startTodayTime.hour.toString().padLeft(2, '0')}:${state.startTodayTime.minute.toString().padLeft(2, '0')} - ${state.endTodayTime.hour.toString().padLeft(2, '0')}:${state.endTodayTime.minute.toString().padLeft(2, '0')}"
+                          : AppHelpers.getTranslation(TrKeys.close),
+                      onLike: () {
+                        event.onLike();
+                        eventLike.fetchLikeShop(context);
+                      },
+                      isLike: state.isLike,
+                      shop: state.shopData ?? ShopData(),
+                      onShare: event.onShare,
+                      bonus: state.shopData?.bonus,
+                      cartId: widget.cartId,
+                      userUuid: state.userUuid,
+                    ),
                   ),
                 ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: Padding(
-            padding: EdgeInsets.all(16.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                PopButton(
-                  onTap: () {
-                    if ((ref.watch(shopOrderProvider).cart?.group ?? false) &&
-                        LocalStorage.getUserId() !=
-                            ref.watch(shopOrderProvider).cart?.ownerId) {
-                      AppHelpers.showAlertDialog(
-                          context: context,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                AppHelpers.getTranslation(
-                                    TrKeys.doYouLeaveGroup),
-                                style: AppStyle.interNoSemi(),
-                                textAlign: TextAlign.center,
-                              ),
-                              16.verticalSpace,
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: CustomButton(
-                                        borderColor: AppStyle.black,
-                                        background: AppStyle.transparent,
-                                        title: AppHelpers.getTranslation(
-                                            TrKeys.cancel),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        }),
-                                  ),
-                                  20.horizontalSpace,
-                                  Expanded(
-                                    child: CustomButton(
-                                        title: AppHelpers.getTranslation(
-                                            TrKeys.leaveGroup),
-                                        onPressed: () {
-                                          ref
-                                              .read(shopOrderProvider.notifier)
-                                              .deleteUser(context, 0,
-                                                  userId: state.userUuid);
-                                          event.leaveGroup();
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        }),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ));
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
-                LocalStorage.getToken().isNotEmpty
-                    ? GestureDetector(
-                        onTap: () {
-                          AppHelpers.showCustomModalBottomDragSheet(
-                            context: context,
-                            maxChildSize: 0.8,
-                            modal: (c) => CartOrderPage(
-                              controller: c,
-                              isGroupOrder: state.isGroupOrder,
-                              cartId: widget.cartId,
-                              shopId: widget.shopId,
-                            ),
-                            isDarkMode: false,
-                            isDrag: true,
-                            radius: 12,
-                          );
-                        },
-                        child: AnimationButtonEffect(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppStyle.brandGreen,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.r),
-                              ),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8.h, horizontal: 10.w),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  FlutterRemix.shopping_bag_3_line,
-                                  color: AppStyle.black,
-                                ),
-                                12.horizontalSpace,
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 8.h, horizontal: 14.w),
-                                  decoration: BoxDecoration(
-                                    color: AppStyle.black,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(18.r),
-                                    ),
-                                  ),
-                                  child:
-                                      Consumer(builder: (context, ref, child) {
-                                    return ref
-                                            .watch(shopOrderProvider)
-                                            .isLoading
-                                        ? CupertinoActivityIndicator(
-                                            color: AppStyle.white,
-                                            radius: 10.r,
-                                          )
-                                        : Text(
-                                            AppHelpers.numberFormat(
-                                                number: ref
-                                                    .watch(shopOrderProvider)
-                                                    .cart
-                                                    ?.totalPrice),
-                                            style: AppStyle.interSemi(
-                                              size: 16,
-                                              color: AppStyle.white,
-                                            ),
-                                          );
-                                  }),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-              ],
+              ];
+            },physics:  const AlwaysScrollableScrollPhysics(),
+            controller: scrollController,
+            body: ShopProductsScreen(
+              nestedScrollCon: scrollController,
+              isPopularProduct: state.isPopularProduct,
+              listCategory: state.category,
+              currentIndex: state.currentIndex,
+              shopId: widget.shopId,
+
             ),
           ),
+            floatingActionButtonLocation:
+            FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: Padding(
+              padding: EdgeInsets.all(16.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  PopButton(
+                    onTap: () {
+                      if ((ref.watch(shopOrderProvider).cart?.group ?? false) &&
+                          LocalStorage.getUserId() !=
+                              ref.watch(shopOrderProvider).cart?.ownerId) {
+                        AppHelpers.showAlertDialog(
+                            context: context,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  AppHelpers.getTranslation(
+                                      TrKeys.doYouLeaveGroup),
+                                  style: AppStyle.interNoSemi(),
+                                  textAlign: TextAlign.center,
+                                ),
+                                16.verticalSpace,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomButton(
+                                          borderColor: AppStyle.black,
+                                          background: AppStyle.transparent,
+                                          title: AppHelpers.getTranslation(
+                                              TrKeys.cancel),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                    ),
+                                    20.horizontalSpace,
+                                    Expanded(
+                                      child: CustomButton(
+                                          title: AppHelpers.getTranslation(
+                                              TrKeys.leaveGroup),
+                                          onPressed: () {
+                                            ref
+                                                .read(shopOrderProvider.notifier)
+                                                .deleteUser(context, 0,
+                                                userId: state.userUuid);
+                                            event.leaveGroup();
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          }),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ));
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+                  LocalStorage.getToken().isNotEmpty
+                      ? GestureDetector(
+                    onTap: () {
+                      AppHelpers.showCustomModalBottomDragSheet(
+                        context: context,
+                        maxChildSize: 0.8,
+                        modal: (c) => CartOrderPage(
+                          controller: c,
+                          isGroupOrder: state.isGroupOrder,
+                          cartId: widget.cartId,
+                          shopId: widget.shopId,
+                        ),
+                        isDarkMode: false,
+                        isDrag: true,
+                        radius: 12,
+                      );
+                    },
+                    child: AnimationButtonEffect(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppStyle.brandGreen,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.r),
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.h, horizontal: 10.w),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              FlutterRemix.shopping_bag_3_line,
+                              color: AppStyle.black,
+                            ),
+                            12.horizontalSpace,
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8.h, horizontal: 14.w),
+                              decoration: BoxDecoration(
+                                color: AppStyle.black,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(18.r),
+                                ),
+                              ),
+                              child:
+                              Consumer(builder: (context, ref, child) {
+                                return ref
+                                    .watch(shopOrderProvider)
+                                    .isLoading
+                                    ? CupertinoActivityIndicator(
+                                  color: AppStyle.white,
+                                  radius: 10.r,
+                                )
+                                    : Text(
+                                  AppHelpers.numberFormat(
+                                      number: ref
+                                          .watch(shopOrderProvider)
+                                          .cart
+                                          ?.totalPrice),
+                                  style: AppStyle.interSemi(
+                                    size: 16,
+                                    color: AppStyle.white,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox.shrink(),
+                ],
+              ),
+            )
         ),
       ),
     );
