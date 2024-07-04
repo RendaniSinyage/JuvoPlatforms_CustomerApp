@@ -1,16 +1,15 @@
-# riverpod
+#run the following code in this directory to get updated files
+#.\scripts\create_update_zip.ps1
+#alternatively you can run this command
+#PowerShell -ExecutionPolicy Bypass -File .\create_update_zip.ps1
 
-A new Flutter project.
+#To allow running local scripts, set the execution policy to RemoteSigned:
+Set-ExecutionPolicy RemoteSigned
 
-## Getting Started
+#once you get updated files run this script
+#.\run_all_scripts.ps1
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# to manually set hashes of comits you want to compare, run this command in the directory of your repository.
+#git log --oneline
+#otherwise it will use the latest two commits.
+#the first one is the old commit and the second is the new commit

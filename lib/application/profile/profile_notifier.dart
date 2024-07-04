@@ -126,28 +126,28 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             LocalStorage.setAddressSelected(AddressData(
                 title: data.data?.addresses?.firstWhere(
                         (element) => element.active ?? false, orElse: () {
-                      return AddressNewModel();
-                    }).title ??
+                  return AddressNewModel();
+                }).title ??
                     "",
                 address: data.data?.addresses
-                        ?.firstWhere((element) => element.active ?? false,
-                            orElse: () {
-                          return AddressNewModel();
-                        })
-                        .address
-                        ?.address ??
+                    ?.firstWhere((element) => element.active ?? false,
+                    orElse: () {
+                      return AddressNewModel();
+                    })
+                    .address
+                    ?.address ??
                     "",
                 location: LocationModel(
                     longitude: data.data?.addresses
                         ?.firstWhere((element) => element.active ?? false,
-                            orElse: () {
+                        orElse: () {
                           return AddressNewModel();
                         })
                         .location
                         ?.last,
                     latitude: data.data?.addresses
                         ?.firstWhere((element) => element.active ?? false,
-                            orElse: () {
+                        orElse: () {
                           return AddressNewModel();
                         })
                         .location
@@ -254,41 +254,44 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     state = state.copyWith(userData: user);
   }
 
-  void getWallet(BuildContext context,
-      {RefreshController? refreshController}) async {
+  void getWallet(BuildContext context, {RefreshController? refreshController}) async {
     page = 1;
     if (LocalStorage.getToken().isNotEmpty) {
       final connected = await AppConnectivity.connectivity();
       if (connected) {
-        if (refreshController == null) {
-          state = state.copyWith(isLoadingHistory: true);
-        }
+        state = state.copyWith(isLoadingHistory: true);
         final response = await _userRepository.getWalletHistories(1);
         response.when(
           success: (data) async {
-            if (refreshController == null) {
-              state = state.copyWith(
-                  isLoadingHistory: false, walletHistory: data.data);
-            } else {
-              state = state.copyWith(walletHistory: data.data);
-            }
+            state = state.copyWith(
+                isLoadingHistory: false,
+                walletHistory: data.data,
+                isEmptyWallet: data.data?.isEmpty ?? true
+            );
             refreshController?.refreshCompleted();
           },
           failure: (activeFailure, status) {
-            if (refreshController == null) {
-              state = state.copyWith(isLoadingHistory: false);
-            }
+            state = state.copyWith(
+                isLoadingHistory: false,
+                isEmptyWallet: true
+            );
             AppHelpers.showCheckTopSnackBar(
               context,
               activeFailure,
             );
+            refreshController?.refreshFailed();
           },
         );
       } else {
+        state = state.copyWith(isLoadingHistory: false);
         if (context.mounted) {
           AppHelpers.showNoConnectionSnackBar(context);
         }
+        refreshController?.refreshFailed();
       }
+    } else {
+      state = state.copyWith(isLoadingHistory: false, isEmptyWallet: true);
+      refreshController?.refreshFailed();
     }
   }
 
@@ -302,8 +305,10 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
           success: (data) async {
             List<WalletData> list = List.from(state.walletHistory ?? []);
             list.addAll(data.data ?? []);
-            state = state.copyWith(walletHistory: list);
-            refreshController.loadComplete();
+            state = state.copyWith(
+                walletHistory: list,
+                isEmptyWallet: list.isEmpty
+            );
             if (data.data?.isEmpty ?? true) {
               refreshController.loadNoData();
             } else {
@@ -311,7 +316,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             }
           },
           failure: (activeFailure, status) {
-            refreshController.loadNoData();
+            refreshController.loadFailed();
             --page;
             AppHelpers.showCheckTopSnackBar(
               context,

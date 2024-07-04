@@ -1,11 +1,11 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/githubit/development/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/githubit/StudioProjects/foodyman"
+export "FLUTTER_ROOT=C:\Flutter3.22.2"
+export "FLUTTER_APPLICATION_PATH=C:\Users\sinya\Desktop\Juvo\edits\originalcode\Source_CustomerApp"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
-export "FLUTTER_BUILD_NAME=1.0.0"
-export "FLUTTER_BUILD_NUMBER=91"
+export "FLUTTER_BUILD_NAME=2.8.2"
+export "FLUTTER_BUILD_NUMBER=381"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"

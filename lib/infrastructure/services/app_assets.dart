@@ -1,7 +1,7 @@
 class AppAssets {
   AppAssets._();
 
-  static const String _pngPath = 'assets/images/png';
+  static const String _pngPath = 'assets/images';
   static const String _svgPath = 'assets/images/svg';
   static const String _lottiePath = 'assets/lottie';
 
@@ -36,6 +36,11 @@ class AppAssets {
   static const String pngAppIcon = '$_pngPath/app_logo.png';
   static const String pngSaleBanner = '$_pngPath/sale_banner.png';
   static const String pngLookMobile = '$_pngPath/look_mobile.png';
+
+///Added by Sinyage
+  static const String pngLogo = '$_pngPath/logo.png';
+  static const String pngLogo2 = '$_pngPath/water/logo.png';
+  static const String pngMotto = '$_pngPath/motto.png';
 
   /// lottie
   static const String lottiePin = '$_lottiePath/pin.json';

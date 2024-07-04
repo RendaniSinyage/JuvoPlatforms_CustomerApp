@@ -25,8 +25,8 @@ class TabBarItemThree extends StatelessWidget {
         duration: const Duration(milliseconds: 500),
         decoration: BoxDecoration(
           color: isShopTabBar
-              ? (currentIndex == index ? AppStyle.brandGreen : AppStyle.bgGrey)
-              : AppStyle.bgGrey,
+              ? (currentIndex == index ? AppStyle.brandGreen : AppStyle.brandGreen.withOpacity(0.07))
+              : AppStyle.brandGreen.withOpacity(0.07),
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
           boxShadow: [
             BoxShadow(
@@ -44,7 +44,8 @@ class TabBarItemThree extends StatelessWidget {
             title,
             style: AppStyle.interNormal(
               size: 13,
-              color: AppStyle.black,
+              color: isShopTabBar
+                  ? AppStyle.white : AppStyle.brandGreen,
             ),
           ),
         ),

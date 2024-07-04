@@ -32,7 +32,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.foodyman"
+    namespace "app.juvo.food"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
@@ -50,7 +50,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.foodyman"
+        applicationId "app.juvo.food"
         minSdkVersion 21
         multiDexEnabled true
         targetSdkVersion flutter.targetSdkVersion
@@ -73,6 +73,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "debug") {
+            task uninstallDebugApk(type: Exec) {
+                commandLine 'adb', 'uninstall', 'app.juvo.food'
+                ignoreExitValue = true
+            }
+            task installDebugApk(type: Exec) {
+                def apkFile = variant.outputs.first().outputFile
+                commandLine 'adb', 'install', '-r', apkFile
+            }
+            installDebug.dependsOn uninstallDebugApk
+            installDebug.finalizedBy installDebugApk
+        }
+    }
 }
 
 flutter {
@@ -82,5 +96,8 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }

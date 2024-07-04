@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:riverpodtemp/presentation/components/title_icon.dart';
-
+import 'package:riverpodtemp/presentation/theme/app_style.dart';
+//import '../../../../infrastructure/services/app_helpers.dart';
+//import '../../../../infrastructure/services/tr_keys.dart';
 import '../../../../infrastructure/services/app_helpers.dart';
 import '../../../../infrastructure/services/tr_keys.dart';
 import 'market_shimmer.dart';
@@ -20,11 +22,16 @@ class ShopShimmer extends StatelessWidget {
           rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
           isIcon: true,
           title: title,
+          titleColor: AppStyle.shimmerBase,
+          rightTitleColor: AppStyle.white,
+          containerColor: AppStyle.shimmerBase,
+          borderColor: AppStyle.shimmerBase,
+          iconColor: AppStyle.white,
           onRightTap: () {},
         ),
         12.verticalSpace,
         SizedBox(
-            height: 130.h,
+            height: 100.h,
             child: AnimationLimiter(
               child: ListView.builder(
                 shrinkWrap: false,

@@ -51,6 +51,9 @@ import '../pages/shop/sub_category_screen.dart';
 import '../pages/story_page/story_page.dart';
 
 
+import 'package:riverpodtemp/presentation/pages/initial/closed/closed_page.dart';
+import 'package:riverpodtemp/presentation/pages/intro/intro_page.dart';
+import 'package:riverpodtemp/presentation/pages/order/orders_main.dart';
 part 'app_router.gr.dart';
 
 @AutoRouterConfig()
@@ -106,6 +109,9 @@ class AppRouter extends _$AppRouter {
     MaterialRoute(path: '/address_list_page', page: AddressListRoute.page),
     MaterialRoute(path: '/term', page: TermRoute.page),
     MaterialRoute(path: '/policy', page: PolicyRoute.page),
+    MaterialRoute(path: '/ClosedPage', page: ClosedRoute.page),
+    MaterialRoute(path: '/IntroPage', page: IntroRoute.page),
+    MaterialRoute(path: '/OrdesMainPage', page: OrdersMainRoute.page),
   ];
 }
 

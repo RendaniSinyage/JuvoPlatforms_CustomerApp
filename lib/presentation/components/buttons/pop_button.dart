@@ -20,7 +20,7 @@ class PopButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               color: AppStyle.black,
-              borderRadius: BorderRadius.all(Radius.circular(10.r))),
+              borderRadius: BorderRadius.all(Radius.circular(16.r))),
           padding: EdgeInsets.all(14.h),
           child: const Icon(
             Icons.keyboard_arrow_left,

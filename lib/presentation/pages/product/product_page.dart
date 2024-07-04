@@ -243,10 +243,11 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                           url: state.selectImage?.path ??
                                               state.activeImageUrl,
                                           height: 200,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.contain,
                                           width: double.infinity,
                                           radius: 10);
                                     }),
+
                               ),
                               if((state.productData?.galleries?.length ?? 0) > 1)
                               Positioned(
@@ -328,6 +329,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 ),
                                 Column(
                                   children: [
+
                                     Text(
                                       AppHelpers.numberFormat(
                                           number: (state.selectedStock?.price ??

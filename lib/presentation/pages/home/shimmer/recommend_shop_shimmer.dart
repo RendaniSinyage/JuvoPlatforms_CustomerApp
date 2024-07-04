@@ -18,9 +18,14 @@ class RecommendShopShimmer extends StatelessWidget {
           rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
           isIcon: true,
           title: AppHelpers.getTranslation(TrKeys.recommended),
+          titleColor: AppStyle.shimmerBase,
+          rightTitleColor: AppStyle.white,
+          containerColor: AppStyle.shimmerBase,
+          borderColor: AppStyle.shimmerBase,
+          iconColor: AppStyle.white,
           onRightTap: () {},
         ),
-        12.verticalSpace,
+        12.verticalSpace, 
         SizedBox(
             height: 170.h,
             child: AnimationLimiter(

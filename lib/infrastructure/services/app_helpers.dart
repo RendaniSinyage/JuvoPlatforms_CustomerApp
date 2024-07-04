@@ -7,9 +7,44 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../presentation/theme/app_style.dart';
 import '../../../infrastructure/services/local_storage.dart';
 import 'app_constants.dart';
+//import 'dart:typed_data';
+//import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'tr_keys.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class AppHelpers {
   AppHelpers._();
+
+
+  static String reviewText(num? review) {
+    if (review == null || review == 0) {
+      return AppHelpers.getTranslation(TrKeys.newKey);
+    }
+
+    if (review > 0 && review <= 1) {
+      return AppHelpers.getTranslation(TrKeys.veryBad);
+    }
+    if (review <= 2) {
+      return AppHelpers.getTranslation(TrKeys.bad);
+    }
+    if (review <= 3) {
+      return AppHelpers.getTranslation(TrKeys.notBad);
+    }
+    if (review <= 4) {
+      return AppHelpers.getTranslation(TrKeys.good);
+    }
+    if (review <= 4.5) {
+      return AppHelpers.getTranslation(TrKeys.veryGood);
+    }
+    if (review <= 5) {
+      return AppHelpers.getTranslation(TrKeys.exceptional);
+    }
+
+    // For any value greater than 5
+    return AppHelpers.getTranslation(TrKeys.newKey);
+  }
 
   static String numberFormat({num? number, String? symbol, bool? isOrder}) {
     if (LocalStorage.getSelectedCurrency()?.position == "before") {
@@ -200,7 +235,7 @@ class AppHelpers {
         return setting.value;
       }
     }
-    return '';
+    return 'JUVO'; //changed
   }
 
   static String? getAppLogo() {
@@ -295,6 +330,7 @@ class AppHelpers {
     }
     return false;
   }
+
 
   static String? getAppAddressName() {
     final List<SettingsData> settings = LocalStorage.getSettingsList();
@@ -476,7 +512,6 @@ extension TimeOfDayExtension on TimeOfDay {
     }
   }
 }
-
 extension ExtendedIterable<E> on Iterable<E> {
   Iterable mapIndexed<T>(T Function(E e, int i) f) {
     var i = 0;

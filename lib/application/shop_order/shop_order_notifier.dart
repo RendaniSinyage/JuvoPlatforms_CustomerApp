@@ -691,7 +691,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
 
   generateShareLink(String shopName, String shopLogo, String? type) async {
     final productLink =
-        "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=${type ?? 'shop'}";
+       "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=${type ?? 'shop'}";
 
     const dynamicLink =
         'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';

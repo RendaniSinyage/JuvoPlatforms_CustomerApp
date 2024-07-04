@@ -32,6 +32,7 @@ mixin _$ProfileState {
   bool get isPolicyLoading => throw _privateConstructorUsedError;
   Translation? get policy => throw _privateConstructorUsedError;
   Translation? get term => throw _privateConstructorUsedError;
+  bool get isEmptyWallet => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileStateCopyWith<ProfileState> get copyWith =>
@@ -60,7 +61,8 @@ abstract class $ProfileStateCopyWith<$Res> {
       bool isTermLoading,
       bool isPolicyLoading,
       Translation? policy,
-      Translation? term});
+      Translation? term,
+      bool isEmptyWallet});
 }
 
 /// @nodoc
@@ -92,6 +94,7 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
     Object? isPolicyLoading = null,
     Object? policy = freezed,
     Object? term = freezed,
+    Object? isEmptyWallet = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -158,6 +161,10 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
           ? _value.term
           : term // ignore: cast_nullable_to_non_nullable
               as Translation?,
+      isEmptyWallet: null == isEmptyWallet
+          ? _value.isEmptyWallet
+          : isEmptyWallet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -186,7 +193,8 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
       bool isTermLoading,
       bool isPolicyLoading,
       Translation? policy,
-      Translation? term});
+      Translation? term,
+      bool isEmptyWallet});
 }
 
 /// @nodoc
@@ -216,6 +224,7 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
     Object? isPolicyLoading = null,
     Object? policy = freezed,
     Object? term = freezed,
+    Object? isEmptyWallet = null,
   }) {
     return _then(_$ProfileStateImpl(
       isLoading: null == isLoading
@@ -282,6 +291,10 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
           ? _value.term
           : term // ignore: cast_nullable_to_non_nullable
               as Translation?,
+      isEmptyWallet: null == isEmptyWallet
+          ? _value.isEmptyWallet
+          : isEmptyWallet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -305,7 +318,8 @@ class _$ProfileStateImpl extends _ProfileState {
       this.isTermLoading = false,
       this.isPolicyLoading = false,
       this.policy = null,
-      this.term = null})
+      this.term = null,
+      this.isEmptyWallet = false})
       : _walletHistory = walletHistory,
         super._();
 
@@ -365,10 +379,13 @@ class _$ProfileStateImpl extends _ProfileState {
   @override
   @JsonKey()
   final Translation? term;
+  @override
+  @JsonKey()
+  final bool isEmptyWallet;
 
   @override
   String toString() {
-    return 'ProfileState(isLoading: $isLoading, isReferralLoading: $isReferralLoading, isSaveLoading: $isSaveLoading, isLoadingHistory: $isLoadingHistory, typeIndex: $typeIndex, selectAddress: $selectAddress, bgImage: $bgImage, logoImage: $logoImage, addressModel: $addressModel, userData: $userData, referralData: $referralData, walletHistory: $walletHistory, isTermLoading: $isTermLoading, isPolicyLoading: $isPolicyLoading, policy: $policy, term: $term)';
+    return 'ProfileState(isLoading: $isLoading, isReferralLoading: $isReferralLoading, isSaveLoading: $isSaveLoading, isLoadingHistory: $isLoadingHistory, typeIndex: $typeIndex, selectAddress: $selectAddress, bgImage: $bgImage, logoImage: $logoImage, addressModel: $addressModel, userData: $userData, referralData: $referralData, walletHistory: $walletHistory, isTermLoading: $isTermLoading, isPolicyLoading: $isPolicyLoading, policy: $policy, term: $term, isEmptyWallet: $isEmptyWallet)';
   }
 
   @override
@@ -404,7 +421,9 @@ class _$ProfileStateImpl extends _ProfileState {
             (identical(other.isPolicyLoading, isPolicyLoading) ||
                 other.isPolicyLoading == isPolicyLoading) &&
             (identical(other.policy, policy) || other.policy == policy) &&
-            (identical(other.term, term) || other.term == term));
+            (identical(other.term, term) || other.term == term) &&
+            (identical(other.isEmptyWallet, isEmptyWallet) ||
+                other.isEmptyWallet == isEmptyWallet));
   }
 
   @override
@@ -425,7 +444,8 @@ class _$ProfileStateImpl extends _ProfileState {
       isTermLoading,
       isPolicyLoading,
       policy,
-      term);
+      term,
+      isEmptyWallet);
 
   @JsonKey(ignore: true)
   @override
@@ -451,7 +471,8 @@ abstract class _ProfileState extends ProfileState {
       final bool isTermLoading,
       final bool isPolicyLoading,
       final Translation? policy,
-      final Translation? term}) = _$ProfileStateImpl;
+      final Translation? term,
+      final bool isEmptyWallet}) = _$ProfileStateImpl;
   const _ProfileState._() : super._();
 
   @override
@@ -486,6 +507,8 @@ abstract class _ProfileState extends ProfileState {
   Translation? get policy;
   @override
   Translation? get term;
+  @override
+  bool get isEmptyWallet;
   @override
   @JsonKey(ignore: true)
   _$$ProfileStateImplCopyWith<_$ProfileStateImpl> get copyWith =>

@@ -19,13 +19,17 @@ class LikeNotifier extends StateNotifier<LikeState> {
     if (connected) {
       state = state.copyWith(isShopLoading: true);
       final list = LocalStorage.getSavedShopsList();
-      if(list.isNotEmpty){
+      if (list.isNotEmpty) {
         final response = await _shopsRepository.getShopsByIds(list);
         response.when(
           success: (data) async {
-            state = state.copyWith(isShopLoading: false, shops: data.data ?? []);
+            state = state.copyWith(
+              isShopLoading: false,
+              shops: data.data ?? [],
+              likedShopsCount: data.data?.length ?? 0, // Add this line
+            );
           },
-          failure: (activeFailure,status) {
+          failure: (activeFailure, status) {
             state = state.copyWith(isShopLoading: false);
             AppHelpers.showCheckTopSnackBar(
               context,
@@ -33,8 +37,8 @@ class LikeNotifier extends StateNotifier<LikeState> {
             );
           },
         );
-      }else{
-        state = state.copyWith(isShopLoading: false,shops: []);
+      } else {
+        state = state.copyWith(isShopLoading: false, shops: [], likedShopsCount: 0); // Add this line
       }
     } else {
       if (context.mounted) {
@@ -42,6 +46,4 @@ class LikeNotifier extends StateNotifier<LikeState> {
       }
     }
   }
-
-
 }

@@ -1,92 +1,88 @@
-
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
+import 'package:riverpodtemp/presentation/components/badges.dart';
 import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
 
 class RecommendedItem extends StatelessWidget {
   final ShopData shop;
+  final int itemCount;
 
   const RecommendedItem({
     super.key,
     required this.shop,
+    required this.itemCount,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        context.pushRoute(ShopRoute(shopId: (shop.id ?? 0).toString()));
-      },
-      child: Container(
-        margin: EdgeInsets.only(left: 0, right: 9.r),
-        width: MediaQuery.sizeOf(context).width / 3,
-        height: 190.h,
-        decoration: BoxDecoration(
-            color: AppStyle.recommendBg,
-            borderRadius: BorderRadius.all(Radius.circular(10.r))),
-        child: Stack(
-          children: [
-            CustomNetworkImage(
-                url: shop.backgroundImg ?? "",
-                width: MediaQuery.sizeOf(context).width / 2,
-                height: 190.h,
-                radius: 10.r),
-            Padding(
-              padding: EdgeInsets.all(12.r),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      ShopAvatar(
-                        shopImage: shop.logoImg ?? "",
-                        size: 36,
-                        padding: 4,
-                      ),
-                      8.horizontalSpace,
-                      Expanded(
-                        child: Text(
-                          shop.translation?.title ?? "",
-                          style: AppStyle.interNormal(
-                            size: 12,
-                            color: AppStyle.black,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 4.h, horizontal: 12.w),
+    final screenWidth = MediaQuery.of(context).size.width;
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final isNarrow = constraints.maxWidth < screenWidth / 2;
+        return GestureDetector(
+          onTap: () {
+            context.pushRoute(
+                ShopRoute(shopId: (shop.id ?? 0).toString(), shop: shop));
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 0, right: 9.r),
+            width: itemCount == 1
+                ? MediaQuery.sizeOf(context).width - 30
+                : MediaQuery.sizeOf(context).width / 3,
+            height: 190.h,
+            decoration: BoxDecoration(
+              color: AppStyle.recommendBg,
+              borderRadius: BorderRadius.all(Radius.circular(10.r)),
+            ),
+            child: Stack(
+              children: [
+                CustomNetworkImage(
+                  url: shop.backgroundImg ?? "",
+                  width: itemCount == 1
+                      ? MediaQuery.sizeOf(context).width - 30
+                      : MediaQuery.sizeOf(context).width / 2,
+                  height: 190.h,
+                  radius: 10.r,
+                ),
+                ShopBadge(
+                  shop: shop,
+                  top: 8.h,
+                  left: 8.w,
+                  iconSize: itemCount == 1 ? 40 : (isNarrow ? 22 : 22),
+                  containerHeight: itemCount == 1 ? 40.h : (isNarrow ? 30 : 30.h),
+                  containerWidth: itemCount == 1 ? 170.w : (isNarrow ? 130.w : 100.w),
+                  fontSize: itemCount == 1 ? 18 : (isNarrow ? 10 : 8),
+                  maxTextLength: 12,
+                ),
+                Positioned(
+                  bottom: 12.h,
+                  left: 12.w,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
                     decoration: BoxDecoration(
-                        color: AppStyle.black.withOpacity(0.8),
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(100.r))),
+                      color: AppStyle.black.withOpacity(0.8),
+                      borderRadius: BorderRadius.all(Radius.circular(100.r)),
+                    ),
                     child: Text(
-                      "${shop.productsCount ?? 0}  ${AppHelpers.getTranslation(TrKeys.products)}",
+                      itemCount == 1 ? "${shop.productsCount ?? 0} Recommended ${AppHelpers.getTranslation(TrKeys.products)} in this Store" : "${shop.productsCount ?? 0}  ${AppHelpers.getTranslation(TrKeys.products)}",
                       style: AppStyle.interNormal(
-                        size: 12,
+                        size: itemCount == 1 ? 16 : 12,
                         color: AppStyle.white,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
