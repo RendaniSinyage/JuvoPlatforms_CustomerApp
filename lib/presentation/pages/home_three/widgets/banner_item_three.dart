@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:riverpodtemp/infrastructure/models/models.dart';
@@ -6,6 +5,7 @@ import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
 import 'package:riverpodtemp/presentation/pages/home/widgets/banner_screen.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:riverpodtemp/presentation/components/badges/order_badge.dart';
 
 class BannerItemThree extends StatelessWidget {
   final BannerData banner;
@@ -30,20 +30,31 @@ class BannerItemThree extends StatelessWidget {
             isDarkMode: false);
       },
       child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 12.r),
-          width: MediaQuery.of(context).size.width - 46,
-          decoration: BoxDecoration(
-            color: AppStyle.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(15.r),
-            ),
+        margin: EdgeInsets.symmetric(horizontal: 12.r),
+        width: MediaQuery.of(context).size.width - 46,
+        decoration: BoxDecoration(
+          color: AppStyle.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.r),
           ),
-          child: CustomNetworkImage(
-            bgColor: AppStyle.white,
-            url: banner.img ?? "",
-            width: double.infinity,
-            radius: 15.r, height: double.infinity,
-          )),
+        ),
+        child: Stack(
+          children: [
+            CustomNetworkImage(
+              bgColor: AppStyle.white,
+              url: banner.img ?? "",
+              width: double.infinity,
+              radius: 15.r,
+              height: double.infinity,
+            ),
+            Positioned(
+              bottom: 12.0,
+              left: 20.0,
+              child: OrderBadge(), // Assuming OrderBadge is the widget you want to display
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

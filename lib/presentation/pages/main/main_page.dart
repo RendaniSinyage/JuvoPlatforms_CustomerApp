@@ -26,7 +26,6 @@ import 'package:riverpodtemp/presentation/pages/home_two/home_two_page.dart';
 import 'package:riverpodtemp/presentation/pages/like/like_page.dart';
 import 'package:riverpodtemp/presentation/pages/main/widgets/bottom_navigator_three.dart';
 import 'package:riverpodtemp/presentation/pages/profile/profile_page.dart';
-import 'package:riverpodtemp/presentation/pages/search/search_page.dart';
 import 'package:riverpodtemp/presentation/pages/service/service_page.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
@@ -40,6 +39,14 @@ import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import 'widgets/bottom_navigator_one.dart';
 import 'widgets/bottom_navigator_two.dart';
 
+import 'package:remixicon/remixicon.dart';
+import 'package:riverpodtemp/presentation/pages/parcel/parcel_page.dart';
+import 'package:riverpodtemp/presentation/pages/order/orders_main.dart';
+import 'package:riverpodtemp/application/orders_list/orders_list_provider.dart';
+import 'package:riverpodtemp/presentation/pages/shopwater/shop_page_water.dart';
+import 'package:riverpodtemp/presentation/pages/shop/shop_page.dart';
+//import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
+
 @RoutePage()
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -52,18 +59,41 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
-
+  static const Color _blackWithOpacity = Color.fromRGBO(0, 0, 0, 0.8);
   List listPages = [
     [
       IndexedStackChild(child: const HomePage(), preload: true),
+
+      /* IndexedStackChild(
+        child: const SearchPage(
+          isBackButton: false,
+        ),
+      ), */
       IndexedStackChild(
-          child: const SearchPage(
-        isBackButton: false,
-      )),
+          child: Builder(builder: (context) => const ShopPageWater(shopId: '9003', ),),
+          preload: true
+      ),
+
+
+      // if (AppHelpers.getParcel())
       IndexedStackChild(
-          child: const LikePage(
-        isBackButton: false,
-      )),
+          child:  const ParcelPage(
+
+            //isBackButton: false,
+          ),
+          preload: true
+      ),
+
+      IndexedStackChild(
+          child: LocalStorage.getToken().isNotEmpty ? const OrdersMainPage(
+            //isBackButton: false,
+          ) :
+          const LikePage(
+            isBackButton: false,
+          )
+      ),
+
+
       IndexedStackChild(
           child: const ProfilePage(
             isBackButton: false,
@@ -127,13 +157,13 @@ class _MainPageState extends State<MainPage> {
         AppHelpers.showCheckTopSnackBarInfo(context,
             "${AppHelpers.getTranslation(TrKeys.id)} #${message.notification?.title} ${message.notification?.body}",
             onTap: () async {
-          context.router.popUntilRoot();
-          context.pushRoute(
-            OrderProgressRoute(
-              orderId: data.id,
-            ),
-          );
-        });
+              context.router.popUntilRoot();
+              context.pushRoute(
+                OrderProgressRoute(
+                  orderId: data.id,
+                ),
+              );
+            });
       }
     });
     super.initState();
@@ -178,7 +208,7 @@ class _MainPageState extends State<MainPage> {
     });
 
     final PendingDynamicLinkData? data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
+    await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
     if (deepLink?.queryParameters.keys.contains("g") ?? false) {
       context.router.popUntilRoot();
@@ -190,7 +220,7 @@ class _MainPageState extends State<MainPage> {
         ),
       );
     } else if (!(deepLink?.queryParameters.keys.contains("product") ?? false) &&
-            (deepLink?.pathSegments.contains("shop") ?? false) ||
+        (deepLink?.pathSegments.contains("shop") ?? false) ||
         (deepLink?.pathSegments.contains("restaurant") ?? false)) {
       context.pushRoute(
         ShopRoute(
@@ -217,110 +247,118 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return KeyboardDismisser(
         child: Scaffold(
-      resizeToAvoidBottomInset: false,
-      // extendBody: true,
-      body: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final index = ref.watch(mainProvider).selectIndex;
-          return ProsteIndexedStack(
-            index: index,
-            children: listPages[AppHelpers.getType()],
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: AppHelpers.getType() == 0
-          ? Consumer(builder: (context, ref, child) {
+          resizeToAvoidBottomInset: false,
+          // extendBody: true,
+          body: Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
               final index = ref.watch(mainProvider).selectIndex;
-              final user = ref.watch(profileProvider).userData;
-              final orders = ref.watch(shopOrderProvider).cart;
-              final event = ref.read(mainProvider.notifier);
-              return _bottom(index, ref, event, context, user, orders);
-            })
-          : AppHelpers.getType() == 3
+              return ProsteIndexedStack(
+                index: index,
+                children: listPages[AppHelpers.getType()],
+              );
+            },
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: AppHelpers.getType() == 0
               ? Consumer(builder: (context, ref, child) {
-                  return BottomNavigatorThree(
-                    currentIndex: ref.watch(mainProvider).selectIndex,
-                    onTap: (int value) {
-                      if (value == 3) {
-                        if (LocalStorage.getToken().isEmpty) {
-                          context.pushRoute(const LoginRoute());
-                          return;
-                        }
-                        context.pushRoute(const OrderRoute());
-                        return;
-                      }
-                      if (value == 2) {
-                        if (LocalStorage.getToken().isEmpty) {
-                          context.pushRoute(const LoginRoute());
-                          return;
-                        }
-                        context.pushRoute(const ParcelRoute());
-                        return;
-                      }
-                      ref.read(mainProvider.notifier).selectIndex(value);
-                    },
-                  );
-                })
+            final index = ref.watch(mainProvider).selectIndex;
+            final user = ref.watch(profileProvider).userData;
+            final orders = ref.watch(shopOrderProvider).cart;
+            final event = ref.read(mainProvider.notifier);
+            return _bottom(index, ref, event, context, user, orders);
+          })
+              : AppHelpers.getType() == 3
+              ? Consumer(builder: (context, ref, child) {
+            return BottomNavigatorThree(
+              currentIndex: ref.watch(mainProvider).selectIndex,
+              onTap: (int value) {
+                if (value == 3) {
+                  if (LocalStorage.getToken().isEmpty) {
+                    context.pushRoute(const LoginRoute());
+                    return;
+                  }
+                  context.pushRoute(const OrderRoute());
+                  return;
+                }
+                if (value == 2) {
+                  if (LocalStorage.getToken().isEmpty) {
+                    context.pushRoute(const LoginRoute());
+                    return;
+                  }
+                  context.pushRoute(const ParcelRoute());
+                  return;
+                }
+                ref.read(mainProvider.notifier).selectIndex(value);
+              },
+            );
+          })
               : const SizedBox(),
-      bottomNavigationBar: Consumer(
-        builder: (context, ref, child) {
-          final index = ref.watch(mainProvider).selectIndex;
-          final event = ref.read(mainProvider.notifier);
-          return AppHelpers.getType() == 1
-              ? BottomNavigatorOne(
-                  currentIndex: index,
-                  onTap: (int value) {
-                    if (value == 3) {
-                      if (LocalStorage.getToken().isEmpty) {
-                        context.pushRoute(const LoginRoute());
-                        return;
-                      }
-                      context.pushRoute(const OrderRoute());
+          bottomNavigationBar: Consumer(
+            builder: (context, ref, child) {
+              final index = ref.watch(mainProvider).selectIndex;
+              final event = ref.read(mainProvider.notifier);
+              return AppHelpers.getType() == 1
+                  ? BottomNavigatorOne(
+                currentIndex: index,
+                onTap: (int value) {
+                  if (value == 3) {
+                    if (LocalStorage.getToken().isEmpty) {
+                      context.pushRoute(const LoginRoute());
                       return;
                     }
-                    if (value == 2) {
-                      if (LocalStorage.getToken().isEmpty) {
-                        context.pushRoute(const LoginRoute());
-                        return;
-                      }
-                      context.pushRoute(const ParcelRoute());
+                    context.pushRoute(const OrderRoute());
+                    return;
+                  }
+                  if (value == 2) {
+                    if (LocalStorage.getToken().isEmpty) {
+                      context.pushRoute(const LoginRoute());
                       return;
                     }
-                    event.selectIndex(value);
-                  },
-                )
-              : AppHelpers.getType() == 2
+                    context.pushRoute(const ParcelRoute());
+                    return;
+                  }
+                  event.selectIndex(value);
+                },
+              )
+                  : AppHelpers.getType() == 2
                   ? BottomNavigatorTwo(
-                      currentIndex: index,
-                      onTap: (int value) {
-                        if (value == 3) {
-                          if (LocalStorage.getToken().isEmpty) {
-                            context.pushRoute(const LoginRoute());
-                            return;
-                          }
-                          context.pushRoute(const OrderRoute());
-                          return;
-                        }
-                        if (value == 2) {
-                          if (LocalStorage.getToken().isEmpty) {
-                            context.pushRoute(const LoginRoute());
-                            return;
-                          }
-                          context.pushRoute(const ParcelRoute());
-                          return;
-                        }
-                        event.selectIndex(value);
-                      },
-                    )
+                currentIndex: index,
+                onTap: (int value) {
+                  if (value == 3) {
+                    if (LocalStorage.getToken().isEmpty) {
+                      context.pushRoute(const LoginRoute());
+                      return;
+                    }
+                    context.pushRoute(const OrderRoute());
+                    return;
+                  }
+                  if (value == 2) {
+                    if (LocalStorage.getToken().isEmpty) {
+                      context.pushRoute(const LoginRoute());
+                      return;
+                    }
+                    context.pushRoute(const ParcelRoute());
+                    return;
+                  }
+                  event.selectIndex(value);
+                },
+              )
                   : const SizedBox();
-        },
-      ),
-    ));
+            },
+          ),
+        ));
   }
 
   Widget _bottom(int index, WidgetRef ref, MainNotifier event,
       BuildContext context, ProfileData? user, Cart? orders) {
+    final orders = ref.watch(shopOrderProvider).cart;
+    final bool isCartEmpty = orders == null ||
+        (orders.userCarts?.isEmpty ?? true) ||
+        ((orders.userCarts?.isEmpty ?? true)
+            ? true
+            : (orders.userCarts?.first.cartDetails?.isEmpty ?? true)) ||
+        orders.ownerId != LocalStorage.getUserId();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -329,7 +367,7 @@ class _MainPageState extends State<MainPage> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             decoration: BoxDecoration(
-                color: AppStyle.bottomNavigationBarColor.withOpacity(0.6),
+                color: AppStyle.bottomNavigationBarColor.withOpacity(0.3),
                 borderRadius: BorderRadius.all(Radius.circular(100.r))),
             height: 60.r,
             child: Padding(
@@ -348,9 +386,14 @@ class _MainPageState extends State<MainPage> {
                     },
                     index: 0,
                     currentIndex: index,
-                    selectIcon: FlutterRemix.restaurant_fill,
-                    unSelectIcon: FlutterRemix.restaurant_line,
+                    //  selectIcon: FlutterRemix.restaurant_fill,
+                    // unSelectIcon: FlutterRemix.restaurant_line,
+                    selectIcon: FlutterRemix.store_fill, //changed
+                    unSelectIcon: FlutterRemix.store_line, //changed
+                    label: AppHelpers.getTranslation(TrKeys.stores),
+                    //label: 'Home',
                   ),
+
                   BottomNavigatorItem(
                     isScrolling: index == 3
                         ? false
@@ -361,8 +404,9 @@ class _MainPageState extends State<MainPage> {
                     },
                     currentIndex: index,
                     index: 1,
-                    selectIcon: FlutterRemix.search_fill,
-                    unSelectIcon: FlutterRemix.search_line,
+                    label:  AppHelpers.getTranslation(TrKeys.water),
+                    selectIcon: FlutterRemix.drop_fill,
+                    unSelectIcon: FlutterRemix.drop_line,
                   ),
                   BottomNavigatorItem(
                     isScrolling: index == 3
@@ -374,9 +418,59 @@ class _MainPageState extends State<MainPage> {
                     },
                     currentIndex: index,
                     index: 2,
-                    selectIcon: FlutterRemix.heart_fill,
-                    unSelectIcon: FlutterRemix.heart_line,
+                    label:  (AppHelpers.getParcel()) ? AppHelpers.getTranslation(TrKeys.send) : AppHelpers.getTranslation(TrKeys.liked),
+                    selectIcon:  (AppHelpers.getParcel()) ? Remix.box_3_fill : FlutterRemix.heart_fill,
+                    unSelectIcon:  (AppHelpers.getParcel()) ? Remix.box_3_line : FlutterRemix.heart_line,
+                    //label: AppHelpers.getTranslation(TrKeys.send),
                   ),
+                  // if(AppHelpers.getParcel())
+                  if(isCartEmpty)
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        LocalStorage.getToken().isNotEmpty ?
+                        BottomNavigatorItem(
+                          isScrolling: index == 3 ? false : ref.watch(mainProvider).isScrolling,
+                          selectItem: () {
+                            event.changeScrolling(false);
+                            event.selectIndex(3);
+                          },
+                          currentIndex: index,
+                          index: 3,
+                          label:  AppHelpers.getTranslation(TrKeys.order),
+                          selectIcon: Remix.receipt_fill,
+                          unSelectIcon: Remix.receipt_line,
+                        ) :
+                        BottomNavigatorItem(
+                          isScrolling: index == 3
+                              ? false
+                              : ref.watch(mainProvider).isScrolling,
+                          selectItem: () {
+                            event.changeScrolling(false);
+                            event.selectIndex(3);
+                          },
+                          currentIndex: index,
+                          index: 3,
+                          label:  AppHelpers.getTranslation(TrKeys.liked),
+                          selectIcon:  FlutterRemix.heart_fill,
+                          unSelectIcon: FlutterRemix.heart_line,
+                          //label: AppHelpers.getTranslation(TrKeys.send),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 8,
+                          child: LocalStorage.getToken().isNotEmpty ? Badge(
+                            label:  Text(
+                              (ref.watch(ordersListProvider).totalActiveCount)
+                                  .toString(),
+                            ),
+                          ) : const SizedBox.shrink(),
+                        ),
+                      ],
+                    ) ,
+
+
+
                   GestureDetector(
                     onTap: () {
                       if (event.checkGuest()) {
@@ -385,7 +479,7 @@ class _MainPageState extends State<MainPage> {
                         context.replaceRoute(const LoginRoute());
                       } else {
                         event.changeScrolling(false);
-                        event.selectIndex(3);
+                        event.selectIndex(4);
                       }
                     },
                     child: Container(
@@ -393,7 +487,7 @@ class _MainPageState extends State<MainPage> {
                       height: 40.r,
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: index == 3
+                              color: index == 4
                                   ? AppStyle.brandGreen
                                   : AppStyle.transparent,
                               width: 2.w),
@@ -413,29 +507,49 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         orders == null ||
-                (orders.userCarts?.isEmpty ?? true) ||
-                ((orders.userCarts?.isEmpty ?? true)
-                    ? true
-                    : (orders.userCarts?.first.cartDetails?.isEmpty ?? true)) ||
-                orders.ownerId != LocalStorage.getUserId()
+            (orders.userCarts?.isEmpty ?? true) ||
+            ((orders.userCarts?.isEmpty ?? true)
+                ? true
+                : (orders.userCarts?.first.cartDetails?.isEmpty ?? true)) ||
+            orders.ownerId != LocalStorage.getUserId()
             ? const SizedBox.shrink()
             : AnimationButtonEffect(
-                child: GestureDetector(
-                  onTap: () {
-                    context.pushRoute(const OrderRoute());
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(left: 8.w),
-                    width: 56.r,
-                    height: 56.r,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppStyle.brandGreen,
+          child: GestureDetector(
+            onTap: () {
+              context.pushRoute(const OrderRoute());
+            },
+            child: Container(
+                margin: EdgeInsets.only(left: 8.w),
+                width: 56.r,
+                height: 56.r,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _blackWithOpacity),
+                //  child: const Icon(FlutterRemix.shopping_bag_3_line),
+
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Icon(FlutterRemix.shopping_basket_2_fill, color: AppStyle.white),
+                    Positioned(
+                      top: 9,
+                      right: 8,
+                      child: Badge(
+                        label: Text(
+                          //(ref.watch(shopOrderProvider).cart?.toString() ?? 0)
+                          (ref.watch(shopOrderProvider).cart?.userCarts?.first.cartDetails?.length ?? 0)
+                          // (ref.watch(shopOrderProvider).cart?.userCarts?.first.cartDetails?[index].quantity ?? 0)
+                              .toString(),
+                          style: const TextStyle(color: AppStyle.white),
+                        ),
+                      ),
                     ),
-                    child: const Icon(FlutterRemix.shopping_bag_3_line),
-                  ),
-                ),
-              )
+                  ],
+                )
+              //const Icon(FlutterRemix.shopping_basket_2_fill, color: AppStyle.white,), //changed
+            ),
+          ),
+        )
       ],
     );
   }

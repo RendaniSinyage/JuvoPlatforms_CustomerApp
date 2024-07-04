@@ -11,7 +11,7 @@ import 'package:riverpodtemp/presentation/components/loading.dart';
 import 'package:riverpodtemp/presentation/components/title_icon.dart';
 import 'package:riverpodtemp/presentation/pages/home/filter/filter_page.dart';
 import 'package:riverpodtemp/presentation/pages/home_three/widgets/market_three_item.dart';
-
+import 'package:riverpodtemp/presentation/components/badges/empty_badge.dart';
 import '../../theme/app_style.dart';
 import 'shimmer/news_shop_shimmer.dart';
 import 'widgets/tab_bar_item_three.dart';
@@ -79,14 +79,7 @@ class FilterCategoryShopThree extends StatelessWidget {
                           child: Row(
                             children: [
                               SvgPicture.asset("assets/svgs/filter.svg"),
-                              6.horizontalSpace,
-                              Text(
-                                AppHelpers.getTranslation(TrKeys.filter),
-                                style: AppStyle.interNormal(
-                                  size: 13,
-                                  color: AppStyle.black,
-                                ),
-                              )
+
                             ],
                           ),
                         ),
@@ -176,23 +169,6 @@ class FilterCategoryShopThree extends StatelessWidget {
 }
 
 Widget _resultEmpty() {
-  return Column(
-    children: [
-      Image.asset("assets/images/notFound.png"),
-      Text(
-        AppHelpers.getTranslation(TrKeys.nothingFound),
-        style: AppStyle.interSemi(size: 18.sp),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 32.w,
-        ),
-        child: Text(
-          AppHelpers.getTranslation(TrKeys.trySearchingAgain),
-          style: AppStyle.interRegular(size: 14.sp),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    ],
-  );
+  return const EmptyBadge(); 
 }
+

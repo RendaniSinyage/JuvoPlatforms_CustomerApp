@@ -24,7 +24,8 @@ class TabBarItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         decoration: BoxDecoration(
-          color: isShopTabBar ?  (currentIndex == index ? AppStyle.brandGreen : AppStyle.white) :  AppStyle.white,
+          // color: isShopTabBar ?  (currentIndex == index ? AppStyle.brandGreen : AppStyle.white) :  AppStyle.white,
+	 color: isShopTabBar ?  (currentIndex == index ? AppStyle.brandGreen : AppStyle.brandGreen.withOpacity(0.06)) :  AppStyle.brandGreen.withOpacity(0.06),
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
           boxShadow: [
             BoxShadow(
@@ -42,7 +43,8 @@ class TabBarItem extends StatelessWidget {
             title,
             style: AppStyle.interNormal(
               size: 13,
-              color: AppStyle.black,
+             // color: AppStyle.black,
+color: isShopTabBar ?  (currentIndex == index ? AppStyle.white : AppStyle.brandGreen) :  AppStyle.brandGreen, //changed
             ),
           ),
         ),

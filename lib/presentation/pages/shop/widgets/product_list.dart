@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:riverpodtemp/infrastructure/models/models.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
@@ -23,14 +20,14 @@ extension MyExtension1 on Iterable<Product> {
         bool isOk = false;
         int level = 0;
         state.searchText.split(' ').forEach(
-          (e) {
+              (e) {
             isOk = (element.translation?.title
-                        ?.toLowerCase()
-                        .contains(e.toLowerCase()) ??
-                    false) ||
+                ?.toLowerCase()
+                .contains(e.toLowerCase()) ??
+                false) ||
                 (element.translation?.description
-                        ?.toLowerCase()
-                        .contains(e.toLowerCase()) ??
+                    ?.toLowerCase()
+                    .contains(e.toLowerCase()) ??
                     false);
             if (isOk) {
               level++;
@@ -51,12 +48,12 @@ class ProductsList extends ConsumerStatefulWidget {
   final String? cartId;
 
   const ProductsList({
-    super.key,
+    Key? key,
     this.categoryData,
     this.index,
     this.cartId,
     required this.shopId,
-  });
+  }) : super(key: key);
 
   @override
   ConsumerState<ProductsList> createState() => _ProductsListState();
@@ -66,192 +63,93 @@ class _ProductsListState extends ConsumerState<ProductsList> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(shopProvider);
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: (widget.index == null && state.searchText.isEmpty)
-          ? Column(
-              children: [
-                if (state.popularProducts.isNotEmpty)
-                  TitleAndIcon(
-                      title: AppHelpers.getTranslation(TrKeys.popular)),
-                if (state.popularProducts.isNotEmpty) 12.verticalSpace,
-                state.isProductLoading
-                    ? const ShimmerProductList()
-                    : state.popularProducts.isEmpty
-                        ? const SizedBox.shrink()
-                        // _resultEmpty()
-                        : AnimationLimiter(
-                            child: GridView.builder(
-                              padding: EdgeInsets.only(
-                                  right: 12.w, left: 12.w, bottom: 30.h),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 0.66.r,
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 250.r),
-                              itemCount: state.popularProducts.length,
-                              itemBuilder: (context, index) {
-                                return AnimationConfiguration.staggeredGrid(
-                                  columnCount: state.popularProducts.length,
-                                  position: index,
-                                  duration: const Duration(milliseconds: 375),
-                                  child: ScaleAnimation(
-                                    scale: 0.5,
-                                    child: FadeInAnimation(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          AppHelpers
-                                              .showCustomModalBottomDragSheet(
-                                            context: context,
-                                            modal: (c) => ProductScreen(
-                                              cartId: widget.cartId,
-                                              data: ProductData.fromJson(state
-                                                  .popularProducts[index]
-                                                  .toJson()),
-                                              controller: c,
-                                            ),
-                                            isDarkMode: false,
-                                            isDrag: true,
-                                            radius: 16,
-                                          );
-                                        },
-                                        child: ShopProductItem(
-                                          product: state.popularProducts[index],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-              ],
-            )
-          : Column(
-              children: [
-                if (((state.products.where((element) =>
-                            element.categoryId == widget.categoryData?.id))
-                        .isNotEmpty) &&
-                    state.products
-                        .where((element) =>
-                            element.categoryId == widget.categoryData?.id)
-                        .search(state)
-                        .isNotEmpty)
-                  TitleAndIcon(
-                      title: widget.categoryData?.translation?.title ?? ""),
-                if (((state.products.where((element) =>
-                            element.categoryId == widget.categoryData?.id))
-                        .isNotEmpty) &&
-                    state.products
-                        .where((element) =>
-                            element.categoryId == widget.categoryData?.id)
-                        .search(state)
-                        .isNotEmpty)
-                  12.verticalSpace,
-                state.isProductLoading
-                    ? const ShimmerProductList()
-                    : ((state.products.where((element) =>
-                                element.categoryId ==
-                                widget.categoryData?.id)).isNotEmpty) &&
-                            state.products
-                                .where((element) =>
-                                    element.categoryId ==
-                                    widget.categoryData?.id)
-                                .search(state)
-                                .isNotEmpty
-                        // _resultEmpty()
+    final productList = _buildProductList(state);
 
-                        ? AnimationLimiter(
-                            child: GridView.builder(
-                              padding: EdgeInsets.only(
-                                  right: 12.w, left: 12.w, bottom: 96.h),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 0.66.r,
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 250.r),
-                              itemCount: state.products
-                                  .where((element) =>
-                                      element.categoryId ==
-                                      widget.categoryData?.id)
-                                  .search(state)
-                                  .length,
-                              itemBuilder: (context, index) {
-                                return AnimationConfiguration.staggeredGrid(
-                                  columnCount: state.products
-                                      .where((element) =>
-                                          element.categoryId ==
-                                          widget.categoryData?.id)
-                                      .search(state)
-                                      .length,
-                                  position: index,
-                                  duration: const Duration(milliseconds: 375),
-                                  child: ScaleAnimation(
-                                    scale: 0.5,
-                                    child: FadeInAnimation(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          AppHelpers
-                                              .showCustomModalBottomDragSheet(
-                                            context: context,
-                                            modal: (c) => ProductScreen(
-                                              cartId: widget.cartId,
-                                              data: ProductData.fromJson(state
-                                                  .products
-                                                  .where((element) =>
-                                                      element.categoryId ==
-                                                      widget.categoryData?.id)
-                                                  .search(state)[index]
-                                                  .toJson()),
-                                              controller: c,
-                                            ),
-                                            isDarkMode: false,
-                                            isDrag: true,
-                                            radius: 16,
-                                          );
-                                        },
-                                        child: ShopProductItem(
-                                          product: state.products
-                                              .where((element) =>
-                                                  element.categoryId ==
-                                                  widget.categoryData?.id)
-                                              .search(state)
-                                              .toList()[index],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_shouldShowTitle(state)) ...[
+          5.verticalSpace,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            child: TitleAndIcon(
+              title: _getTitleText(state),
             ),
+          ),
+        ],
+        if (productList != null) ...[
+          12.verticalSpace,
+          SizedBox(
+            height: 250.r,
+            child: state.isProductLoading
+                ? const ShimmerProductList()
+                : productList,
+          ),
+        ],
+      ],
     );
   }
 
-  // Widget _resultEmpty() {
-  //   return Column(
-  //     children: [
-  //       Lottie.asset("assets/lottie/empty-box.json"),
-  //       Text(
-  //         AppHelpers.getTranslation(TrKeys.nothingFound),
-  //         style: AppStyle.interSemi(size: 18.sp),
-  //       ),
-  //       Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 32.w),
-  //         child: Text(
-  //           AppHelpers.getTranslation(TrKeys.trySearchingAgain),
-  //           style: AppStyle.interRegular(size: 14.sp),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+  bool _shouldShowTitle(ShopState state) {
+    return (widget.index == null && state.searchText.isEmpty && state.popularProducts.isNotEmpty) ||
+        ((state.products.where((element) => element.categoryId == widget.categoryData?.id)).isNotEmpty &&
+            state.products.where((element) => element.categoryId == widget.categoryData?.id).search(state).isNotEmpty);
+  }
+
+  String _getTitleText(ShopState state) {
+    return widget.index == null && state.searchText.isEmpty
+        ? AppHelpers.getTranslation(TrKeys.popular)
+        : widget.categoryData?.translation?.title ?? "";
+  }
+
+  Widget? _buildProductList(ShopState state) {
+    final products = _getProductList(state);
+
+    if (products.isEmpty) {
+      return null;
+    }
+
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: EdgeInsets.only(right: 12.w),
+          child: SizedBox(
+            width: 150.r,
+            child: GestureDetector(
+              onTap: () => _onProductTap(context, products[index]),
+              child: ShopProductItem(
+                product: products[index],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  List<Product> _getProductList(ShopState state) {
+    return widget.index == null && state.searchText.isEmpty
+        ? state.popularProducts
+        : state.products
+        .where((element) => element.categoryId == widget.categoryData?.id)
+        .search(state)
+        .toList();
+  }
+
+  void _onProductTap(BuildContext context, Product product) {
+    AppHelpers.showCustomModalBottomDragSheet(
+      context: context,
+      modal: (c) => ProductScreen(
+        cartId: widget.cartId,
+        data: ProductData.fromJson(product.toJson()),
+        controller: c,
+      ),
+      isDarkMode: false,
+      isDrag: true,
+      radius: 16,
+    );
+  }
 }

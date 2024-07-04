@@ -15,12 +15,15 @@ class RecommendShopShimmer extends StatelessWidget {
     return Column(
       children: [
         TitleAndIcon(
-          rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
+         // rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
           isIcon: true,
           title: AppHelpers.getTranslation(TrKeys.recommended),
+          titleColor: AppStyle.shimmerBase,
+          containerColor: AppStyle.shimmerBase,
+          iconColor: AppStyle.white,
           onRightTap: () {},
         ),
-        12.verticalSpace,
+        12.verticalSpace, 
         SizedBox(
             height: 170.h,
             child: AnimationLimiter(

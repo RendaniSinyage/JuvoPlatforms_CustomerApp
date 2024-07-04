@@ -12,7 +12,9 @@ if (Test-Path -Path "manual.txt") {
     # Write the latest commit hash to line two of gethashes.txt
     $hashes[0] | Out-File -FilePath "gethashes.txt" -Append
 }
-
+# Delete existing updated_files.txt and updated_files.zip if they exist
+Remove-Item -Path "updated_files.txt" -ErrorAction SilentlyContinue
+Remove-Item -Path "updated_files.zip" -ErrorAction SilentlyContinue
 # Read the content of gethashes.txt
 $hashes = Get-Content -Path "gethashes.txt"
 
@@ -312,6 +314,14 @@ Write-Host "Running folder updates..."
 Write-Host "`nRunning file edits..."
 .\runscripts\fileedits.ps1
 
+# Run all other scripts in /runscripts/
+Get-ChildItem -Path ".\runscripts" -Filter "*.ps1" | 
+    Where-Object { $_.Name -notin @("folderupdates.ps1", "fileedits.ps1") } | 
+    ForEach-Object {
+        Write-Host "`nRunning $($_.Name)..."
+        & $_.FullName
+    }
+
 Write-Host "`nRunning Flutter build runner..."
 flutter pub run build_runner build --delete-conflicting-outputs
 
@@ -334,6 +344,15 @@ $totalUpdatedFiles = $updatedFiles.Count
 # Append the total count to updated_files.txt
 Add-Content -Path "updated_files.txt" -Value "Total files included: $totalUpdatedFiles"
 
+$androidGitignorePath = "android\.gitignore"
+if (Test-Path $androidGitignorePath) {
+    $content = Get-Content $androidGitignorePath
+    $content = $content -replace "^key\.properties", "#key.properties"
+    $content = $content -replace "^(\*\*/\*\.keystore)", "#$1"
+    $content = $content -replace "^(\*\*/\*\.jks)", "#$1"
+    Set-Content $androidGitignorePath $content
+    Write-Host "Updated $androidGitignorePath"
+}
 
     # Update .gitignore
     $gitignoreContent = Get-Content .gitignore -ErrorAction SilentlyContinue

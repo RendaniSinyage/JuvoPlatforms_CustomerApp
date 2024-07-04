@@ -39,14 +39,15 @@ class RegisterPage extends ConsumerWidget {
     return Directionality(
       textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
       child: KeyboardDismisser(
-        child: Container(
+        child: Padding(
+      padding: const EdgeInsets.all(16.0),
+    child: Container(
           margin: MediaQuery.of(context).viewInsets,
           decoration: BoxDecoration(
               color: AppStyle.bgGrey.withOpacity(0.96),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.r),
-                topRight: Radius.circular(16.r),
-              )),
+              borderRadius: BorderRadius.all(
+                Radius.circular(40.r),
+              ),),
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -367,6 +368,6 @@ class RegisterPage extends ConsumerWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

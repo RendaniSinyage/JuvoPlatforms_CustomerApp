@@ -1,29 +1,28 @@
 import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:remixicon/remixicon.dart';
 import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
 import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
 import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/badge_item.dart';
+//import 'package:riverpodtemp/presentation/components/badge_item.dart';
 import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
 import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
 import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
+//import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
 import 'package:riverpodtemp/presentation/pages/shop/group_order/group_order.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
-
+import 'package:riverpodtemp/presentation/components/badges.dart';
 import '../../../../infrastructure/models/data/bonus_data.dart';
-import '../../../components/bonus_discount_popular.dart';
 import 'bonus_screen.dart';
-import 'shop_description_item.dart';
+//import 'shop_description_item.dart';
 
 class ShopPageAvatar extends StatelessWidget {
   final ShopData shop;
@@ -57,25 +56,7 @@ class ShopPageAvatar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    (shop.translation?.title?.length ?? 0) > 28
-                        ? "${shop.translation?.title?.substring(0, 28) ?? " "}.."
-                        : shop.translation?.title ?? "",
-                    style: AppStyle.interSemi(
-                      size: 21,
-                      color: AppStyle.black,
-                    ),
-                  ),
-                  if (shop.verify ?? false)
-                    Padding(
-                      padding: EdgeInsets.only(left: 4.r),
-                      child: const BadgeItem(),
-                    ),
-                ],
-              ),
-              Text(
+              /*Text(
                 shop.translation?.description ?? "",
                 style: AppStyle.interNormal(
                   size: 13,
@@ -84,45 +65,10 @@ class ShopPageAvatar extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              6.verticalSpace,
-              GestureDetector(
-                onTap: () {
-                  context.pushRoute(
-                      ShopDetailRoute(shop: shop, workTime: workTime));
-                },
-                child: Text(
-                  AppHelpers.getTranslation(TrKeys.moreInfo),
-                  style: AppStyle.interNormal(
-                      size: 14,
-                      color: AppStyle.black,
-                      textDecoration: TextDecoration.underline),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              6.verticalSpace,
-              Row(
-                children: [
-                  SvgPicture.asset("assets/svgs/star.svg"),
-                  4.horizontalSpace,
-                  Text(
-                    (shop.avgRate ?? ""),
-                    style: AppStyle.interNormal(
-                      size: 12.sp,
-                      color: AppStyle.black,
-                    ),
-                  ),
-                  8.horizontalSpace,
-                  BonusDiscountPopular(
-                    isSingleShop: true,
-                    isPopular: shop.isRecommend ?? false,
-                    bonus: shop.bonus,
-                    isDiscount: shop.isDiscount ?? false,
-                  ),
-                ],
-              ),
-              10.verticalSpace,
-              Row(
+              6.verticalSpace, */
+
+              // 10.verticalSpace,
+              /* Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ShopDescriptionItem(
@@ -147,8 +93,9 @@ class ShopPageAvatar extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              ),*/
               AppHelpers.getTranslation(TrKeys.close) == workTime
+
                   ? Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Container(
@@ -272,7 +219,8 @@ class ShopPageAvatar extends StatelessWidget {
         title: isStartOrder
             ? AppHelpers.getTranslation(TrKeys.manageOrder)
             : AppHelpers.getTranslation(TrKeys.startGroupOrder),
-        background: isStartOrder ? AppStyle.brandGreen : AppStyle.orderButtonColor,
+        background:
+            isStartOrder ? AppStyle.brandGreen : AppStyle.orderButtonColor,
         textColor: isStartOrder ? AppStyle.black : AppStyle.white,
         radius: 10,
         onPressed: () {
@@ -315,19 +263,64 @@ class ShopPageAvatar extends StatelessWidget {
             radius: 0,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-              top: 130.h + MediaQuery.of(context).padding.top,
-              left: 16.w,
-              right: 16.w),
-          child: ShopAvatar(
-            radius: 20,
-            shopImage: shop.logoImg ?? "",
-            size: 70,
-            padding: 6,
-            bgColor: AppStyle.white.withOpacity(0.65),
+
+        /// const SizedBox(width: 10),
+        RatingBadge(shop: shop),
+       // shop.deliveryRange != 0
+             DeliveryFeeBadge(shop: shop),
+        Positioned(
+          bottom: 20.h,
+          right: 15.w,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.r),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.pushRoute(
+                            ShopDetailRoute(shop: shop, workTime: workTime));
+                      },
+                      child: Text(
+                        AppHelpers.getTranslation(TrKeys.moreInfo),
+                        style: AppStyle.interNormal(
+                            size: 12,
+                            color: AppStyle.white,
+                            textDecoration: TextDecoration.underline),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
+        Positioned(
+          bottom: 20.h,
+          left: 15.w,
+          child: Row(
+            children: [
+              BonusDiscountPopular(
+                isSingleShop: true,
+                isPopular: shop.isRecommend ?? false,
+                bonus: shop.bonus,
+                isDiscount: shop.isDiscount ?? false,
+              ),
+            ],
+          ),
+        ),
+
+        ShopBadge(shop: shop),
+        DistanceBadge(shop: shop),
         Positioned(
           top: MediaQuery.of(context).padding.top,
           right: 16.w,

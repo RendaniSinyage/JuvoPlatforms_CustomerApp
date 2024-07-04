@@ -12,8 +12,12 @@ import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
 import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
+import 'package:riverpodtemp/presentation/components/buttons/second_button.dart';
 import 'package:riverpodtemp/presentation/components/loading.dart';
+import '../../components/badges.dart';
 import '../../theme/app_style.dart';
+//import 'widgets/fill_wallet_screen.dart';
+//import 'widgets/send_price_screen.dart';
 
 
 @RoutePage()
@@ -60,15 +64,78 @@ class _WalletHistoryState extends ConsumerState<WalletHistoryPage> {
         backgroundColor: AppStyle.bgGrey,
         body: Column(
           children: [
-            CommonAppBar(
-              child: Text(
-                AppHelpers.getTranslation(TrKeys.transactions),
-                style: AppStyle.interNoSemi(
-                  size: 18,
-                  color: AppStyle.black,
-                ),
-              ),
+        CommonAppBar(
+        child: Column(
+        children: [
+          const SizedBox(height: 55),
+                Row(
+        children: [
+          //Expanded(
+           // child:
+          const SizedBox(width: 10),
+          Text(
+            AppHelpers.getTranslation(TrKeys.transactions),
+            style: AppStyle.interNoSemi(
+              size: 18,
+              color: AppStyle.black,
             ),
+          ),
+          const SizedBox(width: 70),
+
+            SecondButton(
+              title: AppHelpers.getTranslation(TrKeys.send),
+              bgColor: AppStyle.brandGreen,
+              titleColor: AppStyle.white,
+              onTap: () {
+               /* AppHelpers.showCustomModalBottomDragSheet(
+                  context: context,
+                  modal: (c) => const SenPriceScreen(
+                    //  controller: c,
+
+                    ),
+                 // isDarkMode: isDarkMode,
+
+                );*/
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const ComingSoonDialog();
+                  },
+                );
+              },
+            ),
+         // ),
+          const SizedBox(width: 8), // Add some spacing between buttons
+         // Expanded(
+            //child:
+            SecondButton(
+              title: AppHelpers.getTranslation(TrKeys.add),
+              bgColor: AppStyle.brandGreen,
+              titleColor: AppStyle.white,
+              onTap: () {
+               /* AppHelpers.showCustomModalBottomDragSheet(
+                  context: context,
+                  modal: (c) => const FillWalletScreen(
+                      colors: AppStyle.white,
+                    controller: c,
+                    ),
+                  //isDarkMode: isDarkMode,
+
+                );*/
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const ComingSoonDialog();
+                  },
+                );
+              },
+            ),
+         // ),
+        ],
+      ),
+      ],
+    ),
+    ),
             state.isLoadingHistory
                 ? Padding(
                     padding: EdgeInsets.only(top: 56.h),

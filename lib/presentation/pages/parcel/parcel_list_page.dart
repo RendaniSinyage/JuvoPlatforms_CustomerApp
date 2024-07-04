@@ -15,6 +15,7 @@ import 'package:riverpodtemp/presentation/components/loading.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
 
 import 'parcel_item.dart';
+import 'package:riverpodtemp/presentation/components/badges/empty_badge.dart';
 
 @RoutePage()
 class ParcelListPage extends ConsumerStatefulWidget {
@@ -165,28 +166,9 @@ class _ParcelListPageState extends ConsumerState<ParcelListPage>
         ),
       ),
     );
-  }
+  } 
 }
 
 Widget _resultEmpty() {
-  return Column(
-    children: [
-      24.verticalSpace,
-      Image.asset("assets/images/notFound.png"),
-      Text(
-        AppHelpers.getTranslation(TrKeys.nothingFound),
-        style: AppStyle.interSemi(size: 18.sp),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 32.w,
-        ),
-        child: Text(
-          AppHelpers.getTranslation(TrKeys.trySearchingAgain),
-          style: AppStyle.interRegular(size: 14.sp),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    ],
-  );
+  return const EmptyBadge();
 }

@@ -139,45 +139,11 @@ class MarketOneItem extends StatelessWidget {
         children: [
           CustomNetworkImage(
             url: shop.logoImg ?? "",
-            height: 80.r,
-            width: 80.r,
-            radius: 40.r,
+            height: 60.r,
+            width: 60.r,
+            radius: 30.r,
           ),
-          6.verticalSpace,
-          SizedBox(
-            width: 120.w,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  (shop.translation?.title?.length ?? 0) > 12
-                      ? "${shop.translation?.title?.substring(0, 12) ?? " "}.."
-                      : shop.translation?.title ?? "",
-                  style: AppStyle.interSemi(
-                    size: 14,
-                    color: AppStyle.black,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if(shop.verify ?? false)
-                  Padding(
-                    padding: EdgeInsets.only(left: 4.r),
-                    child: const BadgeItem(),
-                  )
-              ],
-            ),
-          ),
-          Text(
-            "${shop.deliveryTime?.from ?? 0} - ${shop.deliveryTime?.to ?? 0} ${shop.deliveryTime?.type ?? "min"}",
-            style: AppStyle.interSemi(
-              size: 12,
-              color: AppStyle.textGrey,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+         
         ],
       ),
     );

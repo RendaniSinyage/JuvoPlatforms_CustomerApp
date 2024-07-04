@@ -3,6 +3,7 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
+import 'package:riverpodtemp/presentation/components/badges.dart';
 import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
 import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
@@ -192,21 +193,24 @@ class ShopProductItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            OrganicTagBadge(product: product),
             CustomNetworkImage(
                 url: product.img ?? "",
                 height: 100.h,
                 width: double.infinity,
+                fit: BoxFit.contain,
                 radius: 0),
-            8.verticalSpace,
+
+            //1.verticalSpace,
             Text(
               product.translation?.title ?? "",
               style: AppStyle.interNoSemi(
-                size: 14,
+                size: 12,
                 color: AppStyle.black,
               ),
               maxLines: 2,
             ),
-            Text(
+           /* Text(
               product.translation?.description ?? "",
               style: AppStyle.interRegular(
                 size: 12,
@@ -214,7 +218,7 @@ class ShopProductItem extends StatelessWidget {
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-            ),
+            ),*/
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,8 +233,8 @@ class ShopProductItem extends StatelessWidget {
                                       (product.stock?.tax ?? 0))
                                   : null) ??
                               (product.stock?.totalPrice ?? 0)),
-                      style: AppStyle.interNoSemi(
-                          size: 16,
+                      style: AppStyle.interSemi(
+                          size: 14,
                           color: AppStyle.black,
                           decoration: (product.discounts?.isNotEmpty ?? false
                                       ? ((product.stock?.price ?? 0) +

@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
     this.background = AppStyle.brandGreen,
     this.textColor = AppStyle.black,
     this.weight = double.infinity,
-    this.radius = 8,
+    this.radius = 16,
     this.icon,
     this.borderColor = AppStyle.transparent,
   });
@@ -68,7 +68,7 @@ class CustomButton extends StatelessWidget {
                         ),
                   Text(
                     title,
-                    style: AppStyle.interNormal(
+                    style: AppStyle.interBold(
                       size: 15,
                       color: textColor,
                       letterSpacing: -14 * 0.01,

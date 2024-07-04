@@ -32,6 +32,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    ClosedRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ClosedPage(),
+      );
+    },
     CreateShopRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -58,6 +64,12 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           index: args.index,
         ),
+      );
+    },
+    IntroRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const IntroPage(),
       );
     },
     LikeRoute.name: (routeData) {
@@ -122,6 +134,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const OrdersListPage(),
+      );
+    },
+    OrdersMainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrdersMainPage(),
       );
     },
     ParcelListRoute.name: (routeData) {
@@ -318,6 +336,7 @@ abstract class _$AppRouter extends RootStackRouter {
           cartId: args.cartId,
           shop: args.shop,
           ownerId: args.ownerId,
+          isBackButton: args.isBackButton,
         ),
       );
     },
@@ -461,6 +480,20 @@ class ChatRouteArgs {
 }
 
 /// generated route for
+/// [ClosedPage]
+class ClosedRoute extends PageRouteInfo<void> {
+  const ClosedRoute({List<PageRouteInfo>? children})
+      : super(
+          ClosedRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ClosedRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [CreateShopPage]
 class CreateShopRoute extends PageRouteInfo<void> {
   const CreateShopRoute({List<PageRouteInfo>? children})
@@ -537,6 +570,20 @@ class InfoRouteArgs {
   String toString() {
     return 'InfoRouteArgs{key: $key, index: $index}';
   }
+}
+
+/// generated route for
+/// [IntroPage]
+class IntroRoute extends PageRouteInfo<void> {
+  const IntroRoute({List<PageRouteInfo>? children})
+      : super(
+          IntroRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'IntroRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -708,6 +755,20 @@ class OrdersListRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'OrdersListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OrdersMainPage]
+class OrdersMainRoute extends PageRouteInfo<void> {
+  const OrdersMainRoute({List<PageRouteInfo>? children})
+      : super(
+          OrdersMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrdersMainRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -1351,6 +1412,7 @@ class ShopRoute extends PageRouteInfo<ShopRouteArgs> {
     String? cartId,
     ShopData? shop,
     int? ownerId,
+    bool isBackButton = false,
     List<PageRouteInfo>? children,
   }) : super(
           ShopRoute.name,
@@ -1361,6 +1423,7 @@ class ShopRoute extends PageRouteInfo<ShopRouteArgs> {
             cartId: cartId,
             shop: shop,
             ownerId: ownerId,
+            isBackButton: isBackButton,
           ),
           initialChildren: children,
         );
@@ -1378,6 +1441,7 @@ class ShopRouteArgs {
     this.cartId,
     this.shop,
     this.ownerId,
+    this.isBackButton = false,
   });
 
   final Key? key;
@@ -1392,9 +1456,11 @@ class ShopRouteArgs {
 
   final int? ownerId;
 
+  final bool isBackButton;
+
   @override
   String toString() {
-    return 'ShopRouteArgs{key: $key, shopId: $shopId, productId: $productId, cartId: $cartId, shop: $shop, ownerId: $ownerId}';
+    return 'ShopRouteArgs{key: $key, shopId: $shopId, productId: $productId, cartId: $cartId, shop: $shop, ownerId: $ownerId, isBackButton: $isBackButton}';
   }
 }
 

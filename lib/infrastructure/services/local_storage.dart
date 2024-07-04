@@ -13,6 +13,24 @@ class LocalStorage {
 
   LocalStorage._();
 
+//Added
+ static final LocalStorage _instance = LocalStorage._internal();
+
+  factory LocalStorage() {
+    return _instance;
+  }
+
+  LocalStorage._internal();
+
+  Future<bool> isFirstAppLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('isFirstAppLaunch') ?? true;
+
+    return isFirstLaunch;
+  }
+
+
+//end
   static Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
   }
@@ -147,11 +165,28 @@ class LocalStorage {
         _preferences?.getString(AppConstants.keyAddressSelected) ?? "";
     if (dataString.isNotEmpty) {
       AddressData data = AddressData.fromJson(jsonDecode(dataString));
+      
+      // Check if the address ends with a number
+      RegExp numericRegex = RegExp(r'\d$');
+      if (numericRegex.hasMatch(data.address ?? "")) { // Use null-aware operator
+        // Reorder the address components
+        List<String> addressParts = (data.address ?? "").split(',').map((part) => part.trim()).toList(); // Use null-aware operator
+        if (addressParts.length >= 3) {
+          String postalCode = addressParts.removeLast(); // Remove and store postal code
+          addressParts.insert(0, postalCode); // Insert postal code at the beginning
+          String formattedAddress = addressParts.join(', '); // Join the parts back together
+          
+          // Update the address property in the AddressData object
+          data = data.copyWith(address: formattedAddress);
+        }
+      }
+
       return data;
     } else {
       return null;
     }
-  }
+}
+
 
   static void deleteAddressSelected() =>
       _preferences?.remove(AppConstants.keyAddressSelected);

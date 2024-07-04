@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
+import 'package:riverpodtemp/presentation/pages/home_two/widget/market_two_item.dart';
 
 import '../../../../application/home/home_notifier.dart';
 import '../../../../application/home/home_provider.dart';
@@ -96,47 +98,70 @@ class _RecommendedPageState extends ConsumerState<RecommendedPage> {
                           ],
                         ))
               : widget.isNewsOfPage
-                  ? Expanded(
-                      child: state.restaurant.isNotEmpty
-                          ? SmartRefresher(
-                              controller: _recommendedController,
-                              enablePullDown: true,
-                              enablePullUp: true,
-                              
-                              onLoading: () async {
-                                await event.fetchRestaurantPage(
-                                    context, _recommendedController);
-                              },
-                              onRefresh: () async {
-                                await event.fetchRestaurantPage(
-                                    context, _recommendedController,
-                                    isRefresh: true);
-                              },
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                
-                                itemCount: state.restaurant.length,
-                                padding: EdgeInsets.symmetric(vertical: 24.h),
-                                itemBuilder: (context, index) => MarketItem(
-                                  shop: state.restaurant[index],
-                                  isSimpleShop: true,
-                                ),
+              ? Expanded(
+              child: state.restaurant.isNotEmpty
+                  ? SmartRefresher(
+                controller: _recommendedController,
+                enablePullDown: true,
+                enablePullUp: true,
+                onLoading: () async {
+                  await event.fetchRestaurantPage(
+                      context, _recommendedController);
+                },
+                onRefresh: () async {
+                  await event.fetchRestaurantPage(
+                    context,
+                    _recommendedController,
+                    isRefresh: true,
+                  );
+                },
+                child: AnimationLimiter(
+                  child: GridView.builder(
+                    gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8.r,
+                      crossAxisSpacing: 8.r,
+                      childAspectRatio: 0.70,
+                    ),
+                    padding:
+                    REdgeInsets.symmetric(horizontal: 16),
+                    shrinkWrap: true,
+
+                    physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: state.restaurant.length,
+                    itemBuilder: (context, index) =>
+                        AnimationConfiguration.staggeredList(
+                          position: index,
+                          duration: const Duration(milliseconds: 375),
+                          child: SlideAnimation(
+                            verticalOffset: 50.0,
+                            child: FadeInAnimation(
+                              child: MarketTwoItem(
+                                shop: state.restaurant[index],
+                                isSimpleShop: true,
                               ),
-                            )
-                          : Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.sizeOf(context).height / 2,
-                                  child: SvgPicture.asset(
-                                    "assets/svgs/empty.svg",
-                                  ),
-                                ),
-                                16.verticalSpace,
-                                Text(AppHelpers.getTranslation(
-                                    TrKeys.noRestaurant))
-                              ],
-                            ))
+                            ),
+                          ),
+                        ),
+                  ),
+                ),
+              )
+                  : Column(
+                children: [
+                  SizedBox(
+                    height:
+                    MediaQuery.of(context).size.height / 2,
+                    child: SvgPicture.asset(
+                      "assets/svgs/empty.svg",
+                    ),
+                  ),
+                  16.verticalSpace,
+                  Text(AppHelpers.getTranslation(
+                      TrKeys.noRestaurant))
+                ],
+              ))
                   : Expanded(
                       child: state.shopsRecommend.isNotEmpty
                           ? SmartRefresher(

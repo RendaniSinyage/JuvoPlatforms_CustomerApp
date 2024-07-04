@@ -1,4 +1,5 @@
 class TrKeys {
+
   TrKeys._();
   static const String bgPicture = 'bg_picture';
   static const String helpInfo = 'help.info';
@@ -393,4 +394,76 @@ class TrKeys {
       'confirm_password_is_not_the_same';
   static const String errorWithUpdatingPassword =
       'error_with_updating_password';
+
+
+  ///Added by Sinyage
+  static const String searchApp = 'searchApp';
+  static const String light = 'light';
+  static const String dark = 'dark';
+  static const String editAccount = 'editAccount';
+  static const String changePassword = 'changePassword';
+  static const String account = 'account';
+  static const String water = 'water';
+  static const String expire = 'expire';
+  static const String benefits = 'benefits';
+  static const String plan = 'Plan';
+  static const String notify = 'notify';
+  static const String stores = 'stores';
+  static const String ETAtimeDialog = 'ETAtime';
+  static const String TitleETA = 'U+2139_Estimated_Time_of_Arrival';
+  static const String ETAtime = '60';
+  static const String ETA = 'ETA';
+
+  static const String ETAtimeDialog2 = 'ETAtime';
+  static const String TitleETA2 = 'U+2139_Estimated_Time_of_Arrival';
+  static const String ETAtime2 = '30_-_60_Min';
+  static const String ETA2 = 'ETA';
+
+
+/// Added by Sinyage
+  static const String introslide1 = 'intro_slide1';
+  static const String introslide2 = 'intro_slide2';
+  static const String introslide3 = 'intro_slide3';
+  static const String introslide4 = 'intro_slide4';
+  static const String introslide5 = 'intro_slide5';
+
+  static const String introbriefslide1 = 'introbrief_slide1';
+  static const String introbriefslide2 = 'introbrief_slide2';
+  static const String introbriefslide3 = 'introbrief_slide3';
+  static const String introbriefslide4 = 'introbrief_slide4';
+  static const String introbriefslide5 = 'introbrief_slide5';
+
+  static const String closedslide1 = 'closed_slide1';
+  static const String closedbriefslide1 = 'closedbrief_slide1';
+  static const String hello = 'hello';
+  static const String hey = 'hey';
+  static const String there = 'there';
+  static const String signedtext = 'signedtext';
+  static const String signtext = 'signtext';
+  static const String AppName = 'juvo';
+  static const String AppMotto = 'motto';
+  static const String payfast = 'payload_payfast';
+  static const String flutterWave = 'payload_flutterwave';
+  static const String paystack = 'payload_paystack';
+  static const String paymentMethodPrefix = 'paymentMethod_';
+  static const String isAd = 'isAd';
+  static const String searchUser = 'searchUser';
+  static String thisFieldIsNotMinusOrZero = 'thisFieldIsNotMinusOrZero';
+  static const String members = 'members';
+  static const String thereAreNoPaymentTypesHere = 'thereAreNoPaymentTypesHere';
+  static const String fillWallet = 'fillWallet';
+
+
+  ////Review Text
+  static const String veryBad = 'veryBad';
+  static const String bad = 'bad';
+  static const String notBad = 'notBad';
+  static const String good = 'good';
+  static const String veryGood = 'veryGood';
+  static const String exceptional = 'exceptional';
+  static const String km = 'km';
+  static String comingSoon = 'comingSoon';
+  static String featureNotAvailable = 'featureNotAvailable';
+  static const String ok = 'ok';
+
 }

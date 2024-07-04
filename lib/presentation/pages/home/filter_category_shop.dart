@@ -12,7 +12,7 @@ import 'package:riverpodtemp/presentation/components/market_item.dart';
 import 'package:riverpodtemp/presentation/components/tab_bar_item.dart';
 import 'package:riverpodtemp/presentation/components/title_icon.dart';
 import 'package:riverpodtemp/presentation/pages/home/filter/filter_page.dart';
-
+import 'package:lottie/lottie.dart';
 import '../../theme/app_style.dart';
 
 class FilterCategoryShop extends StatelessWidget {
@@ -136,7 +136,11 @@ class FilterCategoryShop extends StatelessWidget {
 Widget _resultEmpty() {
   return Column(
     children: [
-      Image.asset("assets/images/notFound.png"),
+      SizedBox(
+        width: 200,  // specify the width you want
+        height: 200, // specify the height you want
+        child: Lottie.asset("assets/lottie/notification_empty.json"),
+      ),
       Text(
         AppHelpers.getTranslation(TrKeys.nothingFound),
         style: AppStyle.interSemi(size: 18.sp),

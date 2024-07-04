@@ -15,11 +15,19 @@ import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
 import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
 import 'package:riverpodtemp/presentation/pages/auth/register/register_page.dart';
 import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import '../../../theme/theme.dart';
 import '../../profile/language_page.dart';
 import 'login_screen.dart';
 import '../../../../application/login/login_provider.dart';
 
+import '../../../theme/app_style.dart';
+import 'package:riverpodtemp/presentation/components/buttons/second_button.dart';
+import 'package:riverpodtemp/infrastructure/services/app_assets.dart';
+import 'package:riverpodtemp/presentation/pages/intro/intro_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:riverpodtemp/presentation/pages/profile/help_policy_term/policy_page.dart';
+//import 'package:riverpodtemp/presentation/pages/profile/help_policy_term/term_page.dart';
+import 'package:riverpodtemp/presentation/pages/policy_term/policy_page.dart';
+import 'package:riverpodtemp/presentation/pages/policy_term/term_page.dart';
 
 @RoutePage()
 class LoginPage extends ConsumerStatefulWidget {
@@ -30,6 +38,8 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
+  bool _showIntro = false;
+  late IntroPage _introPage;
   final FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
 
   @override
@@ -38,6 +48,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       ref.read(loginProvider.notifier).checkLanguage(context);
     });
     initDynamicLinks();
+    // Initialize IntroPage
+    _introPage = const IntroPage();
     super.initState();
   }
 
@@ -60,7 +72,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     });
 
     final PendingDynamicLinkData? data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
+    await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
     if (deepLink.toString().contains("product") ||
@@ -86,6 +98,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ),
         isDarkMode: false);
   }
+  void _showIntroPage() {
+    setState(() {
+      _showIntro = true;
+    });
+  }
+
+  void _closeIntroPage() {
+    setState(() {
+      _showIntro = false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +129,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor:
         isDarkMode ? AppStyle.dontHaveAnAccBackDark : AppStyle.white,
-        body: Container(
+        body: _showIntro
+            ? _introPage // Show preloaded IntroPage if _showIntro is true
+            : Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
@@ -121,30 +147,25 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 children: [
                   Row(
                     children: [
+                      Image.asset(
+                        AppAssets.pngLogo,
+                        width: 50.r,
+                        height: 50.r,
+                      ),
                       Expanded(
                         child: Text(
                           AppHelpers.getAppName() ?? "",
-                          style: AppStyle.interSemi(color: AppStyle.white),
+                          style: AppStyle.interSemi(color: AppStyle.brandGreen),
                         ),
                       ),
                       8.horizontalSpace,
                       const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          ref.read(mainProvider.notifier).selectIndex(0);
-                          if (AppConstants.isDemo) {
-                            context.pushRoute(UiTypeRoute());
-                            return;
-                          }
-                          context.replaceRoute(const MainRoute());
-                        },
-                        child: Text(
-                          AppHelpers.getTranslation(TrKeys.skip),
-                          style: AppStyle.interSemi(
-                            size: 16.sp,
-                            color: AppStyle.white,
-                          ),
-                        ),
+                      const Spacer(),
+                      SecondButton(
+                        onTap: _showIntroPage, // Show IntroPage when Skip is tapped
+                        title: AppHelpers.getTranslation(TrKeys.skip),
+                        bgColor: AppStyle.brandGreen,
+                        titleColor: AppStyle.white,
                       ),
                     ],
                   ),
@@ -165,18 +186,73 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         title: AppHelpers.getTranslation(TrKeys.register),
                         onPressed: () {
                           AppHelpers.showCustomModalBottomSheet(
-                              context: context,
-                              modal: RegisterPage(
-                                isOnlyEmail: true,
-                              ),
-                              isDarkMode: isDarkMode,
-                              paddingTop: MediaQuery.of(context).padding.top);
+                            context: context,
+                            modal: RegisterPage(isOnlyEmail: true),
+                            isDarkMode: isDarkMode,
+                            paddingTop: MediaQuery.of(context).padding.top,
+                          );
                         },
                         background: AppStyle.transparent,
                         textColor: AppStyle.white,
                         borderColor: AppStyle.white,
                       ),
-                      22.verticalSpace,
+                      5.verticalSpace,
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppStyle.white.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
+                        ),
+                        padding: EdgeInsets.all(16), // Adjust the padding as needed
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          children: [
+                            Text(
+                              "By using ${AppHelpers.getAppName() ?? ""}'s services, you acknowledge that you have read and accepted the",
+                              style: TextStyle(color: AppStyle.black), // Make text color white for visibility
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const TermPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                AppHelpers.getTranslation(TrKeys.terms),
+                                style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: AppStyle.black, // Optional: Different color for links
+                                ),
+                              ),
+                            ),
+                            const Text(
+                              " & ",
+                              style: TextStyle(color: AppStyle.black), // Make text color white for visibility
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const PolicyPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                AppHelpers.getTranslation(TrKeys.privacyPolicy),
+                                style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: AppStyle.black, // Optional: Different color for links
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      20.verticalSpace,
+
                     ],
                   )
                 ],

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:riverpodtemp/presentation/components/title_icon.dart';
-
-import '../../../../infrastructure/services/app_helpers.dart';
-import '../../../../infrastructure/services/tr_keys.dart';
+import 'package:riverpodtemp/presentation/theme/app_style.dart';
+//import '../../../../infrastructure/services/app_helpers.dart';
+//import '../../../../infrastructure/services/tr_keys.dart';
 import 'market_shimmer.dart';
 
 class NewsShopShimmer extends StatelessWidget {
@@ -17,15 +17,18 @@ class NewsShopShimmer extends StatelessWidget {
     return Column(
       children: [
         TitleAndIcon(
-          rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
+        //  rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
           isIcon: true,
           title: title,
+          titleColor: AppStyle.shimmerBase,
+          containerColor: AppStyle.shimmerBase,
+          iconColor: AppStyle.white,
           onRightTap: () {},
         ),
         12.verticalSpace,
         SizedBox(
-            height: 246.h,
-            child: AnimationLimiter(
+            height: 120.h,
+            child: AnimationLimiter( 
               child: ListView.builder(
                 shrinkWrap: false,
                 scrollDirection: Axis.horizontal,

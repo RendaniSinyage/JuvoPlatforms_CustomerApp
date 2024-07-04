@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
+//import 'package:riverpodtemp/application/home/home_provider.dart';
 import 'package:riverpodtemp/application/like/like_notifier.dart';
 import 'package:riverpodtemp/application/like/like_provider.dart';
 import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
@@ -12,16 +12,14 @@ import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
 import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
 import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
 import 'package:riverpodtemp/presentation/components/market_item.dart';
-import 'package:riverpodtemp/presentation/pages/home/shimmer/banner_shimmer.dart';
-import 'package:riverpodtemp/presentation/pages/home/widgets/banner_item.dart';
-import 'package:riverpodtemp/presentation/pages/home_one/widget/market_one_item.dart';
+import 'package:riverpodtemp/presentation/pages/home/shimmer/all_shop_shimmer.dart';
 import 'package:riverpodtemp/presentation/pages/home_three/widgets/market_three_item.dart';
+import 'package:riverpodtemp/presentation/pages/home_one/widget/market_one_item.dart';
 import 'package:riverpodtemp/presentation/pages/home_two/widget/market_two_item.dart';
 import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:riverpodtemp/presentation/components/badges/empty_badge.dart';
 
 import '../../../application/main/main_provider.dart';
-import '../home/shimmer/all_shop_shimmer.dart';
-
 
 @RoutePage()
 class LikePage extends ConsumerStatefulWidget {
@@ -38,7 +36,6 @@ class LikePage extends ConsumerStatefulWidget {
 
 class _LikePageState extends ConsumerState<LikePage> {
   late LikeNotifier event;
-  final RefreshController _bannerController = RefreshController();
   final RefreshController _likeShopController = RefreshController();
   final ScrollController _controller = ScrollController();
 
@@ -59,7 +56,6 @@ class _LikePageState extends ConsumerState<LikePage> {
 
   @override
   void dispose() {
-    _bannerController.dispose();
     _likeShopController.dispose();
     _controller.removeListener(listen);
     super.dispose();
@@ -100,44 +96,12 @@ class _LikePageState extends ConsumerState<LikePage> {
               onLoading: () {},
               onRefresh: () {
                 event.fetchLikeShop(context);
-                ref.read(homeProvider.notifier).fetchBannerPage(
-                    context, _likeShopController,
-                    isRefresh: true);
               },
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
                     top: 24.h, bottom: MediaQuery.of(context).padding.bottom),
                 child: Column(
                   children: [
-                    ref.watch(homeProvider).isBannerLoading
-                        ? const BannerShimmer()
-                        : SizedBox(
-                            height: 200.h,
-                            child: SmartRefresher(
-                              scrollDirection: Axis.horizontal,
-                              enablePullDown: false,
-                              enablePullUp: true,
-                              controller: _bannerController,
-                              onLoading: () async {
-                                await ref
-                                    .read(homeProvider.notifier)
-                                    .fetchBannerPage(
-                                        context, _bannerController);
-                              },
-                              child: ListView.builder(
-                                shrinkWrap: false,
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    ref.watch(homeProvider).banners.length,
-                                padding: EdgeInsets.only(left: 16.w),
-                                itemBuilder: (context, index) => BannerItem(
-                                  banner:
-                                      ref.watch(homeProvider).banners[index],
-                                ),
-                              ),
-                            ),
-                          ),
-                    24.verticalSpace,
                     state.isShopLoading
                         ? const AllShopShimmer(
                             isTitle: false,
@@ -193,23 +157,6 @@ class _LikePageState extends ConsumerState<LikePage> {
   }
 
   Widget _resultEmpty() {
-    return Column(
-      children: [
-        32.verticalSpace,
-        Image.asset("assets/images/notFound.png"),
-        Text(
-          AppHelpers.getTranslation(TrKeys.nothingFound),
-          style: AppStyle.interSemi(size: 18.sp),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32.w),
-          child: Text(
-            AppHelpers.getTranslation(TrKeys.trySearchingAgain),
-            style: AppStyle.interRegular(size: 14.sp),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
-  }
+  return const EmptyBadge();
+}
 }

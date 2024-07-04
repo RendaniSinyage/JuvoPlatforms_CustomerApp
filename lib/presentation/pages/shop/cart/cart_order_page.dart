@@ -85,7 +85,8 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
         textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.r), topRight: Radius.circular(12.r)),
+              topLeft: Radius.circular(12.r), topRight: Radius.circular(12.r)
+          ),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
             child: Container(
