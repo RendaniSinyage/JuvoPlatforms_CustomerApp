@@ -1,21 +1,19 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpodtemp/domain/di/injection.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/domain/iterface/settings.dart';
-import 'package:riverpodtemp/infrastructure/models/data/generate_image_model.dart';
-import 'package:riverpodtemp/infrastructure/models/data/help_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/notification_list_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import '../../../domain/handlers/handlers.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/settings.dart';
+import 'package:foodyman/infrastructure/models/data/help_data.dart';
+import 'package:foodyman/infrastructure/models/data/notification_list_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
 import '../models/data/translation.dart';
 
 class SettingsRepository implements SettingsRepositoryFacade {
   @override
   Future<ApiResult<GlobalSettingsResponse>> getGlobalSettings() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get('/api/v1/rest/settings');
       return ApiResult.success(
         data: GlobalSettingsResponse.fromJson(response.data),
@@ -23,12 +21,9 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get settings failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -36,7 +31,7 @@ class SettingsRepository implements SettingsRepositoryFacade {
   Future<ApiResult<MobileTranslationsResponse>> getMobileTranslations() async {
     final data = {'lang': LocalStorage.getLanguage()?.locale ?? 'en'};
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/translations/paginate',
         queryParameters: data,
@@ -47,19 +42,16 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get translations failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<LanguagesResponse>> getLanguages() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get('/api/v1/rest/languages/active');
       if (LocalStorage.getLanguage() == null ||
           !(LanguagesResponse.fromJson(response.data)
@@ -79,19 +71,16 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get languages failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<HelpModel>> getFaq() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get('/api/v1/rest/faqs/paginate');
       return ApiResult.success(
         data: HelpModel.fromJson(response.data),
@@ -99,19 +88,16 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get faq failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<Translation>> getTerm() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get('/api/v1/rest/term');
       return ApiResult.success(
         data: Translation.fromJson(response.data["data"]["translation"]),
@@ -119,19 +105,16 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get term failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<Translation>> getPolicy() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get('/api/v1/rest/policy');
       return ApiResult.success(
         data: Translation.fromJson(response.data["data"]["translation"]),
@@ -139,19 +122,16 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get policy failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<NotificationsListModel>> getNotificationList() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get('/api/v1/dashboard/user/notifications');
       return ApiResult.success(
         data: notificationsListModelFromJson(response.data) ??
@@ -160,12 +140,9 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get languages failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -173,7 +150,7 @@ class SettingsRepository implements SettingsRepositoryFacade {
   Future<ApiResult> updateNotification(
       List<NotificationData>? notifications) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final data = {
         for (int i = 0; i < notifications!.length; i++)
           "notifications[$i][notification_id]": notifications[i].id,
@@ -188,34 +165,10 @@ class SettingsRepository implements SettingsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get languages failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
-  @override
-  Future<ApiResult<GenerateImageModel>> getGenerateImage(String name) async {
-    try {
-      final client =
-          inject<HttpService>().client(chatGpt: true, requireAuth: true);
-      final response = await client.post('/v1/images/generations',
-          data: {"prompt": name, "n": 10, "size": "512x512"});
-      return ApiResult.success(
-        data: GenerateImageModel.fromJson(response.data),
-      );
-    } catch (e) {
-      debugPrint('==> get GenerateImage failure: $e');
-      return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
-    }
-  }
 }

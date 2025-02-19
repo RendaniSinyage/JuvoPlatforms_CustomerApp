@@ -1,6 +1,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
 part 'like_state.freezed.dart';
 
 @freezed

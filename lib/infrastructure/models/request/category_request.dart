@@ -1,6 +1,6 @@
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
-import '../../services/app_constants.dart';
+import 'package:foodyman/app_constants.dart';
 
 class CategoryModel {
   final int page;

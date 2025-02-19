@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/domain/iterface/cart.dart';
-import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/cart_data.dart';
-import 'package:riverpodtemp/infrastructure/models/request/cart_request.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import '../../infrastructure/services/app_connectivity.dart';
-import '../../infrastructure/services/app_helpers.dart';
-import '../../infrastructure/services/tpying_delay.dart';
+import 'package:foodyman/domain/interface/cart.dart';
+import 'package:foodyman/infrastructure/models/data/addons_data.dart';
+import 'package:foodyman/infrastructure/models/data/cart_data.dart';
+import 'package:foodyman/infrastructure/models/request/cart_request.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tpying_delay.dart';
 import 'shop_order_state.dart';
 import 'package:http/http.dart' as http;
 
@@ -84,11 +84,11 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
         success: (data) async {
           state = state.copyWith(cart: data.data, isAddAndRemoveLoading: false);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isAddAndRemoveLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -162,11 +162,11 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
               isShowLoading: false,
             );
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             state = state.copyWith(isAddAndRemoveLoading: false);
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
@@ -199,14 +199,14 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
           responseDelete.when(
             success: (data) async {
               state = state.copyWith(isAddAndRemoveLoading: false,cart: null);
-              context.popRoute();
+              context.maybePop();
               getCart(context, () {}, isShowLoading: false);
             },
-            failure: (activeFailure, status) {
+            failure: (failure, status) {
               state = state.copyWith(isAddAndRemoveLoading: false);
               AppHelpers.showCheckTopSnackBar(
                 context,
-                activeFailure,
+                failure,
               );
             },
           );
@@ -219,7 +219,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
               state = state.copyWith(isAddAndRemoveLoading: false);
               getCart(context, () {}, isShowLoading: false);
             },
-            failure: (activeFailure, status) {
+            failure: (failure, status) {
               state = state.copyWith(isAddAndRemoveLoading: false);
               AppHelpers.showCheckTopSnackBar(
                 context,
@@ -300,7 +300,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
             state =
                 state.copyWith(cart: data.data, isAddAndRemoveLoading: false);
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             state = state.copyWith(isAddAndRemoveLoading: false);
             AppHelpers.showCheckTopSnackBar(
               context,
@@ -384,7 +384,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
                   state.copyWith(cart: data.data, isAddAndRemoveLoading: false);
               getCart(context, () {}, isShowLoading: false);
             },
-            failure: (activeFailure, status) {
+            failure: (failure, status) {
               state = state.copyWith(isAddAndRemoveLoading: false);
               AppHelpers.showCheckTopSnackBar(
                 context,
@@ -423,10 +423,10 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
           responseDelete.when(
             success: (data) async {
               state = state.copyWith(isAddAndRemoveLoading: false,cart: null);
-              context.popRoute();
+              context.maybePop();
               getCart(context, () {}, isShowLoading: false);
             },
-            failure: (activeFailure, status) {
+            failure: (failure, status) {
               state = state.copyWith(isAddAndRemoveLoading: false);
               AppHelpers.showCheckTopSnackBar(
                 context,
@@ -443,7 +443,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
               state = state.copyWith(isAddAndRemoveLoading: false);
               getCart(context, () {}, isShowLoading: false);
             },
-            failure: (activeFailure, status) {
+            failure: (failure, status) {
               state = state.copyWith(isAddAndRemoveLoading: false);
               AppHelpers.showCheckTopSnackBar(
                 context,
@@ -486,7 +486,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
             );
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (status == 404) {
 
             if (isShowLoading) {
@@ -534,7 +534,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
           userUuid: userUuid, cartId: state.cart?.id.toString());
       response.when(
         success: (data) async {},
-        failure: (activeFailure, status) {},
+        failure: (failure, status) {},
       );
     } else {
       if (context.mounted) {
@@ -556,7 +556,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
           Navigator.pop(context);
           return;
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(
             isDeleteLoading: false,
           );
@@ -590,7 +590,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
         state = state.copyWith(cart: newCart);
       } else {
         if (context.mounted) {
-          context.popRoute();
+          context.maybePop();
         }
         _cartRepository.deleteUser(cartId: state.cart?.id ?? 0, userId: userId);
         state = state.copyWith(
@@ -636,7 +636,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
             isStartGroupLoading: false,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(
             isStartGroup: false,
             isStartGroupLoading: false,
@@ -670,7 +670,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
             data.data?.id ?? 0,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isCheckShopOrder: false);
           if (status == 400) {
             state = state.copyWith(isOtherShop: true);

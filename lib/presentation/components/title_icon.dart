@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
-import '../theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 // ignore: must_be_immutable
 class TitleAndIcon extends StatelessWidget {

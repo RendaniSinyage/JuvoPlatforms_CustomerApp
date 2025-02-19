@@ -4,22 +4,21 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/confirmation/register_confirmation_provider.dart';
-import 'package:riverpodtemp/application/edit_profile/edit_profile_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/app_bar_bottom_sheet.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/pages/auth/reset/set_password_page.dart';
+import 'package:foodyman/application/edit_profile/edit_profile_provider.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/app_bar_bottom_sheet.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/pages/auth/reset/set_password_page.dart';
 import 'package:sms_autofill/sms_autofill.dart';
-import '../../../theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/auth/auth.dart';
 import '../register/register_page.dart';
-
 
 @RoutePage()
 class RegisterConfirmationPage extends ConsumerStatefulWidget {
@@ -69,7 +68,7 @@ class _RegisterConfirmationPageState
         Navigator.pop(context);
         AppHelpers.showCustomModalBottomSheet(
           context: context,
-          modal:  RegisterPage(
+          modal: RegisterPage(
             isOnlyEmail: false,
           ),
           isDarkMode: isDarkMode,
@@ -135,14 +134,17 @@ class _RegisterConfirmationPageState
                             cursor: Cursor(
                               width: 1,
                               height: 24,
-                              color: isDarkMode ? AppStyle.white : AppStyle.black,
+                              color:
+                                  isDarkMode ? AppStyle.white : AppStyle.black,
                               enabled: true,
                             ),
                             decoration: BoxLooseDecoration(
                               gapSpace: 10.r,
                               textStyle: AppStyle.interNormal(
                                 size: 15.sp,
-                                color: isDarkMode ? AppStyle.white : AppStyle.black,
+                                color: isDarkMode
+                                    ? AppStyle.white
+                                    : AppStyle.black,
                               ),
                               bgColorBuilder: FixedColorBuilder(
                                 isDarkMode
@@ -163,7 +165,7 @@ class _RegisterConfirmationPageState
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom,
+                          bottom: MediaQuery.paddingOf(context).bottom,
                           top: 120.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,14 +177,28 @@ class _RegisterConfirmationPageState
                                 : state.timerText,
                             onPressed: () {
                               if (state.isTimeExpired) {
-                                widget.verificationId.isEmpty
-                                    ? notifier.resendConfirmation(
-                                        context, widget.userModel.email ?? "",
-                                        isResetPassword: widget.isResetPassword)
-                                    : notifier.sendCodeToNumber(
-                                        context,
-                                        widget.userModel.email ?? "",
-                                      );
+                                if (widget.isResetPassword) {
+                                  widget.verificationId.isEmpty
+                                      ? notifier.resendConfirmation(
+                                          context, widget.userModel.email ?? "",
+                                          isResetPassword:
+                                              widget.isResetPassword)
+                                      : notifier.resendResetConfirmation(
+                                          context,
+                                          widget.userModel.email ?? "",
+                                        );
+                                  return;
+                                } else {
+                                  widget.verificationId.isEmpty
+                                      ? notifier.resendConfirmation(
+                                          context, widget.userModel.email ?? "",
+                                          isResetPassword:
+                                              widget.isResetPassword)
+                                      : notifier.sendCodeToNumber(
+                                          context,
+                                          widget.userModel.email ?? "",
+                                        );
+                                }
                                 notifier.startTimer();
                               }
                             },
@@ -208,35 +224,43 @@ class _RegisterConfirmationPageState
                                 } else {
                                   widget.verificationId.isEmpty
                                       ? notifier.confirmCode(context)
-                                      : notifier.confirmCodeWithFirebase(
+                                      : notifier.confirmCodeWithPhone(
                                           context: context,
-                                          verificationId:
-                                              widget.verificationId, onSuccess: widget.editPhone ? (){
-                                    if (widget.editPhone) {
-                                      ref
-                                          .read(editProfileProvider.notifier)
-                                          .editProfile(
-                                          context,
-                                          ProfileData(
-                                              phone: widget.userModel.email,
-                                              firstname: ref
-                                                  .watch(profileProvider)
-                                                  .userData
-                                                  ?.firstname ??
-                                                  ""));
-                                      return;
-                                    }
-                                  } : null);
+                                          verificationId: widget.verificationId,
+                                          onSuccess: widget.editPhone
+                                              ? () {
+                                                  if (widget.editPhone) {
+                                                    ref
+                                                        .read(
+                                                            editProfileProvider
+                                                                .notifier)
+                                                        .editProfile(
+                                                            context,
+                                                            ProfileData(
+                                                                phone: widget
+                                                                    .userModel
+                                                                    .email,
+                                                                firstname: ref
+                                                                        .watch(
+                                                                            profileProvider)
+                                                                        .userData
+                                                                        ?.firstname ??
+                                                                    ""));
+                                                    return;
+                                                  }
+                                                }
+                                              : null);
                                 }
                               }
                             },
                             weight:
                                 2 * (MediaQuery.sizeOf(context).width - 40) / 3,
                             background: state.isConfirm
-                                ? AppStyle.brandGreen
+                                ? AppStyle.primary
                                 : AppStyle.white,
-                            textColor:
-                                state.isConfirm ? AppStyle.black : AppStyle.textGrey,
+                            textColor: state.isConfirm
+                                ? AppStyle.black
+                                : AppStyle.textGrey,
                           ),
                         ],
                       ),

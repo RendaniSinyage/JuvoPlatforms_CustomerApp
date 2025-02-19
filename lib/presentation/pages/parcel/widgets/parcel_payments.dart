@@ -2,18 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/payment_methods/payment_provider.dart';
-import 'package:riverpodtemp/application/payment_methods/payment_state.dart';
-import 'package:riverpodtemp/infrastructure/models/data/payment_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/select_item.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../../../../../application/payment_methods/payment_notifier.dart';
-import '../../../../../infrastructure/services/local_storage.dart';
+import 'package:foodyman/application/payment_methods/payment_provider.dart';
+import 'package:foodyman/application/payment_methods/payment_state.dart';
+import 'package:foodyman/infrastructure/models/data/payment_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/components/select_item.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/payment_methods/payment_notifier.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
 class ParcelPayments extends ConsumerStatefulWidget {
   final ValueChanged<PaymentData>? payLater;
@@ -108,7 +108,7 @@ class _PaymentMethodsState extends ConsumerState<ParcelPayments> {
                         child: CustomButton(
                             title: AppHelpers.getTranslation(TrKeys.pay),
                             onPressed: () {
-                              context.popRoute();
+                              context.maybePop();
                               widget.payLater?.call(
                                 state.payments[state.currentIndex],
                               );

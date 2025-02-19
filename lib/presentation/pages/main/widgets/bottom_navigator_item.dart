@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class BottomNavigatorItem extends StatelessWidget {
   final VoidCallback selectItem;
@@ -44,7 +44,7 @@ class BottomNavigatorItem extends StatelessWidget {
                 width: isScrolling ? 0.w : 24.w,
                 decoration: BoxDecoration(
                     color: index == currentIndex
-                        ? AppStyle.brandGreen
+                        ? AppStyle.primary
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(100.r),

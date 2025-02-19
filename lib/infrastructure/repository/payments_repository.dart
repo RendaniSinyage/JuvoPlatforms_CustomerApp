@@ -1,32 +1,30 @@
-
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpodtemp/domain/di/injection.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/domain/iterface/payments.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import '../../../domain/handlers/handlers.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/payments.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
 
 class PaymentsRepository implements PaymentsRepositoryFacade {
   @override
   Future<ApiResult<PaymentsResponse>> getPayments() async {
     final data = {'lang': LocalStorage.getLanguage()?.locale};
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
-      final response =
-          await client.get('/api/v1/rest/payments', queryParameters: data);
+      final client = dioHttp.client(requireAuth: false);
+      final response = await client.get(
+        '/api/v1/rest/payments',
+        queryParameters: data,
+      );
       return ApiResult.success(
         data: PaymentsResponse.fromJson(response.data),
       );
     } catch (e) {
       debugPrint('==> get payments failure: $e');
-      return ApiResult.failure(error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",statusCode: NetworkExceptions.getDioStatus(e));
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -37,7 +35,7 @@ class PaymentsRepository implements PaymentsRepositoryFacade {
   }) async {
     final data = {'payment_sys_id': paymentId};
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.post(
         '/api/v1/payments/order/$orderId/transactions',
         data: data,
@@ -47,11 +45,10 @@ class PaymentsRepository implements PaymentsRepositoryFacade {
       );
     } catch (e) {
       debugPrint('==> create transaction failure: $e');
-      return ApiResult.failure(error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",statusCode: NetworkExceptions.getDioStatus(e));
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 }

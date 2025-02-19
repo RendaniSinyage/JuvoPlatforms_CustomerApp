@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'animation_button_effect.dart';
 
@@ -20,7 +20,7 @@ class PopButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               color: AppStyle.black,
-              borderRadius: BorderRadius.all(Radius.circular(10.r))),
+              borderRadius: BorderRadius.circular(10.r)),
           padding: EdgeInsets.all(14.h),
           child: const Icon(
             Icons.keyboard_arrow_left,

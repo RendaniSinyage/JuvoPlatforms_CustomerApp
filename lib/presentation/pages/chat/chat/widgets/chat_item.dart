@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:riverpodtemp/infrastructure/models/data/chat_message_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-
+import 'package:foodyman/infrastructure/models/data/chat_message_data.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class ChatItem extends StatelessWidget {
   final ChatMessageData chatData;
@@ -32,7 +31,7 @@ class ChatItem extends StatelessWidget {
               ),
             ),
             color: chatData.messageOwner == MessageOwner.you
-                ? AppStyle.brandGreen
+                ? AppStyle.primary
                 : AppStyle.bgGrey,
           ),
           constraints: BoxConstraints(

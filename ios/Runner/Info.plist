@@ -43,7 +43,7 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>9</string>
 	<key>FacebookAppID</key>
 	<string>3416398941970171</string>
 	<key>FacebookClientToken</key>
@@ -72,6 +72,8 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your reason, why you want to track the user</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allowing the access to your camera helps us to show you the media files to upload to Shop app</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

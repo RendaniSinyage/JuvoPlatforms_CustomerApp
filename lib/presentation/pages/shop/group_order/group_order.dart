@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_share/flutter_share.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/cart_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/models/data/cart_data.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:flutter/services.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../../application/shop/shop_provider.dart';
+import 'package:foodyman/application/shop/shop_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'widgets/check_status_dialog.dart';
 import 'widgets/group_item.dart';
 
@@ -51,7 +51,7 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
       ref.read(shopOrderProvider.notifier).generateShareLink(
           widget.shop.translation?.title ?? "",
           widget.shop.logoImg ?? "",
-          widget.shop.type );
+          widget.shop.type);
     });
 
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
@@ -125,7 +125,7 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                           vertical: 12.h, horizontal: 16.w),
                       decoration: BoxDecoration(
                         color: AppStyle.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                        borderRadius: BorderRadius.circular(10.r),
                         boxShadow: [
                           BoxShadow(
                             color: AppStyle.black.withOpacity(0.04),
@@ -158,7 +158,7 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                           decoration: BoxDecoration(
                             color: AppStyle.white,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.r)),
+                                BorderRadius.circular(10.r),
                             boxShadow: [
                               BoxShadow(
                                 color: AppStyle.black.withOpacity(0.04),
@@ -173,10 +173,11 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        FlutterShare.share(
-                            title: AppHelpers.getTranslation(
-                                TrKeys.groupOrderProgress),
-                            linkUrl: state.shareLink);
+                        Share.share(
+                          state.shareLink,
+                          subject: AppHelpers.getTranslation(
+                              TrKeys.groupOrderProgress),
+                        );
                       },
                       child: Container(
                           width: 46.w,
@@ -184,7 +185,7 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                           decoration: BoxDecoration(
                             color: AppStyle.white,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.r)),
+                                BorderRadius.circular(10.r),
                             boxShadow: [
                               BoxShadow(
                                 color: AppStyle.black.withOpacity(0.04),
@@ -232,16 +233,16 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                                   .read(shopOrderProvider.notifier)
                                   .deleteUser(context, index);
                             },
-                            isDeleteButton:
-                                LocalStorage.getUserId() == state.cart?.ownerId
-                                    ? index != 0
-                                    : false,
+                            isDeleteButton: LocalStorage.getUser()?.id ==
+                                    state.cart?.ownerId
+                                ? index != 0
+                                : false,
                           );
                         }),
                   ],
                 ),
                 24.verticalSpace,
-                LocalStorage.getUserId() == state.cart?.ownerId
+                LocalStorage.getUser()?.id == state.cart?.ownerId
                     ? Padding(
                         padding: EdgeInsets.only(
                           bottom: 16.h,
@@ -356,17 +357,17 @@ class _GroupOrderPageState extends ConsumerState<GroupOrderScreen> {
                     : const SizedBox.shrink(),
                 Padding(
                   padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom + 16.h,
+                    bottom: MediaQuery.paddingOf(context).bottom + 16.h,
                   ),
                   child: CustomButton(
                     title: AppHelpers.getTranslation(
-                        LocalStorage.getUserId() == state.cart?.ownerId
+                        LocalStorage.getUser()?.id == state.cart?.ownerId
                             ? TrKeys.cancel
                             : TrKeys.leaveGroup),
                     borderColor: AppStyle.black,
                     background: AppStyle.transparent,
                     onPressed: () {
-                      if (LocalStorage.getUserId() == state.cart?.ownerId) {
+                      if (LocalStorage.getUser()?.id == state.cart?.ownerId) {
                         event.deleteCart(context);
                       } else {
                         event.deleteUser(context, 0,

@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpodtemp/domain/di/injection.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/domain/iterface/user.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/referral_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/models/request/edit_profile.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import '../../../domain/handlers/handlers.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/user.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/referral_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/request/edit_profile.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
 
 class UserRepository implements UserRepositoryFacade {
   @override
@@ -21,7 +20,7 @@ class UserRepository implements UserRepositoryFacade {
           'currency_id': LocalStorage.getSelectedCurrency()?.id,
         "lang": LocalStorage.getLanguage()?.locale ?? "en"
       };
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get('/api/v1/dashboard/user/profile/show',
           queryParameters: data);
       return ApiResult.success(
@@ -30,12 +29,9 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> get user details failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -48,7 +44,7 @@ class UserRepository implements UserRepositoryFacade {
         "lang": LocalStorage.getLanguage()?.locale ?? "en"
       };
 
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response =
           await client.get('/api/v1/rest/referral', queryParameters: data);
       return ApiResult.success(
@@ -57,12 +53,9 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> get referral details failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -72,7 +65,7 @@ class UserRepository implements UserRepositoryFacade {
     final data = user?.toJson();
     debugPrint('===> update general info data ${jsonEncode(data)}');
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.put(
         '/api/v1/dashboard/user/profile/update',
         data: data,
@@ -83,12 +76,9 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> update profile details failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -102,7 +92,7 @@ class UserRepository implements UserRepositoryFacade {
       'images': [imageUrl],
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.put(
         '/api/v1/dashboard/user/profile/update',
         data: data,
@@ -113,12 +103,9 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> update profile image failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -132,7 +119,7 @@ class UserRepository implements UserRepositoryFacade {
       'password_confirmation': passwordConfirmation,
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.post(
         '/api/v1/dashboard/user/profile/password/update',
         data: data,
@@ -143,12 +130,9 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> update password failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -163,7 +147,7 @@ class UserRepository implements UserRepositoryFacade {
       "lang": LocalStorage.getLanguage()?.locale ?? "en"
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/v1/dashboard/user/wallet/histories',
         queryParameters: data,
@@ -174,12 +158,9 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> get wallet histories failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -187,7 +168,7 @@ class UserRepository implements UserRepositoryFacade {
   Future<ApiResult<void>> updateFirebaseToken(String? token) async {
     final data = {if (token != null) 'firebase_token': token};
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post(
         '/api/v1/dashboard/user/profile/firebase/token/update',
         data: data,
@@ -196,131 +177,104 @@ class UserRepository implements UserRepositoryFacade {
     } catch (e) {
       debugPrint('==> update firebase token failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult> deleteAccount() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.delete(
         '/api/v1/dashboard/user/profile/delete',
       );
-      return const ApiResult.success(
-        data: null,
-      );
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : e.toString(),
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult> logoutAccount({required String fcm}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
-      await client.post('/api/v1/auth/logout', data: {"firebase_token": fcm});
-      LocalStorage.logout();
-      return const ApiResult.success(
-        data: null,
+      final client = dioHttp.client(requireAuth: true);
+      await client.post(
+        '/api/v1/auth/logout',
+        data: {"firebase_token": fcm},
       );
+      LocalStorage.logout();
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult> saveLocation({required AddressNewModel? address}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post('/api/v1/dashboard/user/addresses',
           data: address?.toJson());
-      return const ApiResult.success(
-        data: null,
-      );
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : e.toString(),
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
-  Future<ApiResult> updateLocation({required AddressNewModel? address,required int? addressId}) async {
+  Future<ApiResult> updateLocation(
+      {required AddressNewModel? address, required int? addressId}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
-      await client.put('/api/v1/dashboard/user/addresses/$addressId',
-          data: address?.toJson());
-      return const ApiResult.success(
-        data: null,
+      final client = dioHttp.client(requireAuth: true);
+      await client.put(
+        '/api/v1/dashboard/user/addresses/$addressId',
+        data: address?.toJson(),
       );
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-              ? (e.response?.data["params"] as Map).values.first[0]
-              : e.response?.data["message"])
-              : e.toString(),
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult> setActiveAddress({required int id}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post('/api/v1/dashboard/user/address/set-active/$id');
-      return const ApiResult.success(
-        data: null,
-      );
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : e.toString(),
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult> deleteAddress({required int id}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.delete('/api/v1/dashboard/user/addresses/delete?ids[0]=$id');
-      return const ApiResult.success(
-        data: null,
-      );
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : e.toString(),
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 }

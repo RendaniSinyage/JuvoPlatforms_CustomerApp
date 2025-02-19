@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class TabBarItem extends StatelessWidget {
   final bool isShopTabBar;
@@ -24,8 +24,8 @@ class TabBarItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         decoration: BoxDecoration(
-          color: isShopTabBar ?  (currentIndex == index ? AppStyle.brandGreen : AppStyle.white) :  AppStyle.white,
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+          color: isShopTabBar ?  (currentIndex == index ? AppStyle.primary : AppStyle.white) :  AppStyle.white,
+          borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
               color: AppStyle.white.withOpacity(0.07),

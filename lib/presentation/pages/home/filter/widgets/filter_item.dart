@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/take_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/take_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 // ignore: must_be_immutable
 class FilterItem extends StatelessWidget {
@@ -40,7 +40,7 @@ class FilterItem extends StatelessWidget {
           EdgeInsets.only(left: 18.w, right: 18.w, top: 18.h, bottom: 10.h),
       decoration: BoxDecoration(
           color: AppStyle.white.withOpacity(0.9),
-          borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          borderRadius: BorderRadius.circular(10.r)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -63,12 +63,12 @@ class FilterItem extends StatelessWidget {
                             vertical: 10.h, horizontal: 16.w),
                         decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.r)),
+                                BorderRadius.circular(10.r),
                             color: ((e.runtimeType == TakeModel)
                                     ? (currentItem == (e as TakeModel).id ||
                                         currentItemTwo == e.id)
                                     : (currentItem == e || currentItemTwo == e))
-                                ? AppStyle.brandGreen
+                                ? AppStyle.primary
                                 : AppStyle.bgGrey),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

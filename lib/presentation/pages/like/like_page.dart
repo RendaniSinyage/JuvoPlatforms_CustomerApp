@@ -3,23 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/presentation/pages/home/widgets/banner_item.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/application/like/like_notifier.dart';
-import 'package:riverpodtemp/application/like/like_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/market_item.dart';
-import 'package:riverpodtemp/presentation/pages/home/shimmer/banner_shimmer.dart';
-import 'package:riverpodtemp/presentation/pages/home/widgets/banner_item.dart';
-import 'package:riverpodtemp/presentation/pages/home_one/widget/market_one_item.dart';
-import 'package:riverpodtemp/presentation/pages/home_three/widgets/market_three_item.dart';
-import 'package:riverpodtemp/presentation/pages/home_two/widget/market_two_item.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-
-import '../../../application/main/main_provider.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/application/like/like_notifier.dart';
+import 'package:foodyman/application/like/like_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/market_item.dart';
+import 'package:foodyman/presentation/pages/home/shimmer/banner_shimmer.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/main/main_provider.dart';
+import '../home/home_one/widget/market_one_item.dart';
+import '../home/home_three/widgets/market_three_item.dart';
+import '../home/home_two/widget/market_two_item.dart';
 import '../home/shimmer/all_shop_shimmer.dart';
 
 
@@ -106,7 +105,7 @@ class _LikePageState extends ConsumerState<LikePage> {
               },
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
-                    top: 24.h, bottom: MediaQuery.of(context).padding.bottom),
+                    top: 24.h, bottom: MediaQuery.paddingOf(context).bottom),
                 child: Column(
                   children: [
                     ref.watch(homeProvider).isBannerLoading

@@ -2,19 +2,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/profile/profile_notifier.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import '../../theme/app_style.dart';
+import 'package:foodyman/application/profile/profile_notifier.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/application/profile/profile_state.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
 
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 @RoutePage()
 class WalletHistoryPage extends ConsumerStatefulWidget {
@@ -108,14 +108,11 @@ class _WalletHistoryState extends ConsumerState<WalletHistoryPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      intl.DateFormat("MMM dd,yyyy h:mm a")
-                                          .format(
+                                      TimeService.dateFormatMDYHm(
                                         DateTime.tryParse(state
-                                                        .walletHistory?[index]
-                                                        .createdAt ??
-                                                    "")
-                                                ?.toLocal() ??
-                                            DateTime.now(),
+                                                .walletHistory?[index]
+                                                .createdAt ??
+                                            ""),
                                       ),
                                       style: AppStyle.interRegular(
                                         size: 12.sp,
@@ -154,14 +151,11 @@ class _WalletHistoryState extends ConsumerState<WalletHistoryPage> {
                                           ),
                                         ),
                                         Text(
-                                          intl.DateFormat("MM/dd/yyyy").format(
+                                          TimeService.dateFormatDMY(
                                             DateTime.tryParse(state
-                                                            .walletHistory?[
-                                                                index]
-                                                            .createdAt ??
-                                                        "")
-                                                    ?.toLocal() ??
-                                                DateTime.now(),
+                                                    .walletHistory?[index]
+                                                    .createdAt ??
+                                                ""),
                                           ),
                                           style: AppStyle.interRegular(
                                             size: 16.sp,

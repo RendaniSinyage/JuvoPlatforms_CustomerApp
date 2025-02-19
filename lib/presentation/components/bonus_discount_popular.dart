@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/bonus_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/models/data/bonus_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 
-import '../../infrastructure/services/tr_keys.dart';
-import '../theme/app_style.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class BonusDiscountPopular extends StatelessWidget {
   final bool isPopular;
@@ -46,7 +46,7 @@ class BonusDiscountPopular extends StatelessWidget {
                     width: 22.w,
                     height: 22.h,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: AppStyle.brandGreen),
+                        shape: BoxShape.circle, color: AppStyle.primary),
                     child: Icon(
                       FlutterRemix.gift_2_fill,
                       size: 16.r,
@@ -115,7 +115,7 @@ class BonusDiscountPopular extends StatelessWidget {
                             width: 22.w,
                             height: 22.h,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: AppStyle.brandGreen),
+                                shape: BoxShape.circle, color: AppStyle.primary),
                             child: Icon(
                               FlutterRemix.gift_2_fill,
                               size: 16.r,
@@ -132,7 +132,7 @@ class BonusDiscountPopular extends StatelessWidget {
                                 height: 22.h,
                                 decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AppStyle.brandGreen),
+                                    color: AppStyle.primary),
                                 child: Icon(
                                   FlutterRemix.gift_2_fill,
                                   size: 16.r,
@@ -194,7 +194,7 @@ class BonusDiscountPopular extends StatelessWidget {
                                       : bonus != null
                                           ? Container(
                                               decoration: BoxDecoration(
-                                                  color: AppStyle.brandGreen,
+                                                  color: AppStyle.primary,
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(
@@ -293,7 +293,7 @@ class BonusDiscountPopular extends StatelessWidget {
                     width: 22.w,
                     height: 22.h,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: AppStyle.brandGreen),
+                        shape: BoxShape.circle, color: AppStyle.primary),
                     child: Icon(
                       FlutterRemix.gift_2_fill,
                       size: 16.r,
@@ -345,7 +345,7 @@ class BonusDiscountPopular extends StatelessWidget {
                                 height: 22.h,
                                 decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AppStyle.brandGreen),
+                                    color: AppStyle.primary),
                                 child: Icon(
                                   FlutterRemix.gift_2_fill,
                                   size: 16.r,

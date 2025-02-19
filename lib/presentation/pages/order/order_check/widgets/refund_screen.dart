@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
-import '../../../../components/buttons/custom_button.dart';
-import '../../../../components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
 
 class RefundScreen extends StatefulWidget {
   const RefundScreen({super.key});
@@ -77,7 +77,7 @@ class _RefundScreenState extends State<RefundScreen> {
                   146.verticalSpace,
                   Padding(
                     padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom+24.h,
+                      bottom: MediaQuery.paddingOf(context).bottom+24.h,
                     ),
                     child: Consumer(builder: (context, ref, child) {
                       return CustomButton(

@@ -19,7 +19,9 @@ mixin _$LikeState {
   bool get isShopLoading => throw _privateConstructorUsedError;
   List<ShopData> get shops => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LikeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LikeStateCopyWith<LikeState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$LikeStateCopyWithImpl<$Res, $Val extends LikeState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LikeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +84,8 @@ class __$$LikeStateImplCopyWithImpl<$Res>
       _$LikeStateImpl _value, $Res Function(_$LikeStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LikeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -138,7 +144,9 @@ class _$LikeStateImpl extends _LikeState {
   int get hashCode => Object.hash(
       runtimeType, isShopLoading, const DeepCollectionEquality().hash(_shops));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LikeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LikeStateImplCopyWith<_$LikeStateImpl> get copyWith =>
@@ -154,8 +162,11 @@ abstract class _LikeState extends LikeState {
   bool get isShopLoading;
   @override
   List<ShopData> get shops;
+
+  /// Create a copy of LikeState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LikeStateImplCopyWith<_$LikeStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

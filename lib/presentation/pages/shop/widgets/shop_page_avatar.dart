@@ -6,22 +6,22 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/badge_item.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
-import 'package:riverpodtemp/presentation/pages/shop/group_order/group_order.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/badge_item.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/shop_avarat.dart';
+import 'package:foodyman/presentation/pages/shop/group_order/group_order.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../../infrastructure/models/data/bonus_data.dart';
-import '../../../components/bonus_discount_popular.dart';
+import 'package:foodyman/infrastructure/models/data/bonus_data.dart';
+import 'package:foodyman/presentation/components/bonus_discount_popular.dart';
 import 'bonus_screen.dart';
 import 'shop_description_item.dart';
 
@@ -139,7 +139,7 @@ class ShopPageAvatar extends StatelessWidget {
                   ShopDescriptionItem(
                     title: AppHelpers.getTranslation(TrKeys.deliveryPrice),
                     description:
-                        "${AppHelpers.getTranslation(TrKeys.from)} ${AppHelpers.numberFormat(number: shop.deliveryRange)}",
+                        "${AppHelpers.getTranslation(TrKeys.from)} ${AppHelpers.numberFormat(number: shop.minPrice)}",
                     icon: SvgPicture.asset(
                       "assets/svgs/ticket.svg",
                       width: 18.r,
@@ -152,11 +152,11 @@ class ShopPageAvatar extends StatelessWidget {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Container(
-                        width: MediaQuery.of(context).size.width - 32,
+                        width: MediaQuery.sizeOf(context).width - 32,
                         decoration: BoxDecoration(
                             color: AppStyle.bgGrey,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.r))),
+                                BorderRadius.circular(10.r)),
                         padding: const EdgeInsets.all(6),
                         child: Row(
                           children: [
@@ -226,10 +226,12 @@ class ShopPageAvatar extends StatelessWidget {
                             .read(shopOrderProvider.notifier)
                             .deleteCart(context)
                             .then((value) async {
-                          ref.read(shopOrderProvider.notifier).createCart(
+                              if(context.mounted) {
+                                ref.read(shopOrderProvider.notifier).createCart(
                                 context,
                                 (shop.id ?? 0),
                               );
+                              }
                         });
                       });
                 })),
@@ -272,7 +274,7 @@ class ShopPageAvatar extends StatelessWidget {
         title: isStartOrder
             ? AppHelpers.getTranslation(TrKeys.manageOrder)
             : AppHelpers.getTranslation(TrKeys.startGroupOrder),
-        background: isStartOrder ? AppStyle.brandGreen : AppStyle.orderButtonColor,
+        background: isStartOrder ? AppStyle.primary : AppStyle.orderButtonColor,
         textColor: isStartOrder ? AppStyle.black : AppStyle.white,
         radius: 10,
         onPressed: () {
@@ -283,7 +285,7 @@ class ShopPageAvatar extends StatelessWidget {
                       shop.id ?? 0,
                     )
                 : AppHelpers.showCustomModalBottomSheet(
-                    paddingTop: MediaQuery.of(context).padding.top + 160.h,
+                    paddingTop: MediaQuery.paddingOf(context).top + 160.h,
                     context: context,
                     modal: GroupOrderScreen(
                       shop: shop,
@@ -305,19 +307,19 @@ class ShopPageAvatar extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 180.h + MediaQuery.of(context).padding.top,
+          height: 180.h + MediaQuery.paddingOf(context).top,
           width: double.infinity,
           color: AppStyle.mainBack,
           child: CustomNetworkImage(
             url: shop.backgroundImg ?? "",
-            height: 180.h + MediaQuery.of(context).padding.top,
+            height: 180.h + MediaQuery.paddingOf(context).top,
             width: double.infinity,
             radius: 0,
           ),
         ),
         Padding(
           padding: EdgeInsets.only(
-              top: 130.h + MediaQuery.of(context).padding.top,
+              top: 130.h + MediaQuery.paddingOf(context).top,
               left: 16.w,
               right: 16.w),
           child: ShopAvatar(
@@ -329,7 +331,7 @@ class ShopPageAvatar extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).padding.top,
+          top: MediaQuery.paddingOf(context).top,
           right: 16.w,
           child: Row(
             children: [
@@ -344,7 +346,7 @@ class ShopPageAvatar extends StatelessWidget {
                       name: shop.translation?.title ?? ""));
                 },
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                  borderRadius: BorderRadius.circular(10.r),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                     child: Container(
@@ -365,7 +367,7 @@ class ShopPageAvatar extends StatelessWidget {
               GestureDetector(
                 onTap: onLike,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                  borderRadius: BorderRadius.circular(10.r),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                     child: Container(
@@ -388,7 +390,7 @@ class ShopPageAvatar extends StatelessWidget {
               GestureDetector(
                 onTap: onShare,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                  borderRadius: BorderRadius.circular(10.r),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                     child: Container(
@@ -417,7 +419,7 @@ class ShopPageAvatar extends StatelessWidget {
       child: GestureDetector(
           onTap: () {
             AppHelpers.showCustomModalBottomSheet(
-              paddingTop: MediaQuery.of(context).padding.top,
+              paddingTop: MediaQuery.paddingOf(context).top,
               context: context,
               modal: BonusScreen(
                 bonus: bonus,
@@ -429,10 +431,10 @@ class ShopPageAvatar extends StatelessWidget {
           },
           child: Container(
             margin: EdgeInsets.only(top: 8.h),
-            width: MediaQuery.of(context).size.width - 32,
+            width: MediaQuery.sizeOf(context).width - 32,
             decoration: BoxDecoration(
                 color: AppStyle.bgGrey,
-                borderRadius: BorderRadius.all(Radius.circular(10.r))),
+                borderRadius: BorderRadius.circular(10.r)),
             padding: const EdgeInsets.all(6),
             child: Row(
               children: [

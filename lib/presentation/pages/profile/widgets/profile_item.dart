@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class ProfileItem extends StatelessWidget {
   final String title;
@@ -31,7 +31,7 @@ class ProfileItem extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
               color: AppStyle.white,
-              borderRadius: BorderRadius.all(Radius.circular(10.r))),
+              borderRadius: BorderRadius.circular(10.r)),
           child: Padding(
             padding: EdgeInsets.all(16.r),
             child: Row(
@@ -54,7 +54,7 @@ class ProfileItem extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           vertical: 5.h, horizontal: 14.w),
                       decoration: BoxDecoration(
-                          color: AppStyle.brandGreen,
+                          color: AppStyle.primary,
                           borderRadius:
                           BorderRadius.all(Radius.circular(100.r))),
                       child: Text(

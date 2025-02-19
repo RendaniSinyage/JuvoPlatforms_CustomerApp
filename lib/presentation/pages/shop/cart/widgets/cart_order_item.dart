@@ -3,14 +3,15 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/order_active_model.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/pages/shop/cart/widgets/note_product.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../../../../infrastructure/models/data/cart_data.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/infrastructure/models/data/addons_data.dart';
+import 'package:foodyman/infrastructure/models/data/order_active_model.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/pages/shop/cart/widgets/note_product.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/cart_data.dart';
 
 class CartOrderItem extends StatelessWidget {
   final CartDetail? cart;
@@ -66,7 +67,7 @@ class CartOrderItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: (MediaQuery.of(context).size.width - 86.w) * 2 / 3,
+              width: (MediaQuery.sizeOf(context).width - 86.w) * 2 / 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -153,7 +154,7 @@ class CartOrderItem extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(10.r)),
+                                      BorderRadius.circular(10.r),
                                   border: Border.all(color: AppStyle.textGrey)),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -317,15 +318,27 @@ class CartOrderItem extends StatelessWidget {
                                 8.horizontalSpace
                               ],
                             )
-                          : Text(
-                              AppHelpers.numberFormat(
-                                  isOrder: symbol != null,
-                                  symbol: symbol,
-                                  number: cartTwo?.originPrice ?? 0),
-                              style: AppStyle.interSemi(
-                                size: 16,
-                                color: AppStyle.black,
-                              ),
+                          : Row(
+                              children: [
+                                Text(
+                                  AppHelpers.getTranslation(
+                                    (cartTwo?.bonusShop ?? false)
+                                        ? TrKeys.shopBonus
+                                        : TrKeys.bonus,
+                                  ),
+                                  style: AppStyle.interSemi(
+                                    size: 16,
+                                    color: AppStyle.black,
+                                  ),
+                                ),
+                                Text(
+                                  " (${(cartTwo?.quantity ?? 1) * (cartTwo?.stock?.product?.interval ?? 1)} ${cartTwo?.stock?.product?.unit?.translation?.title})",
+                                  style: AppStyle.interNormal(
+                                    size: 12,
+                                    color: AppStyle.textGrey,
+                                  ),
+                                ),
+                              ],
                             ),
                 ],
               ),

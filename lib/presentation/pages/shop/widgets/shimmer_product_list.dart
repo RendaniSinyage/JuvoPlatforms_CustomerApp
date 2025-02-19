@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class ShimmerProductList extends StatelessWidget {
   const ShimmerProductList({super.key});
@@ -29,7 +29,7 @@ class ShimmerProductList extends StatelessWidget {
                   margin: EdgeInsets.all(4.r),
                   decoration: BoxDecoration(
                       color: AppStyle.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10.r))),
+                      borderRadius: BorderRadius.circular(10.r)),
                   width: double.infinity,
                   height: 150.h,
                   child: Container(

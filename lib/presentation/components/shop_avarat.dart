@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 // ignore: must_be_immutable
 class ShopAvatar extends StatelessWidget {

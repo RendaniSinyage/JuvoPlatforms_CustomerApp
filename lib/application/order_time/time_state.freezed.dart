@@ -20,7 +20,9 @@ mixin _$TimeState {
   int get currentIndexTwo => throw _privateConstructorUsedError;
   int? get selectIndex => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TimeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TimeStateCopyWith<TimeState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -43,6 +45,8 @@ class _$TimeStateCopyWithImpl<$Res, $Val extends TimeState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TimeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +90,8 @@ class __$$TimeStateImplCopyWithImpl<$Res>
       _$TimeStateImpl _value, $Res Function(_$TimeStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TimeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,7 +157,9 @@ class _$TimeStateImpl extends _TimeState {
   int get hashCode =>
       Object.hash(runtimeType, currentIndexOne, currentIndexTwo, selectIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TimeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TimeStateImplCopyWith<_$TimeStateImpl> get copyWith =>
@@ -171,8 +179,11 @@ abstract class _TimeState extends TimeState {
   int get currentIndexTwo;
   @override
   int? get selectIndex;
+
+  /// Create a copy of TimeState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TimeStateImplCopyWith<_$TimeStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

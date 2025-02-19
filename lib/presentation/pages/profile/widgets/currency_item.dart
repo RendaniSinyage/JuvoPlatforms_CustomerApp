@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class CurrencyItem extends StatelessWidget {
   final VoidCallback onTap;
@@ -19,7 +19,7 @@ class CurrencyItem extends StatelessWidget {
           decoration: BoxDecoration(
               color: AppStyle.white,
               borderRadius:
-              BorderRadius.all(Radius.circular(10.r))),
+              BorderRadius.circular(10.r)),
           child: Padding(
             padding: EdgeInsets.all(18.r),
             child: Row(
@@ -31,7 +31,7 @@ class CurrencyItem extends StatelessWidget {
                   height: 18.h,
                   decoration: BoxDecoration(
                       color: isActive
-                          ? AppStyle.brandGreen
+                          ? AppStyle.primary
                           : AppStyle.transparent,
                       shape: BoxShape.circle,
                       border: Border.all(

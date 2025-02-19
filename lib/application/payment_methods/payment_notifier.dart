@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import '../../domain/iterface/payments.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/domain/interface/payments.dart';
 import 'payment_state.dart';
 
 class PaymentNotifier extends StateNotifier<PaymentState> {

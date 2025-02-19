@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class SelectAddressItem extends StatelessWidget {
   final VoidCallback onTap;
@@ -28,7 +28,7 @@ class SelectAddressItem extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
               color: AppStyle.white,
-              borderRadius: BorderRadius.all(Radius.circular(10.r))),
+              borderRadius: BorderRadius.circular(10.r)),
           child: Padding(
             padding: EdgeInsets.all(18.r),
             child: Row(
@@ -39,7 +39,7 @@ class SelectAddressItem extends StatelessWidget {
                   width: 18.w,
                   height: 18.h,
                   decoration: BoxDecoration(
-                      color: isActive ? AppStyle.brandGreen : AppStyle.transparent,
+                      color: isActive ? AppStyle.primary : AppStyle.transparent,
                       shape: BoxShape.circle,
                       border: Border.all(
                           color: isActive ? AppStyle.black : AppStyle.textGrey,

@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'notification_page.dart';
 
@@ -123,7 +123,7 @@ class _SettingPageState extends ConsumerState<SettingPage>
                 //             title: AppHelpers.getTranslation(TrKeys.addNewCart),
                 //             onPressed: () {
                 //               AppHelpers.showCustomModalBottomSheet(
-                //                 paddingTop: MediaQuery.of(context).padding.top,
+                //                 paddingTop: MediaQuery.paddingOf(context).top,
                 //                 context: context,
                 //                 modal: const AddToScreen(),
                 //                 isDarkMode: isDarkMode,

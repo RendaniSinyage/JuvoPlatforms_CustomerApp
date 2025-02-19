@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
-import '../../../infrastructure/models/data/typed_extra.dart';
-import '../../theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/typed_extra.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class ColorExtras extends StatelessWidget {
   final int groupIndex;
@@ -45,7 +45,7 @@ class ColorExtras extends StatelessWidget {
                           height: 22.r,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(11.r),
-                            color: AppStyle.brandGreen,
+                            color: AppStyle.primary,
                             border:
                                 Border.all(color: AppStyle.white, width: 8.r),
                           ),

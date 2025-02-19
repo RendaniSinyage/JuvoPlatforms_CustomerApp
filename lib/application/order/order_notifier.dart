@@ -1,27 +1,27 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foodyman/infrastructure/services/extension.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/domain/iterface/cart.dart';
-import 'package:riverpodtemp/domain/iterface/draw.dart';
-import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/order_active_model.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/marker_image_cropper.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import '../../domain/iterface/orders.dart';
-import '../../domain/iterface/payments.dart';
-import '../../domain/iterface/shops.dart';
-import '../../infrastructure/models/models.dart';
-import '../../infrastructure/models/request/cart_request.dart';
-import '../../infrastructure/services/app_connectivity.dart';
-import '../../infrastructure/services/app_helpers.dart';
+import 'package:foodyman/domain/interface/cart.dart';
+import 'package:foodyman/domain/interface/draw.dart';
+import 'package:foodyman/infrastructure/models/data/addons_data.dart';
+import 'package:foodyman/infrastructure/models/data/order_active_model.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/marker_image_cropper.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/domain/interface/orders.dart';
+import 'package:foodyman/domain/interface/payments.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/request/cart_request.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:intl/intl.dart';
 import 'order_state.dart';
-import 'package:intl/intl.dart' as intl;
 
 class OrderNotifier extends StateNotifier<OrderState> {
   final OrdersRepositoryFacade _orderRepository;
@@ -76,11 +76,11 @@ class OrderNotifier extends StateNotifier<OrderState> {
             markers: list,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },
@@ -118,171 +118,116 @@ class OrderNotifier extends StateNotifier<OrderState> {
   }
 
   void checkWorkingDay() {
-    int todayWeekIndex = 0;
-    int tomorrowWeekIndex = 0;
-    for (int i = 0; i < state.shopData!.shopWorkingDays!.length; i++) {
-      if (state.shopData!.shopWorkingDays![i].day ==
-              intl.DateFormat("EEEE").format(DateTime.now()).toLowerCase() &&
-          !(state.shopData!.shopWorkingDays![i].disabled ?? true)) {
-        state = state.copyWith(isTodayWorkingDay: true);
-        todayWeekIndex = i;
-        break;
-      } else {
-        state = state.copyWith(isTodayWorkingDay: false);
-      }
-    }
-    for (int i = 0; i < state.shopData!.shopWorkingDays!.length; i++) {
-      if (state.shopData!.shopWorkingDays![i].day ==
-              intl.DateFormat("EEEE")
-                  .format(DateTime.now().add(const Duration(days: 1)))
-                  .toLowerCase() &&
-          !(state.shopData!.shopWorkingDays![i].disabled ?? true)) {
-        state = state.copyWith(isTomorrowWorkingDay: true);
-        tomorrowWeekIndex = i;
-        break;
-      } else {
-        state = state.copyWith(isTomorrowWorkingDay: false);
-      }
+    if (!(state.shopData?.open ?? false)) return;
+    List<String> todayTimes = getTimes(-1);
+    List<List<String>> dailyTimes = [];
+    for (int i = 0; i < 6; i++) {
+      dailyTimes.add(getTimes(i));
     }
 
-    if (state.isTodayWorkingDay) {
-      for (int i = 0; i < state.shopData!.shopClosedDate!.length; i++) {
-        if (DateTime.now().year ==
-                state.shopData!.shopClosedDate![i].day!.year &&
-            DateTime.now().month ==
-                state.shopData!.shopClosedDate![i].day!.month &&
-            DateTime.now().day == state.shopData!.shopClosedDate![i].day!.day) {
-          state = state.copyWith(isTodayWorkingDay: false);
-          break;
-        } else {
-          state = state.copyWith(isTodayWorkingDay: true);
-        }
-      }
-      if (state.isTodayWorkingDay) {
-        TimeOfDay startTimeOfDay = TimeOfDay(
-          hour: int.tryParse(state
-                      .shopData!.shopWorkingDays?[todayWeekIndex].from
-                      ?.substring(
-                          0,
-                          state.shopData!.shopWorkingDays?[todayWeekIndex].from
-                                  ?.indexOf("-") ??
-                              0) ??
-                  "") ??
-              0,
-          minute: int.tryParse(state
-                      .shopData!.shopWorkingDays?[todayWeekIndex].from
-                      ?.substring((state.shopData!
-                                  .shopWorkingDays?[todayWeekIndex].from
-                                  ?.indexOf("-") ??
-                              0) +
-                          1) ??
-                  "") ??
-              0,
-        );
-        TimeOfDay endTimeOfDay = TimeOfDay(
-          hour: int.tryParse(state.shopData!.shopWorkingDays?[todayWeekIndex].to
-                      ?.substring(
-                          0,
-                          state.shopData!.shopWorkingDays?[todayWeekIndex].to
-                                  ?.indexOf("-") ??
-                              0) ??
-                  "") ??
-              0,
-          minute: int.tryParse(state
-                      .shopData!.shopWorkingDays?[todayWeekIndex].to
-                      ?.substring((state
-                                  .shopData!.shopWorkingDays?[todayWeekIndex].to
-                                  ?.indexOf("-") ??
-                              0) +
-                          1) ??
-                  "") ??
-              0,
-        );
-        state = state.copyWith(
-          startTodayTime: startTimeOfDay,
-          endTodayTime: endTimeOfDay,
-        );
-        if (DateTime.now().hour < endTimeOfDay.hour) {
-          state = state.copyWith(
-              selectDate: DateTime.now(),
-              selectTime: DateTime.now().hour > startTimeOfDay.hour
-                  ? TimeOfDay(
-                      hour: DateTime.now().hour, minute: DateTime.now().minute)
-                  : TimeOfDay(
-                      hour: startTimeOfDay.hour,
-                      minute: startTimeOfDay.minute));
-        }
-      }
-    }
+    state = state.copyWith(dailyTimes: dailyTimes, todayTimes: todayTimes);
+  }
 
-    if (state.isTomorrowWorkingDay) {
-      for (int i = 0; i < state.shopData!.shopClosedDate!.length; i++) {
-        if (DateTime.now().add(const Duration(days: 1)).year ==
-                state.shopData!.shopClosedDate![i].day!.year &&
-            DateTime.now().add(const Duration(days: 1)).month ==
-                state.shopData!.shopClosedDate![i].day!.month &&
-            DateTime.now().add(const Duration(days: 1)).day ==
-                state.shopData!.shopClosedDate![i].day!.day) {
-          state = state.copyWith(isTomorrowWorkingDay: false);
-          break;
+  List<String> getTimes(int i) {
+    debugPrint("getTimes $i");
+    final days = state.shopData?.shopWorkingDays;
+    List<ShopClosedDate> closedDays = state.shopData?.shopClosedDate ?? [];
+    DateTime now = DateTime.now().add(Duration(days: i + 1));
+    if (closedDays.any(
+        (e) => e.day?.withoutTime.compareTo(now.withoutTime) == 0)) return [];
+    List<String> times = [];
+    final yesterday = DateFormat("EEEE")
+        .format(now.subtract(const Duration(days: 1)))
+        .toLowerCase();
+    final today = DateFormat("EEEE").format(now).toLowerCase();
+    TimeOfDay deliveryTime = TimeOfDay(
+        hour: state.shopData?.deliveryTime?.type == 'hour'
+            ? (int.tryParse(state.shopData?.deliveryTime?.to ?? '') ?? 0)
+            : 0,
+        minute: state.shopData?.deliveryTime?.type == 'minute'
+            ? (int.tryParse(state.shopData?.deliveryTime?.to ?? '') ?? 0)
+            : 0);
+    debugPrint("today $today");
+    debugPrint("yesterday $yesterday");
+    debugPrint("deliveryTime $deliveryTime");
+    days?.forEach((element) {
+      if (element.disabled ?? false) return;
+      if (element.day?.toLowerCase() == yesterday) {
+        if (AppHelpers.checkYesterday(element.from, element.to) &&
+            yesterday != 'sunday') {
+          TimeOfDay time =
+              i == -1 ? TimeOfDay.now() : const TimeOfDay(hour: 0, minute: 0);
+          TimeOfDay time2 = time.plusMinutes(
+              minute: deliveryTime.hour * 60 + deliveryTime.minute);
+          for (int i = time.hour; i < element.to.toTimeOfDay.hour; i++) {
+            times.add(
+                "${time.hour}:${time.minute} - ${time2.hour}:${time2.minute}");
+            time = time.plusMinutes(minute: AppConstants.scheduleInterval);
+            time2 = time2.plusMinutes(minute: AppConstants.scheduleInterval);
+          }
+        }
+      }
+      if (element.day?.toLowerCase() == today) {
+        if (today == "monday") {
+          if (AppHelpers.checkYesterday(element.from, element.to)) {
+            TimeOfDay time =
+                i == -1 ? TimeOfDay.now() : const TimeOfDay(hour: 0, minute: 0);
+            TimeOfDay time2 = time.plusMinutes(
+                minute: deliveryTime.hour * 60 + deliveryTime.minute);
+            for (num i = time.hour; i < element.to.toTimeOfDay.hour; i) {
+              times.add(
+                  "${time.hour}:${time.minute} - ${time2.hour}:${time2.minute}");
+              time = time.plusMinutes(minute: AppConstants.scheduleInterval);
+              time2 = time2.plusMinutes(minute: AppConstants.scheduleInterval);
+              i += AppConstants.scheduleInterval / 60;
+            }
+          }
+        }
+        if (AppHelpers.checkYesterday(element.from, element.to)) {
+          TimeOfDay time = i == -1
+              ? TimeOfDay.now().hour > element.from.toTimeOfDay.hour &&
+                      TimeOfDay.now().minute > element.from.toTimeOfDay.minute
+                  ? TimeOfDay.now()
+                  : element.from.toTimeOfDay
+              : element.from.toTimeOfDay;
+          TimeOfDay time2 = time.plusMinutes(
+              minute: deliveryTime.hour * 60 + deliveryTime.minute);
+          for (num i = time.hour; i < 24; i) {
+            times.add(
+                "${time.hour}:${time.minute} - ${time2.hour}:${time2.minute}");
+            time = time.plusMinutes(minute: AppConstants.scheduleInterval);
+            time2 = time2.plusMinutes(minute: AppConstants.scheduleInterval);
+            i += AppConstants.scheduleInterval / 60;
+          }
         } else {
-          state = state.copyWith(isTomorrowWorkingDay: true);
+          TimeOfDay time = i == -1
+              ? TimeOfDay.now().hour > element.from.toTimeOfDay.hour &&
+                      TimeOfDay.now().minute > element.from.toTimeOfDay.minute
+                  ? TimeOfDay.now()
+                  : element.from.toTimeOfDay
+              : element.from.toTimeOfDay;
+          TimeOfDay time2 = time.plusMinutes(
+              minute: deliveryTime.hour * 60 + deliveryTime.minute);
+          for (num i = time.hour; i < element.to.toTimeOfDay.hour; i) {
+            times.add(
+                "${time.hour}:${time.minute} - ${time2.hour}:${time2.minute}");
+            time = time.plusMinutes(minute: AppConstants.scheduleInterval);
+            time2 = time2.plusMinutes(minute: AppConstants.scheduleInterval);
+            if (time2.hour == element.to.toTimeOfDay.hour && time2.minute >= element.to.toTimeOfDay.minute) {
+              break;
+            }
+            i += AppConstants.scheduleInterval / 60;
+          }
         }
       }
-      if (state.isTomorrowWorkingDay) {
-        TimeOfDay startTimeOfDay = TimeOfDay(
-          hour: int.tryParse(state
-                      .shopData!.shopWorkingDays?[tomorrowWeekIndex].from
-                      ?.substring(
-                          0,
-                          state.shopData!.shopWorkingDays?[tomorrowWeekIndex]
-                                  .from
-                                  ?.indexOf("-") ??
-                              0) ??
-                  "") ??
-              0,
-          minute: int.tryParse(state
-                      .shopData!.shopWorkingDays?[tomorrowWeekIndex].from
-                      ?.substring((state.shopData!
-                                  .shopWorkingDays?[tomorrowWeekIndex].from
-                                  ?.indexOf("-") ??
-                              0) +
-                          1) ??
-                  "") ??
-              0,
-        );
-        TimeOfDay endTimeOfDay = TimeOfDay(
-          hour: int.tryParse(state
-                      .shopData!.shopWorkingDays?[tomorrowWeekIndex].to
-                      ?.substring(
-                          0,
-                          state.shopData!.shopWorkingDays?[tomorrowWeekIndex].to
-                                  ?.indexOf("-") ??
-                              0) ??
-                  "") ??
-              0,
-          minute: int.tryParse(state
-                      .shopData!.shopWorkingDays?[tomorrowWeekIndex].to
-                      ?.substring((state.shopData!
-                                  .shopWorkingDays?[tomorrowWeekIndex].to
-                                  ?.indexOf("-") ??
-                              0) +
-                          1) ??
-                  "") ??
-              0,
-        );
-        state = state.copyWith(
-          startTomorrowTime: startTimeOfDay,
-          endTomorrowTime: endTimeOfDay,
-        );
-        if (state.selectDate == null) {
-          state = state.copyWith(
-              selectDate: DateTime.now().add(const Duration(days: 1)),
-              selectTime: TimeOfDay(
-                  hour: startTimeOfDay.hour, minute: startTimeOfDay.minute));
-        }
-      }
+    });
+    if (state.selectDate == null && times.isNotEmpty) {
+      state = state.copyWith(
+        selectTime: times.first.toNextTime,
+        selectDate: now,
+      );
     }
+    return times;
   }
 
   changeBranch(int index) {
@@ -310,11 +255,11 @@ class OrderNotifier extends StateNotifier<OrderState> {
                   await image.resizeAndCircle(data.data?.logoImg ?? "", 120)));
           state = state.copyWith(shopMarkers: list);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -333,7 +278,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
         success: (data) async {
           state = state.copyWith(branches: data.data);
         },
-        failure: (activeFailure, status) {},
+        failure: (failure, status) {},
       );
     } else {
       if (context.mounted) {
@@ -376,7 +321,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
             );
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (isLoading) {
             state = state.copyWith(isLoading: false);
           } else {
@@ -384,7 +329,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
           if (status == 401) {
             context.router.popUntilRoot();
@@ -455,7 +400,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
     required OrderBodyData data,
     required PaymentData payment,
     VoidCallback? onSuccess,
-    ValueChanged<String>? onWebview,
+    Function(String,bool)? onWebview,
   }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
@@ -476,7 +421,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
           if (payment.tag != "cash" && payment.tag != "wallet") {
             final res = await _orderRepository.process(data, payment.tag ?? '');
             res.map(success: (key) {
-              onWebview?.call(key.data);
+              onWebview?.call(key.data,payment.tag == 'pay-fast');
             }, failure: (e) {
               state = state.copyWith(isButtonLoading: false);
               if (context.mounted) {
@@ -517,29 +462,31 @@ class OrderNotifier extends StateNotifier<OrderState> {
                         await image.resizeAndCircle(data.user?.img ?? "", 120)),
               };
               state = state.copyWith(markers: list, isMapLoading: false);
-              getRoutingAll(
-                  context: context,
-                  end: LatLng(data.location?.latitude ?? 0,
-                      data.location?.longitude ?? 0),
-                  start: LatLng(data.shop?.location?.latitude ?? 0,
-                      data.shop?.location?.longitude ?? 0));
+              if (context.mounted) {
+                getRoutingAll(
+                    context: context,
+                    end: LatLng(data.location?.latitude ?? 0,
+                        data.location?.longitude ?? 0),
+                    start: LatLng(data.shop?.location?.latitude ?? 0,
+                        data.shop?.location?.longitude ?? 0));
+              }
             },
-            failure: (activeFailure, status) {
+            failure: (failure, status) {
               state = state.copyWith(isButtonLoading: false);
               if (context.mounted) {
                 AppHelpers.showCheckTopSnackBar(
                   context,
-                  activeFailure,
+                  failure,
                 );
               }
             },
           );
-        }, failure: (activeFailure, e) {
+        }, failure: (failure, e) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         });
@@ -549,8 +496,10 @@ class OrderNotifier extends StateNotifier<OrderState> {
       final num wallet = LocalStorage.getWalletData()?.price ?? 0;
       if (payment.tag == "wallet" &&
           wallet < (state.calculateData?.totalPrice ?? 0)) {
-        AppHelpers.showCheckTopSnackBarInfo(
-            context, AppHelpers.getTranslation(TrKeys.notEnoughMoney));
+        if (context.mounted) {
+          AppHelpers.showCheckTopSnackBarInfo(
+              context, AppHelpers.getTranslation(TrKeys.notEnoughMoney));
+        }
         state = state.copyWith(isButtonLoading: false);
         return;
       }
@@ -558,7 +507,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
         final res =
             await _orderRepository.process(data, payment.tag ?? "stripe");
         res.map(success: (key) {
-          onWebview?.call(key.data);
+          onWebview?.call(key.data, payment.tag == 'pay-fast');
         }, failure: (e) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
@@ -597,19 +546,21 @@ class OrderNotifier extends StateNotifier<OrderState> {
                 icon: await image.resizeAndCircle(data.user?.img ?? "", 120)),
           };
           state = state.copyWith(markers: list, isMapLoading: false);
-          getRoutingAll(
-              context: context,
-              end: LatLng(
-                  data.location?.latitude ?? 0, data.location?.longitude ?? 0),
-              start: LatLng(data.shop?.location?.latitude ?? 0,
-                  data.shop?.location?.longitude ?? 0));
+          if (context.mounted) {
+            getRoutingAll(
+                context: context,
+                end: LatLng(data.location?.latitude ?? 0,
+                    data.location?.longitude ?? 0),
+                start: LatLng(data.shop?.location?.latitude ?? 0,
+                    data.shop?.location?.longitude ?? 0));
+          }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },
@@ -656,11 +607,11 @@ class OrderNotifier extends StateNotifier<OrderState> {
             state = state.copyWith(isAddLoading: false);
             onSuccess();
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             state = state.copyWith(isAddLoading: false);
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
@@ -711,13 +662,15 @@ class OrderNotifier extends StateNotifier<OrderState> {
             });
 
             state = state.copyWith(markers: list, isMapLoading: false);
-            fetchDriver(context);
-            getRoutingAll(
-                context: context,
-                end: LatLng(data.location?.latitude ?? 0,
-                    data.location?.longitude ?? 0),
-                start: LatLng(data.shop?.location?.latitude ?? 0,
-                    data.shop?.location?.longitude ?? 0));
+            if (context.mounted) {
+              fetchDriver(context);
+              getRoutingAll(
+                  context: context,
+                  end: LatLng(data.location?.latitude ?? 0,
+                      data.location?.longitude ?? 0),
+                  start: LatLng(data.shop?.location?.latitude ?? 0,
+                      data.shop?.location?.longitude ?? 0));
+            }
           } else {
             state = state.copyWith(orderData: data);
             Map<MarkerId, Marker> list = Map.from(state.markers);
@@ -742,14 +695,14 @@ class OrderNotifier extends StateNotifier<OrderState> {
             state = state.copyWith(markers: list);
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             state = state.copyWith(isLoading: false);
           }
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },
@@ -761,7 +714,8 @@ class OrderNotifier extends StateNotifier<OrderState> {
     }
   }
 
-  Future<void> cancelOrder(BuildContext context, num orderId) async {
+  Future<void> cancelOrder(
+      BuildContext context, num orderId, VoidCallback onSuccess) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       state = state.copyWith(isButtonLoading: true);
@@ -769,15 +723,13 @@ class OrderNotifier extends StateNotifier<OrderState> {
       response.when(
         success: (data) async {
           state = state.copyWith(isButtonLoading: false);
-          context.popRoute(context);
+          onSuccess.call();
+          context.maybePop(context);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
-            AppHelpers.showCheckTopSnackBar(
-              context,
-              activeFailure,
-            );
+            AppHelpers.showCheckTopSnackBar(context, failure);
           }
         },
       );
@@ -799,14 +751,14 @@ class OrderNotifier extends StateNotifier<OrderState> {
           state = state.copyWith(isButtonLoading: false);
           AppHelpers.showCheckTopSnackBarDone(
               context, AppHelpers.getTranslation(TrKeys.successfully));
-          context.popRoute(context);
+          context.maybePop(context);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },
@@ -830,14 +782,14 @@ class OrderNotifier extends StateNotifier<OrderState> {
       response.when(
         success: (data) async {
           state = state.copyWith(isButtonLoading: false);
-          context.popRoute(context);
+          context.maybePop(context);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },

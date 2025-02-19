@@ -1,16 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/product/product_notifier.dart';
-import 'package:riverpodtemp/application/product/product_state.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_notifier.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import '../../../theme/app_style.dart';
+import 'package:foodyman/application/product/product_notifier.dart';
+import 'package:foodyman/application/product/product_state.dart';
+import 'package:foodyman/application/shop_order/shop_order_notifier.dart';
+import 'package:foodyman/application/shop_order/shop_order_state.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class ProductMainButton extends StatelessWidget {
   final ShopOrderNotifier eventOrderShop;
@@ -55,7 +55,7 @@ class ProductMainButton extends StatelessWidget {
               Container(
                 height: 50.h,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                    borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(color: AppStyle.textGrey)),
                 child: Row(
                   children: [
@@ -104,7 +104,7 @@ class ProductMainButton extends StatelessWidget {
               SizedBox(
                 width: 120.w,
                 child: CustomButton(
-                  isLoading: state.isAddLoading,
+                  isLoading: state.isAddLoading || state.isLoading,
                   title: AppHelpers.getTranslation(TrKeys.add),
                   onPressed: () {
                     if (LocalStorage.getToken().isNotEmpty) {

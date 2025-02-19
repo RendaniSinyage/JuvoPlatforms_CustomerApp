@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SelectState {
   int get selectedIndex => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SelectState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SelectStateCopyWith<SelectState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$SelectStateCopyWithImpl<$Res, $Val extends SelectState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SelectState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$SelectStateImplCopyWithImpl<$Res>
       _$SelectStateImpl _value, $Res Function(_$SelectStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SelectState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,7 +121,9 @@ class _$SelectStateImpl extends _SelectState {
   @override
   int get hashCode => Object.hash(runtimeType, selectedIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SelectState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectStateImplCopyWith<_$SelectStateImpl> get copyWith =>
@@ -128,8 +136,11 @@ abstract class _SelectState extends SelectState {
 
   @override
   int get selectedIndex;
+
+  /// Create a copy of SelectState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectStateImplCopyWith<_$SelectStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

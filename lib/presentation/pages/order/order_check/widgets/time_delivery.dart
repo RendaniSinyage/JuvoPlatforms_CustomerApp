@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/extension.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
 import 'package:intl/intl.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/application/order/order_state.dart';
-import 'package:riverpodtemp/application/order_time/time_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/custom_tab_bar.dart';
-import 'package:riverpodtemp/presentation/components/select_item.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/application/order/order_state.dart';
+import 'package:foodyman/application/order_time/time_state.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/custom_tab_bar.dart';
+import 'package:foodyman/presentation/components/select_item.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../../../../application/order_time/time_notifier.dart';
-import '../../../../../../application/order_time/time_provider.dart';
+import 'package:foodyman/application/order_time/time_notifier.dart';
+import 'package:foodyman/application/order_time/time_provider.dart';
 
 class TimeDelivery extends ConsumerStatefulWidget {
-  const TimeDelivery({
-    super.key,
-  });
+  const TimeDelivery({super.key});
 
   @override
   ConsumerState<TimeDelivery> createState() => _TimeDeliveryState();
@@ -28,6 +28,7 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
     with TickerProviderStateMixin {
   late TimeNotifier event;
   late TimeState state;
+
   late OrderState stateOrder;
   late TabController _tabController;
   final _tabs = [
@@ -36,121 +37,6 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
   ];
 
   Iterable list = [];
-
-  List<String> listOfTime = [];
-  List<String> listOfTimeTomorrow = [];
-
-  getTimeList() {
-    TimeOfDay time =
-        (ref.read(orderProvider).startTodayTime.hour > TimeOfDay.now().hour
-            ? ref.read(orderProvider).startTodayTime
-            : TimeOfDay.now());
-
-    if (time.hour == 0 && ref.read(orderProvider).endTodayTime.hour == 0) {
-      while (time.hour <=
-          (ref.read(orderProvider).endTodayTime.hour == 0
-              ? 24
-              : ref.read(orderProvider).endTodayTime.hour - 1)) {
-        listOfTime.add(
-            "${time.hour}:${time.minute.toString().padLeft(2, '0')} - ${time.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour}:${time.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute > 30 ? time.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute : "00"}");
-        time = time.plusMinutes(minute: 60);
-        if (time.hour == 0) {
-          break;
-        }
-      }
-    } else {
-      while (time.hour <=
-          (ref.read(orderProvider).endTodayTime.hour == 0
-              ? 24
-              : ref.read(orderProvider).endTodayTime.hour - 1)) {
-        listOfTime.add(
-            "${time.hour}:${time.minute.toString().padLeft(2, '0')} - ${time.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour}:${time.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute}");
-        time = time.plusMinutes(minute: 60);
-        if (time.hour == 0) {
-          break;
-        }
-      }
-    }
-
-    TimeOfDay timeTomorrow = ref.read(orderProvider).startTomorrowTime;
-    if (timeTomorrow.hour == 0 &&
-        ref.read(orderProvider).endTomorrowTime.hour == 0) {
-      while (timeTomorrow.hour <=
-          (ref.read(orderProvider).endTomorrowTime.hour == 0
-              ? 24
-              : ref.read(orderProvider).endTomorrowTime.hour - 1)) {
-        listOfTimeTomorrow.add(
-            "${timeTomorrow.hour}:${timeTomorrow.minute.toString().padLeft(2, '0')} - ${timeTomorrow.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour == 24 ? "00" : timeTomorrow.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour == 24}:${timeTomorrow.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute.toString().padLeft(2, "0")}");
-        timeTomorrow = timeTomorrow.plusMinutes(minute: 60);
-        if (timeTomorrow.hour == 0) {
-          break;
-        }
-      }
-    } else {
-      while (timeTomorrow.hour <=
-          (ref.read(orderProvider).endTomorrowTime.hour == 0
-              ? 24
-              : ref.read(orderProvider).endTomorrowTime.hour - 1)) {
-        listOfTimeTomorrow.add(
-            "${timeTomorrow.hour}:${timeTomorrow.minute.toString().padLeft(2, '0')} - ${timeTomorrow.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour == 24 ? "00" : timeTomorrow.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour + 1}:${timeTomorrow.plusMinutes(minute: time.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute.toString().padLeft(2, "0")}");
-        timeTomorrow = timeTomorrow.plusMinutes(minute: 60);
-        if (timeTomorrow.hour == 0) {
-          break;
-        }
-      }
-    }
-
-    if (listOfTime.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(timeProvider.notifier).changeOne(1);
-        _tabController.animateTo(1);
-      });
-    }
-  }
-
-  List<String> getSingleDayTime(
-      String? startTimeString, String? endTimeString) {
-    TimeOfDay startTime = TimeOfDay(
-      hour: int.tryParse(
-              startTimeString?.substring(0, startTimeString.indexOf("-")) ??
-                  "") ??
-          0,
-      minute: int.tryParse(
-              startTimeString?.substring((startTimeString.indexOf("-")) + 1) ??
-                  "") ??
-          0,
-    );
-    TimeOfDay endTime = TimeOfDay(
-      hour: int.tryParse(
-              endTimeString?.substring(0, endTimeString.indexOf("-")) ?? "") ??
-          0,
-      minute: int.tryParse(
-              endTimeString?.substring((endTimeString.indexOf("-")) + 1) ??
-                  "") ??
-          0,
-    );
-    List<String> listOfTime = [];
-    if (startTime.hour == 0 && endTime.hour == 0) {
-      while (startTime.hour <= (endTime.hour == 0 ? 24 : endTime.hour - 1)) {
-        listOfTime.add(
-            "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - ${startTime.plusMinutes(minute: startTime.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour == 24 ? "00" : startTime.plusMinutes(minute: startTime.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour == 24}:${startTime.plusMinutes(minute: startTime.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute.toString().padLeft(2, "0")}");
-        startTime = startTime.plusMinutes(minute: 60);
-        if (startTime.hour == 0) {
-          break;
-        }
-      }
-    } else {
-      while (startTime.hour <= (endTime.hour == 0 ? 24 : endTime.hour - 1)) {
-        listOfTime.add(
-            "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - ${startTime.plusMinutes(minute: startTime.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour == 24 ? "00" : startTime.plusMinutes(minute: startTime.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).hour + 1}:${startTime.plusMinutes(minute: startTime.minute + (int.tryParse(ref.read(orderProvider).shopData?.deliveryTime?.to ?? "40") ?? 0)).minute.toString().padLeft(2, "0")}");
-        startTime = startTime.plusMinutes(minute: 60);
-        if (startTime.hour == 0) {
-          break;
-        }
-      }
-    }
-    return listOfTime;
-  }
 
   isCheckCloseDay(String? dateFormat) {
     DateTime date = DateFormat("EEEE, MMM dd").parse(dateFormat ?? "");
@@ -168,11 +54,8 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
       _tabs.add(
         Tab(
           text: AppHelpers.getTranslation(
-            DateFormat("EEEE, MMM dd").format(
-              DateTime.now().add(
-                Duration(days: i + 2),
-              ),
-            ),
+            TimeService.dateFormatEMD(
+                DateTime.now().add(Duration(days: i + 2))),
           ),
         ),
       );
@@ -180,15 +63,22 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
     _tabController = TabController(
         length: 7,
         vsync: this,
-        initialIndex: ref.read(orderProvider).isTodayWorkingDay ? 0 : 1);
+        initialIndex: ref
+            .read(orderProvider)
+            .todayTimes
+            .isNotEmpty ? 0 : 1);
     list = [
-      "${AppHelpers.getTranslation(TrKeys.today)} — ${ref.read(orderProvider).shopData?.deliveryTime?.to ?? 40} ${AppHelpers.getTranslation(TrKeys.min)}",
+      "${AppHelpers.getTranslation(TrKeys.today)} — ${ref
+          .read(orderProvider)
+          .shopData
+          ?.deliveryTime
+          ?.to ?? 40} ${AppHelpers.getTranslation(TrKeys.min)}",
       AppHelpers.getTranslation(TrKeys.other)
     ];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(timeProvider.notifier).reset();
+      ref.read(orderProvider.notifier).checkWorkingDay();
     });
-    getTimeList();
     super.initState();
   }
 
@@ -245,207 +135,117 @@ class _TimeDeliveryState extends ConsumerState<TimeDelivery>
                   ? ""
                   : AppHelpers.getTranslation(TrKeys.clear),
               rightTitleColor: AppStyle.red,
-              onRightTap: state.currentIndexOne == 0
-                  ? () {}
-                  : () => event.changeOne(0),
+              onRightTap:
+              state.currentIndexOne == 0 ? () {} : () => event.changeOne(0),
             ),
             24.verticalSpace,
-            state.currentIndexOne == 0 &&
-                    ref.watch(orderProvider).isTodayWorkingDay
+            state.currentIndexOne == 0 && stateOrder.todayTimes.isNotEmpty
                 ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return SelectItem(
-                        onTap: () => event.changeOne(index),
-                        isActive: state.currentIndexOne == index,
-                        title: list.elementAt(index),
-                      );
-                    })
+                shrinkWrap: true,
+                itemCount: 2,
+                itemBuilder: (context, index) {
+                  return SelectItem(
+                    onTap: () => event.changeOne(index),
+                    isActive: state.currentIndexOne == index,
+                    title: list.elementAt(index),
+                  );
+                })
                 : Expanded(
-                    child: Column(
-                      children: [
-                        CustomTabBar(
-                          isScrollable: true,
-                          tabController: _tabController,
-                          tabs: _tabs,
+              child: Column(
+                children: [
+                  CustomTabBar(
+                    isScrollable: true,
+                    tabController: _tabController,
+                    tabs: _tabs,
+                  ),
+                  Expanded(
+                    child:
+                    TabBarView(controller: _tabController, children: [
+                      stateOrder.todayTimes.isNotEmpty
+                          ? ListView.builder(
+                        padding: EdgeInsets.only(
+                            top: 24.h, bottom: 16.h),
+                        itemCount: stateOrder.todayTimes.length,
+                        itemBuilder: (context, index) {
+                          return SelectItem(
+                            onTap: () {
+                              event.selectIndex(index);
+                              ref
+                                  .read(orderProvider.notifier)
+                                  .setTimeAndDay(
+                                  stateOrder.todayTimes[index]
+                                      .toNextTime,
+                                  DateTime.now());
+                            },
+                            isActive: state.selectIndex == index,
+                            title: stateOrder.todayTimes
+                                .elementAt(index)
+                                .toTime,
+                          );
+                        },
+                      )
+                          : Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 32.r, vertical: 48.r),
+                        child: Text(
+                          AppHelpers.getTranslation(
+                              TrKeys.notWorkToday),
+                          style: AppStyle.interNormal(size: 20),
+                          textAlign: TextAlign.center,
                         ),
-                        Expanded(
-                          child:
-                              TabBarView(controller: _tabController, children: [
-                            stateOrder.isTodayWorkingDay
-                                ? listOfTime.isNotEmpty
-                                    ? ListView.builder(
-                                        padding: EdgeInsets.only(
-                                            top: 24.h, bottom: 16.h),
-                                        itemCount: listOfTime.length,
-                                        itemBuilder: (context, index) {
-                                          return SelectItem(
-                                            onTap: () {
-                                              event.selectIndex(index);
-                                              ref.read(orderProvider.notifier).setTimeAndDay(
-                                                  TimeOfDay(
-                                                      hour: int.tryParse(listOfTime[
-                                                                  index]
-                                                              .substring(
-                                                                  0,
-                                                                  listOfTime[
-                                                                          index]
-                                                                      .indexOf(
-                                                                          ":"))) ??
-                                                          0,
-                                                      minute: 0),
-                                                  DateTime.now());
-                                              Navigator.pop(context);
-                                            },
-                                            isActive:
-                                                state.selectIndex == index,
-                                            title: listOfTime.elementAt(index),
-                                          );
-                                        },
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 32.r, vertical: 48.r),
-                                        child: Text(
-                                          AppHelpers.getTranslation(
-                                              TrKeys.notWorkTodayTime),
-                                          style: AppStyle.interNormal(size: 20),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      )
-                                : Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 32.r, vertical: 48.r),
-                                    child: Text(
-                                      AppHelpers.getTranslation(
-                                          TrKeys.notWorkToday),
-                                      style: AppStyle.interNormal(size: 20),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                            stateOrder.isTomorrowWorkingDay
-                                ? ListView.builder(
-                                    padding: EdgeInsets.only(
-                                        top: 24.h, bottom: 16.h),
-                                    itemCount: listOfTimeTomorrow.length,
-                                    itemBuilder: (context, index) {
-                                      return SelectItem(
-                                        onTap: () {
-                                          event.selectIndex(index);
-                                          ref.read(orderProvider.notifier).setTimeAndDay(
-                                              TimeOfDay(
-                                                  hour: int.tryParse(
-                                                          listOfTimeTomorrow[
-                                                                  index]
-                                                              .substring(
-                                                                  0,
-                                                                  listOfTimeTomorrow[
-                                                                          index]
-                                                                      .indexOf(
-                                                                          ":"))) ??
-                                                      0,
-                                                  minute: 0),
-                                              DateTime.now().add(
-                                                  const Duration(days: 1)));
-                                          Navigator.pop(context);
-                                        },
-                                        isActive: state.selectIndex == index,
-                                        title:
-                                            listOfTimeTomorrow.elementAt(index),
-                                      );
-                                    },
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 32.r, vertical: 48.r),
-                                    child: Text(
-                                      AppHelpers.getTranslation(
-                                          TrKeys.notWorkTomorrow),
-                                      style: AppStyle.interNormal(size: 20),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                            ...List.generate(5, (indexTab) {
-                              for (int i = 0;
-                                  (i <
-                                      (stateOrder.shopData?.shopWorkingDays
-                                              ?.length ??
-                                          0));
-                                  i++) {
-                                if (stateOrder.shopData?.shopWorkingDays?[i].day
-                                            ?.toLowerCase() ==
-                                        _tabs[indexTab + 2]
-                                            .text
-                                            ?.toLowerCase()
-                                            .substring(
-                                              0,
-                                              _tabs[indexTab + 2]
-                                                  .text!
-                                                  .toLowerCase()
-                                                  .indexOf(","),
-                                            ) &&
-                                    !(stateOrder.shopData?.shopWorkingDays?[i]
-                                            .disabled ??
-                                        false) &&
-                                    !isCheckCloseDay(
-                                        _tabs[indexTab + 2].text)) {
-                                  return ListView.builder(
-                                    padding: EdgeInsets.only(
-                                        top: 24.h, bottom: 16.h),
-                                    itemCount: getSingleDayTime(
-                                            stateOrder.shopData
-                                                ?.shopWorkingDays?[i].from,
-                                            stateOrder.shopData
-                                                ?.shopWorkingDays?[i].to)
-                                        .length,
-                                    itemBuilder: (context, index) {
-                                      return SelectItem(
-                                        onTap: () {
-                                          event.selectIndex(index);
-                                          ref.read(orderProvider.notifier).setTimeAndDay(
-                                              TimeOfDay(
-                                                  hour: int.tryParse(getSingleDayTime(
-                                                              stateOrder.shopData?.shopWorkingDays?[i].from,
-                                                      stateOrder.shopData?.shopWorkingDays?[i].to)[index]
-                                                          .substring(
-                                                              0,
-                                                      getSingleDayTime(stateOrder.shopData?.shopWorkingDays?[i].from,
-                                                                      stateOrder.shopData?.shopWorkingDays?[i].to)[index]
-                                                                  .indexOf(":"))) ??
-                                                      0,
-                                                  minute: 0),
-                                              DateFormat("EEEE, MMM dd").parse(_tabs[indexTab + 2].text ?? ""));
-                                          Navigator.pop(context);
-
-                                        },
-                                        isActive: state.selectIndex == index,
-                                        title: getSingleDayTime(
-                                                stateOrder.shopData
-                                                    ?.shopWorkingDays?[i].from,
-                                                stateOrder.shopData
-                                                    ?.shopWorkingDays?[i].to)
-                                            .elementAt(index),
-                                      );
-                                    },
-                                  );
-                                }
-                              }
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 32.r, vertical: 48.r),
-                                child: Text(
-                                  "${AppHelpers.getTranslation(TrKeys.notWork)} ${_tabs[indexTab + 2].text}",
-                                  style: AppStyle.interNormal(size: 20),
-                                  textAlign: TextAlign.center,
-                                ),
-                              );
-                            }),
-                          ]),
-                        )
-                      ],
-                    ),
+                      ),
+                      ...List.generate(stateOrder.dailyTimes.length,
+                              (indexTab) {
+                            return stateOrder.dailyTimes[indexTab].isEmpty
+                                ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 32.r, vertical: 48.r),
+                              child: Text(
+                                "${AppHelpers.getTranslation(
+                                    TrKeys.notWork)} ${_tabs[indexTab + 1]
+                                    .text}",
+                                style: AppStyle.interNormal(size: 20),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                                : ListView.builder(
+                              padding: EdgeInsets.only(
+                                  top: 24.h, bottom: 16.h),
+                              itemCount: stateOrder
+                                  .dailyTimes[indexTab].length,
+                              itemBuilder: (context, index) {
+                                return SelectItem(
+                                  onTap: () {
+                                    DateTime day = indexTab == 0
+                                        ? DateTime.now()
+                                        .add(Duration(days: 1))
+                                        : DateFormat("EEEE, MMM dd")
+                                        .parse(_tabs[indexTab + 1]
+                                        .text ??
+                                        "");
+                                    event.selectIndex(index);
+                                    ref
+                                        .read(orderProvider.notifier)
+                                        .setTimeAndDay(
+                                        stateOrder
+                                            .dailyTimes[indexTab]
+                                        [index]
+                                            .toNextTime,
+                                        day);
+                                  },
+                                  isActive: state.selectIndex == index,
+                                  title: stateOrder.dailyTimes[indexTab]
+                                      .elementAt(index)
+                                      .toTime,
+                                );
+                              },
+                            );
+                          }),
+                    ]),
                   )
+                ],
+              ),
+            )
           ],
         ),
       ),

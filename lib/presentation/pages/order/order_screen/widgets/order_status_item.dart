@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class OrderStatusItem extends StatelessWidget {
   final Widget icon;
@@ -16,7 +16,7 @@ class OrderStatusItem extends StatelessWidget {
       required this.icon,
       required this.isActive,
       required this.isProgress,
-      this.bgColor = AppStyle.brandGreen});
+      this.bgColor = AppStyle.primary});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class OrderStatusItem extends StatelessWidget {
           isProgress
               ? SvgPicture.asset(
                   "assets/svgs/orderTime.svg",
-                  color: AppStyle.brandGreen,
+                  color: AppStyle.primary,
                   width: 36.w,
                   height: 36.h,
                 )

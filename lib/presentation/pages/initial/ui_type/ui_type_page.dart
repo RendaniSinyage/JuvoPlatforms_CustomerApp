@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/main/main_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/main/main_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 
 @RoutePage()
@@ -54,7 +54,7 @@ class UiTypePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: AppHelpers.getType() == index
-                              ? AppStyle.brandGreen
+                              ? AppStyle.primary
                               : AppStyle.transparent,
                           width: 3),
                       borderRadius: BorderRadius.circular(12.r),

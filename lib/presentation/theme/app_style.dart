@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppStyle {
+abstract class AppStyle {
   AppStyle._();
+  
+  static const Color primary = Color(0xFF83EA00);
   static const Color bottomNavigationBarColor = Color(0xFF191919);
   static const Color enterOrderButton = Color(0xFFF4F8F7);
   static const Color tabBarBorderColor = Color(0xFFDEDFE1);
@@ -18,7 +20,6 @@ class AppStyle {
   static const Color dontHaveAccBtnBack = Color(0xFFF8F8F8);
   static const Color mainBack = Color(0xFFF4F4F4);
   static const Color borderColor = Color(0xFFE6E6E6);
-  static const Color brandGreen = Color(0xFF83EA00);
   static const Color textGrey = Color(0xFF898989);
   static const Color recommendBg = Color(0xFFE8C7B0);
   static const Color bannerBg = Color(0xFFF3DED4);

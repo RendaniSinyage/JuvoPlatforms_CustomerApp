@@ -6,21 +6,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/notification/notification_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/response/notification_response.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/application/notification/notification_provider.dart';
+import 'package:foodyman/infrastructure/models/response/notification_response.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 
 @RoutePage()
@@ -94,7 +94,7 @@ class _NotificationListPageState extends ConsumerState<NotificationListPage> {
                               right: 16.w,
                               left: 16.w,
                               bottom:
-                                  MediaQuery.of(context).padding.bottom + 72.h),
+                                  MediaQuery.paddingOf(context).bottom + 72.h),
                           itemCount: state.notifications.length,
                           itemBuilder: (context, index) {
                             return InkWell(
@@ -182,61 +182,60 @@ class _NotificationListPageState extends ConsumerState<NotificationListPage> {
             width: 44,
           ),
           12.horizontalSpace,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (notification.client != null)
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (notification.client != null)
+                  Row(
+                    children: [
+                      Text(
+                        '${notification.client?.firstname ?? ''} ${notification.client?.lastname?.substring(0, 1) ?? ''}.',
+                        style: AppStyle.interSemi(size: 16, color: AppStyle.black),
+                      ),
+                      15.horizontalSpace,
+                      Container(
+                        height: 8.r,
+                        width: 8.r,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: notification.readAt == null
+                                ? AppStyle.primary
+                                : AppStyle.transparent),
+                      )
+                    ],
+                  ),
+                2.verticalSpace,
                 Row(
                   children: [
-                    Text(
-                      '${notification.client?.firstname ?? ''} ${notification.client?.lastname?.substring(0, 1) ?? ''}.',
-                      style: AppStyle.interSemi(size: 16, color: AppStyle.black),
+                    Flexible(
+                      child: Text(
+                        '${notification.body ?? notification.title}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: AppStyle.interRegular(size: 14, color: AppStyle.black),
+                      ),
                     ),
-                    15.horizontalSpace,
-                    Container(
-                      height: 8.r,
-                      width: 8.r,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: notification.readAt == null
-                              ? AppStyle.brandGreen
-                              : AppStyle.transparent),
-                    )
+                    if (notification.client == null)
+                      Container(
+                        margin: EdgeInsets.only(left: 8.r),
+                        height: 8.r,
+                        width: 8.r,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: notification.readAt == null
+                                ? AppStyle.primary
+                                : AppStyle.transparent),
+                      )
                   ],
                 ),
-              2.verticalSpace,
-              Row(
-                children: [
-                  SizedBox(
-                    width: notification.client != null
-                        ? MediaQuery.sizeOf(context).width / 2
-                        : null,
-                    child: Text(
-                      '${notification.body ?? notification.title}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      style: AppStyle.interRegular(size: 14, color: AppStyle.black),
-                    ),
-                  ),
-                  if (notification.client == null)
-                    Container(
-                      margin: EdgeInsets.only(left: 8.r),
-                      height: 8.r,
-                      width: 8.r,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: notification.readAt == null
-                              ? AppStyle.brandGreen
-                              : AppStyle.transparent),
-                    )
-                ],
-              ),
-              4.verticalSpace,
-              Text(
-                Jiffy.parseFromDateTime(notification.createdAt ?? DateTime.now()).fromNow(),
-                style: AppStyle.interRegular(size: 12, color: AppStyle.textGrey),
-              ),
-            ],
+                4.verticalSpace,
+                Text(
+                  Jiffy.parseFromDateTime(notification.createdAt ?? DateTime.now()).fromNow(),
+                  style: AppStyle.interRegular(size: 12, color: AppStyle.textGrey),
+                ),
+              ],
+            ),
           ),
         ],
       ),

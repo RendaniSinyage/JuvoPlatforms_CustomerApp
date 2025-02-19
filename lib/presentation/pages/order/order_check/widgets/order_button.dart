@@ -2,25 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/payment_methods/payment_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_check/widgets/refund_screen.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/payment_methods/payment_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/pages/order/order_check/widgets/refund_screen.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../../../application/order/order_provider.dart';
+import 'package:foodyman/application/order/order_provider.dart';
 
 class OrderButton extends StatelessWidget {
   final bool isOrder;
   final bool isLoading;
   final bool isRepeatLoading;
+  final bool isAutoLoading;
   final OrderStatus orderStatus;
   final VoidCallback createOrder;
   final VoidCallback cancelOrder;
   final VoidCallback repeatOrder;
+  final VoidCallback autoOrder;
   final VoidCallback callShop;
   final VoidCallback callDriver;
   final VoidCallback? showImage;
@@ -32,6 +34,7 @@ class OrderButton extends StatelessWidget {
     required this.isOrder,
     required this.orderStatus,
     required this.createOrder,
+    required this.isAutoLoading ,
     required this.isLoading,
     required this.cancelOrder,
     required this.callShop,
@@ -40,7 +43,7 @@ class OrderButton extends StatelessWidget {
     required this.isRefund,
     required this.repeatOrder,
     required this.isRepeatLoading,
-    required this.showImage,
+    required this.showImage, required this.autoOrder,
   });
 
   @override
@@ -131,6 +134,15 @@ class OrderButton extends StatelessWidget {
                     ),
                     10.verticalSpace,
                     CustomButton(
+                      isLoading: isAutoLoading,
+                      background: AppStyle.transparent,
+                      borderColor: AppStyle.black,
+                      textColor: AppStyle.black,
+                      title: AppHelpers.getTranslation(TrKeys.autoOrder),
+                      onPressed: autoOrder,
+                    ),
+                    10.verticalSpace,
+                    CustomButton(
                       isLoading: isRepeatLoading,
                       background: AppStyle.transparent,
                       borderColor: AppStyle.black,
@@ -178,9 +190,9 @@ class OrderButton extends StatelessWidget {
           background: isNotEmptyCart || isNotEmptyPaymentType
               ? (ref.watch(orderProvider).tabIndex == 0 ||
                       (ref.watch(orderProvider).selectDate != null)
-                  ? AppStyle.brandGreen
+                  ? AppStyle.primary
                   : AppStyle.bgGrey)
-              : AppStyle.brandGreen,
+              : AppStyle.primary,
           textColor: isNotEmptyCart || isNotEmptyPaymentType
               ? (ref.watch(orderProvider).tabIndex == 0 ||
                       (ref.watch(orderProvider).selectDate != null)

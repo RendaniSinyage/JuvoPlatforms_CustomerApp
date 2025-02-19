@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/review_data.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/infrastructure/models/data/review_data.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class ImagesOneList extends StatelessWidget {
   final List<Galleries>? list;

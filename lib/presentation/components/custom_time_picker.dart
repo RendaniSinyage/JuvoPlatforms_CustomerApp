@@ -1,13 +1,13 @@
 
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import '../theme/theme.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class CustomTimePicker {
   static void getTimePicker(
@@ -112,6 +112,7 @@ class CustomTimePicker {
                   child: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.time,
                     minuteInterval: 1,
+                    use24hFormat: AppConstants.use24Format,
                     onDateTimeChanged: (value) {
                       final String selectedDate = _dateToAmPm(
                         hour: value.hour,
@@ -130,7 +131,7 @@ class CustomTimePicker {
 
   static String _dateToAmPm({required int hour, required int minute}) {
     final DateTime now = DateTime.now();
-    return DateFormat('hh:mm').format(DateTime(
+    return TimeService.timeFormat(DateTime(
       now.year,
       now.month,
       now.day,

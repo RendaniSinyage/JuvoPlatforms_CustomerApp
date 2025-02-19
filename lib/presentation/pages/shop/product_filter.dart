@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../application/shop/shop_provider.dart';
+import 'package:foodyman/application/shop/shop_provider.dart';
 
 class ProductFilter extends ConsumerWidget {
   final String shopId;
@@ -84,9 +84,9 @@ class ProductFilter extends ConsumerWidget {
                                   vertical: 10.h, horizontal: 16.w),
                               decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(10.r)),
+                                      BorderRadius.circular(10.r),
                                   color: state.sortIndex == sort.indexOf(e)
-                                      ? AppStyle.brandGreen
+                                      ? AppStyle.primary
                                       : AppStyle.white),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -149,7 +149,7 @@ class ProductFilter extends ConsumerWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.r)),
                                       color: state.brandIds.contains(e.id)
-                                          ? AppStyle.brandGreen
+                                          ? AppStyle.primary
                                           : AppStyle.white),
                                   child: Text(
                                     e.title ?? "",
@@ -167,7 +167,7 @@ class ProductFilter extends ConsumerWidget {
                 CustomButton(
                     title: AppHelpers.getTranslation(TrKeys.show),
                     onPressed: () {
-                      context.popRoute();
+                      context.maybePop();
                       event.fetchProductsByCategory(
                           context, shopId, categoryId);
                     })

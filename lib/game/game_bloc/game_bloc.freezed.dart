@@ -138,6 +138,9 @@ class _$GameEventCopyWithImpl<$Res, $Val extends GameEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -153,6 +156,9 @@ class __$$InitImplCopyWithImpl<$Res>
     implements _$$InitImplCopyWith<$Res> {
   __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -322,6 +328,9 @@ class __$$NewGameImplCopyWithImpl<$Res>
   __$$NewGameImplCopyWithImpl(
       _$NewGameImpl _value, $Res Function(_$NewGameImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -494,6 +503,8 @@ class __$$MoveImplCopyWithImpl<$Res>
   __$$MoveImplCopyWithImpl(_$MoveImpl _value, $Res Function(_$MoveImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -551,7 +562,9 @@ class _$MoveImpl implements Move {
   @override
   int get hashCode => Object.hash(runtimeType, direction, onSuccess, onFail);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MoveImplCopyWith<_$MoveImpl> get copyWith =>
@@ -696,7 +709,10 @@ abstract class Move implements GameEvent {
   SwipeDirection get direction;
   VoidCallback get onSuccess;
   VoidCallback get onFail;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MoveImplCopyWith<_$MoveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -715,6 +731,9 @@ class __$$MergeImplCopyWithImpl<$Res>
   __$$MergeImplCopyWithImpl(
       _$MergeImpl _value, $Res Function(_$MergeImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -883,6 +902,9 @@ class __$$UndoImplCopyWithImpl<$Res>
     implements _$$UndoImplCopyWith<$Res> {
   __$$UndoImplCopyWithImpl(_$UndoImpl _value, $Res Function(_$UndoImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1055,6 +1077,8 @@ class __$$OnKeyImplCopyWithImpl<$Res>
       _$OnKeyImpl _value, $Res Function(_$OnKeyImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1111,7 +1135,9 @@ class _$OnKeyImpl implements OnKey {
   @override
   int get hashCode => Object.hash(runtimeType, event, onSuccess, onFail);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OnKeyImplCopyWith<_$OnKeyImpl> get copyWith =>
@@ -1256,7 +1282,10 @@ abstract class OnKey implements GameEvent {
   KeyEvent get event;
   VoidCallback get onSuccess;
   VoidCallback get onFail;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OnKeyImplCopyWith<_$OnKeyImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1278,6 +1307,8 @@ class __$$EndRoundImplCopyWithImpl<$Res>
       _$EndRoundImpl _value, $Res Function(_$EndRoundImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1325,7 +1356,9 @@ class _$EndRoundImpl implements EndRound {
   @override
   int get hashCode => Object.hash(runtimeType, onSuccess, onFail);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EndRoundImplCopyWith<_$EndRoundImpl> get copyWith =>
@@ -1468,7 +1501,10 @@ abstract class EndRound implements GameEvent {
 
   VoidCallback get onSuccess;
   VoidCallback get onFail;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EndRoundImplCopyWith<_$EndRoundImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1486,6 +1522,9 @@ class __$$SaveImplCopyWithImpl<$Res>
     implements _$$SaveImplCopyWith<$Res> {
   __$$SaveImplCopyWithImpl(_$SaveImpl _value, $Res Function(_$SaveImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1658,6 +1697,8 @@ class __$$QueueImplCopyWithImpl<$Res>
       _$QueueImpl _value, $Res Function(_$QueueImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1697,7 +1738,9 @@ class _$QueueImpl implements Queue {
   @override
   int get hashCode => Object.hash(runtimeType, direction);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$QueueImplCopyWith<_$QueueImpl> get copyWith =>
@@ -1837,7 +1880,10 @@ abstract class Queue implements GameEvent {
   const factory Queue(final SwipeDirection direction) = _$QueueImpl;
 
   SwipeDirection get direction;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$QueueImplCopyWith<_$QueueImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1856,6 +1902,9 @@ class __$$ClearImplCopyWithImpl<$Res>
   __$$ClearImplCopyWithImpl(
       _$ClearImpl _value, $Res Function(_$ClearImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2028,6 +2077,8 @@ class __$$ChangePositionImplCopyWithImpl<$Res>
       _$ChangePositionImpl _value, $Res Function(_$ChangePositionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2066,7 +2117,9 @@ class _$ChangePositionImpl implements ChangePosition {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChangePositionImplCopyWith<_$ChangePositionImpl> get copyWith =>
@@ -2207,7 +2260,10 @@ abstract class ChangePosition implements GameEvent {
   const factory ChangePosition(final bool value) = _$ChangePositionImpl;
 
   bool get value;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GameEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChangePositionImplCopyWith<_$ChangePositionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2218,7 +2274,9 @@ mixin _$GameState {
   SwipeDirection? get swipeDirection => throw _privateConstructorUsedError;
   bool get position => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GameStateCopyWith<GameState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2241,6 +2299,8 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2284,6 +2344,8 @@ class __$$GameStateImplCopyWithImpl<$Res>
       _$GameStateImpl _value, $Res Function(_$GameStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2344,7 +2406,9 @@ class _$GameStateImpl implements _GameState {
   @override
   int get hashCode => Object.hash(runtimeType, board, swipeDirection, position);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>
@@ -2363,8 +2427,11 @@ abstract class _GameState implements GameState {
   SwipeDirection? get swipeDirection;
   @override
   bool get position;
+
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

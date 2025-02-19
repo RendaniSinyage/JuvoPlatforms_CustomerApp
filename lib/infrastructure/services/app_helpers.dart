@@ -1,14 +1,19 @@
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/extension.dart';
 import 'package:intl/intl.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../presentation/theme/app_style.dart';
-import '../../../infrastructure/services/local_storage.dart';
-import 'app_constants.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import '../../app_constants.dart';
+import 'enums.dart';
 
-class AppHelpers {
+abstract class AppHelpers {
   AppHelpers._();
 
   static String numberFormat({num? number, String? symbol, bool? isOrder}) {
@@ -16,7 +21,7 @@ class AppHelpers {
       return NumberFormat.currency(
         customPattern: '\u00a4#,###.#',
         symbol: (isOrder ?? false)
-            ? symbol
+            ? symbol ?? LocalStorage.getSelectedCurrency()?.symbol
             : LocalStorage.getSelectedCurrency()?.symbol,
         decimalDigits: 2,
       ).format(number ?? 0);
@@ -24,17 +29,40 @@ class AppHelpers {
       return NumberFormat.currency(
         customPattern: '#,###.#\u00a4',
         symbol: (isOrder ?? false)
-            ? symbol
+            ? symbol ?? LocalStorage.getSelectedCurrency()?.symbol
             : LocalStorage.getSelectedCurrency()?.symbol,
         decimalDigits: 2,
       ).format(number ?? 0);
     }
   }
 
+  static String generateNonce([int length = 32]) {
+    final charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-.';
+    final random = Random.secure();
+    return List.generate(length, (i) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  static bool checkYesterday(String? startTime, String? endTime) {
+    final now = DateTime.now().subtract(const Duration(days: 1));
+    final format = DateFormat('HH:mm');
+
+    DateTime start = format.parse(startTime.toSingleTime);
+    DateTime end = format.parse(endTime.toSingleTime);
+
+    start = DateTime(
+        now.year, now.month, now.day, start.hour, start.minute, start.second);
+    end = DateTime(
+        now.year, now.month, now.day, end.hour, end.minute, end.second);
+    return end.isBefore(start);
+  }
+
+
   static showNoConnectionSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     final snackBar = SnackBar(
-      backgroundColor: AppStyle.brandGreen,
+      backgroundColor: AppStyle.primary,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 3),
       content: Text(
@@ -129,7 +157,9 @@ class AppHelpers {
     return showTopSnackBar(
         Overlay.of(context),
         CustomSnackBar.error(
-          message: "$text. Please check your credentials and try again",
+          message: text.isEmpty
+              ? "Please check your credentials and try again"
+              : text,
         ),
         animationDuration: const Duration(milliseconds: 700),
         reverseAnimationDuration: const Duration(milliseconds: 700),
@@ -167,7 +197,7 @@ class AppHelpers {
         CustomSnackBar.info(
           message: text,
           icon: const SizedBox.shrink(),
-          backgroundColor: AppStyle.brandGreen,
+          backgroundColor: AppStyle.primary,
           textStyle: AppStyle.interNormal(),
         ),
         animationDuration: const Duration(milliseconds: 700),
@@ -311,7 +341,7 @@ class AppHelpers {
     return translations[trKey] ??
         (trKey.isNotEmpty
             ? trKey.replaceAll(".", " ").replaceAll("_", " ").replaceFirst(
-            trKey.substring(0, 1), trKey.substring(0, 1).toUpperCase())
+                trKey.substring(0, 1), trKey.substring(0, 1).toUpperCase())
             : '');
   }
 
@@ -390,7 +420,7 @@ class AppHelpers {
       ),
       isScrollControlled: true,
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height - paddingTop.r,
+        maxHeight: MediaQuery.sizeOf(context).height - paddingTop.r,
       ),
       backgroundColor: AppStyle.transparent,
       context: context,
@@ -419,7 +449,7 @@ class AppHelpers {
       ),
       isScrollControlled: true,
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height - paddingTop.r,
+        maxHeight: MediaQuery.sizeOf(context).height - paddingTop.r,
       ),
       backgroundColor: AppStyle.transparent,
       context: context,
@@ -457,23 +487,44 @@ class AppHelpers {
       },
     );
   }
+
+  static String errorHandler(e) {
+    try {
+      return (e.runtimeType == DioException)
+          ? ((e as DioException).response?.data["message"] == "Bad request."
+          ? (e.response?.data["params"] as Map).values.first[0]
+          : e.response?.data["message"])
+          : e.toString();
+    } catch (s) {
+      try {
+        return (e.runtimeType == DioException)
+            ? ((e as DioException).response?.data.toString().substring(
+            (e.response?.data.toString().indexOf("<title>") ?? 0) + 7,
+            e.response?.data.toString().indexOf("</title") ?? 0))
+            .toString()
+            : e.toString();
+      } catch (r) {
+        try {
+          return (e.runtimeType == DioException)
+              ? ((e as DioException).response?.data["error"]["message"])
+              .toString()
+              : e.toString();
+        } catch (f) {
+          return e.toString();
+        }
+      }
+    }
+  }
+
 }
 
 extension TimeOfDayExtension on TimeOfDay {
   TimeOfDay plusMinutes({required int minute}) {
-    if (minute == 0) {
-      return this;
-    } else {
-      int mofd = hour * 60 + minute;
-      int newMofd = ((minute % 1440) + mofd + 1440) % 1440;
-      if (mofd == newMofd) {
-        return this;
-      } else {
-        int newHour = newMofd ~/ 60;
-        int newMinute = newMofd % 60;
-        return TimeOfDay(hour: newHour, minute: newMinute);
-      }
-    }
+    DateTime today = DateTime.now();
+    DateTime customDateTime =
+    DateTime(today.year, today.month, today.day, hour, this.minute);
+    return TimeOfDay.fromDateTime(
+        customDateTime.add(Duration(minutes: minute)));
   }
 }
 

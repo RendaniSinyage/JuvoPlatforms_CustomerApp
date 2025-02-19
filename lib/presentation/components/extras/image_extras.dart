@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
 
-import '../../../infrastructure/models/data/typed_extra.dart';
-import '../../theme/app_style.dart';
+import 'package:foodyman/infrastructure/models/data/typed_extra.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class ImageExtras extends StatelessWidget {
   final int groupIndex;
@@ -59,7 +59,7 @@ class ImageExtras extends StatelessWidget {
                             height: 22.r,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(11.r),
-                              color: AppStyle.brandGreen,
+                              color: AppStyle.primary,
                               border: Border.all(
                                 color: AppStyle.white,
                                 width: 8.r,

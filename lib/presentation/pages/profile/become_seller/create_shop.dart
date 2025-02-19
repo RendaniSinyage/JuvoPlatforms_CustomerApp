@@ -6,24 +6,24 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:riverpodtemp/application/profile/profile_notifier.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/img_service.dart';
-import 'package:riverpodtemp/infrastructure/services/input_formatter.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/application/profile/profile_notifier.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/application/profile/profile_state.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/img_service.dart';
+import 'package:foodyman/infrastructure/services/input_formatter.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../components/blur_wrap.dart';
-import '../../../components/buttons/custom_button.dart';
-import '../../../components/buttons/pop_button.dart';
-import '../../../components/text_fields/outline_bordered_text_field.dart';
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/components/blur_wrap.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 @RoutePage()
 class CreateShopPage extends ConsumerStatefulWidget {
@@ -122,7 +122,8 @@ class _EditRestaurantState extends ConsumerState<CreateShopPage> {
                                       children: [
                                         InkWell(
                                           onTap: () async {
-                                            await ImgService.getPhotoGallery(event.setLogoImage);
+                                            await ImgService.getPhotoGallery(
+                                                event.setLogoImage);
                                           },
                                           child: Container(
                                             width: 50.r,
@@ -275,6 +276,8 @@ class _EditRestaurantState extends ConsumerState<CreateShopPage> {
                                     ),
                                   ],
                                 ),
+                                24.verticalSpace,
+                                _setDoc(state),
                                 24.verticalSpace,
                                 const Divider(),
                                 GestureDetector(
@@ -483,7 +486,7 @@ class _EditRestaurantState extends ConsumerState<CreateShopPage> {
                   Icon(
                     FlutterRemix.upload_cloud_2_line,
                     size: 42.r,
-                    color: AppStyle.brandGreen,
+                    color: AppStyle.primary,
                   ),
                   16.verticalSpace,
                   Text(
@@ -505,6 +508,73 @@ class _EditRestaurantState extends ConsumerState<CreateShopPage> {
                 ],
               ),
             ),
+    );
+  }
+
+  _setDoc(ProfileState state) {
+    return Column(
+      children: [
+        Container(
+          height: 80.h,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppStyle.white,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: InkWell(
+            onTap: () async => await ImgService.getFilePdf(event.setFile),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  FlutterRemix.file_pdf_line,
+                  size: 42.r,
+                  color: AppStyle.primary,
+                ),
+                16.verticalSpace,
+                Text(
+                  AppHelpers.getTranslation(TrKeys.uploadDocuments),
+                  style: AppStyle.interNoSemi(
+                    size: 14,
+                    color: AppStyle.black,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        4.verticalSpace,
+        ...state.filepath.map(
+          (e) => Container(
+            decoration: BoxDecoration(
+              color: AppStyle.white,
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            padding: REdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            margin: REdgeInsets.only(bottom: 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    e,
+                    style: AppStyle.interRegular(size: 12.sp),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    event.deleteFile(e);
+                  },
+                  icon: Icon(
+                    FlutterRemix.close_circle_line,
+                    size: 21.r,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

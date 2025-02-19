@@ -3,20 +3,20 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/domain/di/dependency_manager.dart';
-import 'package:riverpodtemp/domain/iterface/user.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/user.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/address_old_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 
-import '../../domain/iterface/gallery.dart';
-import '../../domain/iterface/shops.dart';
-import '../../infrastructure/services/tr_keys.dart';
+import 'package:foodyman/domain/interface/gallery.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'profile_state.dart';
 
 class ProfileNotifier extends StateNotifier<ProfileState> {
@@ -102,6 +102,18 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     state = state.copyWith(bgImage: bgImage);
   }
 
+  void setFile(String file) {
+    List<String> list = List.from(state.filepath);
+    list.add(file);
+    state = state.copyWith(filepath: list);
+  }
+
+  void deleteFile(String value) {
+    List<String> list = List.from(state.filepath);
+    list.remove(value);
+    state = state.copyWith(filepath: list);
+  }
+
   setLogoImage(String logoImage) {
     state = state.copyWith(logoImage: logoImage);
   }
@@ -117,12 +129,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         final response = await _userRepository.getProfileDetails();
         response.when(
           success: (data) async {
-            LocalStorage.setProfileImage(data.data?.img);
-            LocalStorage.setUserId(data.data?.id);
             LocalStorage.setWalletData(data.data?.wallet);
-            LocalStorage.setFirstName(data.data?.firstname);
-            LocalStorage.setLastName(data.data?.lastname);
-            LocalStorage.setPhone(data.data?.phone);
+            LocalStorage.setUser(data.data);
             LocalStorage.setAddressSelected(AddressData(
                 title: data.data?.addresses?.firstWhere(
                         (element) => element.active ?? false, orElse: () {
@@ -161,7 +169,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             onSuccess?.call();
             findSelectIndex();
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             if (refreshController == null) {
               state = state.copyWith(isLoading: false);
             }
@@ -171,7 +179,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             }
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
@@ -202,13 +210,13 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             }
             refreshController?.refreshCompleted();
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             if (refreshController == null) {
               state = state.copyWith(isReferralLoading: false);
             }
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
@@ -235,11 +243,11 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
           context.router.popUntilRoot();
           context.replaceRoute(const LoginRoute());
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -274,13 +282,13 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
             }
             refreshController?.refreshCompleted();
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             if (refreshController == null) {
               state = state.copyWith(isLoadingHistory: false);
             }
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
@@ -310,12 +318,12 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
               refreshController.loadComplete();
             }
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             refreshController.loadNoData();
             --page;
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
@@ -351,6 +359,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
       String? logoImage;
       String? backgroundImage;
+      List<String>? files;
       final logoResponse = await _galleryRepository.uploadImage(
         state.logoImage,
         UploadType.shopsLogo,
@@ -361,10 +370,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         },
         failure: (failure, s) {
           debugPrint('===> upload logo image failure: $failure');
-          AppHelpers.showCheckTopSnackBar(
-            context,
-            failure,
-          );
+          AppHelpers.showCheckTopSnackBar(context, failure);
         },
       );
       final backgroundResponse = await _galleryRepository.uploadImage(
@@ -377,14 +383,25 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         },
         failure: (failure, s) {
           debugPrint('===> upload background image failure: $failure');
-          AppHelpers.showCheckTopSnackBar(
-            context,
-            failure,
-          );
+          AppHelpers.showCheckTopSnackBar(context, failure);
+        },
+      );
+      final fileResponse = await _galleryRepository.uploadMultiImage(
+        state.filepath,
+        UploadType.shopsBack,
+      );
+      fileResponse.when(
+        success: (data) {
+          files = data.data?.title;
+        },
+        failure: (failure, s) {
+          debugPrint('===> upload document failure: $failure');
+          AppHelpers.showCheckTopSnackBar(context, failure);
         },
       );
       final response = await _shopsRepository.createShop(
         logoImage: logoImage,
+        documents: files ?? [],
         backgroundImage: backgroundImage,
         tax: double.tryParse(tax) ?? 0,
         deliveryTo: double.tryParse(deliveryTo) ?? 0,
@@ -402,7 +419,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         success: (data) {
           state = state.copyWith(isSaveLoading: false);
           fetchUser(context, refreshController: RefreshController());
-          context.popRoute();
+          context.maybePop();
         },
         failure: (failure, s) {
           state = state.copyWith(isSaveLoading: false);

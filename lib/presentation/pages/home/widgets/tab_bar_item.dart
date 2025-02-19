@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class CategoryBarItem extends StatelessWidget {
   final String image;
@@ -26,7 +26,7 @@ class CategoryBarItem extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isActive ? AppStyle.brandGreen : AppStyle.white),
+            color: isActive ? AppStyle.primary : AppStyle.white),
         child: InkWell(
           onTap: onTap,
           child: Column(

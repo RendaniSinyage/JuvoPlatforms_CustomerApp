@@ -7,25 +7,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/application/app_widget/app_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/domain/di/dependency_manager.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_information.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tpying_delay.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/pages/view_map/view_map_modal.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../../../application/map/view_map_notifier.dart';
-import '../../../../application/map/view_map_provider.dart';
-
+import 'package:foodyman/application/app_widget/app_provider.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/infrastructure/models/data/address_information.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tpying_delay.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/pages/view_map/view_map_modal.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/map/view_map_notifier.dart';
+import 'package:foodyman/application/map/view_map_provider.dart';
 
 @RoutePage()
 class ViewMapPage extends ConsumerStatefulWidget {
@@ -319,7 +318,7 @@ class _ViewMapPageState extends ConsumerState<ViewMapPage> {
                       height: 50.r,
                       decoration: BoxDecoration(
                           color: AppStyle.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          borderRadius: BorderRadius.circular(10.r),
                           boxShadow: [
                             BoxShadow(
                                 color: AppStyle.shimmerBase,
@@ -342,7 +341,7 @@ class _ViewMapPageState extends ConsumerState<ViewMapPage> {
                         ref.read(profileProvider.notifier).deleteAddress(
                             index: widget.indexAddress ?? 0,
                             id: widget.address?.id);
-                        context.popRoute();
+                        context.maybePop();
                       },
                       child: Container(
                         width: 48.r,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final bool isActive;
@@ -16,7 +16,7 @@ class CustomCheckbox extends StatelessWidget {
         width: 24.r,
         height: 24.r,
         decoration: BoxDecoration(
-          color: isActive ? AppStyle.brandGreen : AppStyle.outlineButtonBorder,
+          color: isActive ? AppStyle.primary : AppStyle.outlineButtonBorder,
           borderRadius: BorderRadius.circular(8.r)
         ),
         duration: const Duration(milliseconds: 500),

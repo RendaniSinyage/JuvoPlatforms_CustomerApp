@@ -1,6 +1,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpodtemp/infrastructure/models/data/notification_list_data.dart';
+import 'package:foodyman/infrastructure/models/data/notification_list_data.dart';
 
 
 part 'setting_state.freezed.dart';

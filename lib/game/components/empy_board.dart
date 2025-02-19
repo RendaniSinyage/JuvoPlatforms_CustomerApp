@@ -10,7 +10,7 @@ class EmptyBoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = max(
         290.0,
-        min((MediaQuery.of(context).size.shortestSide * 0.90).floorToDouble(),
+        min((MediaQuery.sizeOf(context).shortestSide * 0.90).floorToDouble(),
             460.0));
 
      final sizePerTile = (size / 4).floorToDouble();

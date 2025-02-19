@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/bonus_discount_popular.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/bonus_discount_popular.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 
-import '../theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'badge_item.dart';
 import 'shop_avarat.dart';
 
@@ -42,7 +42,7 @@ class MarketItem extends StatelessWidget {
               height: 260.h,
               decoration: BoxDecoration(
                   color: AppStyle.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10.r))),
+                  borderRadius: BorderRadius.circular(10.r)),
               child: Stack(
                 children: [
                   Column(
@@ -193,7 +193,7 @@ class MarketItem extends StatelessWidget {
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
           color: AppStyle.white,
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+          borderRadius: BorderRadius.circular(10.r),
           border: Border.all(color: AppStyle.borderColor)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -20,7 +20,9 @@ mixin _$CurrencyState {
   bool get isLoading => throw _privateConstructorUsedError;
   int get index => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurrencyState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CurrencyStateCopyWith<CurrencyState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$CurrencyStateCopyWithImpl<$Res, $Val extends CurrencyState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CurrencyState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,6 +91,8 @@ class __$$CurrencyStateImplCopyWithImpl<$Res>
       _$CurrencyStateImpl _value, $Res Function(_$CurrencyStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CurrencyState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -157,7 +163,9 @@ class _$CurrencyStateImpl extends _CurrencyState {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_list), isLoading, index);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurrencyState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CurrencyStateImplCopyWith<_$CurrencyStateImpl> get copyWith =>
@@ -177,8 +185,11 @@ abstract class _CurrencyState extends CurrencyState {
   bool get isLoading;
   @override
   int get index;
+
+  /// Create a copy of CurrencyState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CurrencyStateImplCopyWith<_$CurrencyStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

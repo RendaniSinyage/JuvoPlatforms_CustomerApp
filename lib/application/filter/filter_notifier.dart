@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/domain/iterface/shops.dart';
-import 'package:riverpodtemp/infrastructure/models/data/filter_model.dart';
-import 'package:riverpodtemp/infrastructure/services/tpying_delay.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/models/data/filter_model.dart';
+import 'package:foodyman/infrastructure/services/tpying_delay.dart';
 
-import '../../infrastructure/models/data/shop_data.dart';
-import '../../infrastructure/services/app_connectivity.dart';
-import '../../infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'filter_state.dart';
 
 class FilterNotifier extends StateNotifier<FilterState> {
@@ -32,11 +32,11 @@ class FilterNotifier extends StateNotifier<FilterState> {
           state = state.copyWith(
               isLoading: false, shopCount: data.meta?.total ?? 0);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -70,11 +70,11 @@ class FilterNotifier extends StateNotifier<FilterState> {
           state = state.copyWith(
               isLoading: false, shopCount: data.meta?.total ?? 0);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -107,11 +107,11 @@ class FilterNotifier extends StateNotifier<FilterState> {
             tags: data.data ?? [],
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isTagLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -126,11 +126,11 @@ class FilterNotifier extends StateNotifier<FilterState> {
               prices: List.generate(
                   (20).round(), (index) => (Random().nextInt(8) + 1)));
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isTagLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -152,11 +152,11 @@ class FilterNotifier extends StateNotifier<FilterState> {
           state = state.copyWith(
               isRestaurantLoading: false, restaurant: data.data ?? [],shopCount: data.meta?.total ?? 0);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isRestaurantLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -201,7 +201,7 @@ class FilterNotifier extends StateNotifier<FilterState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             shopIndex--;
             shopController.loadFailed();
@@ -210,7 +210,7 @@ class FilterNotifier extends StateNotifier<FilterState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );

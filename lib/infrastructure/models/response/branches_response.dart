@@ -1,6 +1,6 @@
 
 
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
 
 import '../data/translation.dart';
 

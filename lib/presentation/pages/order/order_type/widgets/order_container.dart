@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class OrderContainer extends StatelessWidget {
   final Widget icon;
@@ -13,7 +13,7 @@ class OrderContainer extends StatelessWidget {
       required this.icon,
       required this.title,
       required this.description,
-        required this.onTap});
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,9 @@ class OrderContainer extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-            color: AppStyle.bgGrey,
-            borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          color: AppStyle.bgGrey,
+          borderRadius: BorderRadius.circular(10.r),
+        ),
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
         child: Row(
           children: [
@@ -39,7 +40,7 @@ class OrderContainer extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.sizeOf(context).width-164.w,
+                  width: MediaQuery.sizeOf(context).width - 164.w,
                   child: Text(
                     description,
                     style: AppStyle.interBold(
@@ -53,7 +54,10 @@ class OrderContainer extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            const Icon(Icons.keyboard_arrow_right)
+            Icon(
+              Icons.keyboard_arrow_right,
+              size: 21.r,
+            )
           ],
         ),
       ),

@@ -35,10 +35,6 @@ mixin _$OrderState {
   String? get phoneNumber => throw _privateConstructorUsedError;
   TimeOfDay get selectTime => throw _privateConstructorUsedError;
   DateTime? get selectDate => throw _privateConstructorUsedError;
-  TimeOfDay get startTodayTime => throw _privateConstructorUsedError;
-  TimeOfDay get endTodayTime => throw _privateConstructorUsedError;
-  TimeOfDay get startTomorrowTime => throw _privateConstructorUsedError;
-  TimeOfDay get endTomorrowTime => throw _privateConstructorUsedError;
   int get tabIndex => throw _privateConstructorUsedError;
   int get branchIndex => throw _privateConstructorUsedError;
   OrderActiveModel? get orderData => throw _privateConstructorUsedError;
@@ -49,8 +45,12 @@ mixin _$OrderState {
   Set<Marker> get shopMarkers => throw _privateConstructorUsedError;
   List<LatLng> get polylineCoordinates => throw _privateConstructorUsedError;
   List<ProductNote> get notes => throw _privateConstructorUsedError;
+  List<String> get todayTimes => throw _privateConstructorUsedError;
+  List<List<String>> get dailyTimes => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OrderStateCopyWith<OrderState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -81,10 +81,6 @@ abstract class $OrderStateCopyWith<$Res> {
       String? phoneNumber,
       TimeOfDay selectTime,
       DateTime? selectDate,
-      TimeOfDay startTodayTime,
-      TimeOfDay endTodayTime,
-      TimeOfDay startTomorrowTime,
-      TimeOfDay endTomorrowTime,
       int tabIndex,
       int branchIndex,
       OrderActiveModel? orderData,
@@ -94,7 +90,9 @@ abstract class $OrderStateCopyWith<$Res> {
       Map<MarkerId, Marker> markers,
       Set<Marker> shopMarkers,
       List<LatLng> polylineCoordinates,
-      List<ProductNote> notes});
+      List<ProductNote> notes,
+      List<String> todayTimes,
+      List<List<String>> dailyTimes});
 }
 
 /// @nodoc
@@ -107,6 +105,8 @@ class _$OrderStateCopyWithImpl<$Res, $Val extends OrderState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of OrderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,10 +129,6 @@ class _$OrderStateCopyWithImpl<$Res, $Val extends OrderState>
     Object? phoneNumber = freezed,
     Object? selectTime = null,
     Object? selectDate = freezed,
-    Object? startTodayTime = null,
-    Object? endTodayTime = null,
-    Object? startTomorrowTime = null,
-    Object? endTomorrowTime = null,
     Object? tabIndex = null,
     Object? branchIndex = null,
     Object? orderData = freezed,
@@ -143,6 +139,8 @@ class _$OrderStateCopyWithImpl<$Res, $Val extends OrderState>
     Object? shopMarkers = null,
     Object? polylineCoordinates = null,
     Object? notes = null,
+    Object? todayTimes = null,
+    Object? dailyTimes = null,
   }) {
     return _then(_value.copyWith(
       isActive: null == isActive
@@ -221,22 +219,6 @@ class _$OrderStateCopyWithImpl<$Res, $Val extends OrderState>
           ? _value.selectDate
           : selectDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      startTodayTime: null == startTodayTime
-          ? _value.startTodayTime
-          : startTodayTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      endTodayTime: null == endTodayTime
-          ? _value.endTodayTime
-          : endTodayTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      startTomorrowTime: null == startTomorrowTime
-          ? _value.startTomorrowTime
-          : startTomorrowTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      endTomorrowTime: null == endTomorrowTime
-          ? _value.endTomorrowTime
-          : endTomorrowTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
       tabIndex: null == tabIndex
           ? _value.tabIndex
           : tabIndex // ignore: cast_nullable_to_non_nullable
@@ -277,6 +259,14 @@ class _$OrderStateCopyWithImpl<$Res, $Val extends OrderState>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as List<ProductNote>,
+      todayTimes: null == todayTimes
+          ? _value.todayTimes
+          : todayTimes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      dailyTimes: null == dailyTimes
+          ? _value.dailyTimes
+          : dailyTimes // ignore: cast_nullable_to_non_nullable
+              as List<List<String>>,
     ) as $Val);
   }
 }
@@ -309,10 +299,6 @@ abstract class _$$OrderStateImplCopyWith<$Res>
       String? phoneNumber,
       TimeOfDay selectTime,
       DateTime? selectDate,
-      TimeOfDay startTodayTime,
-      TimeOfDay endTodayTime,
-      TimeOfDay startTomorrowTime,
-      TimeOfDay endTomorrowTime,
       int tabIndex,
       int branchIndex,
       OrderActiveModel? orderData,
@@ -322,7 +308,9 @@ abstract class _$$OrderStateImplCopyWith<$Res>
       Map<MarkerId, Marker> markers,
       Set<Marker> shopMarkers,
       List<LatLng> polylineCoordinates,
-      List<ProductNote> notes});
+      List<ProductNote> notes,
+      List<String> todayTimes,
+      List<List<String>> dailyTimes});
 }
 
 /// @nodoc
@@ -333,6 +321,8 @@ class __$$OrderStateImplCopyWithImpl<$Res>
       _$OrderStateImpl _value, $Res Function(_$OrderStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OrderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -355,10 +345,6 @@ class __$$OrderStateImplCopyWithImpl<$Res>
     Object? phoneNumber = freezed,
     Object? selectTime = null,
     Object? selectDate = freezed,
-    Object? startTodayTime = null,
-    Object? endTodayTime = null,
-    Object? startTomorrowTime = null,
-    Object? endTomorrowTime = null,
     Object? tabIndex = null,
     Object? branchIndex = null,
     Object? orderData = freezed,
@@ -369,6 +355,8 @@ class __$$OrderStateImplCopyWithImpl<$Res>
     Object? shopMarkers = null,
     Object? polylineCoordinates = null,
     Object? notes = null,
+    Object? todayTimes = null,
+    Object? dailyTimes = null,
   }) {
     return _then(_$OrderStateImpl(
       isActive: null == isActive
@@ -447,22 +435,6 @@ class __$$OrderStateImplCopyWithImpl<$Res>
           ? _value.selectDate
           : selectDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      startTodayTime: null == startTodayTime
-          ? _value.startTodayTime
-          : startTodayTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      endTodayTime: null == endTodayTime
-          ? _value.endTodayTime
-          : endTodayTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      startTomorrowTime: null == startTomorrowTime
-          ? _value.startTomorrowTime
-          : startTomorrowTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      endTomorrowTime: null == endTomorrowTime
-          ? _value.endTomorrowTime
-          : endTomorrowTime // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
       tabIndex: null == tabIndex
           ? _value.tabIndex
           : tabIndex // ignore: cast_nullable_to_non_nullable
@@ -503,6 +475,14 @@ class __$$OrderStateImplCopyWithImpl<$Res>
           ? _value._notes
           : notes // ignore: cast_nullable_to_non_nullable
               as List<ProductNote>,
+      todayTimes: null == todayTimes
+          ? _value._todayTimes
+          : todayTimes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      dailyTimes: null == dailyTimes
+          ? _value._dailyTimes
+          : dailyTimes // ignore: cast_nullable_to_non_nullable
+              as List<List<String>>,
     ));
   }
 }
@@ -530,10 +510,6 @@ class _$OrderStateImpl extends _OrderState {
       this.phoneNumber = null,
       this.selectTime = const TimeOfDay(hour: 0, minute: 0),
       this.selectDate = null,
-      this.startTodayTime = const TimeOfDay(hour: 0, minute: 0),
-      this.endTodayTime = const TimeOfDay(hour: 0, minute: 0),
-      this.startTomorrowTime = const TimeOfDay(hour: 0, minute: 0),
-      this.endTomorrowTime = const TimeOfDay(hour: 0, minute: 0),
       this.tabIndex = 0,
       this.branchIndex = -1,
       this.orderData = null,
@@ -543,12 +519,16 @@ class _$OrderStateImpl extends _OrderState {
       final Map<MarkerId, Marker> markers = const {},
       final Set<Marker> shopMarkers = const {},
       final List<LatLng> polylineCoordinates = const [],
-      final List<ProductNote> notes = const []})
+      final List<ProductNote> notes = const [],
+      final List<String> todayTimes = const [],
+      final List<List<String>> dailyTimes = const []})
       : _branches = branches,
         _markers = markers,
         _shopMarkers = shopMarkers,
         _polylineCoordinates = polylineCoordinates,
         _notes = notes,
+        _todayTimes = todayTimes,
+        _dailyTimes = dailyTimes,
         super._();
 
   @override
@@ -608,18 +588,6 @@ class _$OrderStateImpl extends _OrderState {
   @override
   @JsonKey()
   final DateTime? selectDate;
-  @override
-  @JsonKey()
-  final TimeOfDay startTodayTime;
-  @override
-  @JsonKey()
-  final TimeOfDay endTodayTime;
-  @override
-  @JsonKey()
-  final TimeOfDay startTomorrowTime;
-  @override
-  @JsonKey()
-  final TimeOfDay endTomorrowTime;
   @override
   @JsonKey()
   final int tabIndex;
@@ -683,9 +651,27 @@ class _$OrderStateImpl extends _OrderState {
     return EqualUnmodifiableListView(_notes);
   }
 
+  final List<String> _todayTimes;
+  @override
+  @JsonKey()
+  List<String> get todayTimes {
+    if (_todayTimes is EqualUnmodifiableListView) return _todayTimes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_todayTimes);
+  }
+
+  final List<List<String>> _dailyTimes;
+  @override
+  @JsonKey()
+  List<List<String>> get dailyTimes {
+    if (_dailyTimes is EqualUnmodifiableListView) return _dailyTimes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_dailyTimes);
+  }
+
   @override
   String toString() {
-    return 'OrderState(isActive: $isActive, isOrder: $isOrder, isLoading: $isLoading, isMapLoading: $isMapLoading, isButtonLoading: $isButtonLoading, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isCheckShopOrder: $isCheckShopOrder, isAddLoading: $isAddLoading, sendOtherUser: $sendOtherUser, promoCode: $promoCode, office: $office, house: $house, floor: $floor, note: $note, username: $username, phoneNumber: $phoneNumber, selectTime: $selectTime, selectDate: $selectDate, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, startTomorrowTime: $startTomorrowTime, endTomorrowTime: $endTomorrowTime, tabIndex: $tabIndex, branchIndex: $branchIndex, orderData: $orderData, shopData: $shopData, branches: $branches, calculateData: $calculateData, markers: $markers, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, notes: $notes)';
+    return 'OrderState(isActive: $isActive, isOrder: $isOrder, isLoading: $isLoading, isMapLoading: $isMapLoading, isButtonLoading: $isButtonLoading, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isCheckShopOrder: $isCheckShopOrder, isAddLoading: $isAddLoading, sendOtherUser: $sendOtherUser, promoCode: $promoCode, office: $office, house: $house, floor: $floor, note: $note, username: $username, phoneNumber: $phoneNumber, selectTime: $selectTime, selectDate: $selectDate, tabIndex: $tabIndex, branchIndex: $branchIndex, orderData: $orderData, shopData: $shopData, branches: $branches, calculateData: $calculateData, markers: $markers, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, notes: $notes, todayTimes: $todayTimes, dailyTimes: $dailyTimes)';
   }
 
   @override
@@ -726,14 +712,6 @@ class _$OrderStateImpl extends _OrderState {
                 other.selectTime == selectTime) &&
             (identical(other.selectDate, selectDate) ||
                 other.selectDate == selectDate) &&
-            (identical(other.startTodayTime, startTodayTime) ||
-                other.startTodayTime == startTodayTime) &&
-            (identical(other.endTodayTime, endTodayTime) ||
-                other.endTodayTime == endTodayTime) &&
-            (identical(other.startTomorrowTime, startTomorrowTime) ||
-                other.startTomorrowTime == startTomorrowTime) &&
-            (identical(other.endTomorrowTime, endTomorrowTime) ||
-                other.endTomorrowTime == endTomorrowTime) &&
             (identical(other.tabIndex, tabIndex) ||
                 other.tabIndex == tabIndex) &&
             (identical(other.branchIndex, branchIndex) ||
@@ -750,7 +728,11 @@ class _$OrderStateImpl extends _OrderState {
                 .equals(other._shopMarkers, _shopMarkers) &&
             const DeepCollectionEquality()
                 .equals(other._polylineCoordinates, _polylineCoordinates) &&
-            const DeepCollectionEquality().equals(other._notes, _notes));
+            const DeepCollectionEquality().equals(other._notes, _notes) &&
+            const DeepCollectionEquality()
+                .equals(other._todayTimes, _todayTimes) &&
+            const DeepCollectionEquality()
+                .equals(other._dailyTimes, _dailyTimes));
   }
 
   @override
@@ -775,10 +757,6 @@ class _$OrderStateImpl extends _OrderState {
         phoneNumber,
         selectTime,
         selectDate,
-        startTodayTime,
-        endTodayTime,
-        startTomorrowTime,
-        endTomorrowTime,
         tabIndex,
         branchIndex,
         orderData,
@@ -788,10 +766,14 @@ class _$OrderStateImpl extends _OrderState {
         const DeepCollectionEquality().hash(_markers),
         const DeepCollectionEquality().hash(_shopMarkers),
         const DeepCollectionEquality().hash(_polylineCoordinates),
-        const DeepCollectionEquality().hash(_notes)
+        const DeepCollectionEquality().hash(_notes),
+        const DeepCollectionEquality().hash(_todayTimes),
+        const DeepCollectionEquality().hash(_dailyTimes)
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OrderStateImplCopyWith<_$OrderStateImpl> get copyWith =>
@@ -819,10 +801,6 @@ abstract class _OrderState extends OrderState {
       final String? phoneNumber,
       final TimeOfDay selectTime,
       final DateTime? selectDate,
-      final TimeOfDay startTodayTime,
-      final TimeOfDay endTodayTime,
-      final TimeOfDay startTomorrowTime,
-      final TimeOfDay endTomorrowTime,
       final int tabIndex,
       final int branchIndex,
       final OrderActiveModel? orderData,
@@ -832,7 +810,9 @@ abstract class _OrderState extends OrderState {
       final Map<MarkerId, Marker> markers,
       final Set<Marker> shopMarkers,
       final List<LatLng> polylineCoordinates,
-      final List<ProductNote> notes}) = _$OrderStateImpl;
+      final List<ProductNote> notes,
+      final List<String> todayTimes,
+      final List<List<String>> dailyTimes}) = _$OrderStateImpl;
   const _OrderState._() : super._();
 
   @override
@@ -874,14 +854,6 @@ abstract class _OrderState extends OrderState {
   @override
   DateTime? get selectDate;
   @override
-  TimeOfDay get startTodayTime;
-  @override
-  TimeOfDay get endTodayTime;
-  @override
-  TimeOfDay get startTomorrowTime;
-  @override
-  TimeOfDay get endTomorrowTime;
-  @override
   int get tabIndex;
   @override
   int get branchIndex;
@@ -902,7 +874,14 @@ abstract class _OrderState extends OrderState {
   @override
   List<ProductNote> get notes;
   @override
-  @JsonKey(ignore: true)
+  List<String> get todayTimes;
+  @override
+  List<List<String>> get dailyTimes;
+
+  /// Create a copy of OrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OrderStateImplCopyWith<_$OrderStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

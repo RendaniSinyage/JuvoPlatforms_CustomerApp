@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class CategoryShimmer extends StatelessWidget {
   const CategoryShimmer({super.key});
@@ -29,7 +29,7 @@ class CategoryShimmer extends StatelessWidget {
                     margin: EdgeInsets.only(left: 8.w,),
                     decoration: BoxDecoration(
                       color: AppStyle.shimmerBase,
-                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                   ),
                 ),

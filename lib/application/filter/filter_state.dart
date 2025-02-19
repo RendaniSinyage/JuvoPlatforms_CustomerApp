@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpodtemp/infrastructure/models/data/filter_model.dart';
-import 'package:riverpodtemp/infrastructure/models/data/take_data.dart';
+import 'package:foodyman/infrastructure/models/data/filter_model.dart';
+import 'package:foodyman/infrastructure/models/data/take_data.dart';
 
-import '../../infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
 part 'filter_state.freezed.dart';
 
 @freezed

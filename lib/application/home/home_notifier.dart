@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/domain/iterface/banners.dart';
-import 'package:riverpodtemp/domain/iterface/categories.dart';
-import 'package:riverpodtemp/domain/iterface/shops.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_information.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/filter_model.dart';
-import 'package:riverpodtemp/infrastructure/models/data/story_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/interface/banners.dart';
+import 'package:foodyman/domain/interface/categories.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/models/data/address_information.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/address_old_data.dart';
+import 'package:foodyman/infrastructure/models/data/filter_model.dart';
+import 'package:foodyman/infrastructure/models/data/story_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
 import 'home_state.dart';
 
@@ -87,11 +87,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
             categories: data.data ?? [],
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isCategoryLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -114,11 +114,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
             banner: data,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isBannerLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -141,11 +141,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
             banner: data,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isBannerLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -188,7 +188,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             categoryIndex--;
             controller.loadNoData();
@@ -197,7 +197,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -221,11 +221,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shops: data.data ?? [],
               totalShops: data.meta?.total ?? 0);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isShopLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -271,7 +271,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             marketIndex--;
             shopController.loadFailed();
@@ -280,7 +280,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -301,11 +301,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state = state.copyWith(
               isRestaurantLoading: false, restaurant: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isRestaurantLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -349,7 +349,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             shopIndex--;
             shopController.loadFailed();
@@ -358,7 +358,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -380,11 +380,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state = state.copyWith(
               isRestaurantNewLoading: false, newRestaurant: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isRestaurantNewLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -428,7 +428,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             newShopIndex--;
             shopController.loadFailed();
@@ -437,7 +437,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -458,11 +458,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state = state.copyWith(
               isShopRecommendLoading: false, shopsRecommend: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isShopRecommendLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -506,7 +506,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             storyIndex--;
             shopController.loadFailed();
@@ -515,7 +515,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -535,11 +535,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
         success: (data) async {
           state = state.copyWith(isStoryLoading: false, story: data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isStoryLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -582,7 +582,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             shopIndex--;
             shopController.loadFailed();
@@ -591,7 +591,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -612,11 +612,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state =
               state.copyWith(isBannerLoading: false, banners: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isBannerLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -635,10 +635,10 @@ class HomeNotifier extends StateNotifier<HomeState> {
         success: (data) async {
           state = state.copyWith(ads: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -681,7 +681,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             bannerIndex--;
             controller.loadFailed();
@@ -691,7 +691,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );

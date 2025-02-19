@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
+import 'package:foodyman/app_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../routes/app_router.dart';
@@ -27,7 +27,7 @@ class _WebViewPageState extends State<WebViewPage> {
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.contains(AppConstants.baseUrl)) {
+            if (request.url.startsWith(AppConstants.baseUrl)) {
               context.replaceRoute(const MainRoute());
               return NavigationDecision.prevent;
             }

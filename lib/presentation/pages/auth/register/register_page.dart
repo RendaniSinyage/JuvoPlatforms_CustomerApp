@@ -4,19 +4,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:riverpodtemp/application/register/register_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/app_bar_bottom_sheet.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/buttons/social_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import '../../../../infrastructure/services/app_constants.dart';
-import '../../../theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/app_bar_bottom_sheet.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/buttons/social_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/auth/auth.dart';
 import '../confirmation/register_confirmation_page.dart';
 
 @RoutePage()
@@ -60,7 +61,8 @@ class RegisterPage extends ConsumerWidget {
                       AppBarBottomSheet(
                         title: AppHelpers.getTranslation(TrKeys.register),
                       ),
-                      if (isOnlyEmail && AppConstants.isSpecificNumberEnabled)
+                      if (isOnlyEmail &&
+                          AppConstants.signUpType == SignUpType.phone)
                         Form(
                           key: phoneNumKey,
                           child: Directionality(
@@ -70,7 +72,8 @@ class RegisterPage extends ConsumerWidget {
                               onChanged: (phoneNum) {
                                 event.setEmail(phoneNum.completeNumber);
                               },
-                              disableLengthCheck: !AppConstants.isNumberLengthAlwaysSame,
+                              disableLengthCheck:
+                                  !AppConstants.isNumberLengthAlwaysSame,
                               validator: (s) {
                                 if (AppConstants.isNumberLengthAlwaysSame &&
                                     (s?.isValidNumber() ?? true)) {
@@ -124,11 +127,15 @@ class RegisterPage extends ConsumerWidget {
                             ),
                           ),
                         ),
-                      if (isOnlyEmail && !AppConstants.isSpecificNumberEnabled)
+                      if (isOnlyEmail &&
+                          !(AppConstants.signUpType == SignUpType.phone))
                         OutlinedBorderTextField(
                           label: AppHelpers.getTranslation(
-                                  TrKeys.emailOrPhoneNumber)
+                                  AppConstants.signUpType == SignUpType.both
+                                      ? TrKeys.emailOrPhoneNumber
+                                      : TrKeys.email)
                               .toUpperCase(),
+                          textCapitalization: TextCapitalization.none,
                           onChanged: event.setEmail,
                           isError: state.isEmailInvalid,
                           descriptionText: state.isEmailInvalid
@@ -267,8 +274,9 @@ class RegisterPage extends ConsumerWidget {
                               );
                             });
                           } else {
-                            if(AppConstants.isSpecificNumberEnabled){
-                              if(!(phoneNumKey.currentState?.validate()??false)){
+                            if (AppConstants.signUpType == SignUpType.phone) {
+                              if (!(phoneNumKey.currentState?.validate() ??
+                                  false)) {
                                 return;
                               }
                             }
@@ -292,11 +300,13 @@ class RegisterPage extends ConsumerWidget {
                           }
                         } else {
                           if (state.verificationId.isEmpty) {
-                            event.register(
-                              context,
-                            );
+                            event.register(context);
                           } else {
-                            event.registerWithPhone(context);
+                            if (AppConstants.isPhoneFirebase) {
+                              event.registerWithFirebase(context);
+                            } else {
+                              event.registerWithPhone(context);
+                            }
                           }
                         }
                       },

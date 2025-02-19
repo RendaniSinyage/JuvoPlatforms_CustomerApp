@@ -7,13 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpodtemp/application/chat/chat_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/chat_message_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/chat/chat_provider.dart';
+import 'package:foodyman/infrastructure/models/data/chat_message_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 import 'widgets/chat_item.dart';
 
@@ -60,7 +60,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           backgroundColor: AppStyle.bgGrey,
           leading: IconButton(
             splashRadius: 18.r,
-            onPressed: context.popRoute,
+            onPressed: context.maybePop,
             icon: Icon(
               isLtr
                   ? FlutterRemix.arrow_left_s_line
@@ -86,7 +86,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               ? Center(
                   child: CircularProgressIndicator(
                     strokeWidth: 3.r,
-                    color: AppStyle.brandGreen,
+                    color: AppStyle.primary,
                   ),
                 )
               : Stack(
@@ -101,7 +101,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                           return Center(
                             child: CircularProgressIndicator(
                               strokeWidth: 3.r,
-                              color: AppStyle.brandGreen,
+                              color: AppStyle.primary,
                             ),
                           );
                         }

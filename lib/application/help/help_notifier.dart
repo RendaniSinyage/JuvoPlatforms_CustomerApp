@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 
-import '../../domain/iterface/settings.dart';
-import '../../infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/domain/interface/settings.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
 import 'help_state.dart';
 
 class HelpNotifier extends StateNotifier<HelpState> {
@@ -23,11 +23,11 @@ class HelpNotifier extends StateNotifier<HelpState> {
             data: data,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );

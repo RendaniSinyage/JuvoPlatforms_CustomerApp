@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/setting/setting_notifier.dart';
-import 'package:riverpodtemp/presentation/components/custom_toggle.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
+import 'package:foodyman/application/setting/setting_notifier.dart';
+import 'package:foodyman/presentation/components/custom_toggle.dart';
+import 'package:foodyman/presentation/components/loading.dart';
 
-import '../../../application/setting/setting_provider.dart';
+import 'package:foodyman/application/setting/setting_provider.dart';
 
 class NotificationPage extends ConsumerStatefulWidget {
   const NotificationPage({super.key});

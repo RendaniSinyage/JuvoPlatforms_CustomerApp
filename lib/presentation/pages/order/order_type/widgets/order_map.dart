@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class OrderMap extends StatelessWidget {
   final Set<Marker> markers;
@@ -47,7 +47,7 @@ class OrderMap extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppStyle.white,
-        borderRadius: BorderRadius.all(Radius.circular(10.r)),
+        borderRadius: BorderRadius.circular(10.r),
       ),
       padding: EdgeInsets.all(16.r),
       height: 260.h,
@@ -66,7 +66,7 @@ class OrderMap extends StatelessWidget {
                 Polyline(
                   polylineId: const PolylineId("market"),
                   points: polylineCoordinates,
-                  color: AppStyle.brandGreen,
+                  color: AppStyle.primary,
                   width: 6,
                 ),
               },

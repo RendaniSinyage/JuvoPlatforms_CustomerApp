@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
 
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class SearchShopShimmer extends StatelessWidget {
   const SearchShopShimmer({super.key});
@@ -35,7 +35,7 @@ class SearchShopShimmer extends StatelessWidget {
                         margin: EdgeInsets.symmetric(vertical: 6.r),
                         decoration: BoxDecoration(
                           color: AppStyle.shimmerBase,
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          borderRadius: BorderRadius.circular(10.r),
                           boxShadow: [
                             BoxShadow(
                               color: AppStyle.white.withOpacity(0.04),

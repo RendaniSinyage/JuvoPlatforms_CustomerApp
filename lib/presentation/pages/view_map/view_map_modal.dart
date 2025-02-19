@@ -3,20 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/application/map/view_map_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_information.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/search_text_field.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/application/map/view_map_provider.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/infrastructure/models/data/address_information.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/address_old_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/components/text_fields/search_text_field.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class ViewMapModal extends ConsumerStatefulWidget {
   final TextEditingController controller;
@@ -147,8 +147,8 @@ class _ViewMapModalState extends ConsumerState<ViewMapModal> {
             child: CustomButton(
               isLoading: !widget.isShopLocation ? state.isLoading : false,
               background: !widget.isShopLocation
-                  ? (state.isActive ? AppStyle.brandGreen : AppStyle.bgGrey)
-                  : AppStyle.brandGreen,
+                  ? (state.isActive ? AppStyle.primary : AppStyle.bgGrey)
+                  : AppStyle.primary,
               textColor: !widget.isShopLocation
                   ? (state.isActive ? AppStyle.black : AppStyle.textGrey)
                   : AppStyle.black,

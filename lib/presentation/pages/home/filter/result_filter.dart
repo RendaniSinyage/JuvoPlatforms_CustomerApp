@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/filter/filter_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/pages/home_one/widget/market_one_item.dart';
-import 'package:riverpodtemp/presentation/pages/home_three/widgets/market_three_item.dart';
+import 'package:foodyman/application/filter/filter_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/pages/home/home_one/widget/market_one_item.dart';
+import 'package:foodyman/presentation/pages/home/home_three/widgets/market_three_item.dart';
 
-import '../../../../application/filter/filter_notifier.dart';
-import '../../../../infrastructure/services/tr_keys.dart';
-import '../../../components/market_item.dart';
-import '../../../theme/app_style.dart';
-import '../../home_two/widget/market_two_item.dart';
+import 'package:foodyman/application/filter/filter_notifier.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/market_item.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import '../home_two/widget/market_two_item.dart';
 import '../shimmer/all_shop_shimmer.dart';
 
 

@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/application/select/select_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/application/select/select_provider.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ReservationShops extends ConsumerStatefulWidget {
@@ -90,12 +90,12 @@ class _ReservationShopsState extends ConsumerState<ReservationShops> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: selectState.selectedIndex == index
-                                  ? AppStyle.brandGreen.withOpacity(0.4)
+                                  ? AppStyle.primary.withOpacity(0.4)
                                   : AppStyle.bgGrey,
                               borderRadius: BorderRadius.circular(8.r),
                               border: Border.all(
                                 color: selectState.selectedIndex == index
-                                    ? AppStyle.brandGreen
+                                    ? AppStyle.primary
                                     : AppStyle.transparent,
                                 width: 1.8,
                               ),

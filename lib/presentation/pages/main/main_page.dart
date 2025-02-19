@@ -7,44 +7,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/main/main_notifier.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/cart_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/profile_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/remote_message_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/pages/home/home_page.dart';
-import 'package:riverpodtemp/presentation/pages/home_one/home_one_page.dart';
-import 'package:riverpodtemp/presentation/pages/home_three/home_page_three.dart';
-import 'package:riverpodtemp/presentation/pages/home_two/home_two_page.dart';
-import 'package:riverpodtemp/presentation/pages/like/like_page.dart';
-import 'package:riverpodtemp/presentation/pages/main/widgets/bottom_navigator_three.dart';
-import 'package:riverpodtemp/presentation/pages/profile/profile_page.dart';
-import 'package:riverpodtemp/presentation/pages/search/search_page.dart';
-import 'package:riverpodtemp/presentation/pages/service/service_page.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/main/main_notifier.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/models/data/cart_data.dart';
+import 'package:foodyman/infrastructure/models/data/profile_data.dart';
+import 'package:foodyman/infrastructure/models/data/remote_message_data.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/pages/home/home_one/home_one_page.dart';
+import 'package:foodyman/presentation/pages/home/home_page.dart';
+import 'package:foodyman/presentation/pages/home/home_three/home_page_three.dart';
+import 'package:foodyman/presentation/pages/like/like_page.dart';
+import 'package:foodyman/presentation/pages/main/widgets/bottom_navigator_three.dart';
+import 'package:foodyman/presentation/pages/profile/profile_page.dart';
+import 'package:foodyman/presentation/pages/search/search_page.dart';
+import 'package:foodyman/presentation/pages/service/service_page.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../application/main/main_provider.dart';
-import '../../../infrastructure/services/local_storage.dart';
-import '../../components/blur_wrap.dart';
+import 'package:foodyman/application/main/main_provider.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/presentation/components/blur_wrap.dart';
+import '../home/home_two/home_two_page.dart';
 import 'widgets/bottom_navigator_item.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
-
 import 'widgets/bottom_navigator_one.dart';
 import 'widgets/bottom_navigator_two.dart';
 
 @RoutePage()
 class MainPage extends StatefulWidget {
-  const MainPage({
-    super.key,
-  });
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -142,13 +139,13 @@ class _MainPageState extends State<MainPage> {
   Future<void> initDynamicLinks() async {
     dynamicLinks.onLink.listen((dynamicLinkData) {
       Uri link = dynamicLinkData.link;
-      if (link.queryParameters.keys.contains('g')) {
+      if (link.queryParameters.keys.contains('group')) {
         context.router.popUntilRoot();
         context.pushRoute(
           ShopRoute(
             shopId: link.pathSegments.last,
-            cartId: link.queryParameters['g'],
-            ownerId: int.tryParse(link.queryParameters['o'] ?? ''),
+            cartId: link.queryParameters['group'],
+            ownerId: int.tryParse(link.queryParameters['owner_id'] ?? ''),
           ),
         );
       } else if (!link.queryParameters.keys.contains("product") &&
@@ -180,13 +177,13 @@ class _MainPageState extends State<MainPage> {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
-    if (deepLink?.queryParameters.keys.contains("g") ?? false) {
+    if (deepLink?.queryParameters.keys.contains("group") ?? false) {
       context.router.popUntilRoot();
       context.pushRoute(
         ShopRoute(
           shopId: deepLink?.pathSegments.last ?? '',
-          cartId: deepLink?.queryParameters['g'],
-          ownerId: int.tryParse(deepLink?.queryParameters['o'] ?? ""),
+          cartId: deepLink?.queryParameters['group'],
+          ownerId: int.tryParse(deepLink?.queryParameters['owner_id'] ?? ""),
         ),
       );
     } else if (!(deepLink?.queryParameters.keys.contains("product") ?? false) &&
@@ -394,13 +391,13 @@ class _MainPageState extends State<MainPage> {
                       decoration: BoxDecoration(
                           border: Border.all(
                               color: index == 3
-                                  ? AppStyle.brandGreen
+                                  ? AppStyle.primary
                                   : AppStyle.transparent,
                               width: 2.w),
                           shape: BoxShape.circle),
                       child: CustomNetworkImage(
                         profile: true,
-                        url: user?.img ?? LocalStorage.getProfileImage(),
+                        url: user?.img ?? LocalStorage.getUser()?.img,
                         height: 40.r,
                         width: 40..r,
                         radius: 20.r,
@@ -417,7 +414,7 @@ class _MainPageState extends State<MainPage> {
                 ((orders.userCarts?.isEmpty ?? true)
                     ? true
                     : (orders.userCarts?.first.cartDetails?.isEmpty ?? true)) ||
-                orders.ownerId != LocalStorage.getUserId()
+                orders.ownerId != LocalStorage.getUser()?.id
             ? const SizedBox.shrink()
             : AnimationButtonEffect(
                 child: GestureDetector(
@@ -430,7 +427,7 @@ class _MainPageState extends State<MainPage> {
                     height: 56.r,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppStyle.brandGreen,
+                      color: AppStyle.primary,
                     ),
                     child: const Icon(FlutterRemix.shopping_bag_3_line),
                   ),

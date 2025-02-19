@@ -1,24 +1,23 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/language/language_provider.dart';
-import 'package:riverpodtemp/application/main/main_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/pages/auth/register/register_page.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import '../../../theme/theme.dart';
+import 'package:foodyman/application/language/language_provider.dart';
+import 'package:foodyman/application/main/main_provider.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/pages/auth/register/register_page.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/auth/auth.dart';
 import '../../profile/language_page.dart';
 import 'login_screen.dart';
-import '../../../../application/login/login_provider.dart';
 
 
 @RoutePage()
@@ -170,7 +169,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 isOnlyEmail: true,
                               ),
                               isDarkMode: isDarkMode,
-                              paddingTop: MediaQuery.of(context).padding.top);
+                              paddingTop: MediaQuery.paddingOf(context).top);
                         },
                         background: AppStyle.transparent,
                         textColor: AppStyle.white,

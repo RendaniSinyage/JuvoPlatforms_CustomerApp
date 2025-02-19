@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:riverpodtemp/domain/iterface/gallery.dart';
-import 'package:riverpodtemp/domain/iterface/user.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/models/request/edit_profile.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../infrastructure/services/local_storage.dart';
-import '../../infrastructure/services/marker_image_cropper.dart';
+import 'package:foodyman/domain/interface/gallery.dart';
+import 'package:foodyman/domain/interface/user.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/request/edit_profile.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/marker_image_cropper.dart';
 import 'edit_profile_state.dart';
 
 class EditProfileNotifier extends StateNotifier<EditProfileState> {
@@ -103,20 +103,15 @@ class EditProfileNotifier extends StateNotifier<EditProfileState> {
         firstname: state.firstName.isEmpty ? user.firstname : state.firstName,
         lastname: state.lastName.isEmpty ? user.lastname : state.lastName,
         birthday: state.birth.isEmpty ? user.birthday : state.birth,
-        phone: user.phone,
-        email: user.email,
+        phone: state.phone.isEmpty ? user.phone : state.phone,
+        email: state.email.isEmpty ? user.email : state.email,
         secondPhone: state.secondPhone,
         images: state.url.isEmpty ? user.img ?? "" : state.url,
         gender: state.gender.isEmpty ? user.gender : state.gender,
       ));
       response.when(
         success: (data) {
-          LocalStorage.setProfileImage(data.data?.img ?? "");
-          LocalStorage.setUserId(data.data?.id);
-          LocalStorage.setFirstName(data.data?.firstname);
-          LocalStorage.setLastName(data.data?.lastname);
-          LocalStorage.setPhone(data.data?.phone);
-
+          LocalStorage.setUser(data.data);
           Navigator.pop(context);
           state = state.copyWith(
             userData: data.data,

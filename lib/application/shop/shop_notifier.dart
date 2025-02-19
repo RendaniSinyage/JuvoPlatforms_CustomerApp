@@ -2,24 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_share/flutter_share.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/domain/iterface/brands.dart';
-import 'package:riverpodtemp/domain/iterface/categories.dart';
-import 'package:riverpodtemp/domain/iterface/products.dart';
-import 'package:riverpodtemp/domain/iterface/shops.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/interface/brands.dart';
+import 'package:foodyman/domain/interface/categories.dart';
+import 'package:foodyman/domain/interface/products.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:riverpodtemp/infrastructure/services/marker_image_cropper.dart';
-import '../../domain/iterface/draw.dart';
-import '../../infrastructure/models/response/all_products_response.dart';
-import '../../infrastructure/services/app_constants.dart';
+import 'package:foodyman/infrastructure/services/marker_image_cropper.dart';
+import 'package:foodyman/domain/interface/draw.dart';
+import 'package:foodyman/infrastructure/models/response/all_products_response.dart';
+import 'package:share_plus/share_plus.dart';
+import '../../app_constants.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'shop_state.dart';
-import 'package:intl/intl.dart' as intl;
+
 
 class ShopNotifier extends StateNotifier<ShopState> {
   final ProductsRepositoryFacade _productsRepository;
@@ -103,7 +105,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
                 AppConstants.demoLongitude,
           ),
           icon:
-              await image.resizeAndCircle(LocalStorage.getProfileImage(), 120))
+              await image.resizeAndCircle(LocalStorage.getUser()?.img, 120))
     });
     state = state.copyWith(isMapLoading: false, shopMarkers: markers);
   }
@@ -131,7 +133,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
                 AppConstants.demoLongitude,
           ),
           icon:
-              await image.resizeAndCircle(LocalStorage.getProfileImage(), 120))
+              await image.resizeAndCircle(LocalStorage.getUser()?.img, 120))
     });
     state = state.copyWith(shopMarkers: markers, isMapLoading: false);
     final res =
@@ -174,7 +176,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
     int todayWeekIndex = 0;
     for (int i = 0; i < state.shopData!.shopWorkingDays!.length; i++) {
       if (state.shopData!.shopWorkingDays![i].day ==
-              intl.DateFormat("EEEE").format(DateTime.now()).toLowerCase() &&
+             TimeService.dateFormatEE(DateTime.now()).toLowerCase() &&
           !(state.shopData!.shopWorkingDays![i].disabled ?? true)) {
         state = state.copyWith(isTodayWorkingDay: true);
         todayWeekIndex = i;
@@ -278,7 +280,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         );
         checkWorkingDay();
       },
-      failure: (activeFailure, status) {},
+      failure: (failure, status) {},
     );
   }
 
@@ -302,7 +304,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
               isJoinOrder: false, isGroupOrder: true, userUuid: data);
           onSuccess();
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(
             isJoinOrder: false,
             userUuid: "",
@@ -340,11 +342,11 @@ class ShopNotifier extends StateNotifier<ShopState> {
           generateShareLink();
           checkWorkingDay();
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -369,11 +371,11 @@ class ShopNotifier extends StateNotifier<ShopState> {
           );
           return true;
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isCategoryLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
           return false;
         },
@@ -387,28 +389,32 @@ class ShopNotifier extends StateNotifier<ShopState> {
     }
   }
 
-  Future<void> fetchProducts(BuildContext context, String shopId) async {
+  Future<void> fetchProducts(BuildContext context, String shopId,ValueChanged<int> onSuccess) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       page = 1;
-      state = state.copyWith(
-        isProductLoading: true,
-        isCategoryLoading: true
-      );
+      state = state.copyWith(isProductLoading: true, isCategoryLoading: true);
       final response = await _productsRepository.getAllProducts(shopId: shopId);
       response.when(
         success: (data) {
-          List<Product> products = [];
-          data.data?.all?.forEach((element) {
-            products.addAll(element.products ?? []);
-          });
-
-          state = state.copyWith(
-            products:
-                products.map((e) => Product.fromJson(e.toJson())).toList(),
-            category: data.data?.all?.map((e) => CategoryData.fromJson(e.toJson())).toList(),
-            popularProducts: data.data?.recommended ?? [],
-          );
+          List<All> allList = data.data?.all ?? [];
+          for (int i=0;i<allList.length;i++) {
+            allList[i] =  allList[i].copyWith(key: GlobalKey());
+          }
+          if (data.data?.recommended?.isNotEmpty ?? false) {
+            allList.insert(
+              0,
+              All(
+                  translation: Translation(
+                    title: AppHelpers.getTranslation(TrKeys.popular),
+                  ),
+                  key: GlobalKey(),
+                  products: data.data?.recommended ?? []
+              ),
+            );
+          }
+          state = state.copyWith(allData: allList);
+          onSuccess.call(allList.length);
         },
         failure: (failure, status) {
           AppHelpers.showCheckTopSnackBar(
@@ -424,10 +430,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
         );
       }
     }
-    state = state.copyWith(
-        isProductLoading: false,
-        isCategoryLoading: false
-    );
+    state = state.copyWith(isProductLoading: false, isCategoryLoading: false);
   }
 
   Future<void> checkProductsPopular(BuildContext context, String shopId) async {
@@ -457,41 +460,41 @@ class ShopNotifier extends StateNotifier<ShopState> {
     }
   }
 
-  Future<void> fetchProductsPopular(BuildContext context, String shopId) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      page = 1;
-      state = state.copyWith(
-        isProductLoading: true,
-      );
-      final response = await _productsRepository.getProductsPopularPaginate(
-          page: 1, shopId: shopId);
-      response.when(
-        success: (data) {
-          state = state.copyWith(
-              popularProducts: data.data
-                      ?.map((e) => Product.fromJson(e.toJson()))
-                      .toList() ??
-                  [],
-              isProductLoading: false,
-              isPopularProduct: (data.data ?? []).isNotEmpty);
-        },
-        failure: (failure, status) {
-          state = state.copyWith(isProductLoading: false);
-          AppHelpers.showCheckTopSnackBar(
-            context,
-            failure,
-          );
-        },
-      );
-    } else {
-      if (context.mounted) {
-        AppHelpers.showNoConnectionSnackBar(
-          context,
-        );
-      }
-    }
-  }
+  // Future<void> fetchProductsPopular(BuildContext context, String shopId) async {
+  //   final connected = await AppConnectivity.connectivity();
+  //   if (connected) {
+  //     page = 1;
+  //     state = state.copyWith(
+  //       isProductLoading: true,
+  //     );
+  //     final response = await _productsRepository.getProductsPopularPaginate(
+  //         page: 1, shopId: shopId);
+  //     response.when(
+  //       success: (data) {
+  //         state = state.copyWith(
+  //             popularProducts: data.data
+  //                     ?.map((e) => ProductData.fromJson(e.toJson()))
+  //                     .toList() ??
+  //                 [],
+  //             isProductLoading: false,
+  //             isPopularProduct: (data.data ?? []).isNotEmpty);
+  //       },
+  //       failure: (failure, status) {
+  //         state = state.copyWith(isProductLoading: false);
+  //         AppHelpers.showCheckTopSnackBar(
+  //           context,
+  //           failure,
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     if (context.mounted) {
+  //       AppHelpers.showNoConnectionSnackBar(
+  //         context,
+  //       );
+  //     }
+  //   }
+  // }
 
   Future<void> fetchProductsByCategory(
       BuildContext context, String shopId, int categoryId) async {
@@ -571,79 +574,78 @@ class ShopNotifier extends StateNotifier<ShopState> {
     }
   }
 
-  Future<void> fetchProductsPage(BuildContext context, String shopId,
-      {RefreshController? controller}) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      final response = await _productsRepository.getProductsPaginate(
-          page: ++page, shopId: shopId);
-      response.when(
-        success: (data) {
-          List<ProductData> list = List.from(state.products);
-          list.addAll(data.data!.toList());
-          state = state.copyWith(
-            products: list.map((e) => Product.fromJson(e.toJson())).toList(),
-          );
-          if (data.data?.isEmpty ?? true) {
-            controller?.loadNoData();
-            return;
-          }
+  // Future<void> fetchProductsPage(BuildContext context, String shopId,
+  //     {RefreshController? controller}) async {
+  //   final connected = await AppConnectivity.connectivity();
+  //   if (connected) {
+  //     final response = await _productsRepository.getProductsPaginate(
+  //         page: ++page, shopId: shopId);
+  //     response.when(
+  //       success: (data) {
+  //         List<ProductData> list = List.from(state.products);
+  //         list.addAll(data.data!.toList());
+  //         state = state.copyWith(
+  //           products:
+  //               list.map((e) => ProductData.fromJson(e.toJson())).toList(),
+  //         );
+  //         if (data.data?.isEmpty ?? true) {
+  //           controller?.loadNoData();
+  //           return;
+  //         }
+  //
+  //         controller?.loadComplete();
+  //       },
+  //       failure: (failure, status) {
+  //         controller?.loadComplete();
+  //         AppHelpers.showCheckTopSnackBar(
+  //           context,
+  //           failure,
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     if (context.mounted) {
+  //       AppHelpers.showNoConnectionSnackBar(
+  //         context,
+  //       );
+  //     }
+  //   }
+  // }
 
-          controller?.loadComplete();
-        },
-        failure: (failure, status) {
-          controller?.loadComplete();
-          AppHelpers.showCheckTopSnackBar(
-            context,
-            failure,
-          );
-        },
-      );
-    } else {
-      if (context.mounted) {
-        AppHelpers.showNoConnectionSnackBar(
-          context,
-        );
-      }
-    }
-  }
-
-  Future<void> fetchProductsPopularPage(BuildContext context, String shopId,
-      {RefreshController? controller}) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      final response = await _productsRepository.getProductsPopularPaginate(
-          page: ++page, shopId: shopId);
-      response.when(
-        success: (data) {
-          List<ProductData> list = List.from(state.products);
-          list.addAll(data.data!.toList());
-          state = state.copyWith(
-            products: list.map((e) => Product.fromJson(e.toJson())).toList(),
-          );
-          if (data.data?.isEmpty ?? true) {
-            controller?.loadNoData();
-            return;
-          }
-
-          controller?.loadComplete();
-        },
-        failure: (failure, status) {
-          controller?.loadComplete();
-          AppHelpers.showCheckTopSnackBar(
-            context,
-            failure,
-          );
-        },
-      );
-    } else {
-      if (context.mounted) {
-        AppHelpers.showNoConnectionSnackBar(
-          context,
-        );
-      }
-    }
-  }
+  // Future<void> fetchProductsPopularPage(BuildContext context, String shopId,
+  //     {RefreshController? controller}) async {
+  //   final connected = await AppConnectivity.connectivity();
+  //   if (connected) {
+  //     final response = await _productsRepository.getProductsPopularPaginate(
+  //         page: ++page, shopId: shopId);
+  //     response.when(
+  //       success: (data) {
+  //         List<ProductData> list = List.from(state.products);
+  //         list.addAll(data.data ?? []);
+  //         state = state.copyWith(products: list);
+  //         if (data.data?.isEmpty ?? true) {
+  //           controller?.loadNoData();
+  //           return;
+  //         }
+  //
+  //         controller?.loadComplete();
+  //       },
+  //       failure: (failure, status) {
+  //         controller?.loadComplete();
+  //         AppHelpers.showCheckTopSnackBar(
+  //           context,
+  //           failure,
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     if (context.mounted) {
+  //       AppHelpers.showNoConnectionSnackBar(
+  //         context,
+  //       );
+  //     }
+  //   }
+  // }
 
   Future<void> fetchBrands(BuildContext context, int categoryId) async {
     final connected = await AppConnectivity.connectivity();
@@ -725,10 +727,10 @@ class ShopNotifier extends StateNotifier<ShopState> {
   }
 
   onShare() async {
-    await FlutterShare.share(
-      text: state.shopData?.translation?.title ?? "Foodyman",
-      title: state.shopData?.translation?.description ?? "",
-      linkUrl: shareLink,
+    await Share.share(
+      shareLink ?? '',
+      subject: state.shopData?.translation?.title ?? "Foodyman",
+      // title: state.shopData?.translation?.description ?? "",
     );
   }
 }

@@ -6,21 +6,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/application/search/search_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tpying_delay.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/tab_bar_item.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/search_text_field.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../../../application/search/search_notifier.dart';
-import '../../../../application/search/search_provider.dart';
-import '../../../application/main/main_provider.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/application/search/search_state.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tpying_delay.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/tab_bar_item.dart';
+import 'package:foodyman/presentation/components/text_fields/search_text_field.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/search/search_notifier.dart';
+import 'package:foodyman/application/search/search_provider.dart';
+import 'package:foodyman/application/main/main_provider.dart';
 import 'shimmer/category_shimmer.dart';
 import 'shimmer/search_product_shimmer.dart';
 import 'shimmer/search_shop_shimmer.dart';
@@ -121,9 +121,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             SizedBox(
               height: MediaQuery.sizeOf(context).height -
                   76.h -
-                  ((MediaQuery.of(context).padding.top > 34)
+                  ((MediaQuery.paddingOf(context).top > 34)
                       ? 34.h
-                      : MediaQuery.of(context).padding.top),
+                      : MediaQuery.paddingOf(context).top),
               child: state.search.isEmpty
                   ? _categoryAndSearchHistory(state, context)
                   : _searchResultBody(context, state),
@@ -273,7 +273,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                     right: 16.w,
                                     left: 16.w,
                                     bottom:
-                                        MediaQuery.of(context).padding.bottom),
+                                        MediaQuery.paddingOf(context).bottom),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: state.products.length,
@@ -386,7 +386,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               padding: EdgeInsets.only(
                   right: 16.w,
                   left: 16.w,
-                  bottom: MediaQuery.of(context).padding.bottom),
+                  bottom: MediaQuery.paddingOf(context).bottom),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: state.searchHistory.length,

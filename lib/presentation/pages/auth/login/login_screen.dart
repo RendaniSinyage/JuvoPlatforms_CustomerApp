@@ -3,21 +3,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/app_bar_bottom_sheet.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/buttons/forgot_text_button.dart';
-import 'package:riverpodtemp/presentation/components/buttons/social_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/pages/auth/reset/reset_password_page.dart';
-
-import '../../../../infrastructure/services/app_constants.dart';
-import '../../../../application/login/login_provider.dart';
-import '../../../theme/app_style.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/app_bar_bottom_sheet.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/buttons/forgot_text_button.dart';
+import 'package:foodyman/presentation/components/buttons/social_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/pages/auth/reset/reset_password_page.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import 'package:foodyman/application/auth/auth.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -61,7 +61,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         AppBarBottomSheet(
                           title: AppHelpers.getTranslation(TrKeys.login),
                         ),
-                        if (AppConstants.isSpecificNumberEnabled)
+                        if (AppConstants.signUpType == SignUpType.phone)
                           Directionality(
                             textDirection:
                                 isLtr ? TextDirection.ltr : TextDirection.rtl,
@@ -69,7 +69,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onChanged: (phoneNum) {
                                 event.setEmail(phoneNum.completeNumber);
                               },
-                              disableLengthCheck: !AppConstants.isNumberLengthAlwaysSame,
+                              disableLengthCheck:
+                                  !AppConstants.isNumberLengthAlwaysSame,
                               validator: (s) {
                                 if (AppConstants.isNumberLengthAlwaysSame &&
                                     (s?.isValidNumber() ?? true)) {
@@ -122,10 +123,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                             ),
                           ),
-                        if (!AppConstants.isSpecificNumberEnabled)
+                        if (AppConstants.signUpType == SignUpType.both)
                           OutlinedBorderTextField(
+                            textCapitalization: TextCapitalization.none,
                             label: AppHelpers.getTranslation(
                                     TrKeys.emailOrPhoneNumber)
+                                .toUpperCase(),
+                            onChanged: event.setEmail,
+                            isError: state.isEmailNotValid,
+                            validation: (s) {
+                              if (s?.isEmpty ?? true) {
+                                return AppHelpers.getTranslation(
+                                    TrKeys.emailIsNotValid);
+                              }
+                              return null;
+                            },
+                            descriptionText: state.isEmailNotValid
+                                ? AppHelpers.getTranslation(
+                                    TrKeys.emailIsNotValid)
+                                : null,
+                          ),
+                        if (AppConstants.signUpType == SignUpType.email)
+                          OutlinedBorderTextField(
+                            textCapitalization: TextCapitalization.none,
+                            label: AppHelpers.getTranslation(TrKeys.email)
                                 .toUpperCase(),
                             onChanged: event.setEmail,
                             isError: state.isEmailNotValid,
@@ -272,6 +293,66 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               title: "Google"),
                         ],
                       ),
+                      22.verticalSpace,
+                      if (AppConstants.isDemo)
+                        Column(
+                          children: [
+                            InkWell(
+                              // onTap: () {
+                              //   email.text = AppConstants.demoSellerLogin;
+                              //   password.text = AppConstants.demoSellerPassword;
+                              // },
+                              child: Row(
+                                children: [
+                                  const Spacer(),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          text:
+                                          '${AppHelpers.getTranslation(TrKeys.login)}:',
+                                          style: AppStyle.interNormal(
+                                              letterSpacing: -0.3),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                              ' ${AppConstants.demoUserLogin}',
+                                              style: AppStyle.interRegular(
+                                                letterSpacing: -0.3,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      6.verticalSpace,
+                                      RichText(
+                                        text: TextSpan(
+                                          text:
+                                          '${AppHelpers.getTranslation(TrKeys.password)}:',
+                                          style: AppStyle.interNormal(
+                                              letterSpacing: -0.3),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                              ' ${AppConstants.demoUserPassword}',
+                                              style: AppStyle.interRegular(
+                                                letterSpacing: -0.3,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       22.verticalSpace,
                     ],
                   ),

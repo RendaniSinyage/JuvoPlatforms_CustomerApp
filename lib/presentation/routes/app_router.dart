@@ -1,43 +1,40 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:foodyman/presentation/pages/home/filter/result_filter.dart';
+import 'package:foodyman/presentation/pages/home/home_two/widget/recommended_two_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/infrastructure/models/response/categories_paginate_response.dart';
-import 'package:riverpodtemp/presentation/pages/auth/login/login_page.dart';
-import 'package:riverpodtemp/presentation/pages/auth/confirmation/register_confirmation_page.dart';
-import 'package:riverpodtemp/presentation/pages/auth/register/register_page.dart';
-import 'package:riverpodtemp/presentation/pages/auth/reset/reset_password_page.dart';
-import 'package:riverpodtemp/presentation/pages/generate_image/generate_image_page.dart';
-import 'package:riverpodtemp/presentation/pages/home/filter/result_filter.dart';
-import 'package:riverpodtemp/presentation/pages/home_one/widget/recommended_one_screen.dart';
-import 'package:riverpodtemp/presentation/pages/home_three/widgets/recommended_three_screen.dart';
-import 'package:riverpodtemp/presentation/pages/home_two/widget/recommended_two_screen.dart';
-import 'package:riverpodtemp/presentation/pages/initial/no_connection/no_connection_page.dart';
-import 'package:riverpodtemp/presentation/pages/initial/splash/splash_page.dart';
-import 'package:riverpodtemp/presentation/pages/initial/ui_type/ui_type_page.dart';
-import 'package:riverpodtemp/presentation/pages/like/like_page.dart';
-import 'package:riverpodtemp/presentation/pages/main/main_page.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_screen/order_screen.dart';
-import 'package:riverpodtemp/presentation/pages/order/orders_page.dart';
-import 'package:riverpodtemp/presentation/pages/parcel/parcel_list_page.dart';
-import 'package:riverpodtemp/presentation/pages/parcel/parcel_order_page.dart';
-import 'package:riverpodtemp/presentation/pages/parcel/widgets/info_screen.dart';
-import 'package:riverpodtemp/presentation/pages/policy_term/policy_page.dart';
-import 'package:riverpodtemp/presentation/pages/policy_term/term_page.dart';
-import 'package:riverpodtemp/presentation/pages/profile/address_list.dart';
-import 'package:riverpodtemp/presentation/pages/profile/notification_page.dart';
-import 'package:riverpodtemp/presentation/pages/profile/profile_page.dart';
-import 'package:riverpodtemp/presentation/pages/profile/share_referral_faq.dart';
-import 'package:riverpodtemp/presentation/pages/search/search_page.dart';
-import 'package:riverpodtemp/presentation/pages/service/service_two_category_page.dart';
-import 'package:riverpodtemp/presentation/pages/setting/setting_page.dart';
-import 'package:riverpodtemp/presentation/pages/shop/shop_detail.dart';
-import 'package:riverpodtemp/presentation/pages/shop/shop_page.dart';
-import 'package:riverpodtemp/presentation/pages/view_map/map_search_page.dart';
-import 'package:riverpodtemp/presentation/pages/view_map/view_map_page.dart';
-
-import '../../infrastructure/models/data/address_new_data.dart';
-import '../../infrastructure/models/data/shop_data.dart';
-import '../../infrastructure/models/data/user.dart';
+import 'package:foodyman/presentation/pages/auth/login/login_page.dart';
+import 'package:foodyman/presentation/pages/auth/confirmation/register_confirmation_page.dart';
+import 'package:foodyman/presentation/pages/auth/register/register_page.dart';
+import 'package:foodyman/presentation/pages/auth/reset/reset_password_page.dart';
+import 'package:foodyman/presentation/pages/home/home_one/widget/recommended_one_screen.dart';
+import 'package:foodyman/presentation/pages/home/home_three/widgets/recommended_three_screen.dart';
+import 'package:foodyman/presentation/pages/initial/no_connection/no_connection_page.dart';
+import 'package:foodyman/presentation/pages/initial/splash/splash_page.dart';
+import 'package:foodyman/presentation/pages/initial/ui_type/ui_type_page.dart';
+import 'package:foodyman/presentation/pages/like/like_page.dart';
+import 'package:foodyman/presentation/pages/main/main_page.dart';
+import 'package:foodyman/presentation/pages/order/order_screen/order_screen.dart';
+import 'package:foodyman/presentation/pages/order/orders_page.dart';
+import 'package:foodyman/presentation/pages/parcel/parcel_list_page.dart';
+import 'package:foodyman/presentation/pages/parcel/parcel_order_page.dart';
+import 'package:foodyman/presentation/pages/parcel/widgets/info_screen.dart';
+import 'package:foodyman/presentation/pages/policy_term/policy_page.dart';
+import 'package:foodyman/presentation/pages/policy_term/term_page.dart';
+import 'package:foodyman/presentation/pages/profile/address_list.dart';
+import 'package:foodyman/presentation/pages/profile/notification_page.dart';
+import 'package:foodyman/presentation/pages/profile/profile_page.dart';
+import 'package:foodyman/presentation/pages/profile/share_referral_faq.dart';
+import 'package:foodyman/presentation/pages/search/search_page.dart';
+import 'package:foodyman/presentation/pages/service/service_two_category_page.dart';
+import 'package:foodyman/presentation/pages/setting/setting_page.dart';
+import 'package:foodyman/presentation/pages/shop/shop_detail.dart';
+import 'package:foodyman/presentation/pages/shop/shop_page.dart';
+import 'package:foodyman/presentation/pages/view_map/map_search_page.dart';
+import 'package:foodyman/presentation/pages/view_map/view_map_page.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
 import '../pages/chat/chat/chat_page.dart';
 import '../pages/home/widgets/shops_banner_page.dart';
 import '../pages/order/order_screen/order_progress_screen.dart';
@@ -47,14 +44,13 @@ import '../pages/profile/help_page.dart';
 import '../pages/home/widgets/recommended_screen.dart';
 import '../pages/profile/share_referral_page.dart';
 import '../pages/profile/wallet_history.dart';
-import '../pages/shop/sub_category_screen.dart';
 import '../pages/story_page/story_page.dart';
 
 
 part 'app_router.gr.dart';
 
 @AutoRouterConfig()
-class AppRouter extends _$AppRouter {
+class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
     MaterialRoute(path: '/', page: SplashRoute.page),
@@ -88,7 +84,6 @@ class AppRouter extends _$AppRouter {
     MaterialRoute(path: '/share_referral', page: ShareReferralRoute.page),
     MaterialRoute(path: '/share_referral_faq', page: ShareReferralFaqRoute.page),
     MaterialRoute(path: '/chat', page: ChatRoute.page),
-    MaterialRoute(path: '/generate_image', page: GenerateImageRoute.page),
     MaterialRoute(
         path: '/notification_list_page', page: NotificationListRoute.page),
     MaterialRoute(
@@ -102,7 +97,7 @@ class AppRouter extends _$AppRouter {
     MaterialRoute(path: '/parcel_list_page', page: ParcelListRoute.page),
     MaterialRoute(
         path: '/parcel_progress_page', page: ParcelProgressRoute.page),
-    MaterialRoute(path: '/sub_category_page', page: SubCategoryRoute.page),
+    // MaterialRoute(path: '/sub_category_page', page: SubCategoryRoute.page),
     MaterialRoute(path: '/address_list_page', page: AddressListRoute.page),
     MaterialRoute(path: '/term', page: TermRoute.page),
     MaterialRoute(path: '/policy', page: PolicyRoute.page),

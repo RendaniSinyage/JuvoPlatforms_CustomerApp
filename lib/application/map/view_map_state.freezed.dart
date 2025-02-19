@@ -22,7 +22,9 @@ mixin _$ViewMapState {
   bool get isSetAddress => throw _privateConstructorUsedError;
   bool get isScrolling => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ViewMapState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ViewMapStateCopyWith<ViewMapState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +53,8 @@ class _$ViewMapStateCopyWithImpl<$Res, $Val extends ViewMapState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ViewMapState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,6 +113,8 @@ class __$$ViewMapStateImplCopyWithImpl<$Res>
       _$ViewMapStateImpl _value, $Res Function(_$ViewMapStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ViewMapState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -195,7 +201,9 @@ class _$ViewMapStateImpl extends _ViewMapState {
   int get hashCode => Object.hash(
       runtimeType, isLoading, isActive, place, isSetAddress, isScrolling);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ViewMapState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ViewMapStateImplCopyWith<_$ViewMapStateImpl> get copyWith =>
@@ -221,8 +229,11 @@ abstract class _ViewMapState extends ViewMapState {
   bool get isSetAddress;
   @override
   bool get isScrolling;
+
+  /// Create a copy of ViewMapState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ViewMapStateImplCopyWith<_$ViewMapStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

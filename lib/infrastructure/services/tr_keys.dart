@@ -1,14 +1,23 @@
 class TrKeys {
   TrKeys._();
+
   static const String bgPicture = 'bg_picture';
+  static const String documents = 'documents';
+  static const String uploadDocuments = 'upload.documents';
   static const String helpInfo = 'help.info';
   static const String uiType = 'ui_type';
   static const String orderImage = 'order.image';
   static const String especiallyForYou = 'especially_for_you';
   static const String workForYou = 'work_for_you';
   static const String readAll = 'read_all';
+  static const String to = 'to';
+  static const String created = 'created';
   static const String offers = 'offers';
-  static const String thisImageWasUploadDriver = 'this.image.was.uploaded.by.driver';
+  static const String notValidDate = 'not.valid.date';
+  static const String searchTheMenu = 'search.the.menu';
+  static const String tellThisCodeToDriver = 'tell.this.code.to.driver';
+  static const String thisImageWasUploadDriver =
+      'this.image.was.uploaded.by.driver';
   static const String price = 'price';
   static const String customTip = 'custom.tip';
   static const String tips = 'would.you.like.to.add.a.tip?';
@@ -27,12 +36,15 @@ class TrKeys {
   static const String score = 'score';
   static const String tryAgain = 'try.again';
   static const String thisFieldIsRequired = 'this.field.is.required';
-  static const String ifYouWantToUseThisService = 'if.you.want.to.use.this.service';
+  static const String ifYouWantToUseThisService =
+      'if.you.want.to.use.this.service';
   static const String receiver = 'receiver';
   static const String selectPaymentMethod = 'select.payment.method';
-  static const String youWritePhoneAndFirstname = 'you.need.write.phone.and.firstname.for.someone';
+  static const String youWritePhoneAndFirstname =
+      'you.need.write.phone.and.firstname.for.someone';
   static const String sm = 'sm';
-  static const String yourOrderDidNotReachMinAmountMinAmountIs = 'your.order.did.not.reach.min.amount.min.amount.is';
+  static const String yourOrderDidNotReachMinAmountMinAmountIs =
+      'your.order.did.not.reach.min.amount.min.amount.is';
   static const String unpaid = 'unpaid';
   static const String payLater = 'pay.later';
   static const String pay = 'pay';
@@ -78,7 +90,7 @@ class TrKeys {
   static const String deliveryTo = 'delivery.to';
   static const String cart = 'cart';
   static const String learnMore = 'learn.more';
-  static const String yourPersonalDoor= 'your.personal.door';
+  static const String yourPersonalDoor = 'your.personal.door';
   static const String doorToDoor = 'door_to_door';
   static const String stories = 'stories';
   static const String favouriteBrand = 'favourite.brands';
@@ -97,13 +109,14 @@ class TrKeys {
   static const String branches = 'branches';
   static const String notWork = "not_work";
   static const String emailOrPhoneNumber = "email_or_phone_number";
-  static const String timeSchedule= "time_schedule";
+  static const String timeSchedule = "time_schedule";
   static const String moreInfo = 'more_info';
   static const String canNotBeEmpty = 'can_not_be_empty';
   static const String coped = 'copied';
   static const String referralFaq = 'referral_faq';
   static const String ratings = 'ratings';
-  static const String yourOrderStatusChanged = 'your_order_status_has_been_changed';
+  static const String yourOrderStatusChanged =
+      'your_order_status_has_been_changed';
   static const String openShop = 'open_shop';
   static const String deals = 'deals';
   static const String maxQty = 'max_qty';
@@ -141,6 +154,7 @@ class TrKeys {
   static const String transactions = 'transactions';
   static const String done = 'done';
   static const String owner = 'owner';
+  static const String started = 'started';
   static const String groupOrderProgress = 'group_order_progress';
   static const String deleteUser = 'delete_user';
   static const String ingredients = 'ingredients';
@@ -149,6 +163,13 @@ class TrKeys {
   static const String addAddressInformation = 'add_address_information';
   static const String wallet = 'wallet';
   static const String repeatOrder = 'repeat_order';
+  static const String autoOrder = 'auto_order';
+  static const String removeAutoOrder = 'remove_auto_order';
+  static const String autoOrderInfo = 'auto_order_info';
+  static const String autoOrderCreatedSuccessfully =
+      'auto_order_created_successfully';
+  static const String autoOrderDeletedSuccessfully =
+      'auto_order_deleted_successfully';
   static const String paymentMethodFailed = 'payment_method_failed';
   static const String typeHere = 'type_here';
   static const String notification = 'notification';
@@ -190,6 +211,7 @@ class TrKeys {
   static const String notWorkToday = "not_work_today";
   static const String notWorkTodayAndTomorrow = "not_work_today_and_tomorrow";
   static const String bonus = "bonus";
+  static const String shopBonus = "shop.bonus";
   static const String totalDiscount = 'total_discount';
   static const String shopTax = 'shop_tax';
   static const String totalTax = 'total_tax';

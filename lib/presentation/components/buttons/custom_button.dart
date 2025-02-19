@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'animation_button_effect.dart';
 
 class CustomButton extends StatelessWidget {
@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.isLoading = false,
-    this.background = AppStyle.brandGreen,
+    this.background = AppStyle.primary,
     this.textColor = AppStyle.black,
     this.weight = double.infinity,
     this.radius = 8,

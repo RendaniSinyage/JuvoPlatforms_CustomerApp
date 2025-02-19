@@ -1,19 +1,17 @@
-
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tpying_delay.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/pages/shop/cart/widgets/cart_clear_dialog.dart';
-import 'package:riverpodtemp/presentation/pages/shop/cart/widgets/cart_order_item.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/tpying_delay.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/pages/shop/cart/widgets/cart_clear_dialog.dart';
+import 'package:foodyman/presentation/pages/shop/cart/widgets/cart_order_item.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class OrderCarts extends StatefulWidget {
   final double lat;
@@ -38,7 +36,7 @@ class _OrderCartsState extends State<OrderCarts> {
     return Consumer(builder: (context, ref, child) {
       final stateCart = ref.watch(shopOrderProvider).cart;
       final state = ref.watch(orderProvider);
-      return  (stateCart?.group ?? false)
+      return (stateCart?.group ?? false)
           ? ref.watch(orderProvider).orderData == null
               ? ListView.builder(
                   padding: EdgeInsets.only(bottom: 8.h),
@@ -59,10 +57,9 @@ class _OrderCartsState extends State<OrderCarts> {
                             ),
                             children: [
                               ListView.builder(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w),
-                                  physics:
-                                      const NeverScrollableScrollPhysics(),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: stateCart?.userCarts?[index]
                                           .cartDetails?.length ??
@@ -73,55 +70,45 @@ class _OrderCartsState extends State<OrderCarts> {
                                       isOwn: index == 0,
                                       add: () {
                                         ref
-                                            .read(shopOrderProvider
-                                                .notifier)
+                                            .read(shopOrderProvider.notifier)
                                             .addCount(context, indexCart)
                                             .then((value) {
                                           _delayed.run(() {
                                             ref
-                                                .read(orderProvider
-                                                    .notifier)
+                                                .read(orderProvider.notifier)
                                                 .getCalculate(
                                                     isLoading: false,
                                                     context: context,
-                                                    cartId:
-                                                        stateCart?.id ??
-                                                            0,
+                                                    cartId: stateCart?.id ?? 0,
                                                     long: widget.long,
                                                     lat: widget.lat,
-                                                    type: widget.tabBarIndex ==
-                                                            0
-                                                        ? DeliveryTypeEnum
-                                                            .delivery
-                                                        : DeliveryTypeEnum
-                                                            .pickup);
+                                                    type:
+                                                        widget.tabBarIndex == 0
+                                                            ? DeliveryTypeEnum
+                                                                .delivery
+                                                            : DeliveryTypeEnum
+                                                                .pickup);
                                           });
                                         });
                                       },
                                       remove: () {
                                         ref
-                                            .read(shopOrderProvider
-                                                .notifier)
-                                            .removeCount(
-                                                context, indexCart)
+                                            .read(shopOrderProvider.notifier)
+                                            .removeCount(context, indexCart)
                                             .then((value) {
                                           _delayed.run(() {
                                             ref
-                                                .read(orderProvider
-                                                    .notifier)
+                                                .read(orderProvider.notifier)
                                                 .getCalculate(
                                                   isLoading: false,
                                                   context: context,
-                                                  cartId:
-                                                      stateCart?.id ?? 0,
+                                                  cartId: stateCart?.id ?? 0,
                                                   long: widget.long,
                                                   lat: widget.lat,
-                                                  type: widget.tabBarIndex ==
-                                                          0
+                                                  type: widget.tabBarIndex == 0
                                                       ? DeliveryTypeEnum
                                                           .delivery
-                                                      : DeliveryTypeEnum
-                                                          .pickup,
+                                                      : DeliveryTypeEnum.pickup,
                                                 );
                                           });
                                         });
@@ -179,7 +166,7 @@ class _OrderCartsState extends State<OrderCarts> {
                                     ref
                                         .read(shopOrderProvider.notifier)
                                         .deleteCart(context);
-                                    context.popRoute();
+                                    context.maybePop();
                                   },
                                 ),
                                 radius: 10,
@@ -188,57 +175,57 @@ class _OrderCartsState extends State<OrderCarts> {
                           : null,
                     ),
                     ListView.builder(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.w, vertical: 14.h),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        stateCart?.userCarts?.first.cartDetails?.length ??
-                            0,
-                    itemBuilder: (context, index) {
-                      return CartOrderItem(
-                        isAddComment: true,
-                        add: () {
-                          ref
-                              .read(shopOrderProvider.notifier)
-                              .addCount(context, index)
-                              .then((value) {
-                            _delayed.run(() {
-                              ref.read(orderProvider.notifier).getCalculate(
-                                  isLoading: false,
-                                  context: context,
-                                  cartId: stateCart?.id ?? 0,
-                                  long: widget.long,
-                                  lat: widget.lat,
-                                  type: widget.tabBarIndex == 0
-                                      ? DeliveryTypeEnum.delivery
-                                      : DeliveryTypeEnum.pickup);
-                            });
-                          });
-                        },
-                        remove: () {
-                          ref
-                              .read(shopOrderProvider.notifier)
-                              .removeCount(context, index)
-                              .then((value) {
-                            _delayed.run(() {
-                              ref.read(orderProvider.notifier).getCalculate(
-                                    isLoading: false,
-                                    context: context,
-                                    cartId: stateCart?.id ?? 0,
-                                    long: widget.long,
-                                    lat: widget.lat,
-                                    type: widget.tabBarIndex == 0
-                                        ? DeliveryTypeEnum.delivery
-                                        : DeliveryTypeEnum.pickup,
-                                  );
-                            });
-                          });
-                        },
-                        cart:
-                            stateCart?.userCarts?.first.cartDetails?[index],
-                      );
-                    }),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 14.h),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount:
+                            stateCart?.userCarts?.first.cartDetails?.length ??
+                                0,
+                        itemBuilder: (context, index) {
+                          return CartOrderItem(
+                            isAddComment: true,
+                            add: () {
+                              ref
+                                  .read(shopOrderProvider.notifier)
+                                  .addCount(context, index)
+                                  .then((value) {
+                                _delayed.run(() {
+                                  ref.read(orderProvider.notifier).getCalculate(
+                                      isLoading: false,
+                                      context: context,
+                                      cartId: stateCart?.id ?? 0,
+                                      long: widget.long,
+                                      lat: widget.lat,
+                                      type: widget.tabBarIndex == 0
+                                          ? DeliveryTypeEnum.delivery
+                                          : DeliveryTypeEnum.pickup);
+                                });
+                              });
+                            },
+                            remove: () {
+                              ref
+                                  .read(shopOrderProvider.notifier)
+                                  .removeCount(context, index)
+                                  .then((value) {
+                                _delayed.run(() {
+                                  ref.read(orderProvider.notifier).getCalculate(
+                                        isLoading: false,
+                                        context: context,
+                                        cartId: stateCart?.id ?? 0,
+                                        long: widget.long,
+                                        lat: widget.lat,
+                                        type: widget.tabBarIndex == 0
+                                            ? DeliveryTypeEnum.delivery
+                                            : DeliveryTypeEnum.pickup,
+                                      );
+                                });
+                              });
+                            },
+                            cart:
+                                stateCart?.userCarts?.first.cartDetails?[index],
+                          );
+                        }),
                   ],
                 )
               : ListView.builder(
@@ -262,5 +249,3 @@ class _OrderCartsState extends State<OrderCarts> {
     });
   }
 }
-
-

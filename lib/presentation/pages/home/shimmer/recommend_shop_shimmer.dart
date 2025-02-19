@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import '../../../../infrastructure/services/app_helpers.dart';
-import '../../../../infrastructure/services/tr_keys.dart';
-import '../../../components/title_icon.dart';
-import '../../../theme/app_style.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class RecommendShopShimmer extends StatelessWidget {
   const RecommendShopShimmer({super.key});
@@ -43,7 +43,7 @@ class RecommendShopShimmer extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: AppStyle.shimmerBase,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.r))),
+                                BorderRadius.circular(10.r)),
                       ),
                     ),
                   ),

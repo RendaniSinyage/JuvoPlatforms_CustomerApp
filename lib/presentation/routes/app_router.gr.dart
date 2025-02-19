@@ -9,401 +9,6 @@
 
 part of 'app_router.dart';
 
-abstract class _$AppRouter extends RootStackRouter {
-  // ignore: unused_element
-  _$AppRouter({super.navigatorKey});
-
-  @override
-  final Map<String, PageFactory> pagesMap = {
-    AddressListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const AddressListPage(),
-      );
-    },
-    ChatRoute.name: (routeData) {
-      final args = routeData.argsAs<ChatRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ChatPage(
-          key: args.key,
-          roleId: args.roleId,
-          name: args.name,
-        ),
-      );
-    },
-    CreateShopRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const CreateShopPage(),
-      );
-    },
-    GenerateImageRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const GenerateImagePage(),
-      );
-    },
-    HelpRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HelpPage(),
-      );
-    },
-    InfoRoute.name: (routeData) {
-      final args = routeData.argsAs<InfoRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: InfoPage(
-          key: args.key,
-          index: args.index,
-        ),
-      );
-    },
-    LikeRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<LikeRouteArgs>(orElse: () => const LikeRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: LikePage(
-          key: args.key,
-          isBackButton: args.isBackButton,
-        ),
-      );
-    },
-    LoginRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const LoginPage(),
-      );
-    },
-    MainRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MainPage(),
-      );
-    },
-    MapSearchRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MapSearchPage(),
-      );
-    },
-    NoConnectionRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const NoConnectionPage(),
-      );
-    },
-    NotificationListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const NotificationListPage(),
-      );
-    },
-    OrderRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const OrderPage(),
-      );
-    },
-    OrderProgressRoute.name: (routeData) {
-      final args = routeData.argsAs<OrderProgressRouteArgs>(
-          orElse: () => const OrderProgressRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: OrderProgressPage(
-          key: args.key,
-          orderId: args.orderId,
-        ),
-      );
-    },
-    OrdersListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const OrdersListPage(),
-      );
-    },
-    ParcelListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ParcelListPage(),
-      );
-    },
-    ParcelRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ParcelPage(),
-      );
-    },
-    ParcelProgressRoute.name: (routeData) {
-      final args = routeData.argsAs<ParcelProgressRouteArgs>(
-          orElse: () => const ParcelProgressRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ParcelProgressPage(
-          key: args.key,
-          parcelId: args.parcelId,
-        ),
-      );
-    },
-    PolicyRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const PolicyPage(),
-      );
-    },
-    ProfileRoute.name: (routeData) {
-      final args = routeData.argsAs<ProfileRouteArgs>(
-          orElse: () => const ProfileRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ProfilePage(
-          key: args.key,
-          isBackButton: args.isBackButton,
-        ),
-      );
-    },
-    RecommendedOneRoute.name: (routeData) {
-      final args = routeData.argsAs<RecommendedOneRouteArgs>(
-          orElse: () => const RecommendedOneRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: RecommendedOnePage(
-          key: args.key,
-          isNewsOfPage: args.isNewsOfPage,
-          isShop: args.isShop,
-        ),
-      );
-    },
-    RecommendedRoute.name: (routeData) {
-      final args = routeData.argsAs<RecommendedRouteArgs>(
-          orElse: () => const RecommendedRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: RecommendedPage(
-          key: args.key,
-          isNewsOfPage: args.isNewsOfPage,
-          isShop: args.isShop,
-        ),
-      );
-    },
-    RecommendedThreeRoute.name: (routeData) {
-      final args = routeData.argsAs<RecommendedThreeRouteArgs>(
-          orElse: () => const RecommendedThreeRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: RecommendedThreePage(
-          key: args.key,
-          isNewsOfPage: args.isNewsOfPage,
-          isShop: args.isShop,
-          isPopular: args.isPopular,
-        ),
-      );
-    },
-    RecommendedTwoRoute.name: (routeData) {
-      final args = routeData.argsAs<RecommendedTwoRouteArgs>(
-          orElse: () => const RecommendedTwoRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: RecommendedTwoPage(
-          key: args.key,
-          isNewsOfPage: args.isNewsOfPage,
-          isShop: args.isShop,
-          isPopular: args.isPopular,
-        ),
-      );
-    },
-    RegisterConfirmationRoute.name: (routeData) {
-      final args = routeData.argsAs<RegisterConfirmationRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: RegisterConfirmationPage(
-          key: args.key,
-          userModel: args.userModel,
-          isResetPassword: args.isResetPassword,
-          verificationId: args.verificationId,
-          editPhone: args.editPhone,
-        ),
-      );
-    },
-    RegisterRoute.name: (routeData) {
-      final args = routeData.argsAs<RegisterRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: RegisterPage(
-          key: args.key,
-          isOnlyEmail: args.isOnlyEmail,
-        ),
-      );
-    },
-    ResetPasswordRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ResetPasswordPage(),
-      );
-    },
-    ResultFilterRoute.name: (routeData) {
-      final args = routeData.argsAs<ResultFilterRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ResultFilterPage(
-          key: args.key,
-          categoryId: args.categoryId,
-        ),
-      );
-    },
-    SearchRoute.name: (routeData) {
-      final args = routeData.argsAs<SearchRouteArgs>(
-          orElse: () => const SearchRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: SearchPage(
-          key: args.key,
-          isBackButton: args.isBackButton,
-        ),
-      );
-    },
-    ServiceTwoCategoryRoute.name: (routeData) {
-      final args = routeData.argsAs<ServiceTwoCategoryRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ServiceTwoCategoryPage(
-          key: args.key,
-          index: args.index,
-        ),
-      );
-    },
-    SettingRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SettingPage(),
-      );
-    },
-    ShareReferralFaqRoute.name: (routeData) {
-      final args = routeData.argsAs<ShareReferralFaqRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ShareReferralFaqPage(
-          key: args.key,
-          terms: args.terms,
-        ),
-      );
-    },
-    ShareReferralRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ShareReferralPage(),
-      );
-    },
-    ShopDetailRoute.name: (routeData) {
-      final args = routeData.argsAs<ShopDetailRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ShopDetailPage(
-          key: args.key,
-          shop: args.shop,
-          workTime: args.workTime,
-        ),
-      );
-    },
-    ShopRoute.name: (routeData) {
-      final args = routeData.argsAs<ShopRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ShopPage(
-          key: args.key,
-          shopId: args.shopId,
-          productId: args.productId,
-          cartId: args.cartId,
-          shop: args.shop,
-          ownerId: args.ownerId,
-        ),
-      );
-    },
-    ShopsBannerRoute.name: (routeData) {
-      final args = routeData.argsAs<ShopsBannerRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ShopsBannerPage(
-          key: args.key,
-          bannerId: args.bannerId,
-          title: args.title,
-          isAds: args.isAds,
-        ),
-      );
-    },
-    SplashRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SplashPage(),
-      );
-    },
-    StoryListRoute.name: (routeData) {
-      final args = routeData.argsAs<StoryListRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: StoryListPage(
-          key: args.key,
-          index: args.index,
-          controller: args.controller,
-        ),
-      );
-    },
-    SubCategoryRoute.name: (routeData) {
-      final args = routeData.argsAs<SubCategoryRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: SubCategoryPage(
-          key: args.key,
-          category: args.category,
-          shopId: args.shopId,
-          cartId: args.cartId,
-        ),
-      );
-    },
-    TermRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TermPage(),
-      );
-    },
-    UiTypeRoute.name: (routeData) {
-      final args = routeData.argsAs<UiTypeRouteArgs>(
-          orElse: () => const UiTypeRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: UiTypePage(
-          key: args.key,
-          isBack: args.isBack,
-        ),
-      );
-    },
-    ViewMapRoute.name: (routeData) {
-      final args = routeData.argsAs<ViewMapRouteArgs>(
-          orElse: () => const ViewMapRouteArgs());
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ViewMapPage(
-          key: args.key,
-          isParcel: args.isParcel,
-          isPop: args.isPop,
-          isShopLocation: args.isShopLocation,
-          shopId: args.shopId,
-          indexAddress: args.indexAddress,
-          address: args.address,
-        ),
-      );
-    },
-    WalletHistoryRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WalletHistoryPage(),
-      );
-    },
-  };
-}
-
 /// generated route for
 /// [AddressListPage]
 class AddressListRoute extends PageRouteInfo<void> {
@@ -415,7 +20,12 @@ class AddressListRoute extends PageRouteInfo<void> {
 
   static const String name = 'AddressListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AddressListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -438,7 +48,17 @@ class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
 
   static const String name = 'ChatRoute';
 
-  static const PageInfo<ChatRouteArgs> page = PageInfo<ChatRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ChatRouteArgs>();
+      return ChatPage(
+        key: args.key,
+        roleId: args.roleId,
+        name: args.name,
+      );
+    },
+  );
 }
 
 class ChatRouteArgs {
@@ -471,22 +91,14 @@ class CreateShopRoute extends PageRouteInfo<void> {
 
   static const String name = 'CreateShopRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const CreateShopPage();
+    },
+  );
 }
 
-/// generated route for
-/// [GenerateImagePage]
-class GenerateImageRoute extends PageRouteInfo<void> {
-  const GenerateImageRoute({List<PageRouteInfo>? children})
-      : super(
-          GenerateImageRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'GenerateImageRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
 
 /// generated route for
 /// [HelpPage]
@@ -499,7 +111,12 @@ class HelpRoute extends PageRouteInfo<void> {
 
   static const String name = 'HelpRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HelpPage();
+    },
+  );
 }
 
 /// generated route for
@@ -520,7 +137,16 @@ class InfoRoute extends PageRouteInfo<InfoRouteArgs> {
 
   static const String name = 'InfoRoute';
 
-  static const PageInfo<InfoRouteArgs> page = PageInfo<InfoRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<InfoRouteArgs>();
+      return InfoPage(
+        key: args.key,
+        index: args.index,
+      );
+    },
+  );
 }
 
 class InfoRouteArgs {
@@ -557,7 +183,17 @@ class LikeRoute extends PageRouteInfo<LikeRouteArgs> {
 
   static const String name = 'LikeRoute';
 
-  static const PageInfo<LikeRouteArgs> page = PageInfo<LikeRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args =
+          data.argsAs<LikeRouteArgs>(orElse: () => const LikeRouteArgs());
+      return LikePage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
+    },
+  );
 }
 
 class LikeRouteArgs {
@@ -587,7 +223,12 @@ class LoginRoute extends PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LoginPage();
+    },
+  );
 }
 
 /// generated route for
@@ -601,7 +242,12 @@ class MainRoute extends PageRouteInfo<void> {
 
   static const String name = 'MainRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const MainPage();
+    },
+  );
 }
 
 /// generated route for
@@ -615,7 +261,12 @@ class MapSearchRoute extends PageRouteInfo<void> {
 
   static const String name = 'MapSearchRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const MapSearchPage();
+    },
+  );
 }
 
 /// generated route for
@@ -629,7 +280,12 @@ class NoConnectionRoute extends PageRouteInfo<void> {
 
   static const String name = 'NoConnectionRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NoConnectionPage();
+    },
+  );
 }
 
 /// generated route for
@@ -643,7 +299,12 @@ class NotificationListRoute extends PageRouteInfo<void> {
 
   static const String name = 'NotificationListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NotificationListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -657,7 +318,12 @@ class OrderRoute extends PageRouteInfo<void> {
 
   static const String name = 'OrderRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OrderPage();
+    },
+  );
 }
 
 /// generated route for
@@ -678,8 +344,17 @@ class OrderProgressRoute extends PageRouteInfo<OrderProgressRouteArgs> {
 
   static const String name = 'OrderProgressRoute';
 
-  static const PageInfo<OrderProgressRouteArgs> page =
-      PageInfo<OrderProgressRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<OrderProgressRouteArgs>(
+          orElse: () => const OrderProgressRouteArgs());
+      return OrderProgressPage(
+        key: args.key,
+        orderId: args.orderId,
+      );
+    },
+  );
 }
 
 class OrderProgressRouteArgs {
@@ -709,7 +384,12 @@ class OrdersListRoute extends PageRouteInfo<void> {
 
   static const String name = 'OrdersListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OrdersListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -723,7 +403,12 @@ class ParcelListRoute extends PageRouteInfo<void> {
 
   static const String name = 'ParcelListRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ParcelListPage();
+    },
+  );
 }
 
 /// generated route for
@@ -737,7 +422,12 @@ class ParcelRoute extends PageRouteInfo<void> {
 
   static const String name = 'ParcelRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ParcelPage();
+    },
+  );
 }
 
 /// generated route for
@@ -758,8 +448,17 @@ class ParcelProgressRoute extends PageRouteInfo<ParcelProgressRouteArgs> {
 
   static const String name = 'ParcelProgressRoute';
 
-  static const PageInfo<ParcelProgressRouteArgs> page =
-      PageInfo<ParcelProgressRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ParcelProgressRouteArgs>(
+          orElse: () => const ParcelProgressRouteArgs());
+      return ParcelProgressPage(
+        key: args.key,
+        parcelId: args.parcelId,
+      );
+    },
+  );
 }
 
 class ParcelProgressRouteArgs {
@@ -789,7 +488,12 @@ class PolicyRoute extends PageRouteInfo<void> {
 
   static const String name = 'PolicyRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PolicyPage();
+    },
+  );
 }
 
 /// generated route for
@@ -810,8 +514,17 @@ class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
 
   static const String name = 'ProfileRoute';
 
-  static const PageInfo<ProfileRouteArgs> page =
-      PageInfo<ProfileRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args =
+          data.argsAs<ProfileRouteArgs>(orElse: () => const ProfileRouteArgs());
+      return ProfilePage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
+    },
+  );
 }
 
 class ProfileRouteArgs {
@@ -850,8 +563,18 @@ class RecommendedOneRoute extends PageRouteInfo<RecommendedOneRouteArgs> {
 
   static const String name = 'RecommendedOneRoute';
 
-  static const PageInfo<RecommendedOneRouteArgs> page =
-      PageInfo<RecommendedOneRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RecommendedOneRouteArgs>(
+          orElse: () => const RecommendedOneRouteArgs());
+      return RecommendedOnePage(
+        key: args.key,
+        isNewsOfPage: args.isNewsOfPage,
+        isShop: args.isShop,
+      );
+    },
+  );
 }
 
 class RecommendedOneRouteArgs {
@@ -893,8 +616,18 @@ class RecommendedRoute extends PageRouteInfo<RecommendedRouteArgs> {
 
   static const String name = 'RecommendedRoute';
 
-  static const PageInfo<RecommendedRouteArgs> page =
-      PageInfo<RecommendedRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RecommendedRouteArgs>(
+          orElse: () => const RecommendedRouteArgs());
+      return RecommendedPage(
+        key: args.key,
+        isNewsOfPage: args.isNewsOfPage,
+        isShop: args.isShop,
+      );
+    },
+  );
 }
 
 class RecommendedRouteArgs {
@@ -938,8 +671,19 @@ class RecommendedThreeRoute extends PageRouteInfo<RecommendedThreeRouteArgs> {
 
   static const String name = 'RecommendedThreeRoute';
 
-  static const PageInfo<RecommendedThreeRouteArgs> page =
-      PageInfo<RecommendedThreeRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RecommendedThreeRouteArgs>(
+          orElse: () => const RecommendedThreeRouteArgs());
+      return RecommendedThreePage(
+        key: args.key,
+        isNewsOfPage: args.isNewsOfPage,
+        isShop: args.isShop,
+        isPopular: args.isPopular,
+      );
+    },
+  );
 }
 
 class RecommendedThreeRouteArgs {
@@ -986,8 +730,19 @@ class RecommendedTwoRoute extends PageRouteInfo<RecommendedTwoRouteArgs> {
 
   static const String name = 'RecommendedTwoRoute';
 
-  static const PageInfo<RecommendedTwoRouteArgs> page =
-      PageInfo<RecommendedTwoRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RecommendedTwoRouteArgs>(
+          orElse: () => const RecommendedTwoRouteArgs());
+      return RecommendedTwoPage(
+        key: args.key,
+        isNewsOfPage: args.isNewsOfPage,
+        isShop: args.isShop,
+        isPopular: args.isPopular,
+      );
+    },
+  );
 }
 
 class RecommendedTwoRouteArgs {
@@ -1037,8 +792,19 @@ class RegisterConfirmationRoute
 
   static const String name = 'RegisterConfirmationRoute';
 
-  static const PageInfo<RegisterConfirmationRouteArgs> page =
-      PageInfo<RegisterConfirmationRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RegisterConfirmationRouteArgs>();
+      return RegisterConfirmationPage(
+        key: args.key,
+        userModel: args.userModel,
+        isResetPassword: args.isResetPassword,
+        verificationId: args.verificationId,
+        editPhone: args.editPhone,
+      );
+    },
+  );
 }
 
 class RegisterConfirmationRouteArgs {
@@ -1084,8 +850,16 @@ class RegisterRoute extends PageRouteInfo<RegisterRouteArgs> {
 
   static const String name = 'RegisterRoute';
 
-  static const PageInfo<RegisterRouteArgs> page =
-      PageInfo<RegisterRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RegisterRouteArgs>();
+      return RegisterPage(
+        key: args.key,
+        isOnlyEmail: args.isOnlyEmail,
+      );
+    },
+  );
 }
 
 class RegisterRouteArgs {
@@ -1115,7 +889,12 @@ class ResetPasswordRoute extends PageRouteInfo<void> {
 
   static const String name = 'ResetPasswordRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ResetPasswordPage();
+    },
+  );
 }
 
 /// generated route for
@@ -1136,8 +915,16 @@ class ResultFilterRoute extends PageRouteInfo<ResultFilterRouteArgs> {
 
   static const String name = 'ResultFilterRoute';
 
-  static const PageInfo<ResultFilterRouteArgs> page =
-      PageInfo<ResultFilterRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ResultFilterRouteArgs>();
+      return ResultFilterPage(
+        key: args.key,
+        categoryId: args.categoryId,
+      );
+    },
+  );
 }
 
 class ResultFilterRouteArgs {
@@ -1174,7 +961,17 @@ class SearchRoute extends PageRouteInfo<SearchRouteArgs> {
 
   static const String name = 'SearchRoute';
 
-  static const PageInfo<SearchRouteArgs> page = PageInfo<SearchRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args =
+          data.argsAs<SearchRouteArgs>(orElse: () => const SearchRouteArgs());
+      return SearchPage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
+    },
+  );
 }
 
 class SearchRouteArgs {
@@ -1212,8 +1009,16 @@ class ServiceTwoCategoryRoute
 
   static const String name = 'ServiceTwoCategoryRoute';
 
-  static const PageInfo<ServiceTwoCategoryRouteArgs> page =
-      PageInfo<ServiceTwoCategoryRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ServiceTwoCategoryRouteArgs>();
+      return ServiceTwoCategoryPage(
+        key: args.key,
+        index: args.index,
+      );
+    },
+  );
 }
 
 class ServiceTwoCategoryRouteArgs {
@@ -1243,7 +1048,12 @@ class SettingRoute extends PageRouteInfo<void> {
 
   static const String name = 'SettingRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingPage();
+    },
+  );
 }
 
 /// generated route for
@@ -1264,8 +1074,16 @@ class ShareReferralFaqRoute extends PageRouteInfo<ShareReferralFaqRouteArgs> {
 
   static const String name = 'ShareReferralFaqRoute';
 
-  static const PageInfo<ShareReferralFaqRouteArgs> page =
-      PageInfo<ShareReferralFaqRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ShareReferralFaqRouteArgs>();
+      return ShareReferralFaqPage(
+        key: args.key,
+        terms: args.terms,
+      );
+    },
+  );
 }
 
 class ShareReferralFaqRouteArgs {
@@ -1295,7 +1113,12 @@ class ShareReferralRoute extends PageRouteInfo<void> {
 
   static const String name = 'ShareReferralRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ShareReferralPage();
+    },
+  );
 }
 
 /// generated route for
@@ -1318,8 +1141,17 @@ class ShopDetailRoute extends PageRouteInfo<ShopDetailRouteArgs> {
 
   static const String name = 'ShopDetailRoute';
 
-  static const PageInfo<ShopDetailRouteArgs> page =
-      PageInfo<ShopDetailRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ShopDetailRouteArgs>();
+      return ShopDetailPage(
+        key: args.key,
+        shop: args.shop,
+        workTime: args.workTime,
+      );
+    },
+  );
 }
 
 class ShopDetailRouteArgs {
@@ -1367,7 +1199,20 @@ class ShopRoute extends PageRouteInfo<ShopRouteArgs> {
 
   static const String name = 'ShopRoute';
 
-  static const PageInfo<ShopRouteArgs> page = PageInfo<ShopRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ShopRouteArgs>();
+      return ShopPage(
+        key: args.key,
+        shopId: args.shopId,
+        productId: args.productId,
+        cartId: args.cartId,
+        shop: args.shop,
+        ownerId: args.ownerId,
+      );
+    },
+  );
 }
 
 class ShopRouteArgs {
@@ -1420,8 +1265,18 @@ class ShopsBannerRoute extends PageRouteInfo<ShopsBannerRouteArgs> {
 
   static const String name = 'ShopsBannerRoute';
 
-  static const PageInfo<ShopsBannerRouteArgs> page =
-      PageInfo<ShopsBannerRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ShopsBannerRouteArgs>();
+      return ShopsBannerPage(
+        key: args.key,
+        bannerId: args.bannerId,
+        title: args.title,
+        isAds: args.isAds,
+      );
+    },
+  );
 }
 
 class ShopsBannerRouteArgs {
@@ -1457,7 +1312,12 @@ class SplashRoute extends PageRouteInfo<void> {
 
   static const String name = 'SplashRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SplashPage();
+    },
+  );
 }
 
 /// generated route for
@@ -1480,8 +1340,17 @@ class StoryListRoute extends PageRouteInfo<StoryListRouteArgs> {
 
   static const String name = 'StoryListRoute';
 
-  static const PageInfo<StoryListRouteArgs> page =
-      PageInfo<StoryListRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<StoryListRouteArgs>();
+      return StoryListPage(
+        key: args.key,
+        index: args.index,
+        controller: args.controller,
+      );
+    },
+  );
 }
 
 class StoryListRouteArgs {
@@ -1504,54 +1373,6 @@ class StoryListRouteArgs {
 }
 
 /// generated route for
-/// [SubCategoryPage]
-class SubCategoryRoute extends PageRouteInfo<SubCategoryRouteArgs> {
-  SubCategoryRoute({
-    Key? key,
-    required CategoryData? category,
-    required String shopId,
-    required String? cartId,
-    List<PageRouteInfo>? children,
-  }) : super(
-          SubCategoryRoute.name,
-          args: SubCategoryRouteArgs(
-            key: key,
-            category: category,
-            shopId: shopId,
-            cartId: cartId,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'SubCategoryRoute';
-
-  static const PageInfo<SubCategoryRouteArgs> page =
-      PageInfo<SubCategoryRouteArgs>(name);
-}
-
-class SubCategoryRouteArgs {
-  const SubCategoryRouteArgs({
-    this.key,
-    required this.category,
-    required this.shopId,
-    required this.cartId,
-  });
-
-  final Key? key;
-
-  final CategoryData? category;
-
-  final String shopId;
-
-  final String? cartId;
-
-  @override
-  String toString() {
-    return 'SubCategoryRouteArgs{key: $key, category: $category, shopId: $shopId, cartId: $cartId}';
-  }
-}
-
-/// generated route for
 /// [TermPage]
 class TermRoute extends PageRouteInfo<void> {
   const TermRoute({List<PageRouteInfo>? children})
@@ -1562,7 +1383,12 @@ class TermRoute extends PageRouteInfo<void> {
 
   static const String name = 'TermRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TermPage();
+    },
+  );
 }
 
 /// generated route for
@@ -1583,7 +1409,17 @@ class UiTypeRoute extends PageRouteInfo<UiTypeRouteArgs> {
 
   static const String name = 'UiTypeRoute';
 
-  static const PageInfo<UiTypeRouteArgs> page = PageInfo<UiTypeRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args =
+          data.argsAs<UiTypeRouteArgs>(orElse: () => const UiTypeRouteArgs());
+      return UiTypePage(
+        key: args.key,
+        isBack: args.isBack,
+      );
+    },
+  );
 }
 
 class UiTypeRouteArgs {
@@ -1630,8 +1466,22 @@ class ViewMapRoute extends PageRouteInfo<ViewMapRouteArgs> {
 
   static const String name = 'ViewMapRoute';
 
-  static const PageInfo<ViewMapRouteArgs> page =
-      PageInfo<ViewMapRouteArgs>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args =
+          data.argsAs<ViewMapRouteArgs>(orElse: () => const ViewMapRouteArgs());
+      return ViewMapPage(
+        key: args.key,
+        isParcel: args.isParcel,
+        isPop: args.isPop,
+        isShopLocation: args.isShopLocation,
+        shopId: args.shopId,
+        indexAddress: args.indexAddress,
+        address: args.address,
+      );
+    },
+  );
 }
 
 class ViewMapRouteArgs {
@@ -1676,5 +1526,10 @@ class WalletHistoryRoute extends PageRouteInfo<void> {
 
   static const String name = 'WalletHistoryRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const WalletHistoryPage();
+    },
+  );
 }

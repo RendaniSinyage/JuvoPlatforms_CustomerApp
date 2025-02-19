@@ -1,129 +1,77 @@
 import 'dart:convert';
-
-import 'package:riverpodtemp/game/models/board.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_information.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
+import 'package:foodyman/game/models/board.dart';
+import 'package:foodyman/infrastructure/models/data/address_information.dart';
+import 'package:foodyman/infrastructure/models/data/address_old_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'storage_keys.dart';
 
-import 'app_constants.dart';
-
-class LocalStorage {
-  static SharedPreferences? _preferences;
-
+abstract class LocalStorage {
   LocalStorage._();
+  static SharedPreferences? _preferences;
 
   static Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
   }
 
   static Future<void> setToken(String? token) async {
-    if (_preferences != null) {
-      await _preferences!.setString(AppConstants.keyToken, token ?? '');
-    }
+    await _preferences?.setString(StorageKeys.keyToken, token ?? '');
   }
 
   static String getToken() =>
-      _preferences?.getString(AppConstants.keyToken) ?? '';
+      _preferences?.getString(StorageKeys.keyToken) ?? '';
 
-  static void deleteToken() => _preferences?.remove(AppConstants.keyToken);
+  static void deleteToken() => _preferences?.remove(StorageKeys.keyToken);
 
   static Future<void> setUiType(int type) async {
+    await _preferences?.setInt(StorageKeys.keyUiType, type);
+  }
+
+  static int? getUiType() => _preferences?.getInt(StorageKeys.keyUiType);
+
+  static Future<void> setUser(ProfileData? user) async {
     if (_preferences != null) {
-      await _preferences!.setInt(AppConstants.keyUiType, type);
+      final String userString = user != null ? jsonEncode(user.toJson()) : '';
+      await _preferences!.setString(StorageKeys.keyUser, userString);
     }
   }
 
-  static int? getUiType() => _preferences?.getInt(AppConstants.keyUiType);
-
-  static Future<void> setLastName(String? image) async {
-    if (_preferences != null) {
-      await _preferences!.setString(AppConstants.keyLastName, image ?? "");
+  static ProfileData? getUser() {
+    final savedString = _preferences?.getString(StorageKeys.keyUser);
+    if (savedString == null) {
+      return null;
     }
+    final map = jsonDecode(savedString);
+    if (map == null) {
+      return null;
+    }
+    return ProfileData.fromJson(map);
   }
 
-  static String getLastName() =>
-      _preferences?.getString(AppConstants.keyLastName) ?? "";
-
-  static void deleteLastName() =>
-      _preferences?.remove(AppConstants.keyLastName);
-
-
-
-  static Future<void> setPhone(String? phone) async {
-    if (_preferences != null) {
-      await _preferences!.setString(AppConstants.keyPhone, phone ?? "");
-    }
-  }
-
-  static String? getPhone() =>
-      _preferences?.getString(AppConstants.keyPhone);
-
-  static void deletePhone() =>
-      _preferences?.remove(AppConstants.keyPhone);
-
-  static Future<void> setFirstName(String? image) async {
-    if (_preferences != null) {
-      await _preferences!.setString(AppConstants.keyFirstName, image ?? "");
-    }
-  }
-
-  static String getFirstName() =>
-      _preferences?.getString(AppConstants.keyFirstName) ?? "";
-
-  static void deleteFirstName() =>
-      _preferences?.remove(AppConstants.keyFirstName);
-
-  static Future<void> setUserId(int? image) async {
-    if (_preferences != null) {
-      await _preferences!.setInt(AppConstants.keyUserId, image ?? 0);
-    }
-  }
-
-  static int getUserId() => _preferences?.getInt(AppConstants.keyUserId) ?? 0;
-
-  static void deleteUserId() => _preferences?.remove(AppConstants.keyUserId);
-
-  static Future<void> setProfileImage(String? image) async {
-    if (_preferences != null) {
-      await _preferences!.setString(AppConstants.keyUserImage, image ?? '');
-    }
-  }
-
-  static String getProfileImage() =>
-      _preferences?.getString(AppConstants.keyUserImage) ?? '';
-
-  static void deleteProfileImage() =>
-      _preferences?.remove(AppConstants.keyUserImage);
+  static void _deleteUser() => _preferences?.remove(StorageKeys.keyUser);
 
   static Future<void> setSearchHistory(List<String> list) async {
-    if (_preferences != null) {
-      final List<String> idsStrings = list.map((e) => e.toString()).toList();
-      await _preferences!
-          .setStringList(AppConstants.keySearchStores, idsStrings);
-    }
+    final List<String> idsStrings = list.map((e) => e.toString()).toList();
+    await _preferences?.setStringList(StorageKeys.keySearchStores, idsStrings);
   }
 
   static List<String> getSearchList() {
     final List<String> strings =
-        _preferences?.getStringList(AppConstants.keySearchStores) ?? [];
+        _preferences?.getStringList(StorageKeys.keySearchStores) ?? [];
     return strings;
   }
 
   static void deleteSearchList() =>
-      _preferences?.remove(AppConstants.keySearchStores);
+      _preferences?.remove(StorageKeys.keySearchStores);
 
   static Future<void> setSavedShopsList(List<int> ids) async {
-    if (_preferences != null) {
-      final List<String> idsStrings = ids.map((e) => e.toString()).toList();
-      await _preferences!
-          .setStringList(AppConstants.keySavedStores, idsStrings);
-    }
+    final List<String> idsStrings = ids.map((e) => e.toString()).toList();
+    await _preferences?.setStringList(StorageKeys.keySavedStores, idsStrings);
   }
 
   static List<int> getSavedShopsList() {
     final List<String> strings =
-        _preferences?.getStringList(AppConstants.keySavedStores) ?? [];
+        _preferences?.getStringList(StorageKeys.keySavedStores) ?? [];
     if (strings.isNotEmpty) {
       final List<int> ids = strings.map((e) => int.parse(e)).toList();
       return ids;
@@ -133,18 +81,16 @@ class LocalStorage {
   }
 
   static void deleteSavedShopsList() =>
-      _preferences?.remove(AppConstants.keySavedStores);
+      _preferences?.remove(StorageKeys.keySavedStores);
 
   static Future<void> setAddressSelected(AddressData data) async {
-    if (_preferences != null) {
-      await _preferences!.setString(
-          AppConstants.keyAddressSelected, jsonEncode(data.toJson()));
-    }
+    await _preferences?.setString(
+        StorageKeys.keyAddressSelected, jsonEncode(data.toJson()));
   }
 
   static AddressData? getAddressSelected() {
     String dataString =
-        _preferences?.getString(AppConstants.keyAddressSelected) ?? "";
+        _preferences?.getString(StorageKeys.keyAddressSelected) ?? "";
     if (dataString.isNotEmpty) {
       AddressData data = AddressData.fromJson(jsonDecode(dataString));
       return data;
@@ -154,18 +100,16 @@ class LocalStorage {
   }
 
   static void deleteAddressSelected() =>
-      _preferences?.remove(AppConstants.keyAddressSelected);
+      _preferences?.remove(StorageKeys.keyAddressSelected);
 
   static Future<void> setAddressInformation(AddressInformation data) async {
-    if (_preferences != null) {
-      await _preferences!.setString(
-          AppConstants.keyAddressInformation, jsonEncode(data.toJson()));
-    }
+    await _preferences?.setString(
+        StorageKeys.keyAddressInformation, jsonEncode(data.toJson()));
   }
 
   static AddressInformation? getAddressInformation() {
     String dataString =
-        _preferences?.getString(AppConstants.keyAddressInformation) ?? "";
+        _preferences?.getString(StorageKeys.keyAddressInformation) ?? "";
     if (dataString.isNotEmpty) {
       AddressInformation data =
           AddressInformation.fromJson(jsonDecode(dataString));
@@ -176,31 +120,27 @@ class LocalStorage {
   }
 
   static void deleteAddressInformation() =>
-      _preferences?.remove(AppConstants.keyAddressInformation);
+      _preferences?.remove(StorageKeys.keyAddressInformation);
 
   static Future<void> setLanguageSelected(bool selected) async {
-    if (_preferences != null) {
-      await _preferences!.setBool(AppConstants.keyLangSelected, selected);
-    }
+    await _preferences?.setBool(StorageKeys.keyLangSelected, selected);
   }
 
   static bool getLanguageSelected() =>
-      _preferences?.getBool(AppConstants.keyLangSelected) ?? false;
+      _preferences?.getBool(StorageKeys.keyLangSelected) ?? false;
 
   static void deleteLangSelected() =>
-      _preferences?.remove(AppConstants.keyLangSelected);
+      _preferences?.remove(StorageKeys.keyLangSelected);
 
   static Future<void> setSelectedCurrency(CurrencyData currency) async {
-    if (_preferences != null) {
-      final String currencyString = jsonEncode(currency.toJson());
-      await _preferences!
-          .setString(AppConstants.keySelectedCurrency, currencyString);
-    }
+    final String currencyString = jsonEncode(currency.toJson());
+    await _preferences?.setString(
+        StorageKeys.keySelectedCurrency, currencyString);
   }
 
   static CurrencyData? getSelectedCurrency() {
     String json =
-        _preferences?.getString(AppConstants.keySelectedCurrency) ?? '';
+        _preferences?.getString(StorageKeys.keySelectedCurrency) ?? '';
     if (json.isEmpty) {
       return null;
     } else {
@@ -210,17 +150,15 @@ class LocalStorage {
   }
 
   static void deleteSelectedCurrency() =>
-      _preferences?.remove(AppConstants.keySelectedCurrency);
+      _preferences?.remove(StorageKeys.keySelectedCurrency);
 
   static Future<void> setWalletData(Wallet? wallet) async {
-    if (_preferences != null) {
-      final String walletString = jsonEncode(wallet?.toJson());
-      await _preferences!.setString(AppConstants.keyWalletData, walletString);
-    }
+    final String walletString = jsonEncode(wallet?.toJson());
+    await _preferences?.setString(StorageKeys.keyWalletData, walletString);
   }
 
   static Wallet? getWalletData() {
-    final wallet = _preferences?.getString(AppConstants.keyWalletData);
+    final wallet = _preferences?.getString(StorageKeys.keyWalletData);
     if (wallet == null) {
       return null;
     }
@@ -232,20 +170,17 @@ class LocalStorage {
   }
 
   static void deleteWalletData() =>
-      _preferences?.remove(AppConstants.keyWalletData);
+      _preferences?.remove(StorageKeys.keyWalletData);
 
   static Future<void> setSettingsList(List<SettingsData> settings) async {
-    if (_preferences != null) {
-      final List<String> strings =
-          settings.map((setting) => jsonEncode(setting.toJson())).toList();
-      await _preferences!
-          .setStringList(AppConstants.keyGlobalSettings, strings);
-    }
+    final List<String> strings =
+        settings.map((setting) => jsonEncode(setting.toJson())).toList();
+    await _preferences?.setStringList(StorageKeys.keyGlobalSettings, strings);
   }
 
   static List<SettingsData> getSettingsList() {
     final List<String> settings =
-        _preferences?.getStringList(AppConstants.keyGlobalSettings) ?? [];
+        _preferences?.getStringList(StorageKeys.keyGlobalSettings) ?? [];
     final List<SettingsData> settingsList = settings
         .map(
           (setting) => SettingsData.fromJson(jsonDecode(setting)),
@@ -255,19 +190,17 @@ class LocalStorage {
   }
 
   static void deleteSettingsList() =>
-      _preferences?.remove(AppConstants.keyGlobalSettings);
+      _preferences?.remove(StorageKeys.keyGlobalSettings);
 
   static Future<void> setTranslations(
       Map<String, dynamic>? translations) async {
-    if (_preferences != null) {
-      final String encoded = jsonEncode(translations);
-      await _preferences!.setString(AppConstants.keyTranslations, encoded);
-    }
+    final String encoded = jsonEncode(translations);
+    await _preferences?.setString(StorageKeys.keyTranslations, encoded);
   }
 
   static Map<String, dynamic> getTranslations() {
     final String encoded =
-        _preferences?.getString(AppConstants.keyTranslations) ?? '';
+        _preferences?.getString(StorageKeys.keyTranslations) ?? '';
     if (encoded.isEmpty) {
       return {};
     }
@@ -276,41 +209,35 @@ class LocalStorage {
   }
 
   static void deleteTranslations() =>
-      _preferences?.remove(AppConstants.keyTranslations);
+      _preferences?.remove(StorageKeys.keyTranslations);
 
   static Future<void> setAppThemeMode(bool isDarkMode) async {
-    if (_preferences != null) {
-      await _preferences!.setBool(AppConstants.keyAppThemeMode, isDarkMode);
-    }
+    await _preferences?.setBool(StorageKeys.keyAppThemeMode, isDarkMode);
   }
 
   static bool getAppThemeMode() =>
-      _preferences?.getBool(AppConstants.keyAppThemeMode) ?? false;
+      _preferences?.getBool(StorageKeys.keyAppThemeMode) ?? false;
 
   static void deleteAppThemeMode() =>
-      _preferences?.remove(AppConstants.keyAppThemeMode);
+      _preferences?.remove(StorageKeys.keyAppThemeMode);
 
   static Future<void> setSettingsFetched(bool fetched) async {
-    if (_preferences != null) {
-      await _preferences!.setBool(AppConstants.keySettingsFetched, fetched);
-    }
+    await _preferences?.setBool(StorageKeys.keySettingsFetched, fetched);
   }
 
   static bool getSettingsFetched() =>
-      _preferences?.getBool(AppConstants.keySettingsFetched) ?? false;
+      _preferences?.getBool(StorageKeys.keySettingsFetched) ?? false;
 
   static void deleteSettingsFetched() =>
-      _preferences?.remove(AppConstants.keySettingsFetched);
+      _preferences?.remove(StorageKeys.keySettingsFetched);
 
   static Future<void> setLanguageData(LanguageData? langData) async {
-    if (_preferences != null) {
-      final String lang = jsonEncode(langData?.toJson());
-      await _preferences!.setString(AppConstants.keyLanguageData, lang);
-    }
+    final String lang = jsonEncode(langData?.toJson());
+    await _preferences?.setString(StorageKeys.keyLanguageData, lang);
   }
 
   static LanguageData? getLanguage() {
-    final lang = _preferences?.getString(AppConstants.keyLanguageData);
+    final lang = _preferences?.getString(StorageKeys.keyLanguageData);
     if (lang == null) {
       return null;
     }
@@ -322,29 +249,27 @@ class LocalStorage {
   }
 
   static void deleteLanguage() =>
-      _preferences?.remove(AppConstants.keyLanguageData);
+      _preferences?.remove(StorageKeys.keyLanguageData);
 
   static Future<void> setLangLtr(bool? backward) async {
-    if (_preferences != null) {
-      await _preferences!.setBool(AppConstants.keyLangLtr, (backward ?? false));
-    }
+    await _preferences?.setBool(StorageKeys.keyLangLtr, (backward ?? false));
   }
 
   static bool getLangLtr() =>
-      !(_preferences?.getBool(AppConstants.keyLangLtr) ?? false);
+      !(_preferences?.getBool(StorageKeys.keyLangLtr) ?? false);
 
-  static void deleteLangLtr() => _preferences?.remove(AppConstants.keyLangLtr);
+  static void deleteLangLtr() => _preferences?.remove(StorageKeys.keyLangLtr);
 
   static Future<void> setBoard(Board? board) async {
-    if (_preferences != null) {
-      await _preferences?.setString(AppConstants.keyBoard, jsonEncode(board?.toJson()));
-    }
+    await _preferences?.setString(
+        StorageKeys.keyBoard, jsonEncode(board?.toJson()));
   }
 
   static Board? getBoard() {
     Map jsonData = {};
-    if (_preferences?.getString(AppConstants.keyBoard) != null) {
-      jsonData = jsonDecode(_preferences?.getString(AppConstants.keyBoard) ?? "");
+    if (_preferences?.getString(StorageKeys.keyBoard) != null) {
+      jsonData =
+          jsonDecode(_preferences?.getString(StorageKeys.keyBoard) ?? "");
     }
 
     if (jsonData.isNotEmpty) {
@@ -356,19 +281,15 @@ class LocalStorage {
   }
 
   static deleteBoard() {
-    return _preferences?.remove(AppConstants.keyBoard);
+    return _preferences?.remove(StorageKeys.keyBoard);
   }
 
   static void logout() {
     deleteWalletData();
     deleteSavedShopsList();
     deleteSearchList();
-    deleteProfileImage();
-    deleteUserId();
-    deleteFirstName();
-    deleteLastName();
+    _deleteUser();
     deleteToken();
-    deletePhone();
     deleteAddressSelected();
     deleteAddressInformation();
     deleteBoard();

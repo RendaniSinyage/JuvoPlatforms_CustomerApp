@@ -8,29 +8,29 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/application/language/language_provider.dart';
-import 'package:riverpodtemp/application/notification/notification_provider.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_provider.dart';
-import 'package:riverpodtemp/application/parcels_list/parcel_list_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/application/like/like_provider.dart';
-import 'package:riverpodtemp/presentation/pages/profile/currency_page.dart';
-import 'package:riverpodtemp/presentation/pages/profile/delete_screen.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/application/language/language_provider.dart';
+import 'package:foodyman/application/notification/notification_provider.dart';
+import 'package:foodyman/application/orders_list/orders_list_provider.dart';
+import 'package:foodyman/application/parcels_list/parcel_list_provider.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/application/like/like_provider.dart';
+import 'package:foodyman/presentation/pages/profile/currency_page.dart';
+import 'package:foodyman/presentation/pages/profile/delete_screen.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'edit_profile_page.dart';
-import '../../../../application/edit_profile/edit_profile_provider.dart';
+import 'package:foodyman/application/edit_profile/edit_profile_provider.dart';
 import 'language_page.dart';
 import 'reservation_shops.dart';
 import 'widgets/profile_item.dart';
@@ -141,7 +141,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                             children: [
                               SizedBox(
                                 width:
-                                    MediaQuery.of(context).size.width - 150.w,
+                                    MediaQuery.sizeOf(context).width - 150.w,
                                 child: Text(
                                   "${state.userData?.firstname ?? ""} ${state.userData?.lastname ?? ""}",
                                   style: AppStyle.interNormal(
@@ -153,7 +153,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               ),
                               SizedBox(
                                 width:
-                                    MediaQuery.of(context).size.width - 150.w,
+                                    MediaQuery.sizeOf(context).width - 150.w,
                                 child: Text(
                                   state.userData?.email ?? " ",
                                   style: AppStyle.interRegular(

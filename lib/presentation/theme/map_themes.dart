@@ -1,4 +1,4 @@
-class AppMapThemes {
+abstract class AppMapThemes {
   AppMapThemes._();
 
   static const mapDarkTheme = [
