@@ -5,10 +5,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 import 'filter_category_service.dart';
 
@@ -38,7 +38,7 @@ class _ServiceTwoCategoryPageState extends ConsumerState<ServiceTwoCategoryPage>
     return WillPopScope(
       onWillPop: (){
         notifier.setSelectCategory(-1, context);
-        // context.popRoute();
+        // context.maybePop();
         return Future.value(true);
       },
       child: Scaffold(

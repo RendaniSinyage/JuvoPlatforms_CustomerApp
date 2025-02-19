@@ -1,21 +1,21 @@
-// ignore_for_file: use_build_context_synchronously
+
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/domain/iterface/parcel.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/marker_image_cropper.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/domain/interface/parcel.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/marker_image_cropper.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../domain/iterface/draw.dart';
+import 'package:foodyman/domain/interface/draw.dart';
 import 'parcel_state.dart';
 
 class ParcelNotifier extends StateNotifier<ParcelState> {
@@ -35,14 +35,14 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
       response.when(
         success: (data) async {
           state = state.copyWith(isButtonLoading: false);
-          context.popRoute(context);
+          context.maybePop(context);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },
@@ -75,7 +75,7 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
         success: (data) {
           state = state.copyWith(isLoading: false, types: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
@@ -102,11 +102,11 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
         success: (data) {
           state = state.copyWith(isLoading: false, calculate: data);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false, error: true);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -193,7 +193,7 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
               break;
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
@@ -223,21 +223,23 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
             enableJavaScript: true,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isButtonLoading: false);
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },
       );
     } catch (e) {
-      AppHelpers.showCheckTopSnackBar(
+      if(context.mounted) {
+        AppHelpers.showCheckTopSnackBar(
         context,
         AppHelpers.getTranslation(TrKeys.paymentMethodFailed),
       );
+      }
     }
   }
 
@@ -323,8 +325,8 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
                   icon: await image.resizeAndCircle("", 120)),
             };
             state = state.copyWith(markers: list, isMapLoading: false);
-
-            getRoutingAll(
+            if(context.mounted) {
+              getRoutingAll(
                 context: context,
                 end: LatLng(
                   data.addressTo?.latitude ?? AppConstants.demoLatitude,
@@ -334,6 +336,7 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
                   data.addressFrom?.latitude ?? AppConstants.demoLatitude,
                   data.addressFrom?.longitude ?? AppConstants.demoLongitude,
                 ));
+            }
           } else {
             state = state.copyWith(parcel: data);
             Map<MarkerId, Marker> list = {
@@ -356,14 +359,14 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
             state = state.copyWith(markers: list);
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             state = state.copyWith(isLoading: false);
           }
           if (context.mounted) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },

@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class BottomNavigatorOne extends StatelessWidget {
   final int currentIndex;
@@ -23,8 +23,7 @@ class BottomNavigatorOne extends StatelessWidget {
         onTap: onTap,
         items: [
           BottomNavigationBarItem(
-                   //  icon: const Icon(FlutterRemix.home_smile_fill),
-		 icon: const Icon(FlutterRemix.home_fill), //changed
+              icon: const Icon(FlutterRemix.home_smile_fill),
               label: AppHelpers.getTranslation(TrKeys.home)),
           BottomNavigationBarItem(
               icon: const Icon(FlutterRemix.apps_2_line),
@@ -36,8 +35,7 @@ class BottomNavigatorOne extends StatelessWidget {
               ),
               label: AppHelpers.getTranslation(TrKeys.fosend)),
           BottomNavigationBarItem(
-                  //  icon: const Icon(FlutterRemix.shopping_bag_3_line),
-		icon: const Icon(FlutterRemix.shopping_basket_2_line), //changed
+              icon: const Icon(FlutterRemix.shopping_bag_3_line),
               label: AppHelpers.getTranslation(TrKeys.cart)),
         ]);
   }

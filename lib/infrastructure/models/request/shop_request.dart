@@ -1,7 +1,7 @@
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
-import '../../services/app_constants.dart';
+import 'package:foodyman/app_constants.dart';
 
 class ShopRequest {
   final int page;

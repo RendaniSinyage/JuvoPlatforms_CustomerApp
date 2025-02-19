@@ -1,4 +1,4 @@
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
 
 import 'notification_data.dart';
 import 'shop_data.dart';

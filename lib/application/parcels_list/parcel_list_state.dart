@@ -1,6 +1,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpodtemp/infrastructure/models/data/parcel_order.dart';
+import 'package:foodyman/infrastructure/models/data/parcel_order.dart';
 
 
 part 'parcel_list_state.freezed.dart';

@@ -1,4 +1,4 @@
-import 'package:riverpodtemp/infrastructure/models/data/take_data.dart';
+import 'package:foodyman/infrastructure/models/data/take_data.dart';
 
 class TagResponse {
   TagResponse({

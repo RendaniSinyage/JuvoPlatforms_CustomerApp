@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/vibration.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class SizeItem extends StatelessWidget {
   final VoidCallback onTap;
@@ -28,7 +28,7 @@ class SizeItem extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
               color: AppStyle.white,
-              borderRadius: BorderRadius.all(Radius.circular(10.r))),
+              borderRadius: BorderRadius.circular(10.r)),
           child: Column(
             children: [
               Row(
@@ -36,10 +36,10 @@ class SizeItem extends StatelessWidget {
                 children: [
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 500),
-                    width: 18.w,
-                    height: 18.h,
+                    width: 18.r,
+                    height: 18.r,
                     decoration: BoxDecoration(
-                        color: isActive ? AppStyle.brandGreen : AppStyle.transparent,
+                        color: isActive ? AppStyle.primary : AppStyle.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(
                             color: isActive ? AppStyle.black : AppStyle.textGrey,

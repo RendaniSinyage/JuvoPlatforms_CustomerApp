@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/application/payment_methods/payment_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_check/widgets/promo_code.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/application/payment_methods/payment_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/pages/order/order_check/widgets/promo_code.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'payment_method.dart';
 import 'order_payment_container.dart';
@@ -26,7 +26,7 @@ class CardAndPromo extends StatelessWidget {
             return OrderPaymentContainer(
               onTap: () {
                 AppHelpers.showCustomModalBottomSheet(
-                  paddingTop: MediaQuery.of(context).padding.top,
+                  paddingTop: MediaQuery.paddingOf(context).top,
                   context: context,
                   modal:  const PaymentMethods(),
                   isDarkMode: false,
@@ -44,7 +44,7 @@ class CardAndPromo extends StatelessWidget {
                                 ?.shopPayments
                                 ?.isNotEmpty ??
                             false))
-                    ? AppStyle.brandGreen
+                    ? AppStyle.primary
                     : AppStyle.black,
               ),
               title: ((AppHelpers.getPaymentType() == "admin")
@@ -95,7 +95,7 @@ class CardAndPromo extends StatelessWidget {
                 FlutterRemix.ticket_line,
                 color: ref.watch(orderProvider).promoCode == null
                     ? AppStyle.black
-                    : AppStyle.brandGreen,
+                    : AppStyle.primary,
               ),
               title: ref.watch(orderProvider).promoCode ??
                   AppHelpers.getTranslation(TrKeys.youHavePromoCode),

@@ -1,8 +1,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../infrastructure/models/data/cart_data.dart';
-import '../../infrastructure/models/data/cart_product_data.dart';
+import 'package:foodyman/infrastructure/models/data/cart_data.dart';
+import 'package:foodyman/infrastructure/models/data/cart_product_data.dart';
 
 
 part 'shop_order_state.freezed.dart';

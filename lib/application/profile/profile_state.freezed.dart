@@ -32,9 +32,11 @@ mixin _$ProfileState {
   bool get isPolicyLoading => throw _privateConstructorUsedError;
   Translation? get policy => throw _privateConstructorUsedError;
   Translation? get term => throw _privateConstructorUsedError;
-  bool get isEmptyWallet => throw _privateConstructorUsedError;
+  List<String> get filepath => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProfileStateCopyWith<ProfileState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,7 +64,7 @@ abstract class $ProfileStateCopyWith<$Res> {
       bool isPolicyLoading,
       Translation? policy,
       Translation? term,
-      bool isEmptyWallet});
+      List<String> filepath});
 }
 
 /// @nodoc
@@ -75,6 +77,8 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -94,7 +98,7 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
     Object? isPolicyLoading = null,
     Object? policy = freezed,
     Object? term = freezed,
-    Object? isEmptyWallet = null,
+    Object? filepath = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -161,10 +165,10 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
           ? _value.term
           : term // ignore: cast_nullable_to_non_nullable
               as Translation?,
-      isEmptyWallet: null == isEmptyWallet
-          ? _value.isEmptyWallet
-          : isEmptyWallet // ignore: cast_nullable_to_non_nullable
-              as bool,
+      filepath: null == filepath
+          ? _value.filepath
+          : filepath // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -194,7 +198,7 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
       bool isPolicyLoading,
       Translation? policy,
       Translation? term,
-      bool isEmptyWallet});
+      List<String> filepath});
 }
 
 /// @nodoc
@@ -205,6 +209,8 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
       _$ProfileStateImpl _value, $Res Function(_$ProfileStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -224,7 +230,7 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
     Object? isPolicyLoading = null,
     Object? policy = freezed,
     Object? term = freezed,
-    Object? isEmptyWallet = null,
+    Object? filepath = null,
   }) {
     return _then(_$ProfileStateImpl(
       isLoading: null == isLoading
@@ -291,10 +297,10 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
           ? _value.term
           : term // ignore: cast_nullable_to_non_nullable
               as Translation?,
-      isEmptyWallet: null == isEmptyWallet
-          ? _value.isEmptyWallet
-          : isEmptyWallet // ignore: cast_nullable_to_non_nullable
-              as bool,
+      filepath: null == filepath
+          ? _value._filepath
+          : filepath // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -319,8 +325,9 @@ class _$ProfileStateImpl extends _ProfileState {
       this.isPolicyLoading = false,
       this.policy = null,
       this.term = null,
-      this.isEmptyWallet = false})
+      final List<String> filepath = const []})
       : _walletHistory = walletHistory,
+        _filepath = filepath,
         super._();
 
   @override
@@ -379,13 +386,18 @@ class _$ProfileStateImpl extends _ProfileState {
   @override
   @JsonKey()
   final Translation? term;
+  final List<String> _filepath;
   @override
   @JsonKey()
-  final bool isEmptyWallet;
+  List<String> get filepath {
+    if (_filepath is EqualUnmodifiableListView) return _filepath;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filepath);
+  }
 
   @override
   String toString() {
-    return 'ProfileState(isLoading: $isLoading, isReferralLoading: $isReferralLoading, isSaveLoading: $isSaveLoading, isLoadingHistory: $isLoadingHistory, typeIndex: $typeIndex, selectAddress: $selectAddress, bgImage: $bgImage, logoImage: $logoImage, addressModel: $addressModel, userData: $userData, referralData: $referralData, walletHistory: $walletHistory, isTermLoading: $isTermLoading, isPolicyLoading: $isPolicyLoading, policy: $policy, term: $term, isEmptyWallet: $isEmptyWallet)';
+    return 'ProfileState(isLoading: $isLoading, isReferralLoading: $isReferralLoading, isSaveLoading: $isSaveLoading, isLoadingHistory: $isLoadingHistory, typeIndex: $typeIndex, selectAddress: $selectAddress, bgImage: $bgImage, logoImage: $logoImage, addressModel: $addressModel, userData: $userData, referralData: $referralData, walletHistory: $walletHistory, isTermLoading: $isTermLoading, isPolicyLoading: $isPolicyLoading, policy: $policy, term: $term, filepath: $filepath)';
   }
 
   @override
@@ -422,8 +434,7 @@ class _$ProfileStateImpl extends _ProfileState {
                 other.isPolicyLoading == isPolicyLoading) &&
             (identical(other.policy, policy) || other.policy == policy) &&
             (identical(other.term, term) || other.term == term) &&
-            (identical(other.isEmptyWallet, isEmptyWallet) ||
-                other.isEmptyWallet == isEmptyWallet));
+            const DeepCollectionEquality().equals(other._filepath, _filepath));
   }
 
   @override
@@ -445,9 +456,11 @@ class _$ProfileStateImpl extends _ProfileState {
       isPolicyLoading,
       policy,
       term,
-      isEmptyWallet);
+      const DeepCollectionEquality().hash(_filepath));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProfileStateImplCopyWith<_$ProfileStateImpl> get copyWith =>
@@ -472,7 +485,7 @@ abstract class _ProfileState extends ProfileState {
       final bool isPolicyLoading,
       final Translation? policy,
       final Translation? term,
-      final bool isEmptyWallet}) = _$ProfileStateImpl;
+      final List<String> filepath}) = _$ProfileStateImpl;
   const _ProfileState._() : super._();
 
   @override
@@ -508,9 +521,12 @@ abstract class _ProfileState extends ProfileState {
   @override
   Translation? get term;
   @override
-  bool get isEmptyWallet;
+  List<String> get filepath;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProfileStateImplCopyWith<_$ProfileStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

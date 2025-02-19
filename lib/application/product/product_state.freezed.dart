@@ -31,7 +31,9 @@ mixin _$ProductState {
   Galleries? get selectImage => throw _privateConstructorUsedError;
   Stocks? get selectedStock => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProductState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductStateCopyWith<ProductState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -69,6 +71,8 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProductState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -181,6 +185,8 @@ class __$$ProductStateImplCopyWithImpl<$Res>
       _$ProductStateImpl _value, $Res Function(_$ProductStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProductState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -400,7 +406,9 @@ class _$ProductStateImpl extends _ProductState {
       selectImage,
       selectedStock);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProductState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductStateImplCopyWith<_$ProductStateImpl> get copyWith =>
@@ -453,8 +461,11 @@ abstract class _ProductState extends ProductState {
   Galleries? get selectImage;
   @override
   Stocks? get selectedStock;
+
+  /// Create a copy of ProductState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductStateImplCopyWith<_$ProductStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

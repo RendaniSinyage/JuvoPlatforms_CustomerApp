@@ -22,7 +22,9 @@ mixin _$ParcelListState {
   List<ParcelOrder> get activeOrders => throw _privateConstructorUsedError;
   List<ParcelOrder> get historyOrders => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcelListState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ParcelListStateCopyWith<ParcelListState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +53,8 @@ class _$ParcelListStateCopyWithImpl<$Res, $Val extends ParcelListState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ParcelListState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,6 +113,8 @@ class __$$ParcelListStateImplCopyWithImpl<$Res>
       _$ParcelListStateImpl _value, $Res Function(_$ParcelListStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ParcelListState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -214,7 +220,9 @@ class _$ParcelListStateImpl extends _ParcelListState {
       const DeepCollectionEquality().hash(_activeOrders),
       const DeepCollectionEquality().hash(_historyOrders));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcelListState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcelListStateImplCopyWith<_$ParcelListStateImpl> get copyWith =>
@@ -241,8 +249,11 @@ abstract class _ParcelListState extends ParcelListState {
   List<ParcelOrder> get activeOrders;
   @override
   List<ParcelOrder> get historyOrders;
+
+  /// Create a copy of ParcelListState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ParcelListStateImplCopyWith<_$ParcelListStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

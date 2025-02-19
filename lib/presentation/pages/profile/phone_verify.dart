@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:riverpodtemp/application/register/register_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/app_bar_bottom_sheet.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/pages/auth/confirmation/register_confirmation_page.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-
-import '../../../infrastructure/services/app_constants.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/app_bar_bottom_sheet.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/pages/auth/confirmation/register_confirmation_page.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/application/auth/auth.dart';
 
 class PhoneVerify extends ConsumerWidget {
   const PhoneVerify({super.key});
@@ -50,7 +50,7 @@ class PhoneVerify extends ConsumerWidget {
                       AppBarBottomSheet(
                         title: AppHelpers.getTranslation(TrKeys.phoneNumber),
                       ),
-                      if (AppConstants.isSpecificNumberEnabled)
+                      if (AppConstants.signUpType== SignUpType.phone)
                         Directionality(
                           textDirection:
                               isLtr ? TextDirection.ltr : TextDirection.rtl,
@@ -107,9 +107,9 @@ class PhoneVerify extends ConsumerWidget {
                             ),
                           ),
                         ),
-                      if (!AppConstants.isSpecificNumberEnabled)
+                      if (AppConstants.signUpType== SignUpType.both)
                         OutlinedBorderTextField(
-                          label: AppHelpers.getTranslation(TrKeys.phoneNumber)
+                          label: AppHelpers.getTranslation(TrKeys.emailOrPhoneNumber)
                               .toUpperCase(),
                           onChanged: event.setEmail,
                           isError: state.isEmailInvalid,
@@ -125,7 +125,7 @@ class PhoneVerify extends ConsumerWidget {
                     child: CustomButton(
                       background: !state.email.trim().isNotEmpty
                           ? AppStyle.textGrey
-                          : AppStyle.brandGreen,
+                          : AppStyle.primary,
                       isLoading: state.isLoading,
                       title: AppHelpers.getTranslation(TrKeys.next),
                       onPressed: () {

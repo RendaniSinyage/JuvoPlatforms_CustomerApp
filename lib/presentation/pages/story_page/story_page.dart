@@ -6,15 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/home/home_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/story_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import '../../theme/app_style.dart';
+import 'package:foodyman/application/home/home_provider.dart';
+import 'package:foodyman/infrastructure/models/data/story_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/components/shop_avarat.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 
 @RoutePage()
@@ -65,7 +65,7 @@ class _StoryListPageState extends State<StoryListPage> {
                     curve: Curves.easeIn);
                 setState(() {});
               } else {
-                context.popRoute();
+                context.maybePop();
               }
             },
             prevPage: () {
@@ -75,7 +75,7 @@ class _StoryListPageState extends State<StoryListPage> {
                     curve: Curves.easeIn);
                 setState(() {});
               } else {
-                context.popRoute();
+                context.maybePop();
               }
             },
           );
@@ -181,7 +181,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                                   widget.story!.length,
                               decoration: BoxDecoration(
                                 color: currentIndex >= index
-                                    ? AppStyle.brandGreen
+                                    ? AppStyle.primary
                                     : AppStyle.white,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(122.r)),
@@ -195,7 +195,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                                         value: controller.value,
                                         valueColor:
                                             const AlwaysStoppedAnimation<Color>(
-                                                AppStyle.brandGreen),
+                                                AppStyle.primary),
                                         backgroundColor: AppStyle.white,
                                       ),
                                     )
@@ -207,7 +207,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                                             value: 1,
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
-                                                    AppStyle.brandGreen),
+                                                    AppStyle.primary),
                                             backgroundColor: AppStyle.white,
                                           ),
                                         )
@@ -275,7 +275,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                                   widget.story!.length,
                               decoration: BoxDecoration(
                                 color: currentIndex >= index
-                                    ? AppStyle.brandGreen
+                                    ? AppStyle.primary
                                     : AppStyle.white,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(122.r)),
@@ -289,7 +289,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                                         value: controller.value,
                                         valueColor:
                                             const AlwaysStoppedAnimation<Color>(
-                                                AppStyle.brandGreen),
+                                                AppStyle.primary),
                                         backgroundColor: AppStyle.white,
                                       ),
                                     )
@@ -301,7 +301,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                                             value: 1,
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
-                                                    AppStyle.brandGreen),
+                                                    AppStyle.primary),
                                             backgroundColor: AppStyle.white,
                                           ),
                                         )
@@ -405,7 +405,7 @@ class _StoryPageState extends State<StoryPage> with TickerProviderStateMixin {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      context.popRoute();
+                      context.maybePop();
                     },
                     child: Container(
                       color: AppStyle.transparent,

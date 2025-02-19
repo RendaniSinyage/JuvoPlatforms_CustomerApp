@@ -2,7 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class Loading extends StatelessWidget {
   final Color bgColor;
@@ -14,7 +14,7 @@ class Loading extends StatelessWidget {
     return Center(
       child: Platform.isAndroid
           ? const CircularProgressIndicator(
-              color: AppStyle.brandGreen,
+              color: AppStyle.primary,
             )
           : CupertinoActivityIndicator(
               color: bgColor,

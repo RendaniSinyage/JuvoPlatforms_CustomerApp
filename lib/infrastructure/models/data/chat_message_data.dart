@@ -1,5 +1,4 @@
-
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
 
 class ChatMessageData {
   final MessageOwner messageOwner;

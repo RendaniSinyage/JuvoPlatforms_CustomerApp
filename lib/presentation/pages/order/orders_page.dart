@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_notifier.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_tab_bar.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/orders_list/orders_list_notifier.dart';
+import 'package:foodyman/application/orders_list/orders_list_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/custom_tab_bar.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'widgets/orders_item.dart';
-import 'package:riverpodtemp/presentation/components/badges.dart';
 
 @RoutePage()
 class OrdersListPage extends ConsumerStatefulWidget {
@@ -202,6 +201,24 @@ class _OrderPageState extends ConsumerState<OrdersListPage>
 }
 
 Widget _resultEmpty() {
-  return EmptyBadge(subtitleText: "Your Orders will appear here", titleText: "No Orders",
+  return Column(
+    children: [
+      24.verticalSpace,
+      Image.asset("assets/images/notFound.png"),
+      Text(
+        AppHelpers.getTranslation(TrKeys.nothingFound),
+        style: AppStyle.interSemi(size: 18.sp),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 32.w,
+        ),
+        child: Text(
+          AppHelpers.getTranslation(TrKeys.trySearchingAgain),
+          style: AppStyle.interRegular(size: 14.sp),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ],
   );
 }

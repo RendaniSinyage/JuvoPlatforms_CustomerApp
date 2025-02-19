@@ -41,17 +41,20 @@ mixin _$ShopState {
   int get subCategoryIndex => throw _privateConstructorUsedError;
   Set<Marker> get shopMarkers => throw _privateConstructorUsedError;
   List<LatLng> get polylineCoordinates => throw _privateConstructorUsedError;
-  ShopData? get shopData => throw _privateConstructorUsedError;
-  List<Product> get products => throw _privateConstructorUsedError;
-  List<Product> get popularProducts => throw _privateConstructorUsedError;
+  ShopData? get shopData =>
+      throw _privateConstructorUsedError; // @Default([]) List<ProductData> products,
+// @Default([]) List<ProductData> popularProducts,
   List<ProductData> get categoryProducts => throw _privateConstructorUsedError;
+  List<All> get allData => throw _privateConstructorUsedError;
   List<CategoryData>? get category => throw _privateConstructorUsedError;
   List<BrandData>? get brands => throw _privateConstructorUsedError;
   List<BranchModel>? get branches => throw _privateConstructorUsedError;
   List<int> get brandIds => throw _privateConstructorUsedError;
   int get sortIndex => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ShopState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ShopStateCopyWith<ShopState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -88,9 +91,8 @@ abstract class $ShopStateCopyWith<$Res> {
       Set<Marker> shopMarkers,
       List<LatLng> polylineCoordinates,
       ShopData? shopData,
-      List<Product> products,
-      List<Product> popularProducts,
       List<ProductData> categoryProducts,
+      List<All> allData,
       List<CategoryData>? category,
       List<BrandData>? brands,
       List<BranchModel>? branches,
@@ -108,6 +110,8 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ShopState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,9 +141,8 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
     Object? shopMarkers = null,
     Object? polylineCoordinates = null,
     Object? shopData = freezed,
-    Object? products = null,
-    Object? popularProducts = null,
     Object? categoryProducts = null,
+    Object? allData = null,
     Object? category = freezed,
     Object? brands = freezed,
     Object? branches = freezed,
@@ -251,18 +254,14 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
           ? _value.shopData
           : shopData // ignore: cast_nullable_to_non_nullable
               as ShopData?,
-      products: null == products
-          ? _value.products
-          : products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      popularProducts: null == popularProducts
-          ? _value.popularProducts
-          : popularProducts // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
       categoryProducts: null == categoryProducts
           ? _value.categoryProducts
           : categoryProducts // ignore: cast_nullable_to_non_nullable
               as List<ProductData>,
+      allData: null == allData
+          ? _value.allData
+          : allData // ignore: cast_nullable_to_non_nullable
+              as List<All>,
       category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -322,9 +321,8 @@ abstract class _$$ShopStateImplCopyWith<$Res>
       Set<Marker> shopMarkers,
       List<LatLng> polylineCoordinates,
       ShopData? shopData,
-      List<Product> products,
-      List<Product> popularProducts,
       List<ProductData> categoryProducts,
+      List<All> allData,
       List<CategoryData>? category,
       List<BrandData>? brands,
       List<BranchModel>? branches,
@@ -340,6 +338,8 @@ class __$$ShopStateImplCopyWithImpl<$Res>
       _$ShopStateImpl _value, $Res Function(_$ShopStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ShopState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -369,9 +369,8 @@ class __$$ShopStateImplCopyWithImpl<$Res>
     Object? shopMarkers = null,
     Object? polylineCoordinates = null,
     Object? shopData = freezed,
-    Object? products = null,
-    Object? popularProducts = null,
     Object? categoryProducts = null,
+    Object? allData = null,
     Object? category = freezed,
     Object? brands = freezed,
     Object? branches = freezed,
@@ -483,18 +482,14 @@ class __$$ShopStateImplCopyWithImpl<$Res>
           ? _value.shopData
           : shopData // ignore: cast_nullable_to_non_nullable
               as ShopData?,
-      products: null == products
-          ? _value._products
-          : products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      popularProducts: null == popularProducts
-          ? _value._popularProducts
-          : popularProducts // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
       categoryProducts: null == categoryProducts
           ? _value._categoryProducts
           : categoryProducts // ignore: cast_nullable_to_non_nullable
               as List<ProductData>,
+      allData: null == allData
+          ? _value._allData
+          : allData // ignore: cast_nullable_to_non_nullable
+              as List<All>,
       category: freezed == category
           ? _value._category
           : category // ignore: cast_nullable_to_non_nullable
@@ -549,9 +544,8 @@ class _$ShopStateImpl extends _ShopState {
       final Set<Marker> shopMarkers = const {},
       final List<LatLng> polylineCoordinates = const [],
       this.shopData = null,
-      final List<Product> products = const [],
-      final List<Product> popularProducts = const [],
       final List<ProductData> categoryProducts = const [],
+      final List<All> allData = const [],
       final List<CategoryData>? category = const [],
       final List<BrandData>? brands = const [],
       final List<BranchModel>? branches = const [],
@@ -559,9 +553,8 @@ class _$ShopStateImpl extends _ShopState {
       this.sortIndex = 0})
       : _shopMarkers = shopMarkers,
         _polylineCoordinates = polylineCoordinates,
-        _products = products,
-        _popularProducts = popularProducts,
         _categoryProducts = categoryProducts,
+        _allData = allData,
         _category = category,
         _brands = brands,
         _branches = branches,
@@ -659,25 +652,11 @@ class _$ShopStateImpl extends _ShopState {
   @override
   @JsonKey()
   final ShopData? shopData;
-  final List<Product> _products;
-  @override
-  @JsonKey()
-  List<Product> get products {
-    if (_products is EqualUnmodifiableListView) return _products;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_products);
-  }
-
-  final List<Product> _popularProducts;
-  @override
-  @JsonKey()
-  List<Product> get popularProducts {
-    if (_popularProducts is EqualUnmodifiableListView) return _popularProducts;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_popularProducts);
-  }
-
+// @Default([]) List<ProductData> products,
+// @Default([]) List<ProductData> popularProducts,
   final List<ProductData> _categoryProducts;
+// @Default([]) List<ProductData> products,
+// @Default([]) List<ProductData> popularProducts,
   @override
   @JsonKey()
   List<ProductData> get categoryProducts {
@@ -685,6 +664,15 @@ class _$ShopStateImpl extends _ShopState {
       return _categoryProducts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_categoryProducts);
+  }
+
+  final List<All> _allData;
+  @override
+  @JsonKey()
+  List<All> get allData {
+    if (_allData is EqualUnmodifiableListView) return _allData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allData);
   }
 
   final List<CategoryData>? _category;
@@ -735,7 +723,7 @@ class _$ShopStateImpl extends _ShopState {
 
   @override
   String toString() {
-    return 'ShopState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, isCategoryLoading: $isCategoryLoading, isPopularLoading: $isPopularLoading, isProductLoading: $isProductLoading, isProductCategoryLoading: $isProductCategoryLoading, isPopularProduct: $isPopularProduct, isLike: $isLike, showWeekTime: $showWeekTime, showBranch: $showBranch, isMapLoading: $isMapLoading, isGroupOrder: $isGroupOrder, isJoinOrder: $isJoinOrder, isSearchEnabled: $isSearchEnabled, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isNestedScrollDisabled: $isNestedScrollDisabled, userUuid: $userUuid, searchText: $searchText, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, currentIndex: $currentIndex, subCategoryIndex: $subCategoryIndex, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, shopData: $shopData, products: $products, popularProducts: $popularProducts, categoryProducts: $categoryProducts, category: $category, brands: $brands, branches: $branches, brandIds: $brandIds, sortIndex: $sortIndex)';
+    return 'ShopState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, isCategoryLoading: $isCategoryLoading, isPopularLoading: $isPopularLoading, isProductLoading: $isProductLoading, isProductCategoryLoading: $isProductCategoryLoading, isPopularProduct: $isPopularProduct, isLike: $isLike, showWeekTime: $showWeekTime, showBranch: $showBranch, isMapLoading: $isMapLoading, isGroupOrder: $isGroupOrder, isJoinOrder: $isJoinOrder, isSearchEnabled: $isSearchEnabled, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isNestedScrollDisabled: $isNestedScrollDisabled, userUuid: $userUuid, searchText: $searchText, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, currentIndex: $currentIndex, subCategoryIndex: $subCategoryIndex, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, shopData: $shopData, categoryProducts: $categoryProducts, allData: $allData, category: $category, brands: $brands, branches: $branches, brandIds: $brandIds, sortIndex: $sortIndex)';
   }
 
   @override
@@ -795,11 +783,9 @@ class _$ShopStateImpl extends _ShopState {
                 .equals(other._polylineCoordinates, _polylineCoordinates) &&
             (identical(other.shopData, shopData) ||
                 other.shopData == shopData) &&
-            const DeepCollectionEquality().equals(other._products, _products) &&
-            const DeepCollectionEquality()
-                .equals(other._popularProducts, _popularProducts) &&
             const DeepCollectionEquality()
                 .equals(other._categoryProducts, _categoryProducts) &&
+            const DeepCollectionEquality().equals(other._allData, _allData) &&
             const DeepCollectionEquality().equals(other._category, _category) &&
             const DeepCollectionEquality().equals(other._brands, _brands) &&
             const DeepCollectionEquality().equals(other._branches, _branches) &&
@@ -837,9 +823,8 @@ class _$ShopStateImpl extends _ShopState {
         const DeepCollectionEquality().hash(_shopMarkers),
         const DeepCollectionEquality().hash(_polylineCoordinates),
         shopData,
-        const DeepCollectionEquality().hash(_products),
-        const DeepCollectionEquality().hash(_popularProducts),
         const DeepCollectionEquality().hash(_categoryProducts),
+        const DeepCollectionEquality().hash(_allData),
         const DeepCollectionEquality().hash(_category),
         const DeepCollectionEquality().hash(_brands),
         const DeepCollectionEquality().hash(_branches),
@@ -847,7 +832,9 @@ class _$ShopStateImpl extends _ShopState {
         sortIndex
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ShopState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ShopStateImplCopyWith<_$ShopStateImpl> get copyWith =>
@@ -882,9 +869,8 @@ abstract class _ShopState extends ShopState {
       final Set<Marker> shopMarkers,
       final List<LatLng> polylineCoordinates,
       final ShopData? shopData,
-      final List<Product> products,
-      final List<Product> popularProducts,
       final List<ProductData> categoryProducts,
+      final List<All> allData,
       final List<CategoryData>? category,
       final List<BrandData>? brands,
       final List<BranchModel>? branches,
@@ -943,13 +929,12 @@ abstract class _ShopState extends ShopState {
   @override
   List<LatLng> get polylineCoordinates;
   @override
-  ShopData? get shopData;
-  @override
-  List<Product> get products;
-  @override
-  List<Product> get popularProducts;
+  ShopData? get shopData; // @Default([]) List<ProductData> products,
+// @Default([]) List<ProductData> popularProducts,
   @override
   List<ProductData> get categoryProducts;
+  @override
+  List<All> get allData;
   @override
   List<CategoryData>? get category;
   @override
@@ -960,8 +945,11 @@ abstract class _ShopState extends ShopState {
   List<int> get brandIds;
   @override
   int get sortIndex;
+
+  /// Create a copy of ShopState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ShopStateImplCopyWith<_$ShopStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class BottomNavigatorThree extends StatelessWidget {
   final int currentIndex;
@@ -178,7 +178,7 @@ ItemBuilder _defaultItemBuilder({
                 child: Container(
                   width: width.isFinite
                       ? (width / items.length - 8)
-                      : MediaQuery.of(context).size.width / items.length - 24,
+                      : MediaQuery.sizeOf(context).width / items.length - 24,
                   padding: REdgeInsets.all(10),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,

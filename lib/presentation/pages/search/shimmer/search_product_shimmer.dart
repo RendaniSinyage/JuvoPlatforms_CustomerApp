@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import '../../../components/title_icon.dart';
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class SearchProductShimmer extends StatelessWidget {
   const SearchProductShimmer({super.key});
@@ -21,7 +21,7 @@ class SearchProductShimmer extends StatelessWidget {
               padding: EdgeInsets.only(
                   right: 16.w,
                   left: 16.w,
-                  bottom: MediaQuery.of(context).padding.bottom),
+                  bottom: MediaQuery.paddingOf(context).bottom),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: 3,
@@ -38,7 +38,7 @@ class SearchProductShimmer extends StatelessWidget {
                         margin: EdgeInsets.symmetric(vertical: 6.h),
                         decoration: BoxDecoration(
                           color: AppStyle.shimmerBase,
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          borderRadius: BorderRadius.circular(10.r),
                           boxShadow: [
                             BoxShadow(
                               color: AppStyle.white.withOpacity(0.04),

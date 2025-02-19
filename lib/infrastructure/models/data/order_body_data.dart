@@ -1,7 +1,7 @@
-import 'package:riverpodtemp/infrastructure/models/data/order_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/models/data/order_data.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
 class OrderBodyData {
   final int cartId;
@@ -43,7 +43,7 @@ class OrderBodyData {
       "rate": LocalStorage.getSelectedCurrency()?.rate ?? 1,
       "shop_id": shopId,
       if (username != null) "username": username,
-      if (phone != null) "phone": phone,
+      if (phone?.isNotEmpty ?? false) "phone": phone,
       if (paymentId != null) "payment_id": paymentId,
       "delivery_fee": deliveryFee,
       // "address_id": addressId,
@@ -56,6 +56,7 @@ class OrderBodyData {
       "delivery_date": deliveryDate,
       "delivery_time": deliveryTime,
       "note": note,
+      "type": "mobile",
       'lang': LocalStorage.getLanguage()?.locale,
       if (notes.isNotEmpty)
         "notes": {

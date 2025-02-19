@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import '../../theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? hintText;
@@ -23,7 +23,7 @@ class SearchTextField extends StatelessWidget {
     this.suffixIcon,
     this.textEditingController,
     this.onChanged,
-    this.bgColor = AppStyle.white,
+    this.bgColor = AppStyle.transparent,
     this.isBorder = false,
     this.isRead = false,
     this.autofocus = false,
@@ -49,19 +49,19 @@ class SearchTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintStyle: AppStyle.interNormal(
           size: 13,
-          color: AppStyle.black,
+          color: AppStyle.hintColor,
         ),
-        hintText: hintText ?? AppHelpers.getTranslation(TrKeys.searchApp),
+        hintText: hintText ?? AppHelpers.getTranslation(TrKeys.searchProducts),
         contentPadding: REdgeInsets.symmetric(horizontal: 15, vertical: 14),
         prefixIcon: isSearchIcon
             ? Icon(
-                FlutterRemix.search_eye_line,
+                FlutterRemix.search_2_line,
                 size: 20.r,
                 color: AppStyle.black,
               )
             : null,
         suffixIcon: suffixIcon,
-        fillColor: bgColor.withOpacity(0.1),
+        fillColor: bgColor,
         filled: true,
         focusedBorder: isBorder
             ? OutlineInputBorder(

@@ -7,18 +7,18 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:riverpodtemp/application/parcel/parcel_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/pages/parcel/widgets/recipient_widget.dart';
-import 'package:riverpodtemp/presentation/pages/parcel/widgets/sender_widget.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/parcel/parcel_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/pages/parcel/widgets/recipient_widget.dart';
+import 'package:foodyman/presentation/pages/parcel/widgets/sender_widget.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 import 'widgets/info_item.dart';
 import 'widgets/parcel_payments.dart';
 import 'widgets/time_and_type.dart';
@@ -26,9 +26,7 @@ import 'widgets/time_and_type.dart';
 
 @RoutePage()
 class ParcelPage extends ConsumerStatefulWidget {
-  final bool isBackButton;
-  const ParcelPage({super.key,
-    this.isBackButton = true});
+  const ParcelPage({super.key});
 
   @override
   ConsumerState<ParcelPage> createState() => _ParcelPageState();
@@ -36,8 +34,8 @@ class ParcelPage extends ConsumerStatefulWidget {
 
 class _ParcelPageState extends ConsumerState<ParcelPage> {
   final TextEditingController fromUsername =
-      TextEditingController(text: LocalStorage.getFirstName());
-  final TextEditingController fromPhone = TextEditingController();
+      TextEditingController(text: LocalStorage.getUser()?.firstname ?? '');
+  final TextEditingController fromPhone = TextEditingController(text: LocalStorage.getUser()?.phone ?? '');
   final TextEditingController fromHouse = TextEditingController();
   final TextEditingController fromFloor = TextEditingController();
   final TextEditingController toUsername = TextEditingController();
@@ -146,7 +144,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
                                     onPressed: () {
                                       AppHelpers.showCustomModalBottomSheet(
                                         paddingTop:
-                                            MediaQuery.of(context).padding.top,
+                                            MediaQuery.paddingOf(context).top,
                                         context: context,
                                         modal: ParcelPayments(
                                           payLater: (payment) async {
@@ -199,7 +197,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
-            if(widget.isBackButton) const PopButton(),
+            const PopButton(),
             if (state.types.isNotEmpty &&
                 (state.addressFrom?.isNotEmpty??false) &&
                 (state.addressTo?.isNotEmpty??false))
@@ -209,7 +207,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
                   child: CustomButton(
                     borderColor:
                         !state.error ? AppStyle.transparent : AppStyle.textGrey,
-                    background: !state.error ? AppStyle.brandGreen : AppStyle.white,
+                    background: !state.error ? AppStyle.primary : AppStyle.white,
                     textColor: !state.error ? AppStyle.black : AppStyle.textGrey,
                     title:
                         "${state.expand ? AppHelpers.getTranslation(TrKeys.order) : AppHelpers.getTranslation(TrKeys.continueText)} ${AppHelpers.numberFormat(number: state.calculate?.data?.price ?? 0)}",
@@ -241,7 +239,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
                     isLoading: state.isLoading,
                   ),
                 ),
-              ), 180.verticalSpace
+              )
           ],
         ),
       ),

@@ -40,7 +40,7 @@ class UserModel {
   }
 
   UserModel.fromJson(dynamic json) {
-    _id = json['id']  ?? 0;
+    _id = json['id'] ?? 0;
     _uuid = json['uuid'];
     _firstname = json['firstname'];
     _lastname = json['lastname'];
@@ -50,7 +50,9 @@ class UserModel {
     _gender = json['gender'];
     _emailVerifiedAt = json['email_verified_at'];
     _registeredAt = json['registered_at'];
-    _active = json['active'].runtimeType == int ? (json['active']!=0) : json['active'];
+    _active = json['active'].runtimeType == int
+        ? (json['active'] != 0)
+        : json['active'];
     _img = json['img'];
     _role = json['role'];
     if (json['addresses'] != null) {
@@ -78,7 +80,6 @@ class UserModel {
   String? _password;
   String? _confirmPassword;
   List<AddressNewModel>? _addresses;
-
 
   UserModel copyWith({
     int? id,
@@ -114,9 +115,9 @@ class UserModel {
         active: active ?? _active,
         img: img ?? _img,
         role: role ?? _role,
-        confirmPassword:  conPassword ?? _confirmPassword,
-        password:  password ?? _password,
-        addresses:  addresses ?? _addresses,
+        confirmPassword: conPassword ?? _confirmPassword,
+        password: password ?? _password,
+        addresses: addresses ?? _addresses,
       );
 
   int? get id => _id;
@@ -159,7 +160,7 @@ class UserModel {
     map['uuid'] = _uuid;
     map['firstname'] = _firstname;
     map['lastname'] = _lastname;
-     map['referral'] = _referral;
+    map['referral'] = _referral;
     map['email'] = _email;
     map['phone'] = _phone;
     map['birthday'] = _birthday;
@@ -174,4 +175,16 @@ class UserModel {
     }
     return map;
   }
+
+  Map<String, dynamic> toJsonForSignUp({typeFirebase = false}) => {
+        "firstname": _firstname,
+        if (_lastname?.isNotEmpty ?? false) "lastname": _lastname,
+        if (_phone?.isNotEmpty ?? false) "phone": _phone?.replaceAll('+', ""),
+        if (_email?.isNotEmpty ?? false) "email": _email,
+        if (_password?.isNotEmpty ?? false) "password": _password,
+        if (_confirmPassword?.isNotEmpty ?? false)
+          "password_conformation": _confirmPassword,
+        if (_referral?.isNotEmpty ?? false) 'referral': _referral,
+        if (typeFirebase) "type": "firebase",
+      };
 }

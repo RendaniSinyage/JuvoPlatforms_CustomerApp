@@ -1,39 +1,23 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-//import 'package:http/http.dart' as http;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/product_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../product/product_page.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/application/shopname/shop_name_provider.dart';
+import 'package:foodyman/infrastructure/models/data/product_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-class ProductItem extends ConsumerWidget {
+import '../../product/product_page.dart';
+
+class ProductItem extends StatelessWidget {
   final ProductData product;
 
   const ProductItem({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final shopNameAsyncValue = ref.watch(shopNameProvider(product.shopId.toString()));
-
-    return shopNameAsyncValue.when(
-      data: (shopName) {
-        return buildProductItem(context, shopName);
-      },
-      loading: () => CircularProgressIndicator(), // or any other loading indicator
-      error: (error, stackTrace) => Text('Error: $error'),
-    );
-  }
-
-  Widget buildProductItem(BuildContext context, String shopName) {
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
       child: InkWell(
@@ -52,7 +36,7 @@ class ProductItem extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
             color: AppStyle.white,
-            borderRadius: BorderRadius.all(Radius.circular(10.r)),
+            borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
                 color: AppStyle.white.withOpacity(0.04),
@@ -71,7 +55,7 @@ class ProductItem extends ConsumerWidget {
                     height: 84.r,
                     width: 84.r,
                     radius: 10.r),
-                SizedBox(width: 14.w),
+                14.horizontalSpace,
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,15 +100,6 @@ class ProductItem extends ConsumerWidget {
                               color: AppStyle.black,
                             ),
                           ),
-                          Text(
-                            'from $shopName',
-                            style: AppStyle.interNormal(
-                              size: 12,
-                              color: AppStyle.textGrey,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
                           product.stocks?.first.bonus != null
                               ? Container(
                                   width: 22.w,
@@ -138,7 +113,7 @@ class ProductItem extends ConsumerWidget {
                                     color: AppStyle.white,
                                   ),
                                 )
-                              : SizedBox.shrink()
+                              : const SizedBox.shrink()
                         ],
                       ),
                     ],

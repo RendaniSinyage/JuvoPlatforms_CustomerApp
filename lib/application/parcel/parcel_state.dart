@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
 
 part 'parcel_state.freezed.dart';
 

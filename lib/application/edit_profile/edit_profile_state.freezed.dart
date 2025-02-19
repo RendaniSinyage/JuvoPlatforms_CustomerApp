@@ -30,7 +30,9 @@ mixin _$EditProfileState {
   String get imagePath => throw _privateConstructorUsedError;
   ProfileData? get userData => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EditProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EditProfileStateCopyWith<EditProfileState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -67,6 +69,8 @@ class _$EditProfileStateCopyWithImpl<$Res, $Val extends EditProfileState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of EditProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -173,6 +177,8 @@ class __$$EditProfileStateImplCopyWithImpl<$Res>
       $Res Function(_$EditProfileStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EditProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -355,7 +361,9 @@ class _$EditProfileStateImpl extends _EditProfileState {
       imagePath,
       userData);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EditProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EditProfileStateImplCopyWith<_$EditProfileStateImpl> get copyWith =>
@@ -406,8 +414,11 @@ abstract class _EditProfileState extends EditProfileState {
   String get imagePath;
   @override
   ProfileData? get userData;
+
+  /// Create a copy of EditProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EditProfileStateImplCopyWith<_$EditProfileStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

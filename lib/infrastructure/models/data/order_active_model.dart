@@ -1,5 +1,6 @@
-import 'package:riverpodtemp/infrastructure/models/data/refund_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/models/data/refund_data.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/models/data/repeat_data.dart';
 import '../models.dart';
 import 'addons_data.dart';
 
@@ -20,6 +21,7 @@ class OrderActiveModel {
     this.deliveryType,
     this.deliveryMan,
     this.deliveryFee,
+    this.otp,
     this.deliveryDate,
     this.deliveryTime,
     this.totalDiscount,
@@ -27,6 +29,7 @@ class OrderActiveModel {
     this.createdAt,
     this.updatedAt,
     this.shop,
+    this.repeat,
     this.user,
     this.details,
     this.currencyModel,
@@ -52,6 +55,7 @@ class OrderActiveModel {
   num? tips;
   String? afterDeliveredImage;
   num? deliveryFee;
+  num? otp;
   CurrencyModel? currencyModel;
   DeliveryMan? deliveryMan;
   DateTime? deliveryDate;
@@ -61,6 +65,7 @@ class OrderActiveModel {
   DateTime? createdAt;
   DateTime? updatedAt;
   ShopData? shop;
+  RepeatData? repeat;
   UserModel? user;
   List<Detail>? details;
   List<RefundModel>? refunds;
@@ -84,17 +89,20 @@ class OrderActiveModel {
             : null,
         commissionFee: json["data"]["commission_fee"],
         status: json["data"]["status"],
-        location: json["data"]["location"] != null ? Location.fromJson(json["data"]["location"]) : null,
+        location: json["data"]["location"] != null
+            ? Location.fromJson(json["data"]["location"])
+            : null,
         address: json["data"]["address"] != null
             ? AddressModel.fromJson(json["data"]["address"])
             : null,
         deliveryType: json["data"]["delivery_type"],
         deliveryFee: json["data"]["delivery_fee"],
+        otp: json["data"]["otp"],
         deliveryMan: json["data"]["deliveryman"] != null
             ? DeliveryMan.fromJson(json["data"]["deliveryman"])
             : null,
         deliveryDate:
-            DateTime.tryParse(json["data"]["delivery_date"])?.toLocal(),
+            DateTime.tryParse(json["data"]?["delivery_date"] ?? '')?.toLocal(),
         deliveryTime: json["data"]["delivery_time"],
         totalDiscount: json["data"]["total_discount"],
         serviceFee: json["data"]["service_fee"],
@@ -102,6 +110,9 @@ class OrderActiveModel {
         updatedAt: DateTime.tryParse(json["data"]["updated_at"])?.toLocal(),
         shop: json["data"]["shop"] != null
             ? ShopData.fromJson(json["data"]["shop"])
+            : null,
+        repeat: json["data"]["repeat"] != null
+            ? RepeatData.fromJson(json["data"]["repeat"])
             : null,
         user: json["data"]["user"] != null
             ? UserModel.fromJson(json["data"]["user"])
@@ -139,16 +150,19 @@ class OrderActiveModel {
       address: AddressModel.fromJson(json["address"]),
       deliveryType: json["delivery_type"],
       deliveryFee: json["delivery_fee"],
+      otp: json["otp"],
       serviceFee: json["service_fee"],
       deliveryMan: json["deliveryman"] != null
           ? DeliveryMan.fromJson(json["deliveryman"])
           : null,
-      deliveryDate: DateTime.tryParse(json["delivery_date"])?.toLocal(),
+      deliveryDate: DateTime.tryParse(json["delivery_date"] ?? '')?.toLocal(),
       deliveryTime: json["delivery_time"],
       totalDiscount: json["total_discount"],
       createdAt: DateTime.tryParse(json["created_at"])?.toLocal(),
       updatedAt: DateTime.tryParse(json["updated_at"])?.toLocal(),
       shop: json["shop"] != null ? ShopData.fromJson(json["shop"]) : null,
+      repeat:
+          json["repeat"] != null ? RepeatData.fromJson(json["repeat"]) : null,
       user: json["user"] != null ? UserModel.fromJson(json["user"]) : null,
       details: json["details"] != null
           ? List<Detail>.from(json["details"].map((x) => Detail.fromJson(x)))
@@ -175,6 +189,7 @@ class OrderActiveModel {
         "address": address,
         "delivery_type": deliveryType,
         "delivery_fee": deliveryFee,
+        "otp": otp,
         "service_fee": serviceFee,
         "delivery_date":
             "${deliveryDate?.year.toString().padLeft(4, '0')}-${deliveryDate?.month.toString().padLeft(2, '0')}-${deliveryDate?.day.toString().padLeft(2, '0')}",
@@ -183,6 +198,7 @@ class OrderActiveModel {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "shop": shop?.toJson(),
+        "repeat": repeat?.toJson(),
         "user": user?.toJson(),
         "details": List<dynamic>.from(details!.map((x) => x.toJson())),
         "transaction": transaction,
@@ -202,6 +218,7 @@ class Detail {
       this.discount,
       this.quantity,
       this.bonus,
+      this.bonusShop,
       this.note,
       this.createdAt,
       this.updatedAt,
@@ -218,6 +235,7 @@ class Detail {
   String? note;
   int? quantity;
   bool? bonus;
+  bool? bonusShop;
   DateTime? createdAt;
   DateTime? updatedAt;
   Stocks? stock;
@@ -236,6 +254,9 @@ class Detail {
         bonus: (json["bonus"].runtimeType == int)
             ? json["bonus"] == 1
             : json["bonus"],
+        bonusShop: (json["bonus_shop"].runtimeType == int)
+            ? json["bonus_shop"] == 1
+            : json["bonus_shop"],
         createdAt: DateTime.tryParse(json["created_at"])?.toLocal(),
         updatedAt: DateTime.tryParse(json["updated_at"])?.toLocal(),
         addons: json['addons'] != null
@@ -258,6 +279,7 @@ class Detail {
         "discount": discount,
         "quantity": quantity,
         "bonus": bonus,
+        "bonus_shop": bonusShop,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "stock": stock?.toJson(),

@@ -1,7 +1,6 @@
-import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/bonus_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-
+import 'package:foodyman/infrastructure/models/data/addons_data.dart';
+import 'package:foodyman/infrastructure/models/data/bonus_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
 
 import 'translation.dart';
 
@@ -29,9 +28,11 @@ class ProductData {
     ShopData? shop,
     Category? category,
     Brand? brand,
+    Stocks? stock,
     Unit? unit,
     List<ReviewData>? reviews,
     List<Galleries>? galleries,
+    List<DiscountData>? discounts,
     int? count,
   }) {
     _id = id;
@@ -60,6 +61,8 @@ class ProductData {
     _reviews = reviews;
     _galleries = galleries;
     _count = count;
+    _stock = stock;
+    _discounts = discounts;
   }
 
   ProductData.fromJson(dynamic json) {
@@ -79,16 +82,21 @@ class ProductData {
     _ratingAvg = json['rating_avg'];
     _ordersCount = json['orders_count'];
     _count = 0;
-    _unit = json['unit'] != null
-        ? Unit.fromJson(json['unit'])
-        : null;
+    _unit = json['unit'] != null ? Unit.fromJson(json['unit']) : null;
     _translation = json['translation'] != null
         ? Translation.fromJson(json['translation'])
         : null;
+    _stock = json['stock'] != null ? Stocks.fromJson(json['stock']) : null;
     if (json['stocks'] != null) {
       _stocks = [];
       json['stocks'].forEach((v) {
         _stocks?.add(Stocks.fromJson(v));
+      });
+    }
+    if (json['discounts'] != null) {
+      _discounts = [];
+      json['discounts'].forEach((v) {
+        _discounts?.add(DiscountData.fromJson(v));
       });
     }
     if (json['galleries'] != null) {
@@ -122,8 +130,10 @@ class ProductData {
   Category? _category;
   Brand? _brand;
   Unit? _unit;
+  Stocks? _stock;
   List<ReviewData>? _reviews;
   List<Galleries>? _galleries;
+  List<DiscountData>? _discounts;
 
   int? _count;
 
@@ -148,6 +158,7 @@ class ProductData {
     List<Properties>? properties,
     List<Stocks>? stocks,
     ShopData? shop,
+    Stocks? stock,
     Category? category,
     Brand? brand,
     Unit? unit,
@@ -157,6 +168,7 @@ class ProductData {
       ProductData(
         id: id ?? _id,
         uuid: uuid ?? _uuid,
+        stock: stock ?? _stock,
         shopId: shopId ?? _shopId,
         categoryId: categoryId ?? _categoryId,
         keywords: keywords ?? _keywords,
@@ -216,9 +228,13 @@ class ProductData {
 
   Translation? get translation => _translation;
 
+  Stocks? get stock => _stock;
+
   List<Properties>? get properties => _properties;
 
   List<Stocks>? get stocks => _stocks;
+
+  List<DiscountData>? get discounts => _discounts;
 
   ShopData? get shop => _shop;
 
@@ -250,6 +266,7 @@ class ProductData {
     map['img'] = _img;
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
+    map['stock'] = _stock?.toJson();
     map['rating_avg'] = _ratingAvg;
     map['orders_count'] = _ordersCount;
     if (_translation != null) {
@@ -278,6 +295,9 @@ class ProductData {
     }
     if (_galleries != null) {
       map['galleries'] = _galleries?.map((v) => v.toJson()).toList();
+    }
+    if (_discounts != null) {
+      map['discounts'] = _discounts?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -495,33 +515,34 @@ class Stocks {
     _product = product;
   }
 
-  Stocks.fromJson(dynamic json) {
-    _bonus = json?["bonus"] != null ? BonusModel.fromJson(json["bonus"]) : null;
-    _id = json?['id'];
-    _countableId = json?['countable_id'];
-    _price = json?['price'];
-    _quantity = json?['quantity'];
-    _discount = json?['discount'];
-    _tax = json?['tax'];
-    _totalPrice = json?['total_price'];
-    if (json?['extras'] != null) {
+  Stocks.fromJson(Map<String,dynamic> json) {
+    _bonus = json["bonus"] == null ? null : BonusModel.fromJson(json["bonus"]);
+    _id = json['id'];
+    _countableId = json['countable_id'];
+    _price = json['price'];
+    _quantity = json['quantity'];
+    _discount = json['discount'];
+    _tax = json['tax'];
+    _totalPrice = json['total_price'];
+    if (json['extras'] != null) {
       _extras = [];
-      if (json?['extras'].runtimeType != bool) {
-        json?['extras'].forEach((v) {
+      if (json['extras'].runtimeType != bool) {
+        json['extras'].forEach((v) {
           _extras?.add(Extras.fromJson(v));
         });
       }
     }
-    if (json?['addons'] != null) {
+    if (json['addons'] != null) {
       _addons = [];
-      json?['addons'].forEach((v) {
-        if ((v["product"]?['stock'] != null && v["product"] != null )|| v["stock"] != null) {
+      json['addons'].forEach((v) {
+        if ((v["product"]?['stock'] != null && v["product"] != null) ||
+            v["stock"] != null) {
           _addons?.add(Addons.fromJson(v));
         }
       });
     }
     _product =
-        json?['product'] != null ? ProductData.fromJson(json['product']) : null;
+        json['product'] != null ? ProductData.fromJson(json['product']) : null;
   }
 
   int? _id;
@@ -771,4 +792,87 @@ class Properties {
     map['value'] = _value;
     return map;
   }
+}
+
+class DiscountData {
+  int? id;
+  int? shopId;
+  String? type;
+  num? price;
+  DateTime? start;
+  DateTime? end;
+  int? active;
+  String? img;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  DiscountData({
+    this.id,
+    this.shopId,
+    this.type,
+    this.price,
+    this.start,
+    this.end,
+    this.active,
+    this.img,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  DiscountData copyWith({
+    int? id,
+    int? shopId,
+    String? type,
+    num? price,
+    DateTime? start,
+    DateTime? end,
+    int? active,
+    String? img,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      DiscountData(
+        id: id ?? this.id,
+        shopId: shopId ?? this.shopId,
+        type: type ?? this.type,
+        price: price ?? this.price,
+        start: start ?? this.start,
+        end: end ?? this.end,
+        active: active ?? this.active,
+        img: img ?? this.img,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory DiscountData.fromJson(Map<String, dynamic> json) => DiscountData(
+        id: json["id"],
+        shopId: json["shop_id"],
+        type: json["type"],
+        price: json["price"],
+        start: json["start"] == null ? null : DateTime.parse(json["start"]),
+        end: json["end"] == null ? null : DateTime.parse(json["end"]),
+        active: json["active"],
+        img: json["img"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "shop_id": shopId,
+        "type": type,
+        "price": price,
+        "start":
+            "${start!.year.toString().padLeft(4, '0')}-${start!.month.toString().padLeft(2, '0')}-${start!.day.toString().padLeft(2, '0')}",
+        "end":
+            "${end!.year.toString().padLeft(4, '0')}-${end!.month.toString().padLeft(2, '0')}-${end!.day.toString().padLeft(2, '0')}",
+        "active": active,
+        "img": img,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }

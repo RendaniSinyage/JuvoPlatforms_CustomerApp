@@ -2,9 +2,9 @@
 //
 //     final parcelOrder = parcelOrderFromJson(jsonString);
 
-import 'package:riverpodtemp/infrastructure/models/data/review_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/infrastructure/models/response/parcel_response.dart';
+import 'package:foodyman/infrastructure/models/data/review_data.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/models/response/parcel_response.dart';
 
 class ParcelOrder {
   int? id;

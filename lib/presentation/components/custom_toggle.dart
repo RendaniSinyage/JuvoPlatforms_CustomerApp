@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class CustomToggle extends StatefulWidget {
   final String title;
@@ -22,7 +22,6 @@ class CustomToggle extends StatefulWidget {
 }
 
 class _CustomToggleState extends State<CustomToggle> {
-
   @override
   void initState() {
     widget.controller?.addListener(() {
@@ -38,7 +37,7 @@ class _CustomToggleState extends State<CustomToggle> {
       padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
       decoration: BoxDecoration(
           color: AppStyle.white.withOpacity(0.9),
-          borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          borderRadius: BorderRadius.circular(10.r)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -52,18 +51,18 @@ class _CustomToggleState extends State<CustomToggle> {
           Row(
             children: [
               AdvancedSwitch(
+                initialValue: widget.controller?.value ?? false,
                 controller: widget.controller,
-                activeColor: AppStyle.brandGreen,
+                activeColor: AppStyle.primary,
                 inactiveColor: AppStyle.orderStatusProgressBack,
-                borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                borderRadius: BorderRadius.circular(10.r),
                 width: 60.w,
                 height: 30.h,
                 enabled: true,
                 disabledOpacity: 0.5,
                 thumb: Container(
                   margin: EdgeInsets.all(3.r),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 7.h, horizontal: 9.w),
+                  padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 9.w),
                   decoration: BoxDecoration(
                       color: AppStyle.white,
                       borderRadius: BorderRadius.all(Radius.circular(7.r))),
@@ -75,8 +74,8 @@ class _CustomToggleState extends State<CustomToggle> {
                           color: AppStyle.white.withOpacity(0.07),
                           spreadRadius: 0,
                           blurRadius: 2,
-                          offset: const Offset(
-                              0, 2), // changes position of shadow
+                          offset:
+                              const Offset(0, 2), // changes position of shadow
                         ),
                       ],
                     ),

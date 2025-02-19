@@ -1,6 +1,6 @@
 
 
-import 'package:riverpodtemp/infrastructure/models/data/product_data.dart';
+import 'package:foodyman/infrastructure/models/data/product_data.dart';
 
 
 class BonusModel {
@@ -36,7 +36,7 @@ class BonusModel {
     bonusStockId: json?["bonus_stock_id"],
     value: json?["value"],
     type: json?["type"],
-    expiredAt: DateTime.tryParse(json?["expired_at"])?.toLocal(),
+    expiredAt: DateTime.tryParse(json?["expired_at"] ?? '')?.toLocal(),
     bonusStock: json?["bonusStock"] != null ? BonusStock.fromJson(json?["bonusStock"]) : null,
   );
   }

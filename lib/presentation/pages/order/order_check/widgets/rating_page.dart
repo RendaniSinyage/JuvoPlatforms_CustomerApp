@@ -4,19 +4,19 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/application/parcel/parcel_provider.dart';
-import 'package:riverpodtemp/application/select/select_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/input_formatter.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/components/web_view.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_check/widgets/payment_method.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/application/parcel/parcel_provider.dart';
+import 'package:foodyman/application/select/select_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/input_formatter.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/components/web_view.dart';
+import 'package:foodyman/presentation/pages/order/order_check/widgets/payment_method.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class RatingPage extends ConsumerStatefulWidget {
   final bool parcel;
@@ -99,7 +99,7 @@ class _RatingPageState extends ConsumerState<RatingPage> {
             RatingBar.builder(
               itemBuilder: (context, index) => const Icon(
                 FlutterRemix.star_smile_fill,
-                color: AppStyle.brandGreen,
+                color: AppStyle.primary,
               ),
               itemCount: 5,
               itemPadding: EdgeInsets.symmetric(horizontal: 14.h),
@@ -142,7 +142,7 @@ class _RatingPageState extends ConsumerState<RatingPage> {
                         border: Border.all(
                           width: state.selectedIndex == i ? 2 : 1,
                           color: state.selectedIndex == i
-                              ? AppStyle.brandGreen
+                              ? AppStyle.primary
                               : AppStyle.textGrey,
                         ),
                       ),
@@ -155,7 +155,7 @@ class _RatingPageState extends ConsumerState<RatingPage> {
                                   style: AppStyle.interNormal(
                                     size: 14,
                                     color: state.selectedIndex == i
-                                        ? AppStyle.brandGreen
+                                        ? AppStyle.primary
                                         : AppStyle.black,
                                   ),
                                 ),
@@ -167,7 +167,7 @@ class _RatingPageState extends ConsumerState<RatingPage> {
                                   style: AppStyle.interNormal(
                                     size: 14,
                                     color: state.selectedIndex == i
-                                        ? AppStyle.brandGreen
+                                        ? AppStyle.primary
                                         : AppStyle.black,
                                   ),
                                 ),
@@ -176,7 +176,7 @@ class _RatingPageState extends ConsumerState<RatingPage> {
                                 Icon(
                                   FlutterRemix.edit_2_line,
                                   color: state.selectedIndex == i
-                                      ? AppStyle.brandGreen
+                                      ? AppStyle.primary
                                       : AppStyle.black,
                                 ),
                                 Text(
@@ -184,7 +184,7 @@ class _RatingPageState extends ConsumerState<RatingPage> {
                                   style: AppStyle.interNormal(
                                     size: 14,
                                     color: state.selectedIndex == i
-                                        ? AppStyle.brandGreen
+                                        ? AppStyle.primary
                                         : AppStyle.black,
                                   ),
                                 ),
@@ -212,13 +212,13 @@ class _RatingPageState extends ConsumerState<RatingPage> {
             40.verticalSpace,
             Padding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom + 36.h),
+                  bottom: MediaQuery.paddingOf(context).bottom + 36.h),
               child: Consumer(builder: (context, ref, child) {
                 return CustomButton(
                   isLoading: widget.parcel
                       ? ref.watch(parcelProvider).isButtonLoading
                       : ref.watch(orderProvider).isButtonLoading,
-                  background: AppStyle.brandGreen,
+                  background: AppStyle.primary,
                   textColor: AppStyle.black,
                   title: AppHelpers.getTranslation(TrKeys.save),
                   onPressed: () {
@@ -238,23 +238,25 @@ class _RatingPageState extends ConsumerState<RatingPage> {
                                       MaterialPageRoute(
                                           builder: (_) => WebViewPage(url: s)),
                                     ).whenComplete(() {
-                                      if (widget.parcel) {
-                                        ref
-                                            .read(parcelProvider.notifier)
-                                            .addReview(
-                                                context,
-                                                textEditingController.text,
-                                                rating);
-                                      } else {
-                                        ref
-                                            .read(orderProvider.notifier)
-                                            .addReview(
-                                                context,
-                                                textEditingController.text,
-                                                rating);
+                                      if (context.mounted) {
+                                        if (widget.parcel) {
+                                          ref
+                                              .read(parcelProvider.notifier)
+                                              .addReview(
+                                                  context,
+                                                  textEditingController.text,
+                                                  rating);
+                                        } else {
+                                          ref
+                                              .read(orderProvider.notifier)
+                                              .addReview(
+                                                  context,
+                                                  textEditingController.text,
+                                                  rating);
+                                        }
+                                        context.replaceRoute(
+                                            const OrdersListRoute());
                                       }
-                                      context.replaceRoute(
-                                          const OrdersListRoute());
                                     });
                                   },
                                   onSuccess: () {

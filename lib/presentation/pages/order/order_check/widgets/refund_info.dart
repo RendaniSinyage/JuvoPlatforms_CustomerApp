@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/infrastructure/models/data/refund_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:foodyman/infrastructure/models/data/refund_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+
 
 class RefundInfoScreen extends StatelessWidget {
   final RefundModel? refundModel;
@@ -37,7 +38,7 @@ class RefundInfoScreen extends StatelessWidget {
                     width: 36.w,
                     decoration: BoxDecoration(
                       color: (refundModel?.status == "pending"
-                          ? AppStyle.brandGreen
+                          ? AppStyle.primary
                           : AppStyle.bgGrey),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(8),
@@ -104,7 +105,7 @@ class RefundInfoScreen extends StatelessWidget {
                         color: AppStyle.textGrey, shape: BoxShape.circle),
                   ),
                   Text(
-                    intl.DateFormat("MMM dd, HH:mm").format(refundModel?.createdAt ?? DateTime.now()),
+                    TimeService.dateFormatMDHm(refundModel?.createdAt),
                     style: AppStyle.interNormal(
                       size: 14,
                       color: AppStyle.textGrey,

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
 
 import 'chat_state.dart';
 
@@ -18,7 +18,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
   Future<void> fetchChats(BuildContext context, String roleId) async {
     state = state.copyWith(isLoading: true,);
     roleId = roleId;
-    final userId = LocalStorage.getUserId();
+    final userId = LocalStorage.getUser()?.id;
     QuerySnapshot? query;
     try {
       query = await _fireStore
@@ -43,10 +43,10 @@ class ChatNotifier extends StateNotifier<ChatState> {
         'created_at': Timestamp.now(),
         "roleId": roleId,
         'user': {
-          'firstname': LocalStorage.getFirstName(),
-          'id': LocalStorage.getUserId(),
-          'img': LocalStorage.getProfileImage(),
-          'lastname': LocalStorage.getLastName(),
+          'firstname':  LocalStorage.getUser()?.firstname,
+          'id': LocalStorage.getUser()?.id,
+          'img': LocalStorage.getUser()?.img,
+          'lastname': LocalStorage.getUser()?.lastname,
         }
       });
       final String chatId = res.id;

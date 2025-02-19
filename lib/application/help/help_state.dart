@@ -1,6 +1,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpodtemp/infrastructure/models/data/help_data.dart';
+import 'package:foodyman/infrastructure/models/data/help_data.dart';
 
 
 part 'help_state.freezed.dart';

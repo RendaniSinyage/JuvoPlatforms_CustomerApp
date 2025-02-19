@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 
 @RoutePage()
@@ -47,7 +47,7 @@ class InfoPage extends StatelessWidget {
                           : AppHelpers.getTranslation(TrKeys.next),
                       onPressed: () {
                         if (index == 3) {
-                          context.popRoute();
+                          context.maybePop();
                           return;
                         }
                         context.replaceRoute(InfoRoute(
@@ -64,7 +64,7 @@ class InfoPage extends StatelessWidget {
             right: 8.r,
             child: IconButton(
                 onPressed: () {
-                  context.popRoute();
+                  context.maybePop();
                 },
                 icon:  Icon(
                   FlutterRemix.close_line,

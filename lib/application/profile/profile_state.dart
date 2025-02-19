@@ -1,9 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/referral_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/referral_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
 
-import '../../infrastructure/models/data/translation.dart';
+import 'package:foodyman/infrastructure/models/data/translation.dart';
+
 
 part 'profile_state.freezed.dart';
 
@@ -26,7 +27,7 @@ class ProfileState with _$ProfileState {
     @Default(false) bool isPolicyLoading,
     @Default(null) Translation? policy,
     @Default(null) Translation? term,
-    @Default(false) bool isEmptyWallet,  // Add this line
+    @Default([]) List<String> filepath,
   }) = _ProfileState;
 
   const ProfileState._();

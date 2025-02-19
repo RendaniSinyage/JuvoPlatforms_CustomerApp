@@ -2,20 +2,20 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/filter/filter_notifier.dart';
-import 'package:riverpodtemp/application/filter/filter_state.dart';
-import 'package:riverpodtemp/infrastructure/models/data/take_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_toggle.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/filter/filter_notifier.dart';
+import 'package:foodyman/application/filter/filter_state.dart';
+import 'package:foodyman/infrastructure/models/data/take_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/custom_toggle.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../../../application/filter/filter_provider.dart';
+import 'package:foodyman/application/filter/filter_provider.dart';
 import 'widgets/filter_item.dart';
 
 class FilterPage extends ConsumerStatefulWidget {
@@ -299,7 +299,7 @@ class _FilterPageState extends ConsumerState<FilterPage> {
                                                       (state.endPrice / 20))
                                                   .round() >=
                                               i)
-                                      ? AppStyle.brandGreen
+                                      ? AppStyle.primary
                                       : AppStyle.bgGrey,
                                   borderRadius: BorderRadius.circular(48.r)),
                             )
@@ -312,7 +312,7 @@ class _FilterPageState extends ConsumerState<FilterPage> {
                         right: 24.r,
                       ),
                       child: RangeSlider(
-                          activeColor: AppStyle.brandGreen,
+                          activeColor: AppStyle.primary,
                           inactiveColor: AppStyle.bgGrey,
                           min: state.startPrice,
                           max: state.endPrice,

@@ -6,20 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:riverpodtemp/application/shop/shop_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_notifier.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_state.dart';
-import 'package:riverpodtemp/infrastructure/models/data/cart_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/pages/shop/group_order/widgets/check_status_dialog.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../../../../application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/application/shop/shop_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_notifier.dart';
+import 'package:foodyman/application/shop_order/shop_order_state.dart';
+import 'package:foodyman/infrastructure/models/data/cart_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/pages/shop/group_order/widgets/check_status_dialog.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
 import 'widgets/cart_clear_dialog.dart';
 import 'widgets/cart_order_description.dart';
 import 'widgets/cart_order_item.dart';
@@ -85,8 +85,7 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
         textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.r), topRight: Radius.circular(12.r)
-          ),
+              topLeft: Radius.circular(12.r), topRight: Radius.circular(12.r)),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
             child: Container(
@@ -204,8 +203,8 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
             children: [
               const Divider(),
               Theme(
-                data:
-                    Theme.of(context).copyWith(dividerColor: AppStyle.transparent),
+                data: Theme.of(context)
+                    .copyWith(dividerColor: AppStyle.transparent),
                 child: ExpansionTile(
                   title: TitleAndIcon(
                     title: state.cart?.userCarts?[index].name ?? "",
@@ -224,21 +223,21 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
                                 ? (state.cart?.userCarts?[index].uuid ==
                                     ref.watch(shopProvider).userUuid)
                                 : (state.cart?.userCarts?[index].userId ==
-                                    LocalStorage.getUserId()),
-                            add: () =>
-                                LocalStorage.getUserId() == state.cart?.ownerId
-                                    ? event.addCount(context, indexCart)
-                                    : event.addCountWithGroup(
-                                        context: context,
-                                        productIndex: indexCart,
-                                        userIndex: index),
-                            remove: () =>
-                                LocalStorage.getUserId() == state.cart?.ownerId
-                                    ? event.removeCount(context, indexCart)
-                                    : event.removeCountWithGroup(
-                                        context: context,
-                                        productIndex: indexCart,
-                                        userIndex: index),
+                                    LocalStorage.getUser()?.id),
+                            add: () => LocalStorage.getUser()?.id ==
+                                    state.cart?.ownerId
+                                ? event.addCount(context, indexCart)
+                                : event.addCountWithGroup(
+                                    context: context,
+                                    productIndex: indexCart,
+                                    userIndex: index),
+                            remove: () => LocalStorage.getUser()?.id ==
+                                    state.cart?.ownerId
+                                ? event.removeCount(context, indexCart)
+                                : event.removeCountWithGroup(
+                                    context: context,
+                                    productIndex: indexCart,
+                                    userIndex: index),
                             cart: state.cart?.userCarts?[index]
                                 .cartDetails?[indexCart],
                           );
@@ -267,7 +266,7 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
             child: Column(
               children: [
                 ShopOrderDescription(
-                  price: ref.watch(shopProvider).shopData?.deliveryRange ?? 0,
+                  price: ref.watch(shopProvider).shopData?.minPrice ?? 0,
                   svgName: "assets/svgs/delivery.svg",
                   title: AppHelpers.getTranslation(TrKeys.deliveryPrice),
                   description: AppHelpers.getTranslation(TrKeys.startPrice),
@@ -320,7 +319,7 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
           16.verticalSpace,
           Padding(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).padding.bottom + 24.h,
+                bottom: MediaQuery.paddingOf(context).bottom + 24.h,
                 right: 16.w,
                 left: 16.w),
             child: CustomButton(
@@ -328,20 +327,20 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
                       state.isEditOrder &&
                       ref.watch(shopProvider).userUuid.isNotEmpty
                   ? AppStyle.transparent
-                  : AppStyle.brandGreen,
+                  : AppStyle.primary,
               borderColor: (state.cart?.group ?? false) &&
                       state.isEditOrder &&
                       ref.watch(shopProvider).userUuid.isNotEmpty
                   ? AppStyle.black
-                  : AppStyle.brandGreen,
-              title: (state.cart?.ownerId != LocalStorage.getUserId() &&
+                  : AppStyle.primary,
+              title: (state.cart?.ownerId != LocalStorage.getUser()?.id &&
                       (state.cart?.group ?? false))
                   ? (state.isEditOrder
                       ? AppHelpers.getTranslation(TrKeys.isEditOrder)
                       : AppHelpers.getTranslation(TrKeys.done))
                   : AppHelpers.getTranslation(TrKeys.order),
               onPressed: () {
-                if ((state.cart?.ownerId != LocalStorage.getUserId() &&
+                if ((state.cart?.ownerId != LocalStorage.getUser()?.id &&
                     (state.cart?.group ?? false))) {
                   event.changeStatus(context, ref.watch(shopProvider).userUuid);
                 } else {
@@ -411,8 +410,11 @@ class _ShopOrderState extends ConsumerState<CartOrderPage> {
   Widget _resultEmpty() {
     return Column(
       children: [
-        100.verticalSpace,
-        Lottie.asset('assets/lottie/girl_empty.json'),
+        60.verticalSpace,
+        Lottie.asset(
+          'assets/lottie/girl_empty.json',
+          height: 380.r,
+        ),
         24.verticalSpace,
         Text(
           AppHelpers.getTranslation(TrKeys.cartIsEmpty),

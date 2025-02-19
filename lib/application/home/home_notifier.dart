@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/domain/iterface/banners.dart';
-import 'package:riverpodtemp/domain/iterface/categories.dart';
-import 'package:riverpodtemp/domain/iterface/shops.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_information.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/filter_model.dart';
-import 'package:riverpodtemp/infrastructure/models/data/story_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/interface/banners.dart';
+import 'package:foodyman/domain/interface/categories.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/models/data/address_information.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/address_old_data.dart';
+import 'package:foodyman/infrastructure/models/data/filter_model.dart';
+import 'package:foodyman/infrastructure/models/data/story_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
-import '../../infrastructure/services/app_constants.dart';
 import 'home_state.dart';
 
 class HomeNotifier extends StateNotifier<HomeState> {
@@ -24,8 +23,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   HomeNotifier(this._categoriesRepository, this._bannersRepository,
       this._shopsRepository)
-      : super(const HomeState());
-
+      : super(
+          const HomeState(),
+        );
   int categoryIndex = 1;
   int shopIndex = 1;
   int newShopIndex = 1;
@@ -34,15 +34,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
   int bannerIndex = 1;
   int shopRefreshIndex = 1;
   int marketRefreshIndex = 1;
-
-  bool isShopNew(ShopData shop) {
-    final now = DateTime.now();
-    final shopCreatedAt = shop.createdAt != null
-        ? DateTime.tryParse(shop.createdAt.toString()) ?? now
-        : now;
-    final difference = now.difference(shopCreatedAt);
-    return difference.inDays <= AppConstants.newShopDays;
-  }
 
   void setAddress([AddressNewModel? data]) async {
     AddressData? addressData = LocalStorage.getAddressSelected();
@@ -81,7 +72,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     } else {
       state = state.copyWith(selectIndexSubCategory: index);
     }
-    fetchFilterRestaurant(context, isRefresh: true);
+    fetchFilterRestaurant(context,isRefresh: true);
   }
 
   Future<void> fetchCategories(BuildContext context) async {
@@ -96,11 +87,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
             categories: data.data ?? [],
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isCategoryLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -123,11 +114,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
             banner: data,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isBannerLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -150,11 +141,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
             banner: data,
           );
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isBannerLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -197,7 +188,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             categoryIndex--;
             controller.loadNoData();
@@ -206,7 +197,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -222,7 +213,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     if (connected) {
       state = state.copyWith(isShopLoading: true);
       final response =
-      await _shopsRepository.getAllShops(1, isOpen: true, verify: true);
+          await _shopsRepository.getAllShops(1, isOpen: true, verify: true);
       response.when(
         success: (data) async {
           state = state.copyWith(
@@ -230,11 +221,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shops: data.data ?? [],
               totalShops: data.meta?.total ?? 0);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isShopLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -275,11 +266,12 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               marketIndex--;
+
               shopController.loadNoData();
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             marketIndex--;
             shopController.loadFailed();
@@ -288,7 +280,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -309,11 +301,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state = state.copyWith(
               isRestaurantLoading: false, restaurant: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isRestaurantLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -352,11 +344,12 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               shopIndex--;
+
               shopController.loadNoData();
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             shopIndex--;
             shopController.loadFailed();
@@ -365,7 +358,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -384,15 +377,14 @@ class HomeNotifier extends StateNotifier<HomeState> {
           filterModel: FilterModel(sort: "new"), isOpen: true);
       response.when(
         success: (data) async {
-          final newShops = data.data?.where(isShopNew).toList() ?? [];
           state = state.copyWith(
-              isRestaurantNewLoading: false, newRestaurant: newShops);
+              isRestaurantNewLoading: false, newRestaurant: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isRestaurantNewLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -417,16 +409,15 @@ class HomeNotifier extends StateNotifier<HomeState> {
           isOpen: true);
       response.when(
         success: (data) async {
-          final newShops = data.data?.where(isShopNew).toList() ?? [];
           if (isRefresh) {
             state = state.copyWith(
-              newRestaurant: newShops,
+              newRestaurant: data.data ?? [],
             );
             shopController.refreshCompleted();
           } else {
-            if (newShops.isNotEmpty) {
+            if (data.data?.isNotEmpty ?? false) {
               List<ShopData> list = List.from(state.newRestaurant);
-              list.addAll(newShops);
+              list.addAll(data.data!);
               state = state.copyWith(
                 newRestaurant: list,
               );
@@ -437,7 +428,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             newShopIndex--;
             shopController.loadFailed();
@@ -446,7 +437,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -467,11 +458,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state = state.copyWith(
               isShopRecommendLoading: false, shopsRecommend: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isShopRecommendLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -492,7 +483,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         shopController.resetNoData();
       }
       final response =
-      await _shopsRepository.getStory(isRefresh ? 1 : ++storyIndex);
+          await _shopsRepository.getStory(isRefresh ? 1 : ++storyIndex);
       response.when(
         success: (data) async {
           if (isRefresh) {
@@ -510,11 +501,12 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               storyIndex--;
+
               shopController.loadNoData();
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             storyIndex--;
             shopController.loadFailed();
@@ -523,7 +515,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -543,11 +535,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
         success: (data) async {
           state = state.copyWith(isStoryLoading: false, story: data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isStoryLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -567,7 +559,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         shopIndex = 1;
       }
       final response =
-      await _shopsRepository.getShopsRecommend(isRefresh ? 1 : ++shopIndex);
+          await _shopsRepository.getShopsRecommend(isRefresh ? 1 : ++shopIndex);
       response.when(
         success: (data) async {
           if (isRefresh) {
@@ -585,11 +577,12 @@ class HomeNotifier extends StateNotifier<HomeState> {
               shopController.loadComplete();
             } else {
               shopIndex--;
+
               shopController.loadNoData();
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             shopIndex--;
             shopController.loadFailed();
@@ -598,7 +591,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           }
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -619,11 +612,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
           state =
               state.copyWith(isBannerLoading: false, banners: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isBannerLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -642,10 +635,10 @@ class HomeNotifier extends StateNotifier<HomeState> {
         success: (data) async {
           state = state.copyWith(ads: data.data ?? []);
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -688,7 +681,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
             }
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           if (!isRefresh) {
             bannerIndex--;
             controller.loadFailed();
@@ -698,7 +691,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
           AppHelpers.showCheckTopSnackBar(
             context,
-            activeFailure,
+            failure,
           );
         },
       );
@@ -710,10 +703,10 @@ class HomeNotifier extends StateNotifier<HomeState> {
   }
 
   fetchFilterRestaurant(
-      BuildContext context, {
-        bool? isRefresh,
-        RefreshController? controller,
-      }) async {
+    BuildContext context, {
+    bool? isRefresh,
+    RefreshController? controller,
+  }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       if (isRefresh ?? false) {
@@ -725,7 +718,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           categoryId: state.categories[state.selectIndexCategory].id,
           subCategoryId: (state.selectIndexSubCategory != -1)
               ? (state.categories[state.selectIndexCategory]
-              .children?[state.selectIndexSubCategory].id)
+                  .children?[state.selectIndexSubCategory].id)
               : null,
           page: ++shopRefreshIndex);
       response.when(success: (data) {

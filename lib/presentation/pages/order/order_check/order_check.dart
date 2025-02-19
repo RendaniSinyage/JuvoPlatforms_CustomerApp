@@ -3,34 +3,37 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/map/view_map_provider.dart';
-import 'package:riverpodtemp/application/map/view_map_state.dart';
-import 'package:riverpodtemp/application/order/order_notifier.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/application/order/order_state.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_notifier.dart';
-import 'package:riverpodtemp/application/payment_methods/payment_provider.dart';
-import 'package:riverpodtemp/application/payment_methods/payment_state.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_state.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_notifier.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_state.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/web_view.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_check/price_information.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_screen/widgets/image_dialog.dart';
-import 'package:riverpodtemp/presentation/pages/profile/phone_verify.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
+import 'package:foodyman/application/map/view_map_provider.dart';
+import 'package:foodyman/application/map/view_map_state.dart';
+import 'package:foodyman/application/order/order_notifier.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/application/order/order_state.dart';
+import 'package:foodyman/application/orders_list/orders_list_notifier.dart';
+import 'package:foodyman/application/payment_methods/payment_provider.dart';
+import 'package:foodyman/application/payment_methods/payment_state.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/application/profile/profile_state.dart';
+import 'package:foodyman/application/shop_order/shop_order_notifier.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_state.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/web_view.dart';
+import 'package:foodyman/presentation/pages/order/order_check/price_information.dart';
+import 'package:foodyman/presentation/pages/order/order_check/widgets/auto_order_modal.dart';
+import 'package:foodyman/presentation/pages/order/order_screen/widgets/image_dialog.dart';
+import 'package:foodyman/presentation/pages/profile/phone_verify.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../application/orders_list/orders_list_provider.dart';
-import '../../../../infrastructure/models/data/order_body_data.dart';
-import '../../../../infrastructure/services/local_storage.dart';
+import 'package:foodyman/application/orders_list/orders_list_provider.dart';
+import 'package:foodyman/infrastructure/models/data/order_body_data.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'widgets/card_and_promo.dart';
 import 'widgets/delivery_info.dart';
 import 'widgets/order_button.dart';
@@ -97,14 +100,14 @@ class _OrderCheckState extends State<OrderCheck> {
         AppHelpers.getTranslation(TrKeys.notWorkTodayAndTomorrow),
       );
     } else {
-      if ((LocalStorage.getPhone() == null ||
-              (LocalStorage.getPhone()?.isEmpty ?? true)) &&
+      if ((LocalStorage.getUser()?.phone == null ||
+              (LocalStorage.getUser()?.phone?.isEmpty ?? true)) &&
           AppHelpers.getPhoneRequired()) {
         AppHelpers.showCustomModalBottomSheet(
             context: context,
             modal: const PhoneVerify(),
             isDarkMode: false,
-            paddingTop: MediaQuery.of(context).padding.top);
+            paddingTop: MediaQuery.paddingOf(context).top);
         return;
       }
       event.createOrder(
@@ -115,7 +118,7 @@ class _OrderCheckState extends State<OrderCheck> {
                   : state.shopData?.shopPayments?[paymentState.currentIndex]
                       ?.payment?.id),
               username: state.username,
-              phone: state.phoneNumber ?? LocalStorage.getPhone(),
+              phone: state.phoneNumber ?? LocalStorage.getUser()?.phone,
               notes: state.notes,
               cartId: stateOrderShop.cart?.id ?? 0,
               shopId: state.shopData?.id ?? 0,
@@ -152,7 +155,7 @@ class _OrderCheckState extends State<OrderCheck> {
             eventShopOrder.getCart(context, () {});
             eventOrderList.fetchActiveOrders(context);
           },
-          onWebview: (s) {
+          onWebview: (s, v) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => WebViewPage(url: s)),
@@ -203,7 +206,7 @@ class _OrderCheckState extends State<OrderCheck> {
                                 ref
                                     .read(shopOrderProvider.notifier)
                                     .getCart(context, () {
-                                  context.popRoute();
+                                  context.maybePop();
                                   context.pushRoute(const OrderRoute());
                                 });
                               },
@@ -251,14 +254,26 @@ class _OrderCheckState extends State<OrderCheck> {
             26.verticalSpace,
             Padding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom,
+                  bottom: MediaQuery.paddingOf(context).bottom,
                   right: 16.w,
                   left: 16.w),
               child: OrderButton(
+                autoOrder: () {
+                  AppHelpers.showCustomModalBottomSheet(
+                      context: context,
+                      modal: AutoOrderModal(
+                        repeatData: state.orderData?.repeat,
+                        orderId: state.orderData?.id ?? 0,
+                        time: TimeService.timeFormat(
+                            state.orderData?.createdAt ?? DateTime.now()),
+                      ),
+                      isDarkMode: false);
+                },
                 isRepeatLoading: state.isAddLoading,
                 isLoading: ref.watch(shopOrderProvider).isAddAndRemoveLoading ||
                     state.isButtonLoading,
                 isOrder: widget.isOrder,
+                isAutoLoading: state.isButtonLoading,
                 orderStatus: widget.orderStatus,
                 createOrder: () => _createOrder(
                   state: state,
@@ -271,7 +286,17 @@ class _OrderCheckState extends State<OrderCheck> {
                   eventOrderList: ref.read(ordersListProvider.notifier),
                 ),
                 cancelOrder: () {
-                  event.cancelOrder(context, state.orderData?.id ?? 0);
+                  event.cancelOrder(context, state.orderData?.id ?? 0, () {
+                    ref
+                        .read(ordersListProvider.notifier)
+                        .fetchActiveOrders(context);
+                    ref
+                        .read(ordersListProvider.notifier)
+                        .fetchHistoryOrders(context);
+                    ref
+                        .read(ordersListProvider.notifier)
+                        .fetchRefundOrders(context);
+                  });
                 },
                 callShop: () async {
                   final Uri launchUri = Uri(
@@ -317,7 +342,7 @@ class _OrderCheckState extends State<OrderCheck> {
                     listOfProduct: state.orderData?.details ?? [],
                     onSuccess: () {
                       ref.read(shopOrderProvider.notifier).getCart(context, () {
-                        context.popRoute();
+                        context.maybePop();
                         context.pushRoute(const OrderRoute());
                       });
                     },

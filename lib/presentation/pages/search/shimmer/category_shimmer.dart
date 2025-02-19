@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class SearchCategoryShimmer extends StatelessWidget {
   const SearchCategoryShimmer({super.key});
@@ -22,7 +22,7 @@ class SearchCategoryShimmer extends StatelessWidget {
                 return Container(
                   decoration: BoxDecoration(
                     color:  AppStyle.shimmerBase,
-                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                    borderRadius: BorderRadius.circular(10.r),
                     boxShadow: [
                       BoxShadow(
                         color: AppStyle.white.withOpacity(0.07),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'order_status_item.dart';
 
@@ -20,7 +20,7 @@ class OrderStatusScreen extends StatelessWidget {
       margin: EdgeInsets.only(top: 16.h),
       decoration: BoxDecoration(
           color: AppStyle.bgGrey,
-          borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          borderRadius: BorderRadius.circular(10.r)),
       padding: EdgeInsets.all(14.r),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +115,7 @@ class OrderStatusScreen extends StatelessWidget {
                                 : Icons.done_all,
                             size: 16.r,
                           ),
-                          bgColor: AppStyle.brandGreen,
+                          bgColor: AppStyle.primary,
                           isActive: true,
                           isProgress: false,
                         ),
@@ -124,7 +124,7 @@ class OrderStatusScreen extends StatelessWidget {
                           height: 6.h,
                           width: 12.w,
                           decoration: const BoxDecoration(
-                            color: AppStyle.brandGreen,
+                            color: AppStyle.primary,
                           ),
                         ),
                         OrderStatusItem(
@@ -135,7 +135,7 @@ class OrderStatusScreen extends StatelessWidget {
                             size: 16.r,
                             color: AppStyle.black,
                           ),
-                          bgColor: AppStyle.brandGreen,
+                          bgColor: AppStyle.primary,
                           isActive: true,
                           isProgress: false,
                         ),
@@ -144,7 +144,7 @@ class OrderStatusScreen extends StatelessWidget {
                           height: 6.h,
                           width: 12.w,
                           decoration: const BoxDecoration(
-                            color: AppStyle.brandGreen,
+                            color: AppStyle.primary,
                           ),
                         ),
                         OrderStatusItem(
@@ -154,7 +154,7 @@ class OrderStatusScreen extends StatelessWidget {
                                   "assets/svgs/delivery2.svg",
                                   width: 20.w,
                                 ),
-                          bgColor: AppStyle.brandGreen,
+                          bgColor: AppStyle.primary,
                           isActive: true,
                           isProgress: false,
                         ),
@@ -163,7 +163,7 @@ class OrderStatusScreen extends StatelessWidget {
                           height: 6.h,
                           width: 12.w,
                           decoration: const BoxDecoration(
-                            color: AppStyle.brandGreen,
+                            color: AppStyle.primary,
                           ),
                         ),
                         OrderStatusItem(
@@ -171,7 +171,7 @@ class OrderStatusScreen extends StatelessWidget {
                             Icons.flag,
                             size: 16.r,
                           ),
-                          bgColor: AppStyle.brandGreen,
+                          bgColor: AppStyle.primary,
                           isActive: true,
                           isProgress: false,
                         ),
@@ -195,7 +195,7 @@ class OrderStatusScreen extends StatelessWidget {
                           width: 12.w,
                           decoration: BoxDecoration(
                             color: status != OrderStatus.open
-                                ? AppStyle.brandGreen
+                                ? AppStyle.primary
                                 : AppStyle.white,
                           ),
                         ),
@@ -218,7 +218,7 @@ class OrderStatusScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: status == OrderStatus.ready ||
                                     status == OrderStatus.onWay
-                                ? AppStyle.brandGreen
+                                ? AppStyle.primary
                                 : AppStyle.white,
                           ),
                         ),

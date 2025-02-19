@@ -8,7 +8,7 @@ class BlurWrap extends StatelessWidget {
   final double blur;
 
   const BlurWrap(
-      {super.key, required this.child, required this.radius, this.blur = 12});
+      {super.key, required this.child, required this.radius, this.blur = 13});
 
   @override
   Widget build(BuildContext context) {

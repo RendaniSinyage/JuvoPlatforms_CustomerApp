@@ -2,17 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_share/flutter_share.dart';
-import 'package:riverpodtemp/domain/iterface/products.dart';
-import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/domain/interface/products.dart';
+import 'package:foodyman/infrastructure/models/data/addons_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:http/http.dart' as http;
-import '../../domain/iterface/cart.dart';
-import '../../infrastructure/models/request/cart_request.dart';
-import '../../infrastructure/services/app_constants.dart';
+import 'package:foodyman/domain/interface/cart.dart';
+import 'package:foodyman/infrastructure/models/request/cart_request.dart';
+import 'package:share_plus/share_plus.dart';
+import '../../app_constants.dart';
 import 'product_state.dart';
 
 class ProductNotifier extends StateNotifier<ProductState> {
@@ -53,7 +54,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
       initialSetSelectedIndexes(context, selectedIndexes);
     }
     getProductDetailsById(context, productData.uuid ?? "", shopType, shopId,
-        isLoading: false);
+        isLoading: true);
   }
 
   Future<void> getProductDetailsById(
@@ -68,7 +69,6 @@ class ProductNotifier extends StateNotifier<ProductState> {
           activeImageUrl: '',
         );
       }
-
       final response = await _productsRepository.getProductDetails(productId);
       response.when(
         success: (data) async {
@@ -173,12 +173,12 @@ class ProductNotifier extends StateNotifier<ProductState> {
             state = state.copyWith(isAddLoading: false);
             onSuccess();
           },
-          failure: (activeFailure, status) {
+          failure: (failure, status) {
             if (status != 400) {
               state = state.copyWith(isAddLoading: false);
               AppHelpers.showCheckTopSnackBar(
                 context,
-                activeFailure,
+                failure,
               );
             } else {
               onError?.call();
@@ -408,13 +408,13 @@ class ProductNotifier extends StateNotifier<ProductState> {
         await http.post(Uri.parse(dynamicLink), body: jsonEncode(dataShare));
     shareLink = jsonDecode(res.body)['shortLink'];
     debugPrint("share link product_notifier: $shareLink \n$dataShare");
+
   }
 
   Future shareProduct() async {
-    await FlutterShare.share(
-      text: state.productData?.translation?.title ?? "Juvo",
-      title: state.productData?.translation?.description ?? "",
-      linkUrl: shareLink,
+    await Share.share(shareLink ?? '',
+      subject: state.productData?.translation?.title ?? "Foodyman",
+      // title: state.productData?.translation?.description ?? "",
     );
   }
 }

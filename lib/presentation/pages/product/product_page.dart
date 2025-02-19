@@ -1,28 +1,26 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/application/product/product_notifier.dart';
-import 'package:riverpodtemp/application/product/product_provider.dart';
-import 'package:riverpodtemp/application/product/product_state.dart';
-import 'package:riverpodtemp/application/shop/shop_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_notifier.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/product_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/review_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/pages/product/widgets/w_ingredient.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-import '../../../application/shop/shop_state.dart';
+import 'package:foodyman/application/product/product_notifier.dart';
+import 'package:foodyman/application/product/product_provider.dart';
+import 'package:foodyman/application/product/product_state.dart';
+import 'package:foodyman/application/shop/shop_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_notifier.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/models/data/product_data.dart';
+import 'package:foodyman/infrastructure/models/data/review_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/pages/product/widgets/w_ingredient.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/shop/shop_state.dart';
 import '../shop/widgets/bonus_screen.dart';
 import 'widgets/images_list_one.dart';
 import 'widgets/p_main_button.dart';
@@ -58,10 +56,12 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.productId != null) {
         ref.read(productProvider.notifier).getProductDetailsById(
-            context,
-            widget.productId ?? "",
-            ref.watch(shopProvider).shopData?.type,
-            ref.watch(shopProvider).shopData?.id);
+              context,
+              widget.productId ?? "",
+              ref.watch(shopProvider).shopData?.type,
+              ref.watch(shopProvider).shopData?.id,
+              isLoading: true,
+            );
       } else {
         ref.read(productProvider.notifier).getProductDetails(
             context,
@@ -86,6 +86,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     controller.dispose();
     super.deactivate();
   }
+
   void checkShopOrder(
       {required ProductNotifier event,
       required ProductState state,
@@ -121,6 +122,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                       onPressed: () {
                         eventOrderShop.deleteCart(context).then((value) async {
                           event.createCart(
+                              // ignore: use_build_context_synchronously
                               context,
                               ref.watch(shopOrderProvider).cart?.shopId ??
                                   (state.productData!.shopId ?? 0), () {
@@ -174,9 +176,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
               topRight: Radius.circular(16.r),
             )),
         width: double.infinity,
-        child: state.isLoading
-            ? const Loading()
-            : SingleChildScrollView(
+        child: SingleChildScrollView(
                 controller: widget.controller,
                 child: Column(
                   children: [
@@ -228,35 +228,45 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                             children: [
                               SizedBox(
                                 height: 200.r,
-                                child: PageView.builder(
-                                    itemCount:
-                                        state.productData?.galleries?.length ??
+                                child: (state.productData?.galleries
+                                            ?.isNotEmpty ??
+                                        false)
+                                    ? PageView.builder(
+                                        itemCount: state.productData?.galleries
+                                                ?.length ??
                                             0,
-                                    controller: controller,
-                                    onPageChanged: (index) {
-                                      event.changeImage(state
-                                              .productData?.galleries?[index] ??
-                                          Galleries());
-                                    },
-                                    itemBuilder: (context, index) {
-                                      return CustomNetworkImage(
-                                          url: state.selectImage?.path ??
-                                              state.activeImageUrl,
-                                          height: 200,
-                                          fit: BoxFit.contain,
-                                          width: double.infinity,
-                                          radius: 10);
-                                    }),
-
+                                        controller: controller,
+                                        onPageChanged: (index) {
+                                          event.changeImage(state.productData
+                                                  ?.galleries?[index] ??
+                                              Galleries());
+                                        },
+                                        itemBuilder: (context, index) {
+                                          return CustomNetworkImage(
+                                              url: state.selectImage?.path ??
+                                                  state.activeImageUrl,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              radius: 10);
+                                        })
+                                    : CustomNetworkImage(
+                                        url: state.selectImage?.path ??
+                                            state.activeImageUrl,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        radius: 10),
                               ),
-                              if((state.productData?.galleries?.length ?? 0) > 1)
-                              Positioned(
-                                bottom: 8.r,
-                                child: ImagesOneList(
-                                  list: state.productData?.galleries,
-                                  selectImageId: state.selectImage?.id,
-                                ),
-                              )
+                              if ((state.productData?.galleries?.length ?? 0) >
+                                  1)
+                                Positioned(
+                                  bottom: 8.r,
+                                  child: ImagesOneList(
+                                    list: state.productData?.galleries,
+                                    selectImageId: state.selectImage?.id,
+                                  ),
+                                )
                             ],
                           ),
                           state.selectedStock?.bonus != null
@@ -312,7 +322,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               : const SizedBox.shrink(),
                           15.verticalSpace,
                           SizedBox(
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.sizeOf(context).width,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -329,7 +339,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 ),
                                 Column(
                                   children: [
-
                                     Text(
                                       AppHelpers.numberFormat(
                                           number: (state.selectedStock?.price ??

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/currency/currency_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/currency/currency_provider.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'widgets/currency_item.dart';
 
@@ -48,54 +48,54 @@ class _LanguagePageState extends ConsumerState<CurrencyScreen> {
     return Directionality(
       textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
       child: KeyboardDismisser(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: AppStyle.bgGrey.withOpacity(0.96),
-                borderRadius: BorderRadius.all(Radius.circular(16.r))),
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: state.isLoading
-                  ? const Loading()
-                  : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  8.verticalSpace,
-                  Center(
-                    child: Container(
-                      height: 4.h,
-                      width: 48.w,
-                      decoration: BoxDecoration(
-                          color: AppStyle.dragElement,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(40.r))),
-                    ),
+        child: Container(
+          decoration: BoxDecoration(
+              color: AppStyle.bgGrey.withOpacity(0.96),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r),
+              )),
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: state.isLoading
+                ? const Loading()
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      8.verticalSpace,
+                      Center(
+                        child: Container(
+                          height: 4.h,
+                          width: 48.w,
+                          decoration: BoxDecoration(
+                              color: AppStyle.dragElement,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(40.r))),
+                        ),
+                      ),
+                      24.verticalSpace,
+                      TitleAndIcon(
+                        title: AppHelpers.getTranslation(TrKeys.currencies),
+                        paddingHorizontalSize: 0,
+                        titleSize: 18,
+                      ),
+                      24.verticalSpace,
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.list.length,
+                          itemBuilder: (context, index) {
+                            return CurrencyItem(
+                              onTap: () => event.change(index),
+                              isActive: state.index == index,
+                              title:
+                                  "${state.list[index].title ?? ""} - ${state.list[index].symbol ?? ""}",
+                            );
+                          }),
+                      24.verticalSpace,
+                    ],
                   ),
-                  24.verticalSpace,
-                  TitleAndIcon(
-                    title: AppHelpers.getTranslation(TrKeys.currencies),
-                    paddingHorizontalSize: 0,
-                    titleSize: 18,
-                  ),
-                  24.verticalSpace,
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.list.length,
-                      itemBuilder: (context, index) {
-                        return CurrencyItem(
-                          onTap: () => event.change(index),
-                          isActive: state.index == index,
-                          title:
-                          "${state.list[index].title ?? ""} - ${state.list[index].symbol ?? ""}",
-                        );
-                      }),
-                  24.verticalSpace,
-                ],
-              ),
-            ),
           ),
         ),
       ),

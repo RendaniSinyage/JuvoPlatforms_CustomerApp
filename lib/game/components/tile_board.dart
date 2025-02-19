@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riverpodtemp/game/models/board.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/game/models/board.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
 
 import '../const/colors.dart';
 
@@ -30,7 +30,7 @@ class TileBoardWidget extends StatelessWidget {
         final size = max(
             290.0,
             min(
-                (MediaQuery.of(context).size.shortestSide * 0.90)
+                (MediaQuery.sizeOf(context).shortestSide * 0.90)
                     .floorToDouble(),
                 460.0));
 

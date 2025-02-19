@@ -1,12 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/infrastructure/models/data/login.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/infrastructure/models/request/sign_up_request.dart';
-import '../../../domain/handlers/handlers.dart';
-import '../../domain/di/injection.dart';
-import '../../domain/iterface/auth.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/infrastructure/models/data/login.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/infrastructure/models/request/sign_up_request.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
+import 'package:foodyman/domain/interface/auth.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/app_validators.dart';
 import '../models/models.dart';
 
 class AuthRepository implements AuthRepositoryFacade {
@@ -15,9 +15,11 @@ class AuthRepository implements AuthRepositoryFacade {
     required String email,
     required String password,
   }) async {
-    final data = LoginModel(email: email.replaceAll('+', ""), password: password).toJson();
+    final data =
+        LoginModel(email: email.replaceAll('+', ""), password: password)
+            .toJson();
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post(
         '/api/v1/auth/login',
         data: data,
@@ -28,12 +30,9 @@ class AuthRepository implements AuthRepositoryFacade {
     } catch (e) {
       debugPrint('==> login failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -51,7 +50,7 @@ class AuthRepository implements AuthRepositoryFacade {
     };
     debugPrint('===> login request $data');
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post(
         '/api/v1/auth/google/callback',
         queryParameters: data,
@@ -60,12 +59,9 @@ class AuthRepository implements AuthRepositoryFacade {
     } catch (e) {
       debugPrint('==> login with google failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -73,7 +69,7 @@ class AuthRepository implements AuthRepositoryFacade {
   Future<ApiResult<RegisterResponse>> sendOtp({required String phone}) async {
     final data = {'phone': phone.replaceAll('+', "")};
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post(
         '/api/v1/auth/register',
         data: data,
@@ -82,12 +78,9 @@ class AuthRepository implements AuthRepositoryFacade {
     } catch (e) {
       debugPrint('==> send otp failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -96,7 +89,7 @@ class AuthRepository implements AuthRepositoryFacade {
     required String verifyCode,
   }) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/auth/verify/$verifyCode',
       );
@@ -105,12 +98,34 @@ class AuthRepository implements AuthRepositoryFacade {
     } catch (e) {
       debugPrint('==> verify email failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<VerifyPhoneResponse>> verifyPhone({
+    required String verifyCode,
+    required String verifyId,
+  }) async {
+    try {
+      final client = dioHttp.client(requireAuth: false);
+      final response = await client.post(
+        '/api/v1/auth/verify/phone',
+        queryParameters: {
+          "verifyId": verifyId,
+          "verifyCode": verifyCode,
+        },
+      );
+      return ApiResult.success(
+          data: VerifyPhoneResponse.fromJson(response.data));
+    } catch (e) {
+      debugPrint('==> verify email failure: $e');
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -118,23 +133,26 @@ class AuthRepository implements AuthRepositoryFacade {
   Future<ApiResult<RegisterResponse>> forgotPassword({
     required String email,
   }) async {
-    final data = {'email': email.replaceAll('+', "")};
+    final data = {
+      if (AppValidators.isValidEmail(email)) "email": email,
+      if (!AppValidators.isValidEmail(email))
+        "phone": email.replaceAll('+', ""),
+    };
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post(
-        '/api/v1/auth/forgot/email-password',
+        AppValidators.isValidEmail(email)
+            ? '/api/v1/auth/forgot/email-password'
+            : '/api/v1/auth/forgot/password',
         queryParameters: data,
       );
       return ApiResult.success(data: RegisterResponse.fromJson(response.data));
     } catch (e) {
       debugPrint('==> forgot password failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -144,7 +162,7 @@ class AuthRepository implements AuthRepositoryFacade {
     required String email,
   }) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post(
         '/api/v1/auth/forgot/email-password/$verifyCode?email=${email.replaceAll('+', "")}',
       );
@@ -155,12 +173,9 @@ class AuthRepository implements AuthRepositoryFacade {
     } catch (e) {
       debugPrint('==> forgot password confirm failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -169,7 +184,7 @@ class AuthRepository implements AuthRepositoryFacade {
     required String phone,
   }) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post('/api/v1/auth/forgot/password/confirm',
           data: {"phone": phone.replaceAll('+', ""), "type": "firebase"});
 
@@ -179,12 +194,9 @@ class AuthRepository implements AuthRepositoryFacade {
     } catch (e) {
       debugPrint('==> forgot password confirm failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -196,86 +208,56 @@ class AuthRepository implements AuthRepositoryFacade {
       email: email.replaceAll('+', ""),
     );
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       await client.post(
         '/api/v1/auth/register',
         queryParameters: data.toJson(),
       );
-      return const ApiResult.success(
-        data: null,
-      );
+      return const ApiResult.success(data: null);
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<VerifyData>> sigUpWithData({required UserModel user}) async {
-    final data = {
-      "firstname": user.firstname,
-      "lastname": user.lastname,
-      "phone": user.phone?.replaceAll('+', ""),
-      "email": user.email,
-      "password": user.password,
-      "password_conformation": user.conPassword,
-      if (user.referral?.isNotEmpty ?? false) 'referral': user.referral
-    };
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       var res = await client.post(
         '/api/v1/auth/after-verify',
-        data: data,
+        data: user.toJsonForSignUp(),
       );
       return ApiResult.success(
         data: VerifyData.fromJson(res.data["data"]),
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<VerifyData>> sigUpWithPhone(
       {required UserModel user}) async {
-    final data = {
-      "firstname": user.firstname,
-      "lastname": user.lastname,
-      "phone": user.phone?.replaceAll('+', ""),
-      "email": user.email,
-      "password": user.password,
-      "password_conformation": user.conPassword,
-      "type": "firebase",
-      if (user.referral?.isNotEmpty ?? false) 'referral': user.referral
-    };
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       var res = await client.post(
         '/api/v1/auth/verify/phone',
-        data: data,
+        data: user.toJsonForSignUp(typeFirebase: true),
       );
       return ApiResult.success(
         data: VerifyData.fromJson(res.data["data"]),
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 }

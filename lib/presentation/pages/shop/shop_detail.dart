@@ -5,16 +5,16 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/application/shop/shop_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/pages/order/order_type/widgets/order_map.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/application/shop/shop_provider.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/pages/order/order_type/widgets/order_map.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
-import '../../../infrastructure/services/app_constants.dart';
-import '../../../infrastructure/services/local_storage.dart';
-import '../../components/buttons/pop_button.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
 
 @RoutePage()
 class ShopDetailPage extends ConsumerStatefulWidget {
@@ -99,11 +99,11 @@ class _ShopDetailPageState extends ConsumerState<ShopDetailPage> {
                           );
                         },
                       ),
-                     /* Text(
+                      Text(
                         LocalStorage.getSelectedCurrency()?.symbol ?? "",
                         style: AppStyle.interRegular(
                             color: AppStyle.textGrey, size: 14),
-                      )*/
+                      )
                     ],
                   ),
                 ),

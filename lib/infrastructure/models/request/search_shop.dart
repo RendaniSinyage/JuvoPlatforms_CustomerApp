@@ -1,6 +1,6 @@
 
 
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
 
 class SearchShopModel {

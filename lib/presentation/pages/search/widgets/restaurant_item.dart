@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/shop_avarat.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class RestaurantItem extends StatelessWidget {
   final ShopData shop;
@@ -31,7 +31,7 @@ class RestaurantItem extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: AppStyle.white,
-            borderRadius: BorderRadius.all(Radius.circular(10.r)),
+            borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
                 color: AppStyle.white.withOpacity(0.04),
@@ -64,7 +64,7 @@ class RestaurantItem extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 200.h,
+                      width: MediaQuery.sizeOf(context).width - 200.h,
                       child: Text(
                         shop.bonus != null
                             ? ((shop.bonus?.type ?? "sum") == "sum")

@@ -1,16 +1,8 @@
 import 'app_helpers.dart';
 import 'tr_keys.dart';
 
-class AppValidators {
-  static String? isValidPrice(String? title) {
-    if (title?.isEmpty ?? true) {
-      return AppHelpers.getTranslation(TrKeys.thisFieldIsRequired);
-    } else  if ((num.tryParse(title ?? "0") ?? 0) <= 0 ) {
-      return AppHelpers.getTranslation(TrKeys.thisFieldIsNotMinusOrZero);
-    }
-    return null;
-  }
-
+abstract class AppValidators {
+  AppValidators._();
   static bool isValidEmail(String email) => RegExp(
         "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$",
       ).hasMatch(email);

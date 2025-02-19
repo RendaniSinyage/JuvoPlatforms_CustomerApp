@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/domain/di/injection.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/domain/iterface/shops.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/models/request/only_shop.dart';
-import 'package:riverpodtemp/infrastructure/models/request/search_shop.dart';
-import 'package:riverpodtemp/infrastructure/models/request/shop_request.dart';
-import 'package:riverpodtemp/infrastructure/models/response/branches_response.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import '../../../domain/handlers/handlers.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/request/only_shop.dart';
+import 'package:foodyman/infrastructure/models/request/search_shop.dart';
+import 'package:foodyman/infrastructure/models/request/shop_request.dart';
+import 'package:foodyman/infrastructure/models/response/branches_response.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
 import '../models/data/filter_model.dart';
 import '../models/data/story_data.dart';
 import '../models/request/story_request.dart';
@@ -24,7 +24,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       {required String text, int? categoryId}) async {
     final data = SearchShopModel(text: text, categoryId: categoryId);
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/search',
         queryParameters: data.toJson(),
@@ -35,11 +35,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> search shops failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -51,7 +47,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   ) async {
     final data = {'clientLocation': '$latitude,$longitude'};
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/nearby',
         queryParameters: data,
@@ -62,11 +58,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get nearby shops failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -89,7 +81,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
         deals: filterModel?.isDeal,
         take: filterModel?.offer);
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/paginate',
         queryParameters: data.toJson(),
@@ -100,11 +92,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get all shops failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -112,7 +100,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   @override
   Future<ApiResult<BranchResponse>> getShopBranch({required int uuid}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/branches?lang=en&shop_id=$uuid&page=1&perPage=100',
       );
@@ -121,11 +109,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -135,7 +119,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       {required String uuid}) async {
     final data = OnlyShopRequest();
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get('/api/v1/rest/shops/$uuid',
           queryParameters: data.toJson());
       return ApiResult.success(
@@ -143,11 +127,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -160,18 +140,14 @@ class ShopsRepository implements ShopsRepositoryFacade {
   }) async {
     final data = {"shop_id": shopId, "name": name, "cart_id": cartId};
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post('/api/v1/rest/cart/open', data: data);
       return ApiResult.success(
         data: response.data["data"]["uuid"],
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -193,7 +169,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       }
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/paginate',
         queryParameters: data,
@@ -204,11 +180,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get work filter shops failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -221,7 +193,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       'lang': LocalStorage.getLanguage()?.locale,
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/paginate',
         queryParameters: data,
@@ -232,11 +204,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get pickup shops failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -252,7 +220,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       data['shops[$i]'] = shopIds[i];
     }
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops',
         queryParameters: data,
@@ -263,11 +231,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get shops by ids failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -275,6 +239,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   @override
   Future<ApiResult<void>> createShop({
     required double tax,
+    required List<String> documents,
     required double deliveryTo,
     required double deliveryFrom,
     required String deliveryType,
@@ -291,6 +256,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     final data = {
       "price_per_km": perKm,
       'tax': tax,
+      'documents': documents,
       'delivery_time_type': deliveryType,
       'location': LocationModel(
               latitude: address?.location?.first,
@@ -309,7 +275,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
       if (backgroundImage != null) "images[1]": backgroundImage,
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post(
         '/api/v1/dashboard/user/shops',
         queryParameters: data,
@@ -318,11 +284,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> create shop failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -331,7 +293,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   Future<ApiResult<ShopsPaginateResponse>> getShopsRecommend(int page) async {
     final data = ShopRequest(page: page, onlyOpen: true);
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/recommended',
         queryParameters: data.toJson(),
@@ -342,11 +304,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get all shops recommend failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -355,7 +313,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   Future<ApiResult<List<List<StoryModel?>?>?>> getStory(int page) async {
     final data = StoryRequest(page: page);
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/stories/paginate',
         queryParameters: data.toJson(),
@@ -366,11 +324,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get all story failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -378,7 +332,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   @override
   Future<ApiResult<TagResponse>> getTags(int categoryId) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final data = <String, dynamic>{
         'lang': LocalStorage.getLanguage()?.locale ?? "en",
         'category_id': categoryId,
@@ -391,11 +345,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get all take failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }
@@ -404,7 +354,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   Future<ApiResult<bool>> checkDriverZone(LatLng location,
       {int? shopId}) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final data = <String, dynamic>{
         'address[latitude]': location.latitude,
         'address[longitude]': location.longitude,
@@ -436,7 +386,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
   @override
   Future<ApiResult<PriceModel>> getSuggestPrice() async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final data = {
         if (LocalStorage.getSelectedCurrency() != null)
           "currency_id": LocalStorage.getSelectedCurrency()?.id
@@ -449,11 +399,7 @@ class ShopsRepository implements ShopsRepositoryFacade {
     } catch (e) {
       debugPrint('==> get all price failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
+          error: AppHelpers.errorHandler(e),
           statusCode: NetworkExceptions.getDioStatus(e));
     }
   }

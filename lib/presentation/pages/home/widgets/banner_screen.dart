@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
 
-import '../../../../infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import '../../../routes/app_router.dart';
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class BannerScreen extends StatelessWidget {
   final String image;
@@ -35,7 +35,7 @@ class BannerScreen extends StatelessWidget {
           topRight: Radius.circular(8.r),
         ),
       ),
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

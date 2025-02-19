@@ -19,7 +19,9 @@ mixin _$HelpState {
   bool get isLoading => throw _privateConstructorUsedError;
   HelpModel? get data => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HelpState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $HelpStateCopyWith<HelpState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$HelpStateCopyWithImpl<$Res, $Val extends HelpState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of HelpState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +84,8 @@ class __$$HelpStateImplCopyWithImpl<$Res>
       _$HelpStateImpl _value, $Res Function(_$HelpStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HelpState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,7 +135,9 @@ class _$HelpStateImpl extends _HelpState {
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, data);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HelpState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HelpStateImplCopyWith<_$HelpStateImpl> get copyWith =>
@@ -145,8 +153,11 @@ abstract class _HelpState extends HelpState {
   bool get isLoading;
   @override
   HelpModel? get data;
+
+  /// Create a copy of HelpState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HelpStateImplCopyWith<_$HelpStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

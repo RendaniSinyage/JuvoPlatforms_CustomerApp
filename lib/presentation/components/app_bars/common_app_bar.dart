@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class CommonAppBar extends StatelessWidget {
   final Widget child;
@@ -18,9 +18,9 @@ class CommonAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: height.h+((MediaQuery.of(context).padding.top > 34)
+      height: height.h+((MediaQuery.paddingOf(context).top > 34)
               ? 34.h
-              : MediaQuery.of(context).padding.top),
+              : MediaQuery.paddingOf(context).top),
       decoration: BoxDecoration(
           color: AppStyle.white,
           borderRadius: BorderRadius.only(

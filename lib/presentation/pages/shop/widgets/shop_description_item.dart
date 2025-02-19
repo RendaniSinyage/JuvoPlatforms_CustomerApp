@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class ShopDescriptionItem extends StatelessWidget {
   final String title;
@@ -14,7 +14,7 @@ class ShopDescriptionItem extends StatelessWidget {
       height: 54+48.r,
       decoration: BoxDecoration(
           color: AppStyle.bgGrey,
-          borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          borderRadius: BorderRadius.circular(10.r)),
       padding: EdgeInsets.all(12.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

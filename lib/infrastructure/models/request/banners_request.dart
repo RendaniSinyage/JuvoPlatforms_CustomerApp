@@ -1,5 +1,5 @@
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
 class BannersRequest {
   final int page;

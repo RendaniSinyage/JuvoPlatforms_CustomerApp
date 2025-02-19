@@ -1,25 +1,14 @@
-// To parse this JSON data, do
-//
-//     final shopData = shopDataFromJson(jsonString);
-
-// ignore_for_file: prefer_null_aware_operators
-
-import 'dart:convert';
 
 import 'bonus_data.dart';
 import 'translation.dart';
-
-ShopData shopDataFromJson(String str) => ShopData.fromJson(json.decode(str));
-
-String shopDataToJson(ShopData data) => json.encode(data.toJson());
 
 class ShopData {
   ShopData({
     this.id,
     this.userId,
     this.tax,
-    this.deliveryRange,
-    this.price,
+    this.pricePerKm,
+    this.minPrice,
     this.percentage,
     this.phone,
     this.visibility,
@@ -54,8 +43,8 @@ class ShopData {
   int? id;
   int? userId;
   num? tax;
-  num? deliveryRange;
-  num? price;
+  num? pricePerKm;
+  num? minPrice;
   num? percentage;
   String? avgRate;
   String? rateCount;
@@ -92,8 +81,8 @@ class ShopData {
       // uuid: json["uuid"] ?? 0,
       userId: json["user_id"] ?? 0,
       tax: json["tax"] ?? 0,
-      price: json["price"] ?? 0,
-      deliveryRange: json["price_per_km"] ?? 0,
+      pricePerKm: json["price_per_km"] ?? 0,
+      minPrice: json["price"] ?? 0,
       percentage: json["percentage"] ?? 0,
       phone: json["phone"].toString() ,
       visibility: json["visibility"],
@@ -154,8 +143,8 @@ class ShopData {
         "id": id,
         "user_id": userId,
         "tax": tax,
-        "price": price,
-        "delivery_range": deliveryRange,
+        "price_per_km": pricePerKm,
+        "price": minPrice,
         "percentage": percentage,
         "phone": phone,
         "visibility": visibility,
@@ -166,15 +155,15 @@ class ShopData {
         "min_amount": minAmount,
         "status": status,
         "type": type,
-        "delivery_time": deliveryTime == null ? null : deliveryTime?.toJson(),
-        "created_at": createdAt == null ? null : createdAt?.toIso8601String(),
-        "updated_at": updatedAt == null ? null : updatedAt?.toIso8601String(),
-        "location": location == null ? null : location?.toJson(),
+        "delivery_time": deliveryTime?.toJson(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "location": location?.toJson(),
         "products_count": productsCount,
-        "translation": translation == null ? null : translation?.toJson(),
+        "translation": translation?.toJson(),
         "locales":
             locales == null ? null : List<dynamic>.from(locales!.map((x) => x)),
-        "seller": seller == null ? null : seller?.toJson(),
+        "seller": seller?.toJson(),
         "bonus": bonus,
       };
 }

@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:flutter/material.dart';
 
 class AllProductsResponse {
   DateTime? timestamp;
@@ -25,11 +25,6 @@ class AllProductsResponse {
         message: message ?? this.message,
         data: data ?? this.data,
       );
-
-  factory AllProductsResponse.fromRawJson(String str) =>
-      AllProductsResponse.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory AllProductsResponse.fromJson(Map<String, dynamic> json) =>
       AllProductsResponse(
@@ -67,10 +62,6 @@ class Data {
         all: all ?? this.all,
       );
 
-  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         recommended: json["recommended"] == null
             ? []
@@ -91,22 +82,26 @@ class Data {
 }
 
 class All {
+  GlobalKey? key;
   int? id;
   String? uuid;
   String? type;
   int? input;
+  int? shopId;
   String? img;
   bool? active;
-  Status? status;
+  String? status;
   Translation? translation;
   List<dynamic>? children;
   List<Product>? products;
 
   All({
+    this.key,
     this.id,
     this.uuid,
     this.type,
     this.input,
+    this.shopId,
     this.img,
     this.active,
     this.status,
@@ -117,21 +112,25 @@ class All {
 
   All copyWith({
     int? id,
+    GlobalKey? key,
     String? uuid,
     String? type,
     int? input,
+    int? shopId,
     String? img,
     bool? active,
-    Status? status,
+    String? status,
     Translation? translation,
     List<dynamic>? children,
     List<Product>? products,
   }) =>
       All(
         id: id ?? this.id,
+        key: key ?? this.key,
         uuid: uuid ?? this.uuid,
         type: type ?? this.type,
         input: input ?? this.input,
+        shopId: shopId ?? this.shopId,
         img: img ?? this.img,
         active: active ?? this.active,
         status: status ?? this.status,
@@ -140,18 +139,15 @@ class All {
         products: products ?? this.products,
       );
 
-  factory All.fromRawJson(String str) => All.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory All.fromJson(Map<String, dynamic> json) => All(
         id: json["id"],
         uuid: json["uuid"],
         type: json["type"],
         input: json["input"],
+        shopId: json["shop_id"],
         img: json["img"],
         active: json["active"],
-        status: statusValues.map[json["status"]]!,
+        status: json["status"],
         translation: json["translation"] == null
             ? null
             : Translation.fromJson(json["translation"]),
@@ -169,9 +165,10 @@ class All {
         "uuid": uuid,
         "type": type,
         "input": input,
+        "shop_id": shopId,
         "img": img,
         "active": active,
-        "status": statusValues.reverse[status],
+        "status": status,
         "translation": translation?.toJson(),
         "children":
             children == null ? [] : List<dynamic>.from(children!.map((x) => x)),
@@ -186,7 +183,7 @@ class Product {
   String? uuid;
   int? shopId;
   int? categoryId;
-  Status? status;
+  String? status;
   bool? active;
   bool? addon;
   bool? vegetarian;
@@ -221,7 +218,7 @@ class Product {
     String? uuid,
     int? shopId,
     int? categoryId,
-    Status? status,
+    String? status,
     bool? active,
     bool? addon,
     bool? vegetarian,
@@ -251,16 +248,12 @@ class Product {
         stock: stock ?? this.stock,
       );
 
-  factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         uuid: json["uuid"],
         shopId: json["shop_id"],
         categoryId: json["category_id"],
-        status: statusValues.map[json["status"]]!,
+        status: json["status"],
         active: json["active"],
         addon: json["addon"],
         vegetarian: json["vegetarian"],
@@ -282,7 +275,7 @@ class Product {
         "uuid": uuid,
         "shop_id": shopId,
         "category_id": categoryId,
-        "status": statusValues.reverse[status],
+        "status": status,
         "active": active,
         "addon": addon,
         "vegetarian": vegetarian,
@@ -297,10 +290,6 @@ class Product {
         "stock": stock?.toJson(),
       };
 }
-
-enum Status { published }
-
-final statusValues = EnumValues({"published": Status.published});
 
 class Stock {
   int? id;
@@ -344,10 +333,6 @@ class Stock {
         bonus: bonus ?? this.bonus,
       );
 
-  factory Stock.fromRawJson(String str) => Stock.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Stock.fromJson(Map<String, dynamic> json) => Stock(
         id: json["id"],
         countableId: json["countable_id"],
@@ -373,7 +358,7 @@ class Stock {
 
 class Translation {
   int? id;
-  Locale? locale;
+  String? locale;
   String? title;
   String? description;
 
@@ -386,7 +371,7 @@ class Translation {
 
   Translation copyWith({
     int? id,
-    Locale? locale,
+    String? locale,
     String? title,
     String? description,
   }) =>
@@ -397,38 +382,17 @@ class Translation {
         description: description ?? this.description,
       );
 
-  factory Translation.fromRawJson(String str) =>
-      Translation.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Translation.fromJson(Map<String, dynamic> json) => Translation(
         id: json["id"],
-        locale: localeValues.map[json["locale"]]!,
+        locale: json["locale"],
         title: json["title"],
         description: json["description"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "locale": localeValues.reverse[locale],
+        "locale": locale,
         "title": title,
         "description": description,
       };
-}
-
-enum Locale { en }
-
-final localeValues = EnumValues({"en": Locale.en});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

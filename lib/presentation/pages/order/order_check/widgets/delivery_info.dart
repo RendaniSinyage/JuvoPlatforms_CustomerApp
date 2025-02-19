@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class DeliveryInfo extends StatelessWidget {
   const DeliveryInfo({super.key});
@@ -22,7 +22,7 @@ class DeliveryInfo extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       color: AppStyle.bgGrey,
-                      borderRadius: BorderRadius.all(Radius.circular(10.r))),
+                      borderRadius: BorderRadius.circular(10.r)),
                   margin: EdgeInsets.symmetric(horizontal: 16.w),
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),

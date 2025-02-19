@@ -2,14 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/infrastructure/models/data/parcel_order.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
-
-import '../../../../infrastructure/services/app_constants.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:foodyman/infrastructure/models/data/parcel_order.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class ParcelItem extends StatelessWidget {
   final ParcelOrder? parcel;
@@ -36,7 +35,7 @@ class ParcelItem extends StatelessWidget {
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
             color: AppStyle.white,
-            borderRadius: BorderRadius.all(Radius.circular(10.r))),
+            borderRadius: BorderRadius.circular(10.r)),
         child: Column(
           children: [
             Row(
@@ -45,7 +44,7 @@ class ParcelItem extends StatelessWidget {
                   height: 36.h,
                   width: 36.w,
                   decoration: BoxDecoration(
-                    color: (isActive ? AppStyle.brandGreen : AppStyle.bgGrey),
+                    color: (isActive ? AppStyle.primary : AppStyle.bgGrey),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(8),
                     ),
@@ -104,8 +103,7 @@ class ParcelItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      intl.DateFormat("MMM dd, HH:mm")
-                          .format(parcel?.createdAt ?? DateTime.now()),
+                      TimeService.dateFormatMDHm(parcel?.createdAt),
                       style: AppStyle.interRegular(
                         size: 12,
                       ),

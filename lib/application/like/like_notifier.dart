@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/domain/iterface/shops.dart';
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
 import 'like_state.dart';
 
@@ -19,26 +19,22 @@ class LikeNotifier extends StateNotifier<LikeState> {
     if (connected) {
       state = state.copyWith(isShopLoading: true);
       final list = LocalStorage.getSavedShopsList();
-      if (list.isNotEmpty) {
+      if(list.isNotEmpty){
         final response = await _shopsRepository.getShopsByIds(list);
         response.when(
           success: (data) async {
-            state = state.copyWith(
-              isShopLoading: false,
-              shops: data.data ?? [],
-              likedShopsCount: data.data?.length ?? 0, // Add this line
-            );
+            state = state.copyWith(isShopLoading: false, shops: data.data ?? []);
           },
-          failure: (activeFailure, status) {
+          failure: (failure,status) {
             state = state.copyWith(isShopLoading: false);
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           },
         );
-      } else {
-        state = state.copyWith(isShopLoading: false, shops: [], likedShopsCount: 0); // Add this line
+      }else{
+        state = state.copyWith(isShopLoading: false,shops: []);
       }
     } else {
       if (context.mounted) {
@@ -46,4 +42,6 @@ class LikeNotifier extends StateNotifier<LikeState> {
       }
     }
   }
+
+
 }

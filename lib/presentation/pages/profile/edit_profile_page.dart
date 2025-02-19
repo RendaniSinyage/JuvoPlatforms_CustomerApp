@@ -3,23 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:riverpodtemp/application/edit_profile/edit_profile_provider.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/app_validators.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/underline_drop_down.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+
+import 'package:foodyman/application/edit_profile/edit_profile_provider.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/app_validators.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/components/text_fields/underline_drop_down.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'phone_verify.dart';
 
@@ -42,19 +43,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   void initState() {
     birthDay = TextEditingController(
-        text: intl.DateFormat("yyyy-MM-dd").format(DateTime.tryParse(
-                    ref.read(profileProvider).userData?.birthday ?? "")
-                ?.toLocal() ??
-            DateTime.now()));
+        text: TimeService.dateFormatYMD(DateTime.tryParse(
+            ref.read(profileProvider).userData?.birthday ?? "")));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(editProfileProvider.notifier)
           .setPhone(ref.read(profileProvider).userData?.phone ?? "");
-      ref.read(editProfileProvider.notifier).setBirth(
-          intl.DateFormat("yyyy-MM-dd").format(DateTime.tryParse(
-                      ref.read(profileProvider).userData?.birthday ?? "")
-                  ?.toLocal() ??
-              DateTime.now()));
+      ref.read(editProfileProvider.notifier).setBirth(TimeService.dateFormatYMD(
+          DateTime.tryParse(
+              ref.read(profileProvider).userData?.birthday ?? "")));
     });
     super.initState();
   }
@@ -81,13 +78,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return Directionality(
       textDirection: isLtr ? TextDirection.ltr : TextDirection.rtl,
       child: KeyboardDismisser(
-      child: Padding(
-      padding: const EdgeInsets.all(16.0),
         child: Container(
           margin: MediaQuery.of(context).viewInsets,
           decoration: BoxDecoration(
               color: AppStyle.bgGrey.withOpacity(0.96),
-              borderRadius: BorderRadius.all(Radius.circular(16.r))),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r),
+              )),
           width: double.infinity,
           child: state.isLoading
               ? const Loading()
@@ -194,7 +192,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 children: [
                                   SizedBox(
                                     width: (MediaQuery.sizeOf(context).width -
-                                            88) /
+                                            40) /
                                         2,
                                     child: OutlinedBorderTextField(
                                       label: AppHelpers.getTranslation(
@@ -269,12 +267,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                                     DateTime.now(),
                                             maximumDate: DateTime.now(),
                                             mode: CupertinoDatePickerMode.date,
-                                            use24hFormat: true,
+                                            use24hFormat: AppConstants.use24Format,
                                             onDateTimeChanged:
                                                 (DateTime newDate) {
                                               birthDay.text =
-                                                  intl.DateFormat("yyyy-MM-dd")
-                                                      .format(newDate);
+                                                  TimeService.dateFormatYMD(
+                                                      newDate);
                                               event
                                                   .setBirth(newDate.toString());
                                             },
@@ -295,7 +293,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               UnderlineDropDown(
                                 value: user?.gender,
                                 hint:
-                                AppHelpers.getTranslation(TrKeys.typeHere),
+                                    AppHelpers.getTranslation(TrKeys.typeHere),
                                 label: AppHelpers.getTranslation(TrKeys.gender)
                                     .toUpperCase(),
                                 list: AppConstants.genderList,
@@ -312,7 +310,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).padding.bottom +
+                                bottom: MediaQuery.paddingOf(context).bottom +
                                     24.h,
                                 top: 24.h),
                             child: CustomButton(
@@ -331,6 +329,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 ),
         ),
       ),
-    ));
+    );
   }
 }

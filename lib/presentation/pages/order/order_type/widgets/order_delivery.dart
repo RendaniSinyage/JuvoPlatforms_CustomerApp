@@ -4,21 +4,21 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/application/edit_profile/edit_profile_provider.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/app_validators.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/custom_checkbox.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/application/edit_profile/edit_profile_provider.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/app_validators.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/time_service.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/custom_checkbox.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
 
-import 'package:intl/intl.dart' as intl;
-import 'package:riverpodtemp/presentation/pages/profile/phone_verify.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/pages/profile/phone_verify.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 import '../../order_check/widgets/time_delivery.dart';
 import 'order_container.dart';
-import '../../../../components/sellect_address_screen.dart';
+import 'package:foodyman/presentation/components/sellect_address_screen.dart';
 
 class OrderDelivery extends StatefulWidget {
   final ValueChanged<bool> onChange;
@@ -53,7 +53,8 @@ class _OrderDeliveryState extends State<OrderDelivery> {
     commentController = TextEditingController();
     nameController = TextEditingController();
     phoneController = TextEditingController();
-    userPhoneNumber = TextEditingController(text: LocalStorage.getPhone());
+    userPhoneNumber =
+        TextEditingController(text: LocalStorage.getUser()?.phone);
     super.initState();
   }
 
@@ -100,21 +101,21 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                   padding: EdgeInsets.only(left: 4.w),
                   child: SvgPicture.asset(
                     "assets/svgs/adress.svg",
-                    width: 20.w,
-                    height: 20.h,
+                    width: 20.r,
+                    height: 20.r,
                   ),
                 ),
                 title: AppHelpers.getTranslation(TrKeys.deliveryAddress),
-                description:  (LocalStorage.getAddressSelected()?.title?.isEmpty ??
-                    true)
-                    ? LocalStorage.getAddressSelected()?.address ?? ''
-                    : LocalStorage.getAddressSelected()?.title ?? "",
+                description:
+                    (LocalStorage.getAddressSelected()?.title?.isEmpty ?? true)
+                        ? LocalStorage.getAddressSelected()?.address ?? ''
+                        : LocalStorage.getAddressSelected()?.title ?? "",
               ),
               10.verticalSpace,
               OrderContainer(
                 onTap: () {
                   AppHelpers.showCustomModalBottomSheet(
-                    paddingTop: MediaQuery.of(context).padding.top + 150.h,
+                    paddingTop: MediaQuery.paddingOf(context).top + 150.h,
                     context: context,
                     modal: const TimeDelivery(),
                     isDarkMode: false,
@@ -122,13 +123,16 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                     radius: 12,
                   );
                 },
-                icon: const Icon(FlutterRemix.calendar_check_line),
+                icon: Icon(
+                  FlutterRemix.calendar_check_line,
+                  size: 24.r,
+                ),
                 title: AppHelpers.getTranslation(TrKeys.timeDelivery),
                 description: ref.watch(orderProvider).selectDate == null
                     ? AppHelpers.getTranslation(TrKeys.notWorkTodayAndTomorrow)
-                    : "${intl.DateFormat("MMMM dd").format(ref.watch(orderProvider).selectDate!)}  ${ref.watch(orderProvider).selectTime.hour.toString().padLeft(2, '0')}:${ref.watch(orderProvider).selectTime.minute.toString().padLeft(2, '0')}",
+                    : "${TimeService.dateFormatMD(ref.watch(orderProvider).selectDate!)}  ${TimeService.timeFormatTime(ref.watch(orderProvider).selectTime.format(context))}",
               ),
-              20.verticalSpace,
+              16.verticalSpace,
               OutlinedBorderTextField(
                 label: AppHelpers.getTranslation(TrKeys.house).toUpperCase(),
                 textController: houseController,
@@ -136,7 +140,7 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                   ref.read(orderProvider.notifier).setAddressInfo(house: s);
                 },
               ),
-              16.verticalSpace,
+              12.verticalSpace,
               OutlinedBorderTextField(
                 label: AppHelpers.getTranslation(TrKeys.floor).toUpperCase(),
                 textController: floorController,
@@ -144,7 +148,7 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                   ref.read(orderProvider.notifier).setAddressInfo(floor: s);
                 },
               ),
-              16.verticalSpace,
+              12.verticalSpace,
               OutlinedBorderTextField(
                 label: AppHelpers.getTranslation(TrKeys.comment).toUpperCase(),
                 textController: commentController,
@@ -152,26 +156,21 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                   ref.read(orderProvider.notifier).setAddressInfo(note: s);
                 },
               ),
-              16.verticalSpace,
-              Column(
-                children: [
-                  OutlinedBorderTextField(
-                    label:
-                        AppHelpers.getTranslation(TrKeys.phoneNumber).toUpperCase(),
-                    textController: userPhoneNumber,
-                    readOnly: true,
-                    onTap: () {
-                      AppHelpers.showCustomModalBottomSheet(
-                          context: context,
-                          modal: const PhoneVerify(),
-                          isDarkMode: false,
-                          paddingTop: MediaQuery.of(context).padding.top);
-                    },
-                  ),
-                  16.verticalSpace,
-                ],
+              12.verticalSpace,
+              OutlinedBorderTextField(
+                label:
+                    AppHelpers.getTranslation(TrKeys.phoneNumber).toUpperCase(),
+                textController: userPhoneNumber,
+                readOnly: true,
+                onTap: () {
+                  AppHelpers.showCustomModalBottomSheet(
+                      context: context,
+                      modal: const PhoneVerify(),
+                      isDarkMode: false,
+                      paddingTop: MediaQuery.paddingOf(context).top);
+                },
               ),
-
+              12.verticalSpace,
               Row(
                 children: [
                   CustomCheckbox(
@@ -186,40 +185,44 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                       AppHelpers.getTranslation(TrKeys.iWantToOrderForSomeone)),
                 ],
               ),
-             if(ref.watch(orderProvider).sendOtherUser)
-              Column(
-                children: [
-                  16.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedBorderTextField(
-                          label: AppHelpers.getTranslation(TrKeys.firstname)
-                              .toUpperCase(),
-                          textController: nameController,
-                          validation: AppValidators.isNotEmptyValidator,
-                          onChanged: (s) {
-                            ref.read(orderProvider.notifier).setUser(username: s);
-                          },
+              if (ref.watch(orderProvider).sendOtherUser)
+                Column(
+                  children: [
+                    16.verticalSpace,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedBorderTextField(
+                            label: AppHelpers.getTranslation(TrKeys.firstname)
+                                .toUpperCase(),
+                            textController: nameController,
+                            validation: AppValidators.isNotEmptyValidator,
+                            onChanged: (s) {
+                              ref
+                                  .read(orderProvider.notifier)
+                                  .setUser(username: s);
+                            },
+                          ),
                         ),
-                      ),
-                      16.horizontalSpace,
-                      Expanded(
-                        child: OutlinedBorderTextField(
-                          label: AppHelpers.getTranslation(TrKeys.phoneNumber)
-                              .toUpperCase(),
-                          textController: phoneController,
-                          inputType: TextInputType.phone,
-                          validation: AppValidators.isNotEmptyValidator,
-                          onChanged: (s) {
-                            ref.read(orderProvider.notifier).setUser(phone: s);
-                          },
+                        16.horizontalSpace,
+                        Expanded(
+                          child: OutlinedBorderTextField(
+                            label: AppHelpers.getTranslation(TrKeys.phoneNumber)
+                                .toUpperCase(),
+                            textController: phoneController,
+                            inputType: TextInputType.phone,
+                            validation: AppValidators.isNotEmptyValidator,
+                            onChanged: (s) {
+                              ref
+                                  .read(orderProvider.notifier)
+                                  .setUser(phone: s);
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
+                      ],
+                    ),
+                  ],
+                )
             ],
           );
         }),

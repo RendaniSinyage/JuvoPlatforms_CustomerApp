@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/order/order_provider.dart';
-import 'package:riverpodtemp/application/promo_code/promo_code_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/order/order_provider.dart';
+import 'package:foodyman/application/promo_code/promo_code_state.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../../../../application/promo_code/promo_code_notifier.dart';
-import '../../../../../../application/promo_code/promo_code_provider.dart';
-import '../../../../../application/shop_order/shop_order_provider.dart';
-import '../../../../../infrastructure/services/app_constants.dart';
-import '../../../../../infrastructure/services/local_storage.dart';
-import '../../../../../infrastructure/services/tpying_delay.dart';
+import 'package:foodyman/application/promo_code/promo_code_notifier.dart';
+import 'package:foodyman/application/promo_code/promo_code_provider.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
+import '../../../../../app_constants.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tpying_delay.dart';
 
 class PromoCodeScreen extends ConsumerStatefulWidget {
   const PromoCodeScreen({
@@ -110,7 +111,7 @@ class _PromoCodeState extends ConsumerState<PromoCodeScreen> {
                             height: 30.h,
                             decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: AppStyle.brandGreen),
+                                color: AppStyle.primary),
                             child: Icon(
                               Icons.done_all,
                               color: AppStyle.black,
@@ -122,12 +123,12 @@ class _PromoCodeState extends ConsumerState<PromoCodeScreen> {
                   146.verticalSpace,
                   Padding(
                     padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom+24.h,
+                      bottom: MediaQuery.paddingOf(context).bottom+24.h,
                     ),
                     child: CustomButton(
                       isLoading: state.isLoading,
                       background:
-                          state.isActive ? AppStyle.brandGreen : AppStyle.borderColor,
+                          state.isActive ? AppStyle.primary : AppStyle.borderColor,
                       textColor: state.isActive ? AppStyle.black : AppStyle.textGrey,
                       title: AppHelpers.getTranslation(TrKeys.save),
                       onPressed: () {

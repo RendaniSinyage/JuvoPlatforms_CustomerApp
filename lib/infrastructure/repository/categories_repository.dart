@@ -1,12 +1,11 @@
-import 'package:dio/dio.dart';
-import 'package:riverpodtemp/domain/di/injection.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/domain/iterface/categories.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/models/request/category_request.dart';
-import 'package:riverpodtemp/infrastructure/models/request/search_shop.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/categories.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/request/category_request.dart';
+import 'package:foodyman/infrastructure/models/request/search_shop.dart';
 
-import '../../../domain/handlers/handlers.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 
 class CategoriesRepository implements CategoriesRepositoryFacade {
   @override
@@ -15,7 +14,7 @@ class CategoriesRepository implements CategoriesRepositoryFacade {
     final data = CategoryModel(page: page);
 
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/categories/paginate',
         queryParameters: data.toJson(),
@@ -25,12 +24,9 @@ class CategoriesRepository implements CategoriesRepositoryFacade {
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -38,9 +34,8 @@ class CategoriesRepository implements CategoriesRepositoryFacade {
   Future<ApiResult<CategoriesPaginateResponse>> searchCategories(
       {required String text}) async {
     final data = SearchShopModel(text: text);
-
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/categories/search',
         queryParameters: data.toJson(),
@@ -50,12 +45,9 @@ class CategoriesRepository implements CategoriesRepositoryFacade {
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -64,22 +56,19 @@ class CategoriesRepository implements CategoriesRepositoryFacade {
       {required String shopId}) async {
     final data = CategoryModel(page: 1);
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/shops/$shopId/categories',
-        queryParameters: data.toJsonShop()
+        queryParameters: data.toJsonShop(),
       );
       return ApiResult.success(
         data: CategoriesPaginateResponse.fromJson(response.data),
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException ).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 }

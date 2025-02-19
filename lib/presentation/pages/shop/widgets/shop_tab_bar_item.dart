@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class ShopTabBarItem extends StatelessWidget {
   final String title;
@@ -33,8 +33,8 @@ class ShopTabBarItem extends StatelessWidget {
           height: 46.r,
           duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
-            color: isActive ? AppStyle.brandGreen : AppStyle.white,
-            borderRadius: BorderRadius.all(Radius.circular(10.r)),
+            color: isActive ? AppStyle.primary : AppStyle.white,
+            borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
                 color: AppStyle.white.withOpacity(0.07),

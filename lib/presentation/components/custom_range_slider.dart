@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
   const CustomRoundRangeSliderThumbShape({
@@ -50,7 +50,7 @@ class CustomRoundRangeSliderThumbShape extends RangeSliderThumbShape {
       end: pressedElevation,
     );
     var sliderPaint = Paint()
-      ..color = AppStyle.brandGreen
+      ..color = AppStyle.primary
       ..style = PaintingStyle.fill;
 
 

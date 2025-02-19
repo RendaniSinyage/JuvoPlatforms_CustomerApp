@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:riverpodtemp/infrastructure/models/data/addons_data.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/addons_data.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/vibration.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
-import '../../../components/custom_checkbox.dart';
+import 'package:foodyman/presentation/components/custom_checkbox.dart';
 
 class IngredientItem extends ConsumerWidget {
   final VoidCallback onTap;
@@ -34,7 +34,7 @@ class IngredientItem extends ConsumerWidget {
         margin: EdgeInsets.symmetric(vertical: 10.r),
         decoration: BoxDecoration(
             color: AppStyle.white,
-            borderRadius: BorderRadius.all(Radius.circular(10.r))),
+            borderRadius: BorderRadius.circular(10.r)),
         child: Column(
           children: [
             Row(

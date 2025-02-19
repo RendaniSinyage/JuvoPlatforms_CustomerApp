@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class CategoryBarItem extends StatelessWidget {
   final String image;
@@ -21,16 +21,12 @@ class CategoryBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: isActive ? 100.r : 85.r,
-        height: isActive ? 100.r : 85.r,
+        width: 100.r,
+        height: 100.r,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-     //  color: isActive ? AppStyle.brandGreen : AppStyle.white),
-	  //color: isActive ? AppStyle.brandGreen : AppStyle.brandGreen.withOpacity(0.06),
-          color: isActive ? AppStyle.brandGreen : AppStyle.transparent,
-         // border: Border.all(color: isActive ? AppStyle.transparent : AppStyle.brandGreen, ), // added border
-           ), //changed
+            color: isActive ? AppStyle.primary : AppStyle.white),
         child: InkWell(
           onTap: onTap,
           child: Column(
@@ -39,10 +35,9 @@ class CategoryBarItem extends StatelessWidget {
               CustomNetworkImage(
                 fit: BoxFit.contain,
                 url: image,
-                height: isActive ? 48 : 48.r,
-                width: isActive ? 48 : 48.r,
+                height: 48.r,
+                width: 48.r,
                 radius: 0,
-			 color: isActive ? AppStyle.white : AppStyle.brandGreen, // Changed added
               ),
               4.verticalSpace,
               Padding(
@@ -50,10 +45,8 @@ class CategoryBarItem extends StatelessWidget {
                 child: Text(
                   title,
                   style: AppStyle.interNormal(
-                   // size: isActive ? 12 : 10,
-                    size:  12,
-                    // color: AppStyle.black,
-color: isActive ? AppStyle.white : AppStyle.brandGreen, //changed
+                    size: 12,
+                    color: AppStyle.black,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

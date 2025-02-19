@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import '../../theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class OutlinedBorderTextField extends StatelessWidget {
   final String? label;
@@ -89,7 +89,7 @@ class OutlinedBorderTextField extends StatelessWidget {
           textInputAction: textInputAction,
           decoration: InputDecoration(
             suffixIconConstraints:
-                BoxConstraints(maxHeight: 30.h, maxWidth: 30.h),
+                BoxConstraints(maxHeight: 30.r, maxWidth: 30.r),
             suffixIcon: suffixIcon,
             hintText: hint ?? AppHelpers.getTranslation(TrKeys.typeHere),
             hintStyle: AppStyle.interNormal(

@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/app_bar_bottom_sheet.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-
-import '../../../../application/reser_password/reset_password_provider.dart';
-import '../../../components/keyboard_dismisser.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/app_bar_bottom_sheet.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import 'package:foodyman/application/auth/auth.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
 
 class SetPasswordPage extends ConsumerWidget {
   const SetPasswordPage({super.key});
@@ -26,15 +25,14 @@ class SetPasswordPage extends ConsumerWidget {
       child: AbsorbPointer(
         absorbing: state.isLoading,
         child: KeyboardDismisser(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-    child: Container(
+          child: Container(
             padding: MediaQuery.of(context).viewInsets,
             decoration: BoxDecoration(
                 color: AppStyle.bgGrey.withOpacity(0.96),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(40.r),
-                ),),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.r),
+                  topRight: Radius.circular(16.r),
+                )),
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -94,14 +92,14 @@ class SetPasswordPage extends ConsumerWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom,top: 120.h),
+                      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom,top: 120.h),
                       child: CustomButton(
                         isLoading: state.isLoading,
                         title: AppHelpers.getTranslation(TrKeys.send),
                         onPressed: () {
                           notifier.setResetPassword(context);
                         },
-                        background: AppStyle.brandGreen,
+                        background: AppStyle.primary,
                         textColor: AppStyle.black,
                       ),
                     ),
@@ -112,6 +110,6 @@ class SetPasswordPage extends ConsumerWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }

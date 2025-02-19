@@ -1,4 +1,4 @@
-import 'package:riverpodtemp/infrastructure/services/app_validators.dart';
+import 'package:foodyman/infrastructure/services/app_validators.dart';
 
 class LoginModel {
   final String? email;

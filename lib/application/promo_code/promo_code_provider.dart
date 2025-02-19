@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
 
 
 import 'promo_code_notifier.dart';

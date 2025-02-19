@@ -7,6 +7,9 @@ class EditProfile {
   String? secondPhone;
   String? images;
   String? email;
+  String? password;
+  String? confirmPassword;
+  String? referral;
 
   EditProfile(
       {this.firstname,
@@ -15,7 +18,10 @@ class EditProfile {
       this.gender,
       this.phone,
       this.secondPhone,
+      this.password,
+      this.referral,
       this.email,
+      this.confirmPassword,
       this.images});
 
   EditProfile.fromJson(Map<String, dynamic> json) {
@@ -24,6 +30,9 @@ class EditProfile {
     birthday = json['birthday'];
     gender = json['gender'];
     email = json['email'];
+    password = json['password'];
+    confirmPassword = json['password_confirmation'];
+    referral = json['referral'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,10 +40,15 @@ class EditProfile {
     if (firstname != null) data['firstname'] = firstname;
     if (lastname != null) data['lastname'] = lastname;
     if (email != null) data['email'] = email;
-    if (lastname != null) {
+    if (password != null) data['password'] = password;
+    if (referral != null) data['referral'] = referral;
+    if (confirmPassword != null) {
+      data['password_confirmation'] = confirmPassword;
+    }
+    if (birthday != null) {
       data['birthday'] = birthday!.contains(" ")
-        ? birthday?.substring(0, birthday?.indexOf(" "))
-        : birthday;
+          ? birthday?.substring(0, birthday?.indexOf(" "))
+          : birthday;
     }
     if (gender != null) data['gender'] = gender;
     if (images != null && images!.isNotEmpty) data["images"] = [images];

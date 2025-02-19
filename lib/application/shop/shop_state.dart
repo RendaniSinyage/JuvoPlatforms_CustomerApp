@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/models/response/branches_response.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/models/response/branches_response.dart';
 
-import '../../infrastructure/models/response/all_products_response.dart';
+import 'package:foodyman/infrastructure/models/response/all_products_response.dart';
 
 part 'shop_state.freezed.dart';
 
@@ -39,9 +39,10 @@ class ShopState with _$ShopState {
     @Default({}) Set<Marker> shopMarkers,
     @Default([]) List<LatLng> polylineCoordinates,
     @Default(null) ShopData? shopData,
-    @Default([]) List<Product> products,
-    @Default([]) List<Product> popularProducts,
+    // @Default([]) List<ProductData> products,
+    // @Default([]) List<ProductData> popularProducts,
     @Default([]) List<ProductData> categoryProducts,
+    @Default([]) List<All> allData,
     @Default([]) List<CategoryData>? category,
     @Default([]) List<BrandData>? brands,
     @Default([]) List<BranchModel>? branches,

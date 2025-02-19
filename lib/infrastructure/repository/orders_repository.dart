@@ -1,16 +1,16 @@
-// ignore_for_file: unrelated_type_equality_checks
-
-import 'package:dio/dio.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:riverpodtemp/domain/di/injection.dart';
-import 'package:riverpodtemp/domain/handlers/http_service.dart';
-import 'package:riverpodtemp/domain/iterface/orders.dart';
-import 'package:riverpodtemp/infrastructure/models/data/order_active_model.dart';
-import 'package:riverpodtemp/infrastructure/models/data/refund_data.dart';
-import 'package:riverpodtemp/infrastructure/models/models.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import '../../../domain/handlers/handlers.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/domain/di/dependency_manager.dart';
+import 'package:foodyman/domain/interface/orders.dart';
+import 'package:foodyman/infrastructure/models/data/order_active_model.dart';
+import 'package:foodyman/infrastructure/models/data/refund_data.dart';
+import 'package:foodyman/infrastructure/models/models.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/domain/handlers/handlers.dart';
+import 'package:payfast/payfast.dart';
 import '../models/data/get_calculate_data.dart';
 
 class OrdersRepository implements OrdersRepositoryFacade {
@@ -18,7 +18,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
   Future<ApiResult<OrderActiveModel>> createOrder(
       OrderBodyData orderBody) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.post(
         '/api/v1/dashboard/user/orders',
         data: orderBody.toJson(),
@@ -28,12 +28,42 @@ class OrdersRepository implements OrdersRepositoryFacade {
       );
     } catch (e) {
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult> createAutoOrder(String from, String to, int orderId) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.post(
+        '/api/v1/dashboard/user/orders/$orderId/repeat',
+        data: {"from": from, "to": to},
+      );
+      return const ApiResult.success(data: true);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult> deleteAutoOrder(int orderId) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.delete(
+        '/api/v1/dashboard/user/orders/$orderId/delete-repeat',
+      );
+      return const ApiResult.success(data: true);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -47,7 +77,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       'status': 'completed',
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/v1/dashboard/user/orders/paginate',
         queryParameters: data,
@@ -58,12 +88,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> get completed orders failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -83,7 +110,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       "perPage": 10
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/v1/dashboard/user/orders/paginate',
         queryParameters: data,
@@ -91,15 +118,12 @@ class OrdersRepository implements OrdersRepositoryFacade {
       return ApiResult.success(
         data: OrderPaginateResponse.fromJson(response.data),
       );
-    } catch (e) {
-      debugPrint('==> get open orders failure: $e');
+    } catch (e, s) {
+      debugPrint('==> get open orders failure: $e, $s');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -116,7 +140,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       "page": page
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/v1/dashboard/user/orders/paginate',
         queryParameters: data,
@@ -127,12 +151,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> get canceled orders failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -144,7 +165,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       'lang': LocalStorage.getLanguage()?.locale
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/v1/dashboard/user/orders/$orderId',
         queryParameters: data,
@@ -152,15 +173,12 @@ class OrdersRepository implements OrdersRepositoryFacade {
       return ApiResult.success(
         data: OrderActiveModel.fromJson(response.data),
       );
-    } catch (e) {
-      debugPrint('==> get single order failure: $e');
+    } catch (e, s) {
+      debugPrint('==> get single order failure: $e,$s');
       return ApiResult.failure(
-          error: (e as DioException).type == DioExceptionType.badResponse
-              ? ((e).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -172,7 +190,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
   }) async {
     final data = {'rating': rating, if (comment != "") 'comment': comment};
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post(
         '/api/v1/dashboard/user/orders/review/$orderId',
         data: data,
@@ -181,12 +199,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> add order review failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -194,19 +209,41 @@ class OrdersRepository implements OrdersRepositoryFacade {
   Future<ApiResult<String>> process(
       OrderBodyData orderBody, String name) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
-      var res = await client.get('/api/v1/dashboard/user/order-$name-process',
-          data: orderBody.toJson());
+      debugPrint(
+          '==> order process request: ${jsonEncode(orderBody.toJson())}');
+      final client = dioHttp.client(requireAuth: true);
+      var res = await client.get(
+        '/api/v1/dashboard/user/order-$name-process',
+        data: orderBody.toJson(),
+      );
+      if (name == "pay-fast") {
+        final data = res.data["data"]["data"];
+        var payfast = Payfast(
+          passphrase: AppConstants.passphrase,
+          paymentType: PaymentType.simplePayment,
+          production: data["sandbox"] != 1,
+          merchantDetails: MerchantDetails(
+            merchantId: AppConstants.merchantId,
+            merchantKey: AppConstants.merchantKey,
+            notifyUrl: data["notify_url"],
+            cancelUrl: data["cancel_url"],
+            returnUrl: data["return_url"],
+            paymentId: res.data["data"]["id"].toString(),
+          ),
+        );
+        payfast.createSimplePayment(
+          amount: data["amount"].toString(),
+          itemName: data["item_name"],
+        );
+        return ApiResult.success(data: payfast.generateURL());
+      }
       return ApiResult.success(data: res.data["data"]["data"]["url"]);
-    } catch (e) {
-      debugPrint('==> add order review failure: $e');
+    } catch (e, s) {
+      debugPrint('==> order process failure: $e, $s');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -218,13 +255,13 @@ class OrdersRepository implements OrdersRepositoryFacade {
     num? tips,
   ) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       if (paymentName.toLowerCase() == 'wallet') {
         var res = await client.post(
           '/api/v1/payments/order/$orderId/transactions',
           data: {
             "tips": tips,
-            "payment_sys_id": paymentId ,
+            "payment_sys_id": paymentId,
           },
         );
         return ApiResult.success(data: res.data["data"].toString());
@@ -241,12 +278,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> tip order failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -260,7 +294,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       'shop_id': shopId,
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.post(
         '/api/v1/rest/coupons/check',
         data: data,
@@ -269,12 +303,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> check coupon failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -283,7 +314,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       {required double amount, required int shopId}) async {
     final data = {'amount': amount, "shop_id": shopId};
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.post(
         '/api/v1/rest/cashback/check',
         data: data,
@@ -292,12 +323,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> check cashback failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -317,7 +345,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       "coupon": coupon,
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.post(
         '/api/v1/dashboard/user/cart/calculate/$cartId',
         queryParameters: data,
@@ -327,34 +355,26 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> check cashback failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<void>> cancelOrder(num orderId) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post(
         '/api/v1/dashboard/user/orders/$orderId/status/change?status=canceled',
       );
-      return const ApiResult.success(
-        data: null,
-      );
+      return const ApiResult.success(data: null);
     } catch (e) {
       debugPrint('==> get cancel order failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -365,7 +385,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
         "order_id": orderId,
         "cause": title,
       };
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       await client.post('/api/v1/dashboard/user/order-refunds', data: data);
       return const ApiResult.success(
         data: null,
@@ -373,12 +393,9 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> get cancel order failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
@@ -392,7 +409,7 @@ class OrdersRepository implements OrdersRepositoryFacade {
       "page": page
     };
     try {
-      final client = inject<HttpService>().client(requireAuth: true);
+      final client = dioHttp.client(requireAuth: true);
       final response = await client.get(
         '/api/v1/dashboard/user/order-refunds/paginate',
         queryParameters: data,
@@ -403,35 +420,30 @@ class OrdersRepository implements OrdersRepositoryFacade {
     } catch (e) {
       debugPrint('==> get canceled orders failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 
   @override
   Future<ApiResult<LocalLocation>> getDriverLocation(int deliveryId) async {
     try {
-      final client = inject<HttpService>().client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/orders/deliveryman/$deliveryId',
       );
       return ApiResult.success(
         data: LocalLocation.fromJson(
-            response.data["data"]["delivery_man_setting"]["location"]),
+          response.data["data"]["delivery_man_setting"]["location"],
+        ),
       );
     } catch (e) {
       debugPrint('==> get driver location failure: $e');
       return ApiResult.failure(
-          error: (e.runtimeType == DioException)
-              ? ((e as DioException).response?.data["message"] == "Bad request."
-                  ? (e.response?.data["params"] as Map).values.first[0]
-                  : e.response?.data["message"])
-              : "",
-          statusCode: NetworkExceptions.getDioStatus(e));
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/domain/iterface/parcel.dart';
-import 'package:riverpodtemp/infrastructure/models/data/parcel_order.dart';
-import '../../infrastructure/services/app_connectivity.dart';
-import '../../infrastructure/services/app_helpers.dart';
+import 'package:foodyman/domain/interface/parcel.dart';
+import 'package:foodyman/infrastructure/models/data/parcel_order.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'parcel_list_state.dart';
 
 class ParcelListNotifier extends StateNotifier<ParcelListState> {

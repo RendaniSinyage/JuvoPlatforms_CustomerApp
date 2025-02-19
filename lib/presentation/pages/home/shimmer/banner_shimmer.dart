@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class BannerShimmer extends StatelessWidget {
   const BannerShimmer({super.key});

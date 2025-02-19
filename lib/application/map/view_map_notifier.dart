@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:riverpodtemp/domain/iterface/user.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_new_data.dart';
-import 'package:riverpodtemp/infrastructure/models/data/address_old_data.dart';
+import 'package:foodyman/domain/interface/user.dart';
+import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
+import 'package:foodyman/infrastructure/models/data/address_old_data.dart';
 
-import 'package:riverpodtemp/infrastructure/services/app_connectivity.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
 
-import '../../domain/iterface/shops.dart';
-import '../../infrastructure/services/tr_keys.dart';
+import 'package:foodyman/domain/interface/shops.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import '../../presentation/pages/home/widgets/add_address.dart';
 import 'view_map_state.dart';
 
@@ -61,7 +61,7 @@ class ViewMapNotifier extends StateNotifier<ViewMapState> {
           );
           onSuccess?.call();
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(
             isLoading: false,
           );
@@ -93,7 +93,7 @@ class ViewMapNotifier extends StateNotifier<ViewMapState> {
           );
           onSuccess?.call();
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(
             isLoading: false,
           );
@@ -125,12 +125,12 @@ class ViewMapNotifier extends StateNotifier<ViewMapState> {
             );
           }
         },
-        failure: (activeFailure, status) {
+        failure: (failure, status) {
           state = state.copyWith(isLoading: false);
           if (!(status == 400 || status == 404)) {
             AppHelpers.showCheckTopSnackBar(
               context,
-              activeFailure,
+              failure,
             );
           }
         },

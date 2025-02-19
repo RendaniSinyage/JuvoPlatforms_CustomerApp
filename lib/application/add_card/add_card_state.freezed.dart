@@ -22,7 +22,9 @@ mixin _$AddCardState {
   String get date => throw _privateConstructorUsedError;
   String get cvc => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddCardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AddCardStateCopyWith<AddCardState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +53,8 @@ class _$AddCardStateCopyWithImpl<$Res, $Val extends AddCardState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AddCardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,6 +113,8 @@ class __$$AddCardStateImplCopyWithImpl<$Res>
       _$AddCardStateImpl _value, $Res Function(_$AddCardStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddCardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -194,7 +200,9 @@ class _$AddCardStateImpl extends _AddCardState {
   int get hashCode =>
       Object.hash(runtimeType, isActiveCard, cardNumber, cardName, date, cvc);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddCardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddCardStateImplCopyWith<_$AddCardStateImpl> get copyWith =>
@@ -220,8 +228,11 @@ abstract class _AddCardState extends AddCardState {
   String get date;
   @override
   String get cvc;
+
+  /// Create a copy of AddCardState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddCardStateImplCopyWith<_$AddCardStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

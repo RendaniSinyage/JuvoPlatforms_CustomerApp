@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../theme/app_style.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
 
 class MarketShimmer extends StatelessWidget {
   final bool isSimpleShop;
@@ -22,7 +22,7 @@ class MarketShimmer extends StatelessWidget {
       height: 130.h,
       decoration: BoxDecoration(
           color: AppStyle.shimmerBase,
-          borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          borderRadius: BorderRadius.circular(10.r)),
     ) : Container(
       margin: isSimpleShop
           ? EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h)
@@ -31,7 +31,7 @@ class MarketShimmer extends StatelessWidget {
       height: 260.h,
       decoration: BoxDecoration(
           color: AppStyle.shimmerBase,
-          borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          borderRadius: BorderRadius.circular(10.r)),
     );
   }
 }

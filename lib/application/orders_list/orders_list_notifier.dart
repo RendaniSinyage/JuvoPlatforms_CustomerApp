@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/infrastructure/models/data/order_active_model.dart';
-import 'package:riverpodtemp/infrastructure/models/data/refund_data.dart';
-import '../../domain/iterface/orders.dart';
-import '../../infrastructure/services/app_connectivity.dart';
-import '../../infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/models/data/order_active_model.dart';
+import 'package:foodyman/infrastructure/models/data/refund_data.dart';
+import 'package:foodyman/domain/interface/orders.dart';
+import 'package:foodyman/infrastructure/services/app_connectivity.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'orders_list_state.dart';
 
 class OrdersListNotifier extends StateNotifier<OrdersListState> {

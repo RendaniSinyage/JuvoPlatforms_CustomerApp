@@ -4,20 +4,20 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodyman/infrastructure/services/enums.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/app_bar_bottom_sheet.dart';
-import 'package:riverpodtemp/presentation/components/buttons/custom_button.dart';
-import 'package:riverpodtemp/presentation/components/keyboard_dismisser.dart';
-import 'package:riverpodtemp/presentation/components/text_fields/outline_bordered_text_field.dart';
-import 'package:riverpodtemp/presentation/pages/auth/confirmation/register_confirmation_page.dart';
-import '../../../theme/theme.dart';
-import '../../../../application/reser_password/reset_password_provider.dart';
-
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/app_constants.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/app_bar_bottom_sheet.dart';
+import 'package:foodyman/presentation/components/buttons/custom_button.dart';
+import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
+import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
+import 'package:foodyman/presentation/pages/auth/confirmation/register_confirmation_page.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
+import 'package:foodyman/application/auth/auth.dart';
 
 @RoutePage()
 class ResetPasswordPage extends ConsumerWidget {
@@ -35,7 +35,7 @@ class ResetPasswordPage extends ConsumerWidget {
         AppHelpers.showCustomModalBottomSheet(
           context: context,
           modal: RegisterConfirmationPage(
-            verificationId: next.verificationId,
+            verificationId: next.verifyId,
             userModel: UserModel(email: state.email),
             isResetPassword: true,
           ),
@@ -48,15 +48,14 @@ class ResetPasswordPage extends ConsumerWidget {
       child: AbsorbPointer(
         absorbing: state.isLoading,
         child: KeyboardDismisser(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-    child: Container(
+          child: Container(
             padding: MediaQuery.of(context).viewInsets,
             decoration: BoxDecoration(
                 color: AppStyle.bgGrey.withOpacity(0.96),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(40.r),
-                ),),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.r),
+                  topRight: Radius.circular(16.r),
+                )),
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -79,12 +78,13 @@ class ResetPasswordPage extends ConsumerWidget {
                           ),
                         ),
                         40.verticalSpace,
-                        if (AppConstants.isSpecificNumberEnabled)
+                        if (AppConstants.signUpType== SignUpType.phone)
                           Directionality(
                             textDirection:
-                            isLtr ? TextDirection.ltr : TextDirection.rtl,
+                                isLtr ? TextDirection.ltr : TextDirection.rtl,
                             child: IntlPhoneField(
-                              disableLengthCheck: !AppConstants.isNumberLengthAlwaysSame,
+                              disableLengthCheck:
+                                  !AppConstants.isNumberLengthAlwaysSame,
                               onChanged: (phoneNum) {
                                 notifier.setEmail(phoneNum.completeNumber);
                               },
@@ -106,9 +106,9 @@ class ResetPasswordPage extends ConsumerWidget {
                               showCountryFlag: AppConstants.showFlag,
                               showDropdownIcon: AppConstants.showArrowIcon,
                               autovalidateMode:
-                              AppConstants.isNumberLengthAlwaysSame
-                                  ? AutovalidateMode.onUserInteraction
-                                  : AutovalidateMode.disabled,
+                                  AppConstants.isNumberLengthAlwaysSame
+                                      ? AutovalidateMode.onUserInteraction
+                                      : AutovalidateMode.disabled,
                               textAlignVertical: TextAlignVertical.center,
                               decoration: InputDecoration(
                                 counterText: '',
@@ -118,51 +118,57 @@ class ResetPasswordPage extends ConsumerWidget {
                                             color: AppStyle.differBorderColor),
                                         const BorderSide(
                                             color:
-                                            AppStyle.differBorderColor))),
+                                                AppStyle.differBorderColor))),
                                 errorBorder: UnderlineInputBorder(
                                     borderSide: BorderSide.merge(
                                         const BorderSide(
                                             color: AppStyle.differBorderColor),
                                         const BorderSide(
                                             color:
-                                            AppStyle.differBorderColor))),
+                                                AppStyle.differBorderColor))),
                                 border: const UnderlineInputBorder(),
                                 focusedErrorBorder:
-                                const UnderlineInputBorder(),
+                                    const UnderlineInputBorder(),
                                 disabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide.merge(
                                         const BorderSide(
                                             color: AppStyle.differBorderColor),
                                         const BorderSide(
                                             color:
-                                            AppStyle.differBorderColor))),
+                                                AppStyle.differBorderColor))),
                                 focusedBorder: const UnderlineInputBorder(),
                               ),
                             ),
                           ),
-                        if(!AppConstants.isSpecificNumberEnabled)OutlinedBorderTextField(
-                          label: AppHelpers.getTranslation(
-                                  TrKeys.emailOrPhoneNumber)
-                              .toUpperCase(),
-                          onChanged: notifier.setEmail,
-                          isError: !state.isSuccess,
-                          descriptionText: AppHelpers.getTranslation(TrKeys.canNotBeEmpty),
-                        ),
+                        if (AppConstants.signUpType == SignUpType.both)
+                          OutlinedBorderTextField(
+                            label: AppHelpers.getTranslation(
+                                    TrKeys.emailOrPhoneNumber)
+                                .toUpperCase(),
+                            onChanged: notifier.setEmail,
+                            isError: !state.isSuccess,
+                            descriptionText:
+                                AppHelpers.getTranslation(TrKeys.canNotBeEmpty),
+                          ),
                       ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom,
+                          bottom: MediaQuery.paddingOf(context).bottom,
                           top: 120.h),
                       child: CustomButton(
                         isLoading: state.isLoading,
                         title: AppHelpers.getTranslation(TrKeys.send),
                         onPressed: () {
-                          notifier.checkEmail()
-                              ? notifier.sendCode(context)
-                              : notifier.sendCodeToNumber(context);
+                          if (AppConstants.isPhoneFirebase) {
+                            notifier.checkEmail()
+                                ? notifier.sendCode(context)
+                                : notifier.sendCodeToNumber(context);
+                          } else {
+                            notifier.sendCode(context);
+                          }
                         },
-                        background: AppStyle.brandGreen,
+                        background: AppStyle.primary,
                         textColor: AppStyle.black,
                       ),
                     ),
@@ -173,6 +179,6 @@ class ResetPasswordPage extends ConsumerWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }
