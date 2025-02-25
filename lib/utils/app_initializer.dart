@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/models/data/poi_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/application/poidata/poi_data_provider.dart';
-//import 'package:riverpodtemp/utils/excluded_product_ids.dart';
+
+import '../app_constants.dart';
+import '../application/poidata/poi_data_provider.dart';
+import '../infrastructure/models/data/poi_data.dart';
+//import 'package:foodyman/utils/excluded_product_ids.dart';
 
 class AppInitializer extends StatefulWidget {
   final ProviderContainer providerContainer;
   //final List<int> excludedProductIds = [];
   //final List<int> excludedCategoryIds = [];
 
-  AppInitializer({super.key, required this.providerContainer});
+  const AppInitializer({super.key, required this.providerContainer});
 
   Future<void> initializeApp() async {
     await initializeRemoteConfigWithoutAPICall();
@@ -64,24 +65,31 @@ class _AppInitializerState extends State<AppInitializer> {
     // Update other AppConstants with values from Remote Config
     AppConstants.drawingBaseUrl = remoteConfig.getString('drawingBaseUrl');
     AppConstants.baseUrl = remoteConfig.getString('baseUrl');
-    AppConstants.privacyPolicyUrl = remoteConfig.getString('privacyPolicyUrl');
+    //AppConstants.privacyPolicyUrl = remoteConfig.getString('privacyPolicyUrl');
     AppConstants.androidPackageName = remoteConfig.getString('androidPackageName');
     AppConstants.iosPackageName = remoteConfig.getString('iosPackageName');
     AppConstants.isDemo = remoteConfig.getBool('isDemo');
     AppConstants.adminPageUrl = remoteConfig.getString('adminPageUrl');
     AppConstants.routingKey = remoteConfig.getString('routingKey');
     AppConstants.googleApiKey = remoteConfig.getString('googleApiKey');
+    AppConstants.firebaseWebKey = remoteConfig.getString('firebaseWebKey');
     AppConstants.uriPrefix = remoteConfig.getString('uriPrefix');
     AppConstants.isOpen = remoteConfig.getString('isOpen');
     AppConstants.isClosed = remoteConfig.getString('isClosed');
     AppConstants.showGooglePOILayer = remoteConfig.getBool('showGooglePOILayer');
     AppConstants.localeCodeEn = remoteConfig.getString('localeCodeEn');
-    AppConstants.chatGpt = remoteConfig.getString('chatGpt');
+    //AppConstants.chatGpt = remoteConfig.getString('chatGpt');
     AppConstants.demoLatitude = double.parse(remoteConfig.getString('demoLatitude'));
     AppConstants.demoLongitude = double.parse(remoteConfig.getString('demoLongitude'));
     AppConstants.pinLoadingMin = double.parse(remoteConfig.getString('pinLoadingMin'));
     AppConstants.pinLoadingMax = double.parse(remoteConfig.getString('pinLoadingMax'));
     AppConstants.newShopDays = remoteConfig.getInt('newShopDays');
+    AppConstants.cardDirect = remoteConfig.getBool('cardDirect');
+
+    ///Payfast
+    //AppConstants.passphrase = remoteConfig.getString('payfast_passphrase');
+    //AppConstants.merchantId = remoteConfig.getString('payfast_merchant_id');
+    //AppConstants.merchantKey = remoteConfig.getString('payfast_merchant_key');
 
 
    /* try {
@@ -192,7 +200,7 @@ class _AppInitializerState extends State<AppInitializer> {
     final lastFetchTime = remoteConfig.lastFetchTime;
     final currentTime = DateTime.now();
 
-    if (lastFetchTime != null && currentTime.difference(lastFetchTime) > expireAfter) {
+    if (currentTime.difference(lastFetchTime) > expireAfter) {
       // Fetch other values with the default expiration time (12 hours)
       await remoteConfig.fetchAndActivate();
     }

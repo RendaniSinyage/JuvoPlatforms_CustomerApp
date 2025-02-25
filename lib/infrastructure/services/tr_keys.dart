@@ -415,4 +415,203 @@ class TrKeys {
       'confirm_password_is_not_the_same';
   static const String errorWithUpdatingPassword =
       'error_with_updating_password';
+
+  ///Added by Sinyage
+  static const String searchApp = 'searchApp';
+  static const String light = 'light';
+  static const String dark = 'dark';
+  static const String editAccount = 'editAccount';
+  static const String changePassword = 'changePassword';
+  static const String account = 'account';
+  static const String water = 'water';
+  static const String expire = 'expire';
+  static const String benefits = 'benefits';
+  static const String plan = 'Plan';
+  static const String notify = 'notify';
+  static const String stores = 'stores';
+  static const String etaTimeDialog = 'ETAtime';
+  static const String titleETA = 'U+2139_Estimated_Time_of_Arrival';
+  static const String etaTime = '60';
+  static const String eTA = 'ETA';
+
+  static const String etaTimeDialog2 = 'ETAtime';
+  static const String titleETA2 = 'U+2139_Estimated_Time_of_Arrival';
+  static const String etaTime2 = '30_-_60_Min';
+  static const String eTA2 = 'ETA';
+
+
+  /// Added by Sinyage
+  static const String introslide1 = 'intro_slide1';
+  static const String introslide2 = 'intro_slide2';
+  static const String introslide3 = 'intro_slide3';
+  static const String introslide4 = 'intro_slide4';
+  static const String introslide5 = 'intro_slide5';
+
+  static const String introbriefslide1 = 'introbrief_slide1';
+  static const String introbriefslide2 = 'introbrief_slide2';
+  static const String introbriefslide3 = 'introbrief_slide3';
+  static const String introbriefslide4 = 'introbrief_slide4';
+  static const String introbriefslide5 = 'introbrief_slide5';
+
+  static const String closedslide1 = 'closed_slide1';
+  static const String closedbriefslide1 = 'closedbrief_slide1';
+  static const String hello = 'hello';
+  static const String hey = 'hey';
+  static const String there = 'there';
+  static const String signedtext = 'signedtext';
+  static const String signtext = 'signtext';
+  static const String signtext2 = 'signtext2';
+  static const String appName = 'juvo';
+  static const String appMotto = 'motto';
+  static const String payfast = 'payload_payfast';
+  static const String flutterWave = 'payload_flutterwave';
+  static const String paystack = 'payload_paystack';
+  static const String paymentMethodPrefix = 'paymentMethod_';
+  static const String isAd = 'isAd';
+  static const String searchUser = 'searchUser';
+  static String thisFieldIsNotMinusOrZero = 'thisFieldIsNotMinusOrZero';
+  static const String members = 'members';
+  static const String thereAreNoPaymentTypesHere = 'thereAreNoPaymentTypesHere';
+  static const String fillWallet = 'fillWallet';
+  static const String mostRecentOrder = 'mostRecentOrder';
+  static const String sale = 'sale';
+
+
+  ////Review Text
+  static const String veryBad = 'veryBad';
+  static const String bad = 'bad';
+  static const String notBad = 'notBad';
+  static const String good = 'good';
+  static const String veryGood = 'veryGood';
+  static const String exceptional = 'exceptional';
+  static const String km = 'km';
+  static String comingSoon = 'comingSoon';
+  static String featureNotAvailable = 'featureNotAvailable';
+  static const String ok = 'ok';
+
+  static const String returnHome = 'return.home';
+  static const String paymentRejected = 'payment.rejected';
+  static const String paymentSuccessful = 'payment.successful';
+  static const String checkout = 'checkout';
+
+  static const String congrats = 'congrats';
+  static const String thankYouPurchase = 'thank.you.purchase';
+  static const String yourOrderShipping = 'your.order.shipping';
+
+  static String enterEmailOrPhone ='enterEmailOrPhone';
+
+  static String emailOrPhone = 'emailOrPhone';
+
+  static String enterValidEmailOrPhone = 'enterValidEmailOrPhone';
+
+  static String pleaseSelectUser ='pleaseSelectUser';
+
+  static String shopping = 'you.are.shopping.at';
+
+  static String weAreDelivering = 'Note:.We.will.be.delivering.to.this.address';
+
+  static const String usingDefaultLocation = 'using_default_location,_set_address';
+
+  static String selectCard = 'select.card';
+
+  static String selectSavedCard = 'select.saved.card';
+
+  static String deleteSavedCard = 'delete.saved.card';
+
+  static String noSavedCard = 'no.saved.card';
+
+  static String payWithCard = 'pay.with.card';
+
+  static String completeCardDetails = 'complete.card.details';
+
+  static String payWithSavedCard ='pay.with.saved.card';
+
+  static String payWithNewCard ='pay.with.new.card';
+
+  static String useYourSavedCards ='use.you.saved.cards';
+
+  static String payNow ='pay.now';
+
+  static String payment = 'payment';
+
+  static String expires ='expires';
+
+  static String stay ='stay';
+
+  static String successfullyDeleted ='successfully.Deleted';
+
+  static String delete ='delete';
+
+  static String addNewCardDescription ='pay.with.card.to.save.it.for.future.orders';
+
+  static String cardWillBeSaved = 'your.card.will.be.saved.for.future.payments';
+
+  static String enterCardDirectly = 'enter.Card.Directly';
+
+  static String cardAddedSuccessfully = 'card.Added.Successfully';
+
+  static String useThisCard = 'use.This.Card';
+
+  static String cards ='Saved.Cards';
+
+  static String addNewCard ='add.New.Card';
+
+
+  ///wallet sends
+  static const String topUpWallet = 'top_up_wallet';
+  static const String sendMoney = 'send_money';
+  static const String enterAmount = 'enter_amount';
+  static const String quickAmount = 'quick_amount';
+  static const String topUpNow = 'top_up_now';
+  static const String topUpInfo = 'top_up_info';
+  static const String pleaseEnterValidAmount = 'please_enter_valid_amount';
+  static const String topUpSuccessful = 'top_up_successful';
+  static const String searchRecipient = 'search_recipient';
+  static const String searchByPhoneOrEmail = 'search_by_phone_or_email';
+  static const String noUsersFound = 'no_users_found';
+  static const String pleaseSelectRecipient = 'please_select_recipient';
+  static const String sendNow = 'send_now';
+  static const String moneySentSuccessfully = 'money_sent_successfully';
+  static const String topup = 'topup';
+  static const String loan = 'loan';
+
+  ///Driver
+  static const String carSettings = "car.settings";
+  static const String becomeDriver = "become.driver";
+  static const String takePhoto = 'take.photo';
+  static const String selectPhoto = 'select.photo';
+
+  static const String cannotBeEmpty = 'cannot_be_empty';
+  static const String height = 'height';
+  static const String width = 'width';
+  static const String length = 'length';
+  static const String weight = 'weight';
+  static const String foot = 'foot';
+  static const String bike = 'bike';
+  static const String motorbike = 'motorbike';
+  static const String gas = 'gas';
+  static const String note = 'note';
+  static const String diesel = 'diesel';
+  static const String benzine = 'benzine';
+  static const String approve = 'approve';
+  static const String accept = 'accept';
+  static const String carPicture = 'car_picture';
+  static const String color = 'color';
+  static const String stateNumber = 'state_number';
+  static const String carModels = 'car_models';
+  static const String carBrand = 'car_brand';
+  static const String typeTechnique = 'type_of_technique';
+  static const String deliveryVehicle = 'delivery_vehicle';
+  static const String yourName = 'your_name';
+  static const String size = 'Size';
+  static const String errorWithCreatingAccount = 'error_with_creating_account';
+
+  static const String loans = 'loans';
+  static const String saveForLater = 'Save.for.Later';
+  static const String withdraw = 'withdraw';
+
+  static const String daysInAppThisYear = 'daysInAppThisYear';
+
+
+
 }

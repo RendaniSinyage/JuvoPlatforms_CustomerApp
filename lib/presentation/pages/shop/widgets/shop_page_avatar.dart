@@ -1,29 +1,28 @@
 import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:remixicon/remixicon.dart';
 import 'package:foodyman/application/shop_order/shop_order_provider.dart';
 import 'package:foodyman/infrastructure/models/data/shop_data.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
-import 'package:foodyman/presentation/components/badge_item.dart';
+//import 'package:foodyman/presentation/components/badge_item.dart';
 import 'package:foodyman/presentation/components/buttons/animation_button_effect.dart';
 import 'package:foodyman/presentation/components/buttons/custom_button.dart';
 import 'package:foodyman/presentation/components/custom_network_image.dart';
-import 'package:foodyman/presentation/components/shop_avarat.dart';
+//import 'package:foodyman/presentation/components/shop_avarat.dart';
 import 'package:foodyman/presentation/pages/shop/group_order/group_order.dart';
 import 'package:foodyman/presentation/routes/app_router.dart';
 import 'package:foodyman/presentation/theme/theme.dart';
-
-import 'package:foodyman/infrastructure/models/data/bonus_data.dart';
-import 'package:foodyman/presentation/components/bonus_discount_popular.dart';
+import 'package:foodyman/presentation/components/badges.dart';
+import '../../../../infrastructure/models/data/bonus_data.dart';
 import 'bonus_screen.dart';
-import 'shop_description_item.dart';
+//import 'shop_description_item.dart';
 
 class ShopPageAvatar extends StatelessWidget {
   final ShopData shop;
@@ -37,14 +36,14 @@ class ShopPageAvatar extends StatelessWidget {
 
   const ShopPageAvatar(
       {super.key,
-      required this.shop,
-      required this.onLike,
-      required this.workTime,
-      required this.isLike,
-      required this.onShare,
-      required this.bonus,
-      this.cartId,
-      this.userUuid});
+        required this.shop,
+        required this.onLike,
+        required this.workTime,
+        required this.isLike,
+        required this.onShare,
+        required this.bonus,
+        this.cartId,
+        this.userUuid});
 
   @override
   Widget build(BuildContext context) {
@@ -57,25 +56,7 @@ class ShopPageAvatar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    (shop.translation?.title?.length ?? 0) > 28
-                        ? "${shop.translation?.title?.substring(0, 28) ?? " "}.."
-                        : shop.translation?.title ?? "",
-                    style: AppStyle.interSemi(
-                      size: 21,
-                      color: AppStyle.black,
-                    ),
-                  ),
-                  if (shop.verify ?? false)
-                    Padding(
-                      padding: EdgeInsets.only(left: 4.r),
-                      child: const BadgeItem(),
-                    ),
-                ],
-              ),
-              Text(
+              /*Text(
                 shop.translation?.description ?? "",
                 style: AppStyle.interNormal(
                   size: 13,
@@ -84,45 +65,10 @@ class ShopPageAvatar extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              6.verticalSpace,
-              GestureDetector(
-                onTap: () {
-                  context.pushRoute(
-                      ShopDetailRoute(shop: shop, workTime: workTime));
-                },
-                child: Text(
-                  AppHelpers.getTranslation(TrKeys.moreInfo),
-                  style: AppStyle.interNormal(
-                      size: 14,
-                      color: AppStyle.black,
-                      textDecoration: TextDecoration.underline),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              6.verticalSpace,
-              Row(
-                children: [
-                  SvgPicture.asset("assets/svgs/star.svg"),
-                  4.horizontalSpace,
-                  Text(
-                    (shop.avgRate ?? ""),
-                    style: AppStyle.interNormal(
-                      size: 12.sp,
-                      color: AppStyle.black,
-                    ),
-                  ),
-                  8.horizontalSpace,
-                  BonusDiscountPopular(
-                    isSingleShop: true,
-                    isPopular: shop.isRecommend ?? false,
-                    bonus: shop.bonus,
-                    isDiscount: shop.isDiscount ?? false,
-                  ),
-                ],
-              ),
-              10.verticalSpace,
-              Row(
+              6.verticalSpace, */
+
+              // 10.verticalSpace,
+              /* Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ShopDescriptionItem(
@@ -147,41 +93,42 @@ class ShopPageAvatar extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              ),*/
               AppHelpers.getTranslation(TrKeys.close) == workTime
+
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width - 32,
-                        decoration: BoxDecoration(
-                            color: AppStyle.bgGrey,
-                            borderRadius:
-                                BorderRadius.circular(10.r)),
-                        padding: const EdgeInsets.all(6),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              FlutterRemix.time_fill,
-                              color: AppStyle.black,
-                            ),
-                            8.horizontalSpace,
-                            Expanded(
-                              child: Text(
-                                AppHelpers.getTranslation(
-                                    TrKeys.notWorkTodayTime),
-                                style: AppStyle.interNormal(
-                                  size: 14,
-                                  color: AppStyle.black,
-                                ),
-                                textAlign: TextAlign.start,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
+                padding: const EdgeInsets.only(top: 10),
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width - 32,
+                  decoration: BoxDecoration(
+                      color: AppStyle.bgGrey,
+                      borderRadius:
+                      BorderRadius.circular(10.r)),
+                  padding: const EdgeInsets.all(6),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        FlutterRemix.time_fill,
+                        color: AppStyle.black,
+                      ),
+                      8.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          AppHelpers.getTranslation(
+                              TrKeys.notWorkTodayTime),
+                          style: AppStyle.interNormal(
+                            size: 14,
+                            color: AppStyle.black,
+                          ),
+                          textAlign: TextAlign.start,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    )
+                    ],
+                  ),
+                ),
+              )
                   : const SizedBox.shrink(),
               bonus != null ? _bonusButton(context) : const SizedBox.shrink(),
               12.verticalSpace,
@@ -226,12 +173,10 @@ class ShopPageAvatar extends StatelessWidget {
                             .read(shopOrderProvider.notifier)
                             .deleteCart(context)
                             .then((value) async {
-                              if(context.mounted) {
-                                ref.read(shopOrderProvider.notifier).createCart(
-                                context,
-                                (shop.id ?? 0),
-                              );
-                              }
+                          ref.read(shopOrderProvider.notifier).createCart(
+                            context,
+                            (shop.id ?? 0),
+                          );
                         });
                       });
                 })),
@@ -274,27 +219,28 @@ class ShopPageAvatar extends StatelessWidget {
         title: isStartOrder
             ? AppHelpers.getTranslation(TrKeys.manageOrder)
             : AppHelpers.getTranslation(TrKeys.startGroupOrder),
-        background: isStartOrder ? AppStyle.primary : AppStyle.orderButtonColor,
+        background:
+        isStartOrder ? AppStyle.primary : AppStyle.orderButtonColor,
         textColor: isStartOrder ? AppStyle.black : AppStyle.white,
         radius: 10,
         onPressed: () {
           if (LocalStorage.getToken().isNotEmpty) {
             !isStartOrder
                 ? ref.read(shopOrderProvider.notifier).createCart(
-                      context,
-                      shop.id ?? 0,
-                    )
+              context,
+              shop.id ?? 0,
+            )
                 : AppHelpers.showCustomModalBottomSheet(
-                    paddingTop: MediaQuery.paddingOf(context).top + 160.h,
-                    context: context,
-                    modal: GroupOrderScreen(
-                      shop: shop,
-                      cartId: cartId,
-                    ),
-                    isDarkMode: false,
-                    isDrag: true,
-                    radius: 12,
-                  );
+              paddingTop: MediaQuery.paddingOf(context).top + 160.h,
+              context: context,
+              modal: GroupOrderScreen(
+                shop: shop,
+                cartId: cartId,
+              ),
+              isDarkMode: false,
+              isDrag: true,
+              radius: 12,
+            );
           } else {
             context.pushRoute(const LoginRoute());
           }
@@ -317,19 +263,64 @@ class ShopPageAvatar extends StatelessWidget {
             radius: 0,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-              top: 130.h + MediaQuery.paddingOf(context).top,
-              left: 16.w,
-              right: 16.w),
-          child: ShopAvatar(
-            radius: 20,
-            shopImage: shop.logoImg ?? "",
-            size: 70,
-            padding: 6,
-            bgColor: AppStyle.white.withOpacity(0.65),
+
+        /// const SizedBox(width: 10),
+        RatingBadge(shop: shop),
+        // shop.minPrice != 0
+        DeliveryFeeBadge(shop: shop),
+        Positioned(
+          bottom: 20.h,
+          right: 15.w,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.r),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.pushRoute(
+                            ShopDetailRoute(shop: shop, workTime: workTime));
+                      },
+                      child: Text(
+                        AppHelpers.getTranslation(TrKeys.moreInfo),
+                        style: AppStyle.interNormal(
+                            size: 12,
+                            color: AppStyle.white,
+                            textDecoration: TextDecoration.underline),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
+        Positioned(
+          bottom: 20.h,
+          left: 15.w,
+          child: Row(
+            children: [
+              BonusDiscountPopular(
+                isSingleShop: true,
+                isPopular: shop.isRecommend ?? false,
+                bonus: shop.bonus,
+                isDiscount: shop.isDiscount ?? false,
+              ),
+            ],
+          ),
+        ),
+
+        ShopBadge(shop: shop),
+        DistanceBadge(shop: shop),
         Positioned(
           top: MediaQuery.paddingOf(context).top,
           right: 16.w,
@@ -454,8 +445,8 @@ class ShopPageAvatar extends StatelessWidget {
                   child: Text(
                     bonus != null
                         ? ((bonus?.type ?? "sum") == "sum")
-                            ? "${AppHelpers.getTranslation(TrKeys.under)} ${AppHelpers.numberFormat(number: bonus?.value)} + ${bonus?.bonusStock?.product?.translation?.title ?? ""}"
-                            : "${AppHelpers.getTranslation(TrKeys.under)} ${bonus?.value ?? 0} + ${bonus?.bonusStock?.product?.translation?.title ?? ""}"
+                        ? "${AppHelpers.getTranslation(TrKeys.under)} ${AppHelpers.numberFormat(number: bonus?.value)} + ${bonus?.bonusStock?.product?.translation?.title ?? ""}"
+                        : "${AppHelpers.getTranslation(TrKeys.under)} ${bonus?.value ?? 0} + ${bonus?.bonusStock?.product?.translation?.title ?? ""}"
                         : "",
                     style: AppStyle.interNormal(
                       size: 14,

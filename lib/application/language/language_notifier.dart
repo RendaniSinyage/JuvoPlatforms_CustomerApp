@@ -20,7 +20,7 @@ class LanguageNotifier extends StateNotifier<LanguageState> {
     LocalStorage.setLanguageData(state.list[index]);
   }
 
-  Future<void> getLanguages(BuildContext context) async {
+  Future<void> getLanguages(BuildContext context, {bool autoSelectIfSingle = false}) async {
     final connect = await AppConnectivity.connectivity();
     if (connect) {
       state = state.copyWith(isLoading: true, isSuccess: false);
@@ -30,15 +30,35 @@ class LanguageNotifier extends StateNotifier<LanguageState> {
           final List<LanguageData> languages = data.data ?? [];
           final lang = LocalStorage.getLanguage();
           int index = 0;
+
+          // If there's only one language and autoSelectIfSingle is true,
+          // automatically select it and skip language selection
+          if (languages.length == 1 && autoSelectIfSingle) {
+            LocalStorage.setLanguageSelected(true);
+            LocalStorage.setLanguageData(languages[0]);
+            LocalStorage.setLangLtr(languages[0].backward);
+            getTranslations(context);
+            state = state.copyWith(
+                isLoading: false,
+                list: languages,
+                index: 0,
+                isSuccess: true,
+                autoSelected: true
+            );
+            return;
+          }
+
+          // Otherwise, find the index of the current language
           for (int i = 0; i < languages.length; i++) {
             if (languages[i].id == lang?.id) {
               index = i;
               break;
             }
           }
+
           state = state.copyWith(
             isLoading: false,
-            list: data.data ?? [],
+            list: languages,
             index: index,
           );
         },

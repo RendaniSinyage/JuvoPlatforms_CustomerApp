@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/application/profile/profile_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/app_constants.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/infrastructure/models/data/user.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/profile/profile_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/infrastructure/models/data/user.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 //@routePage()
 class WelcomeText extends StatelessWidget {
@@ -17,12 +16,12 @@ class WelcomeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstName = LocalStorage.getFirstName();
-    final lastName = LocalStorage.getLastName();
+    final firstName = LocalStorage.getUser()?.firstname;
+    final lastName = LocalStorage.getUser()?.lastname;
     String greetingText = '';
     String signedText = '';
 
-    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+    if (firstName!.isNotEmpty && lastName!.isNotEmpty) {
       greetingText =
           '${AppHelpers.getTranslation(TrKeys.hello)} \u{1F44B}\n$firstName'; //\n$lastName';
       signedText = AppHelpers.getTranslation(TrKeys.signedtext);

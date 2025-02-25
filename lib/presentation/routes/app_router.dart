@@ -45,7 +45,12 @@ import '../pages/home/widgets/recommended_screen.dart';
 import '../pages/profile/share_referral_page.dart';
 import '../pages/profile/wallet_history.dart';
 import '../pages/story_page/story_page.dart';
-
+import 'package:foodyman/presentation/pages/initial/closed/closed_page.dart';
+import 'package:foodyman/presentation/pages/intro/intro_page.dart';
+import 'package:foodyman/presentation/pages/order/orders_main.dart';
+import '../../presentation/pages/loans/widgets/loan_document_upload_screen.dart';
+import '../../presentation/pages/loans/widgets/loan_eligibility_screen.dart';
+import '../../presentation/pages/loans/Loan_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -101,6 +106,14 @@ class AppRouter extends RootStackRouter {
     MaterialRoute(path: '/address_list_page', page: AddressListRoute.page),
     MaterialRoute(path: '/term', page: TermRoute.page),
     MaterialRoute(path: '/policy', page: PolicyRoute.page),
+    MaterialRoute(path: '/ClosedPage', page: ClosedRoute.page),
+    MaterialRoute(path: '/IntroPage', page: IntroRoute.page),
+    MaterialRoute(path: '/OrdesMainPage', page: OrdersMainRoute.page),
+    MaterialRoute(path: '/LoanEligibilityScreen', page: LoanEligibilityRoute.page),
+    MaterialRoute(path: '/LoanDocumentUploadScreen', page: LoanDocumentUploadRoute.page),
+    MaterialRoute(path: '/LoanScreen', page: LoanRoute.page),
+
+
   ];
 }
 

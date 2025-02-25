@@ -3,15 +3,15 @@ import 'package:auto_route/auto_route.dart';
 //import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart'; //Changed
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart'; //changed
-import 'package:riverpodtemp/presentation/components/buttons/second_button.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart'; //Changed
+import 'package:foodyman/infrastructure/services/app_helpers.dart'; //changed
+import 'package:foodyman/presentation/components/buttons/second_button.dart';
 //import '../../components/helper/shimmer.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 
 import '../../../application/intro/intro_provider.dart';
 //import '../../component/components.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 //import 'package:shared_preferences/shared_preferences.dart';
 
@@ -166,10 +166,10 @@ class _IntroPageState extends ConsumerState<IntroPage>
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          AppStyle.brandGreen.withOpacity(0.26),
-                          AppStyle.brandGreen.withOpacity(0),
-                          AppStyle.brandGreen.withOpacity(0),
-                          AppStyle.brandGreen.withOpacity(0.26)
+                          AppStyle.primary.withOpacity(0.26),
+                          AppStyle.primary.withOpacity(0),
+                          AppStyle.primary.withOpacity(0),
+                          AppStyle.primary.withOpacity(0.26)
                         ],
                       ),
                     ),
@@ -252,7 +252,7 @@ class _IntroPageState extends ConsumerState<IntroPage>
       context.pushRoute(const MainRoute());
     },
     title: AppHelpers.getTranslation(TrKeys.close),
-    bgColor: AppStyle.brandGreen,
+    bgColor: AppStyle.primary,
     titleColor: AppStyle.white,
   //  icon: FlutterRemix.close,
   //  iconColor: AppStyle.white,
@@ -281,7 +281,7 @@ class _IntroPageState extends ConsumerState<IntroPage>
                       width: (MediaQuery.of(context).size.width - 60) / 5,
                       decoration: BoxDecoration(
                         color: state.currentIndex >= index
-                            ? AppStyle.brandGreen
+                            ? AppStyle.primary
                             : AppStyle.white,
                         borderRadius: BorderRadius.circular(122),
                       ),
@@ -293,7 +293,7 @@ class _IntroPageState extends ConsumerState<IntroPage>
                                 value: controller.value,
                                 valueColor:
                                     const AlwaysStoppedAnimation<Color>(
-                                        AppStyle.brandGreen),
+                                        AppStyle.primary),
                                 backgroundColor: AppStyle.white,
                               ),
                             )
@@ -304,7 +304,7 @@ class _IntroPageState extends ConsumerState<IntroPage>
                                     value: 1,
                                     valueColor:
                                         AlwaysStoppedAnimation<Color>(
-                                            AppStyle.brandGreen),
+                                            AppStyle.primary),
                                     backgroundColor: AppStyle.white,
                                   ),
                                 )

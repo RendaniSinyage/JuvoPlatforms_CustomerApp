@@ -4,15 +4,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/models/data/order_active_model.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_provider.dart';
-import 'package:riverpodtemp/application/shop/shop_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
-import 'package:riverpodtemp/presentation/components/title_icon.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/models/data/order_active_model.dart';
+import 'package:foodyman/application/orders_list/orders_list_provider.dart';
+import 'package:foodyman/application/shop/shop_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/presentation/components/shop_avarat.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/infrastructure/models/data/shop_data.dart';
+import 'package:foodyman/presentation/components/title_icon.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import '../../../infrastructure/services/local_storage.dart';
 import '../../routes/app_router.dart';
@@ -63,7 +63,7 @@ class _UpComingListState extends ConsumerState<UpComingList> {
 
   @override
   Widget build(BuildContext context) {
-    final firstName = LocalStorage.getFirstName();
+    final firstName = LocalStorage.getUser()?.firstname;
 
     return ValueListenableBuilder<OrderActiveModel?>(
       valueListenable: _currentOrderNotifier,
@@ -288,7 +288,7 @@ class _ETADisplayState extends State<ETADisplay> {
           builder: (context, etaText, child) {
             final isDelayed = etaText == "Order Delayed";
             final displayText = isShowingFirstPart
-                ? AppHelpers.getTranslation(TrKeys.ETA)
+                ? AppHelpers.getTranslation(TrKeys.eTA)
                 : etaText;
 
             return GestureDetector(
@@ -300,14 +300,14 @@ class _ETADisplayState extends State<ETADisplay> {
                 height: 40.r,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: isShowingFirstPart ? AppStyle.white : (isDelayed ? Colors.red : AppStyle.brandGreen),
+                  color: isShowingFirstPart ? AppStyle.white : (isDelayed ? Colors.red : AppStyle.primary),
                 ),
                 child: Center(
                   child: Text(
                     displayText,
                     style: AppStyle.interBold(
                       size: 16,
-                      color: isShowingFirstPart ? AppStyle.brandGreen : AppStyle.white,
+                      color: isShowingFirstPart ? AppStyle.primary : AppStyle.white,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -327,14 +327,14 @@ class _ETADisplayState extends State<ETADisplay> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppHelpers.getTranslation(TrKeys.TitleETA),
+            AppHelpers.getTranslation(TrKeys.titleETA),
             style: AppStyle.interBold(
               size: 14,
               color: AppStyle.black,
             ),
           ),
           Text(
-            AppHelpers.getTranslation(TrKeys.ETAtimeDialog),
+            AppHelpers.getTranslation(TrKeys.etaTimeDialog),
             style: AppStyle.interNormal(
               size: 12,
               color: AppStyle.textGrey,

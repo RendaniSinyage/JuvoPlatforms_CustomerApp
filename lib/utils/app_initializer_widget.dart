@@ -1,11 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/utils/app_initializer.dart';
+
+import 'app_initializer.dart';
 
 class AppInitializerWidget extends StatefulWidget {
   final Widget child;
 
-  AppInitializerWidget({required this.child});
+  const AppInitializerWidget({super.key, required this.child});
 
   @override
   _AppInitializerWidgetState createState() => _AppInitializerWidgetState();
@@ -43,18 +45,22 @@ class _AppInitializerWidgetState extends State<AppInitializerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _isInitialized
-        ? UncontrolledProviderScope(
+    if (!_isInitialized) {
+      return MaterialApp(  // Wrap in MaterialApp to ensure proper context
+        home: Scaffold(
+          body: Center(
+            child: Image.asset(
+              'assets/images/splash.png',
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return UncontrolledProviderScope(
       container: _providerContainer,
       child: widget.child,
-    )
-        : Scaffold(
-      body: Center(
-        child: Image.asset(
-          'assets/images/splash.png',
-          fit: BoxFit.fill,
-        ),
-      ),
     );
   }
 }

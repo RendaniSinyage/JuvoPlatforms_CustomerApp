@@ -1,6 +1,6 @@
-# Foodyman Customer app 
+# Juvo Customer app 
 
-Foodyman is a multi restaurant marketplace.
+Juvo is a multi store marketplace.
 
 ## Requirements
 *  Flutter SDK setup (version 3.24.0 Stable)
@@ -15,7 +15,7 @@ Run an existing flutter project on IDE
 
 #### Change App Logo
 
-You can generate app icon using this website https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
+You can generate app icon using this website https://icon.kitchen
 * Then go to /android/app/src/main/resand replace all mipmap folder with your /android folder
 *  Again go to /ios/Runner and replace Assets.xcassets with your generated Assets.xcassets folder
 
@@ -35,5 +35,3 @@ Please do NOT put slash ( / ) at the end of your base url. Use your admin url as
 
 ### Change App Package
 Firstly, find out the existing package name. You can find it out from top of `/app/src/main/AndroidManifest.xml` file. Then right click on project folder from android studio and click onreplace in path. You will see a popup window with two input boxes. In first box you have to put existing package name that you saw in `AndroidManifest.xml` file previously and then write down your preferred package name in second box and then click on Replace All button.
-
-Documentation: https://githubit.com/foodyman-documentation/mobile-app

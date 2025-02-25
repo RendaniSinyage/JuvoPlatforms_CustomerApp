@@ -47,6 +47,9 @@ class _LanguagePageState extends ConsumerState<LanguageScreen> {
                 topRight: Radius.circular(16.r),
               )),
           width: double.infinity,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.3, // Use only 30% of screen height
+          ),
           child: state.isLoading
               ? const Loading()
               : Padding(

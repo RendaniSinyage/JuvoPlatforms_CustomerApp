@@ -13,9 +13,9 @@ import 'package:foodyman/infrastructure/services/time_service.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:foodyman/presentation/components/custom_checkbox.dart';
 import 'package:foodyman/presentation/components/text_fields/outline_bordered_text_field.dart';
-
 import 'package:foodyman/presentation/pages/profile/phone_verify.dart';
 import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import '../../order_check/widgets/time_delivery.dart';
 import 'order_container.dart';
 import 'package:foodyman/presentation/components/sellect_address_screen.dart';
@@ -84,6 +84,9 @@ class _OrderDeliveryState extends State<OrderDelivery> {
           });
           return Column(
             children: [
+              // Add the address tooltip with triangle pointer
+              _buildAddressTooltip(context),
+              10.verticalSpace,
               OrderContainer(
                 onTap: () async {
                   AppHelpers.showCustomModalBottomSheet(
@@ -107,9 +110,9 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                 ),
                 title: AppHelpers.getTranslation(TrKeys.deliveryAddress),
                 description:
-                    (LocalStorage.getAddressSelected()?.title?.isEmpty ?? true)
-                        ? LocalStorage.getAddressSelected()?.address ?? ''
-                        : LocalStorage.getAddressSelected()?.title ?? "",
+                (LocalStorage.getAddressSelected()?.title?.isEmpty ?? true)
+                    ? LocalStorage.getAddressSelected()?.address ?? ''
+                    : LocalStorage.getAddressSelected()?.title ?? "",
               ),
               10.verticalSpace,
               OrderContainer(
@@ -159,7 +162,7 @@ class _OrderDeliveryState extends State<OrderDelivery> {
               12.verticalSpace,
               OutlinedBorderTextField(
                 label:
-                    AppHelpers.getTranslation(TrKeys.phoneNumber).toUpperCase(),
+                AppHelpers.getTranslation(TrKeys.phoneNumber).toUpperCase(),
                 textController: userPhoneNumber,
                 readOnly: true,
                 onTap: () {
@@ -229,4 +232,60 @@ class _OrderDeliveryState extends State<OrderDelivery> {
       ),
     );
   }
+
+  Widget _buildAddressTooltip(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        // Main container
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          margin: EdgeInsets.only(bottom: 16.h), // Extra margin for the triangle pointer
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+          decoration: BoxDecoration(
+            color: AppStyle.primary,
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Text(
+            AppHelpers.getTranslation(TrKeys.weAreDelivering),
+            style: AppStyle.interRegular(
+              size: 14,
+              color: AppStyle.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+
+        // Triangle pointer (pointing down)
+        Positioned(
+          bottom: 8.h,
+          right: 10.w,
+          child: ClipPath(
+            clipper: TriangleClipper(),
+            child: Container(
+              width: 16.h,
+              height: 10.h,
+              color: AppStyle.primary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Custom clipper for creating the triangle pointer
+class TriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 2, size.height);
+    path.lineTo(0, 0);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TriangleClipper oldClipper) => false;
 }

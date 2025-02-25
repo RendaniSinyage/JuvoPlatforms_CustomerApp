@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,14 +9,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:foodyman/application/order/order_notifier.dart';
 import 'package:foodyman/application/order/order_provider.dart';
 import 'package:foodyman/application/payment_methods/payment_provider.dart';
-import 'package:foodyman/game/game.dart';
-import 'package:foodyman/game/game_bloc/game_bloc.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/enums.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
-import 'package:foodyman/presentation/components/buttons/custom_button.dart';
 import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
 import 'package:foodyman/presentation/components/loading.dart';
 import 'package:foodyman/presentation/components/shop_avarat.dart';
@@ -126,25 +121,6 @@ class _OrderProgressPageState extends ConsumerState<OrderProgressPage> {
         children: [
           const PopButton(),
           16.horizontalSpace,
-          Expanded(
-            child: CustomButton(
-                icon: const Icon(
-                  FlutterRemix.gamepad_fill,
-                  color: AppStyle.black,
-                ),
-                title: AppHelpers.getTranslation(TrKeys.wantToPlayGame),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider(
-                        create: (context) =>
-                            GameBloc()..add(const GameEvent.init()),
-                        child: const Game(),
-                      ),
-                    ),
-                  );
-                }),
-          ),
         ],
       ),
     );

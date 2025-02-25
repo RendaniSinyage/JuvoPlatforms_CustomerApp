@@ -27,7 +27,7 @@ class ComingSoonDialog extends StatelessWidget {
           TextButton(
             child: Text(
               AppHelpers.getTranslation(TrKeys.ok),
-              style: AppStyle.interBold(size: 16, color: AppStyle.brandGreen),
+              style: AppStyle.interBold(size: 16, color: AppStyle.primary),
             ),
             onPressed: () {
               Navigator.of(context).pop();

@@ -4,14 +4,14 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart'; //Changed
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart'; //changed
-import 'package:riverpodtemp/presentation/components/helper/shimmer.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart'; //Changed
+import 'package:foodyman/infrastructure/services/app_helpers.dart'; //changed
+import 'package:foodyman/presentation/components/helper/shimmer.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
 
-import 'package:riverpodtemp/application/closed/closed_provider.dart';
-//import 'package:riverpodtemp/presentation/component/components.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/closed/closed_provider.dart';
+//import 'package:foodyman/presentation/component/components.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,10 +106,10 @@ class _ClosedPageState extends ConsumerState<ClosedPage>
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          AppStyle.brandGreen.withOpacity(0.26),
-                          AppStyle.brandGreen.withOpacity(0),
-                          AppStyle.brandGreen.withOpacity(0),
-                          AppStyle.brandGreen.withOpacity(0.26)
+                          AppStyle.primary.withOpacity(0.26),
+                          AppStyle.primary.withOpacity(0),
+                          AppStyle.primary.withOpacity(0),
+                          AppStyle.primary.withOpacity(0.26)
                         ],
                       ),
                     ),
@@ -224,7 +224,7 @@ class _ClosedPageState extends ConsumerState<ClosedPage>
                       width: (MediaQuery.of(context).size.width - 60),
                       decoration: BoxDecoration(
                         color: state.currentIndex >= index
-                            ? AppStyle.brandGreen
+                            ? AppStyle.primary
                             : AppStyle.white,
                         borderRadius: BorderRadius.circular(122),
                       ),
@@ -236,7 +236,7 @@ class _ClosedPageState extends ConsumerState<ClosedPage>
                                 value: controller.value,
                                 valueColor:
                                     const AlwaysStoppedAnimation<Color>(
-                                        AppStyle.brandGreen),
+                                        AppStyle.primary),
                                 backgroundColor: AppStyle.white,
                               ),
                             )
@@ -247,7 +247,7 @@ class _ClosedPageState extends ConsumerState<ClosedPage>
                                     value: 1,
                                     valueColor:
                                         AlwaysStoppedAnimation<Color>(
-                                            AppStyle.brandGreen),
+                                            AppStyle.primary),
                                     backgroundColor: AppStyle.white,
                                   ),
                                 )

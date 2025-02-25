@@ -8,11 +8,11 @@ import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:foodyman/presentation/components/loading.dart';
 import 'package:foodyman/presentation/components/market_item.dart';
 import 'package:foodyman/presentation/components/title_icon.dart';
-import 'package:foodyman/presentation/pages/home/home_one/widget/market_one_item.dart';
-import 'package:foodyman/presentation/pages/home/home_three/widgets/market_three_item.dart';
+import 'package:foodyman/presentation/pages/home/home_four/widgets/market_one_item.dart';
+import 'package:foodyman/presentation/pages/home/home_four/widgets/market_three_item.dart';
 import 'package:foodyman/presentation/pages/service/widgets/service_one_category.dart';
 import 'package:foodyman/presentation/theme/app_style.dart';
-import '../home/home_two/widget/market_two_item.dart';
+import '../home/home_four/widgets/market_two_item.dart';
 import 'widgets/service_three_category.dart';
 import 'widgets/service_two_category.dart';
 

@@ -14,6 +14,7 @@ import 'package:foodyman/presentation/components/custom_tab_bar.dart';
 import 'package:foodyman/presentation/components/loading.dart';
 import 'package:foodyman/presentation/theme/theme.dart';
 import 'widgets/orders_item.dart';
+import 'package:foodyman/presentation/components/badges.dart';
 
 @RoutePage()
 class OrdersListPage extends ConsumerStatefulWidget {
@@ -201,24 +202,6 @@ class _OrderPageState extends ConsumerState<OrdersListPage>
 }
 
 Widget _resultEmpty() {
-  return Column(
-    children: [
-      24.verticalSpace,
-      Image.asset("assets/images/notFound.png"),
-      Text(
-        AppHelpers.getTranslation(TrKeys.nothingFound),
-        style: AppStyle.interSemi(size: 18.sp),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 32.w,
-        ),
-        child: Text(
-          AppHelpers.getTranslation(TrKeys.trySearchingAgain),
-          style: AppStyle.interRegular(size: 14.sp),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    ],
+  return EmptyBadge(subtitleText: "Your Orders will appear here", titleText: "No Orders",
   );
 }

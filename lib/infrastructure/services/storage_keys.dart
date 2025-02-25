@@ -28,5 +28,6 @@ abstract class StorageKeys {
   static const String keyLanguageData = 'keyLanguageData';
   static const String keyAuthenticatedWithSocial = 'keyAuthenticatedWithSocial';
   static const String keyLangLtr = 'keyLangLtr';
+  static const String keyCarInfo = 'keyCarInfo';
 }
 

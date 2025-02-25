@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/shop_avarat.dart';
-import 'package:riverpodtemp/infrastructure/models/data/shop_data.dart';
+import '../../../infrastructure/models/data/shop_data.dart';
 import '../../theme/app_style.dart';
-import 'package:riverpodtemp/presentation/components/badge_item.dart';
+import '../badge_item.dart';
+import '../shop_avarat.dart';
 
 class ShopBadge extends StatefulWidget {
   final ShopData shop;

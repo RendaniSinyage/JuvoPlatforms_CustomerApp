@@ -20,6 +20,7 @@ import 'package:foodyman/infrastructure/models/response/all_products_response.da
 import 'package:share_plus/share_plus.dart';
 import '../../app_constants.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import '../../infrastructure/models/data/translation.dart';
 import 'shop_state.dart';
 
 
@@ -389,34 +390,133 @@ class ShopNotifier extends StateNotifier<ShopState> {
     }
   }
 
-  Future<void> fetchProducts(BuildContext context, String shopId,ValueChanged<int> onSuccess) async {
+// At the end of the fetchProducts method in ShopNotifier, add this code
+// to copy brand_ids from regular products to popular products:
+
+  Future<void> fetchProducts(BuildContext context, String shopId, ValueChanged<int> onSuccess) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       page = 1;
-      state = state.copyWith(isProductLoading: true, isCategoryLoading: true);
-      final response = await _productsRepository.getAllProducts(shopId: shopId);
+      state = state.copyWith(
+          isProductLoading: true,
+          isCategoryLoading: true,
+          isBrandsLoading: true
+      );
+
+      // First, fetch all brands for the shop - this is the only brands request we need
+      final brandsResponse = await _brandsRepository.getAllBrands(shopId: shopId);
+      List<BrandData> shopBrands = [];
+
+      brandsResponse.when(
+          success: (brandsData) {
+            shopBrands = brandsData.data ?? [];
+            // Update state with all shop brands - we won't need to fetch by category anymore
+            state = state.copyWith(
+                brands: shopBrands,
+                isBrandsLoading: false
+            );
+          },
+          failure: (failure, status) {
+            debugPrint('Failed to fetch brands: $failure');
+            state = state.copyWith(isBrandsLoading: false);
+          }
+      );
+
+      // Then fetch products
+      final productsResponse = await _productsRepository.getAllProducts(shopId: shopId);
+
+      productsResponse.when(
+          success: (data) {
+            List<All> allList = data.data?.all ?? [];
+            for (int i = 0; i < allList.length; i++) {
+              allList[i] = allList[i].copyWith(key: GlobalKey());
+            }
+
+            // Get recommended products
+            if (data.data?.recommended?.isNotEmpty ?? false) {
+              // Create a map of regular products by ID for fast lookup
+              final Map<int, Product> productsById = {};
+              for (final category in allList) {
+                for (final product in category.products ?? []) {
+                  if (product.id != null) {
+                    productsById[product.id!] = product;
+                  }
+                }
+              }
+
+              // Copy brand_id from regular products to corresponding recommended products
+              final List<Product> recommendedWithBrands = [];
+              for (final recProduct in data.data?.recommended ?? []) {
+                if (recProduct.id != null && productsById.containsKey(recProduct.id)) {
+                  // Copy the brand_id from the regular product to the recommended product
+                  final regularProduct = productsById[recProduct.id]!;
+                  recommendedWithBrands.add(recProduct.copyWith(brandId: regularProduct.brandId));
+                } else {
+                  recommendedWithBrands.add(recProduct);
+                }
+              }
+
+              // Insert the popular category with updated products that have brand IDs
+              allList.insert(
+                0,
+                All(
+                    translation: Translation(
+                      title: AppHelpers.getTranslation(TrKeys.popular),
+                    ),
+                    key: GlobalKey(),
+                    products: recommendedWithBrands
+                ),
+              );
+            }
+
+            state = state.copyWith(
+                allData: allList,
+                isProductLoading: false,
+                isCategoryLoading: false
+            );
+
+            onSuccess.call(allList.length);
+          },
+          failure: (failure, status) {
+            state = state.copyWith(
+                isProductLoading: false,
+                isCategoryLoading: false
+            );
+            AppHelpers.showCheckTopSnackBar(context, failure);
+          }
+      );
+    } else {
+      if (context.mounted) {
+        AppHelpers.showNoConnectionSnackBar(context);
+      }
+      state = state.copyWith(
+          isProductLoading: false,
+          isCategoryLoading: false,
+          isBrandsLoading: false
+      );
+    }
+  }
+
+// Modified fetchBrands method - only used as a fallback
+  Future<void> fetchBrands(BuildContext context, int categoryId) async {
+    // If we already have brands, don't fetch again
+    if (state.brands != null && state.brands!.isNotEmpty) {
+      return;
+    }
+
+    final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      state = state.copyWith(isBrandsLoading: true);
+      final response = await _brandsRepository.getAllBrands(categoryId: categoryId);
       response.when(
         success: (data) {
-          List<All> allList = data.data?.all ?? [];
-          for (int i=0;i<allList.length;i++) {
-            allList[i] =  allList[i].copyWith(key: GlobalKey());
-          }
-          if (data.data?.recommended?.isNotEmpty ?? false) {
-            allList.insert(
-              0,
-              All(
-                  translation: Translation(
-                    title: AppHelpers.getTranslation(TrKeys.popular),
-                  ),
-                  key: GlobalKey(),
-                  products: data.data?.recommended ?? []
-              ),
-            );
-          }
-          state = state.copyWith(allData: allList);
-          onSuccess.call(allList.length);
+          state = state.copyWith(
+              brands: data.data,
+              isBrandsLoading: false
+          );
         },
         failure: (failure, status) {
+          state = state.copyWith(isBrandsLoading: false);
           AppHelpers.showCheckTopSnackBar(
             context,
             failure,
@@ -424,13 +524,45 @@ class ShopNotifier extends StateNotifier<ShopState> {
         },
       );
     } else {
+      state = state.copyWith(isBrandsLoading: false);
       if (context.mounted) {
         AppHelpers.showNoConnectionSnackBar(
           context,
         );
       }
     }
-    state = state.copyWith(isProductLoading: false, isCategoryLoading: false);
+  }
+
+  // Helper method to fetch brands for a single category
+  Future<void> _fetchBrandForCategory(BuildContext context, int categoryId) async {
+    try {
+      final response = await _brandsRepository.getAllBrands(categoryId: categoryId);
+      response.when(
+        success: (data) {
+          // More aggressive deduplication
+          final List<BrandData> newBrands = data.data ?? [];
+          final Set<int> existingBrandIds = {
+            ...state.brands?.map((b) => b.id).whereType<int>() ?? {}
+          };
+
+          final List<BrandData> brandsToAdd = newBrands.where((brand) =>
+          brand.id != null && !existingBrandIds.contains(brand.id)
+          ).toList();
+
+          state = state.copyWith(
+              brands: [
+                ...?state.brands,
+                ...brandsToAdd
+              ]
+          );
+        },
+        failure: (failure, status) {
+          debugPrint('Failed to fetch brands for category $categoryId: $failure');
+        },
+      );
+    } catch (e) {
+      debugPrint('Exception in _fetchBrandForCategory: $e');
+    }
   }
 
   Future<void> checkProductsPopular(BuildContext context, String shopId) async {
@@ -647,32 +779,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
   //   }
   // }
 
-  Future<void> fetchBrands(BuildContext context, int categoryId) async {
-    final connected = await AppConnectivity.connectivity();
-    if (connected) {
-      final response =
-          await _brandsRepository.getAllBrands(categoryId: categoryId);
-      response.when(
-        success: (data) {
-          state = state.copyWith(
-            brands: data.data,
-          );
-        },
-        failure: (failure, status) {
-          AppHelpers.showCheckTopSnackBar(
-            context,
-            failure,
-          );
-        },
-      );
-    } else {
-      if (context.mounted) {
-        AppHelpers.showNoConnectionSnackBar(
-          context,
-        );
-      }
-    }
-  }
+
 
   setBrands({required int id}) {
     List<int> list = List.from(state.brandIds);
@@ -695,8 +802,7 @@ class ShopNotifier extends StateNotifier<ShopState> {
   generateShareLink() async {
     final productLink = '${AppConstants.webUrl}/shop/${state.shopData?.id}';
 
-    const dynamicLink =
-        'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';
+    final dynamicLink = 'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';
 
     final dataShare = {
       "dynamicLinkInfo": {
@@ -729,8 +835,25 @@ class ShopNotifier extends StateNotifier<ShopState> {
   onShare() async {
     await Share.share(
       shareLink ?? '',
-      subject: state.shopData?.translation?.title ?? "Foodyman",
+      subject: state.shopData?.translation?.title ?? "Juvo",
       // title: state.shopData?.translation?.description ?? "",
     );
+  }
+
+  Future<ShopData?> fetchShopData(String shopId) async {
+    final connected = await AppConnectivity.connectivity();
+    if (connected) {
+      final response = await _shopsRepository.getSingleShop(uuid: shopId);
+      return response.when(
+        success: (data) => data.data,
+        failure: (failure, status) {
+          // Handle error
+          return null;
+        },
+      );
+    } else {
+      // Handle no connection
+      return null;
+    }
   }
 }

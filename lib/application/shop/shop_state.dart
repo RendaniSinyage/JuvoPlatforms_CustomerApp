@@ -20,6 +20,7 @@ class ShopState with _$ShopState {
     @Default(true) bool isProductLoading,
     @Default(false) bool isProductCategoryLoading,
     @Default(false) bool isPopularProduct,
+    @Default(true) bool isBrandsLoading,
     @Default(false) bool isLike,
     @Default(false) bool showWeekTime,
     @Default(false) bool showBranch,

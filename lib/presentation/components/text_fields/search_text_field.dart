@@ -3,7 +3,7 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
-import 'package:foodyman/presentation/theme/theme.dart';
+import '../../theme/theme.dart';
 
 class SearchTextField extends StatelessWidget {
   final String? hintText;
@@ -23,7 +23,7 @@ class SearchTextField extends StatelessWidget {
     this.suffixIcon,
     this.textEditingController,
     this.onChanged,
-    this.bgColor = AppStyle.transparent,
+    this.bgColor = AppStyle.white,
     this.isBorder = false,
     this.isRead = false,
     this.autofocus = false,
@@ -49,19 +49,19 @@ class SearchTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintStyle: AppStyle.interNormal(
           size: 13,
-          color: AppStyle.hintColor,
+          color: AppStyle.black,
         ),
-        hintText: hintText ?? AppHelpers.getTranslation(TrKeys.searchProducts),
+        hintText: hintText ?? AppHelpers.getTranslation(TrKeys.searchApp),
         contentPadding: REdgeInsets.symmetric(horizontal: 15, vertical: 14),
         prefixIcon: isSearchIcon
             ? Icon(
-                FlutterRemix.search_2_line,
+                FlutterRemix.search_eye_line,
                 size: 20.r,
                 color: AppStyle.black,
               )
             : null,
         suffixIcon: suffixIcon,
-        fillColor: bgColor,
+        fillColor: bgColor.withOpacity(0.1),
         filled: true,
         focusedBorder: isBorder
             ? OutlineInputBorder(

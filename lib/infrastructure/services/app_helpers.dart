@@ -8,10 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:foodyman/infrastructure/models/models.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import '../../presentation/components/buttons/custom_button.dart';
 import '../../presentation/theme/app_style.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import '../../app_constants.dart';
+import '../models/data/address_old_data.dart';
 import 'enums.dart';
+import 'tr_keys.dart';
 
 abstract class AppHelpers {
   AppHelpers._();
@@ -230,7 +233,7 @@ abstract class AppHelpers {
         return setting.value;
       }
     }
-    return '';
+    return 'JUVO';
   }
 
   static String? getAppLogo() {
@@ -468,6 +471,7 @@ abstract class AppHelpers {
     required BuildContext context,
     required Widget child,
     double radius = 16,
+    bool isDismissible = true,
   }) {
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
@@ -482,11 +486,13 @@ abstract class AppHelpers {
 
     showDialog(
       context: context,
+      barrierDismissible: isDismissible,
       builder: (BuildContext context) {
         return alert;
       },
     );
   }
+
 
   static String errorHandler(e) {
     try {
@@ -516,6 +522,104 @@ abstract class AppHelpers {
     }
   }
 
+  static String reviewText(num? review) {
+    if (review == null || review == 0) {
+      return AppHelpers.getTranslation(TrKeys.newKey);
+    }
+
+    if (review > 0 && review <= 1) {
+      return AppHelpers.getTranslation(TrKeys.veryBad);
+    }
+    if (review <= 2) {
+      return AppHelpers.getTranslation(TrKeys.bad);
+    }
+    if (review <= 3) {
+      return AppHelpers.getTranslation(TrKeys.notBad);
+    }
+    if (review <= 4) {
+      return AppHelpers.getTranslation(TrKeys.good);
+    }
+    if (review <= 4.5) {
+      return AppHelpers.getTranslation(TrKeys.veryGood);
+    }
+    if (review <= 5) {
+      return AppHelpers.getTranslation(TrKeys.exceptional);
+    }
+
+    // For any value greater than 5
+    return AppHelpers.getTranslation(TrKeys.newKey);
+  }
+
+  static openDialog({
+    required BuildContext context,
+    required String title,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (_) {
+            return Dialog(
+              backgroundColor: AppStyle.transparent,
+              insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
+                margin: EdgeInsets.all(24.w),
+                width: double.infinity,
+                padding: EdgeInsets.all(24.w),
+                decoration: BoxDecoration(
+                  color: AppStyle.bgGrey,
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: AppStyle.interNormal(
+                            color: AppStyle.textGrey, size: 18),
+                      ),
+                      24.verticalSpace,
+                      CustomButton(
+                        onPressed: () => Navigator.pop(context),
+                        title: AppHelpers.getTranslation(TrKeys.close),
+                        background: AppStyle.primary,
+                        textColor: AppStyle.white,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+      },
+    );
+  }
+
+  static bool isUsingDefaultCoordinates() {
+    // Don't show the tooltip if user is logged in
+    if (LocalStorage.getToken().isNotEmpty) {
+      return false;
+    }
+
+    AddressData? addressData = LocalStorage.getAddressSelected();
+
+    // Get current coordinates
+    final double? currentLat = addressData?.location?.latitude;
+    final double? currentLng = addressData?.location?.longitude;
+
+    // Get default coordinates
+    final double defaultLat = AppConstants.demoLatitude;
+    final double defaultLng = AppConstants.demoLongitude;
+
+    // If location is null or coordinates are null, consider it as using default
+    if (addressData?.location == null || currentLat == null || currentLng == null) {
+      return true;
+    }
+
+    // Check if current coordinates match default coordinates
+    // Using a slightly larger epsilon for floating point comparison
+    const double epsilon = 0.01;
+    return ((currentLat - defaultLat).abs() < epsilon &&
+        (currentLng - defaultLng).abs() < epsilon);
+  }
 }
 
 extension TimeOfDayExtension on TimeOfDay {

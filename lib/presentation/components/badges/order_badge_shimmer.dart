@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 
 class OrderBadge extends StatelessWidget {
   final Color? imageColor;
@@ -27,13 +27,13 @@ class OrderBadge extends StatelessWidget {
           height: 24.h, // Adjust height as needed using ScreenUtil
           width: 24.w, // Adjust width as needed using ScreenUtil
           colorFilter: imageColor != null   ? ColorFilter.mode(imageColor!, BlendMode.colorDodge)
-              : const ColorFilter.mode(AppStyle.brandGreen, BlendMode.colorDodge), // Use colorFilter to apply color to the SVG
+              : const ColorFilter.mode(AppStyle.primary, BlendMode.colorDodge), // Use colorFilter to apply color to the SVG
         ),
         SizedBox(width: 5.w), // Adjust spacing as needed using ScreenUtil
         Container(
           height: 22.h, // Adjust height as needed using ScreenUtil
           decoration: BoxDecoration(
-            color: containerColor ?? AppStyle.brandGreen, // Use customizable color with default
+            color: containerColor ?? AppStyle.primary, // Use customizable color with default
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(10.0), // Adjust top-right radius as needed
               bottomRight: Radius.circular(10.0), // Adjust bottom-right radius as needed

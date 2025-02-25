@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
 import '../../../../infrastructure/services/app_helpers.dart';
 import '../../../../infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/infrastructure/services/app_assets.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/application/about/about_provider.dart';
-import 'package:riverpodtemp/presentation/components/custom_network_image.dart';
+import 'package:foodyman/infrastructure/services/app_assets.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/application/about/about_provider.dart';
+import 'package:foodyman/presentation/components/custom_network_image.dart';
 
 class AboutPage extends ConsumerStatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                               padding: EdgeInsets.symmetric(horizontal: 8),
                               child: Text(
                                 "About us",
-                                style: AppStyle.interSemi(color: AppStyle.brandGreen),
+                                style: AppStyle.interSemi(color: AppStyle.primary),
                               ),
                             ),
                           ),
@@ -70,7 +70,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                                 padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   "About us",
-                                  style: AppStyle.interSemi(color: AppStyle.brandGreen),
+                                  style: AppStyle.interSemi(color: AppStyle.primary),
                                 ),
                               ),
                             ),

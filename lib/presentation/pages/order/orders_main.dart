@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_notifier.dart';
-import 'package:riverpodtemp/application/orders_list/orders_list_provider.dart';
-import 'package:riverpodtemp/application/parcels_list/parcel_list_notifier.dart';
-import 'package:riverpodtemp/application/parcels_list/parcel_list_provider.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar2.dart';
-//import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
-import 'package:riverpodtemp/presentation/components/custom_tab_bar.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/application/orders_list/orders_list_notifier.dart';
+import 'package:foodyman/application/orders_list/orders_list_provider.dart';
+import 'package:foodyman/application/parcels_list/parcel_list_notifier.dart';
+import 'package:foodyman/application/parcels_list/parcel_list_provider.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar2.dart';
+//import 'package:foodyman/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/custom_tab_bar.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'widgets/orders_item.dart';
-import 'package:riverpodtemp/presentation/pages/parcel/parcel_item.dart';
-import 'package:riverpodtemp/presentation/components/badges/empty_badge.dart';
+import 'package:foodyman/presentation/pages/parcel/parcel_item.dart';
+import 'package:foodyman/presentation/components/badges/empty_badge.dart';
  
 @RoutePage()
 class OrdersMainPage extends ConsumerStatefulWidget {
@@ -58,7 +58,7 @@ class _MainPageState extends ConsumerState<OrdersMainPage> with SingleTickerProv
         body: Column(
           children: [
             CommonAppBar2(
-              bgColor: AppStyle.brandGreen.withOpacity(0.28), // Set the background color here
+              bgColor: AppStyle.primary.withOpacity(0.28), // Set the background color here
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

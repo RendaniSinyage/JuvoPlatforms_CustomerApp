@@ -81,6 +81,25 @@ class ChatRouteArgs {
 }
 
 /// generated route for
+/// [ClosedPage]
+class ClosedRoute extends PageRouteInfo<void> {
+  const ClosedRoute({List<PageRouteInfo>? children})
+      : super(
+          ClosedRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ClosedRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ClosedPage();
+    },
+  );
+}
+
+/// generated route for
 /// [CreateShopPage]
 class CreateShopRoute extends PageRouteInfo<void> {
   const CreateShopRoute({List<PageRouteInfo>? children})
@@ -98,7 +117,6 @@ class CreateShopRoute extends PageRouteInfo<void> {
     },
   );
 }
-
 
 /// generated route for
 /// [HelpPage]
@@ -166,6 +184,25 @@ class InfoRouteArgs {
 }
 
 /// generated route for
+/// [IntroPage]
+class IntroRoute extends PageRouteInfo<void> {
+  const IntroRoute({List<PageRouteInfo>? children})
+      : super(
+          IntroRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'IntroRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const IntroPage();
+    },
+  );
+}
+
+/// generated route for
 /// [LikePage]
 class LikeRoute extends PageRouteInfo<LikeRouteArgs> {
   LikeRoute({
@@ -210,6 +247,120 @@ class LikeRouteArgs {
   String toString() {
     return 'LikeRouteArgs{key: $key, isBackButton: $isBackButton}';
   }
+}
+
+/// generated route for
+/// [LoanDocumentUploadScreen]
+class LoanDocumentUploadRoute
+    extends PageRouteInfo<LoanDocumentUploadRouteArgs> {
+  LoanDocumentUploadRoute({
+    Key? key,
+    String? prefilledIdNumber,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LoanDocumentUploadRoute.name,
+          args: LoanDocumentUploadRouteArgs(
+            key: key,
+            prefilledIdNumber: prefilledIdNumber,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'LoanDocumentUploadRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<LoanDocumentUploadRouteArgs>(
+          orElse: () => const LoanDocumentUploadRouteArgs());
+      return LoanDocumentUploadScreen(
+        key: args.key,
+        prefilledIdNumber: args.prefilledIdNumber,
+      );
+    },
+  );
+}
+
+class LoanDocumentUploadRouteArgs {
+  const LoanDocumentUploadRouteArgs({
+    this.key,
+    this.prefilledIdNumber,
+  });
+
+  final Key? key;
+
+  final String? prefilledIdNumber;
+
+  @override
+  String toString() {
+    return 'LoanDocumentUploadRouteArgs{key: $key, prefilledIdNumber: $prefilledIdNumber}';
+  }
+}
+
+/// generated route for
+/// [LoanEligibilityScreen]
+class LoanEligibilityRoute extends PageRouteInfo<LoanEligibilityRouteArgs> {
+  LoanEligibilityRoute({
+    Key? key,
+    Map<String, dynamic>? financialDetails,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LoanEligibilityRoute.name,
+          args: LoanEligibilityRouteArgs(
+            key: key,
+            financialDetails: financialDetails,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'LoanEligibilityRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<LoanEligibilityRouteArgs>(
+          orElse: () => const LoanEligibilityRouteArgs());
+      return LoanEligibilityScreen(
+        key: args.key,
+        financialDetails: args.financialDetails,
+      );
+    },
+  );
+}
+
+class LoanEligibilityRouteArgs {
+  const LoanEligibilityRouteArgs({
+    this.key,
+    this.financialDetails,
+  });
+
+  final Key? key;
+
+  final Map<String, dynamic>? financialDetails;
+
+  @override
+  String toString() {
+    return 'LoanEligibilityRouteArgs{key: $key, financialDetails: $financialDetails}';
+  }
+}
+
+/// generated route for
+/// [LoanScreen]
+class LoanRoute extends PageRouteInfo<void> {
+  const LoanRoute({List<PageRouteInfo>? children})
+      : super(
+          LoanRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoanRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LoanScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -393,6 +544,25 @@ class OrdersListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [OrdersMainPage]
+class OrdersMainRoute extends PageRouteInfo<void> {
+  const OrdersMainRoute({List<PageRouteInfo>? children})
+      : super(
+          OrdersMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrdersMainRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OrdersMainPage();
+    },
+  );
+}
+
+/// generated route for
 /// [ParcelListPage]
 class ParcelListRoute extends PageRouteInfo<void> {
   const ParcelListRoute({List<PageRouteInfo>? children})
@@ -413,10 +583,17 @@ class ParcelListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ParcelPage]
-class ParcelRoute extends PageRouteInfo<void> {
-  const ParcelRoute({List<PageRouteInfo>? children})
-      : super(
+class ParcelRoute extends PageRouteInfo<ParcelRouteArgs> {
+  ParcelRoute({
+    Key? key,
+    bool isBackButton = true,
+    List<PageRouteInfo>? children,
+  }) : super(
           ParcelRoute.name,
+          args: ParcelRouteArgs(
+            key: key,
+            isBackButton: isBackButton,
+          ),
           initialChildren: children,
         );
 
@@ -425,9 +602,30 @@ class ParcelRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ParcelPage();
+      final args =
+          data.argsAs<ParcelRouteArgs>(orElse: () => const ParcelRouteArgs());
+      return ParcelPage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
     },
   );
+}
+
+class ParcelRouteArgs {
+  const ParcelRouteArgs({
+    this.key,
+    this.isBackButton = true,
+  });
+
+  final Key? key;
+
+  final bool isBackButton;
+
+  @override
+  String toString() {
+    return 'ParcelRouteArgs{key: $key, isBackButton: $isBackButton}';
+  }
 }
 
 /// generated route for
@@ -501,12 +699,14 @@ class PolicyRoute extends PageRouteInfo<void> {
 class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({
     Key? key,
+    dynamic Function()? onCardAdded,
     bool isBackButton = true,
     List<PageRouteInfo>? children,
   }) : super(
           ProfileRoute.name,
           args: ProfileRouteArgs(
             key: key,
+            onCardAdded: onCardAdded,
             isBackButton: isBackButton,
           ),
           initialChildren: children,
@@ -521,6 +721,7 @@ class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
           data.argsAs<ProfileRouteArgs>(orElse: () => const ProfileRouteArgs());
       return ProfilePage(
         key: args.key,
+        onCardAdded: args.onCardAdded,
         isBackButton: args.isBackButton,
       );
     },
@@ -530,16 +731,19 @@ class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
 class ProfileRouteArgs {
   const ProfileRouteArgs({
     this.key,
+    this.onCardAdded,
     this.isBackButton = true,
   });
 
   final Key? key;
 
+  final dynamic Function()? onCardAdded;
+
   final bool isBackButton;
 
   @override
   String toString() {
-    return 'ProfileRouteArgs{key: $key, isBackButton: $isBackButton}';
+    return 'ProfileRouteArgs{key: $key, onCardAdded: $onCardAdded, isBackButton: $isBackButton}';
   }
 }
 
@@ -1517,10 +1721,17 @@ class ViewMapRouteArgs {
 
 /// generated route for
 /// [WalletHistoryPage]
-class WalletHistoryRoute extends PageRouteInfo<void> {
-  const WalletHistoryRoute({List<PageRouteInfo>? children})
-      : super(
+class WalletHistoryRoute extends PageRouteInfo<WalletHistoryRouteArgs> {
+  WalletHistoryRoute({
+    Key? key,
+    bool isBackButton = true,
+    List<PageRouteInfo>? children,
+  }) : super(
           WalletHistoryRoute.name,
+          args: WalletHistoryRouteArgs(
+            key: key,
+            isBackButton: isBackButton,
+          ),
           initialChildren: children,
         );
 
@@ -1529,7 +1740,28 @@ class WalletHistoryRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const WalletHistoryPage();
+      final args = data.argsAs<WalletHistoryRouteArgs>(
+          orElse: () => const WalletHistoryRouteArgs());
+      return WalletHistoryPage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
     },
   );
+}
+
+class WalletHistoryRouteArgs {
+  const WalletHistoryRouteArgs({
+    this.key,
+    this.isBackButton = true,
+  });
+
+  final Key? key;
+
+  final bool isBackButton;
+
+  @override
+  String toString() {
+    return 'WalletHistoryRouteArgs{key: $key, isBackButton: $isBackButton}';
+  }
 }

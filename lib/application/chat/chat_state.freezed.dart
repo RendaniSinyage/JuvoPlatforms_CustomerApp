@@ -22,6 +22,9 @@ mixin _$ChatState {
   String get chatId => throw _privateConstructorUsedError;
   TextEditingController? get textController =>
       throw _privateConstructorUsedError;
+  bool get isEditing =>
+      throw _privateConstructorUsedError; // Add this for editing state
+  String? get editingMessageId => throw _privateConstructorUsedError;
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +43,9 @@ abstract class $ChatStateCopyWith<$Res> {
       bool isMoreLoading,
       List<ChatMessageData> chats,
       String chatId,
-      TextEditingController? textController});
+      TextEditingController? textController,
+      bool isEditing,
+      String? editingMessageId});
 }
 
 /// @nodoc
@@ -63,6 +68,8 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
     Object? chats = null,
     Object? chatId = null,
     Object? textController = freezed,
+    Object? isEditing = null,
+    Object? editingMessageId = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -85,6 +92,14 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
           ? _value.textController
           : textController // ignore: cast_nullable_to_non_nullable
               as TextEditingController?,
+      isEditing: null == isEditing
+          ? _value.isEditing
+          : isEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      editingMessageId: freezed == editingMessageId
+          ? _value.editingMessageId
+          : editingMessageId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -102,7 +117,9 @@ abstract class _$$ChatStateImplCopyWith<$Res>
       bool isMoreLoading,
       List<ChatMessageData> chats,
       String chatId,
-      TextEditingController? textController});
+      TextEditingController? textController,
+      bool isEditing,
+      String? editingMessageId});
 }
 
 /// @nodoc
@@ -123,6 +140,8 @@ class __$$ChatStateImplCopyWithImpl<$Res>
     Object? chats = null,
     Object? chatId = null,
     Object? textController = freezed,
+    Object? isEditing = null,
+    Object? editingMessageId = freezed,
   }) {
     return _then(_$ChatStateImpl(
       isLoading: null == isLoading
@@ -145,6 +164,14 @@ class __$$ChatStateImplCopyWithImpl<$Res>
           ? _value.textController
           : textController // ignore: cast_nullable_to_non_nullable
               as TextEditingController?,
+      isEditing: null == isEditing
+          ? _value.isEditing
+          : isEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      editingMessageId: freezed == editingMessageId
+          ? _value.editingMessageId
+          : editingMessageId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -157,7 +184,9 @@ class _$ChatStateImpl extends _ChatState {
       this.isMoreLoading = false,
       final List<ChatMessageData> chats = const [],
       this.chatId = '',
-      this.textController})
+      this.textController,
+      this.isEditing = false,
+      this.editingMessageId})
       : _chats = chats,
         super._();
 
@@ -181,10 +210,16 @@ class _$ChatStateImpl extends _ChatState {
   final String chatId;
   @override
   final TextEditingController? textController;
+  @override
+  @JsonKey()
+  final bool isEditing;
+// Add this for editing state
+  @override
+  final String? editingMessageId;
 
   @override
   String toString() {
-    return 'ChatState(isLoading: $isLoading, isMoreLoading: $isMoreLoading, chats: $chats, chatId: $chatId, textController: $textController)';
+    return 'ChatState(isLoading: $isLoading, isMoreLoading: $isMoreLoading, chats: $chats, chatId: $chatId, textController: $textController, isEditing: $isEditing, editingMessageId: $editingMessageId)';
   }
 
   @override
@@ -199,12 +234,23 @@ class _$ChatStateImpl extends _ChatState {
             const DeepCollectionEquality().equals(other._chats, _chats) &&
             (identical(other.chatId, chatId) || other.chatId == chatId) &&
             (identical(other.textController, textController) ||
-                other.textController == textController));
+                other.textController == textController) &&
+            (identical(other.isEditing, isEditing) ||
+                other.isEditing == isEditing) &&
+            (identical(other.editingMessageId, editingMessageId) ||
+                other.editingMessageId == editingMessageId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, isMoreLoading,
-      const DeepCollectionEquality().hash(_chats), chatId, textController);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      isMoreLoading,
+      const DeepCollectionEquality().hash(_chats),
+      chatId,
+      textController,
+      isEditing,
+      editingMessageId);
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
@@ -221,7 +267,9 @@ abstract class _ChatState extends ChatState {
       final bool isMoreLoading,
       final List<ChatMessageData> chats,
       final String chatId,
-      final TextEditingController? textController}) = _$ChatStateImpl;
+      final TextEditingController? textController,
+      final bool isEditing,
+      final String? editingMessageId}) = _$ChatStateImpl;
   const _ChatState._() : super._();
 
   @override
@@ -234,6 +282,10 @@ abstract class _ChatState extends ChatState {
   String get chatId;
   @override
   TextEditingController? get textController;
+  @override
+  bool get isEditing; // Add this for editing state
+  @override
+  String? get editingMessageId;
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.

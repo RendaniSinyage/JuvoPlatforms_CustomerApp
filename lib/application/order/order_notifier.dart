@@ -419,7 +419,11 @@ class OrderNotifier extends StateNotifier<OrderState> {
             return;
           }
           if (payment.tag != "cash" && payment.tag != "wallet") {
-            final res = await _orderRepository.process(data, payment.tag ?? '');
+            final res = await _orderRepository.process(
+              data,
+              payment.tag ?? '',
+              context: context,  // Pass context for preloading if needed
+            );
             res.map(success: (key) {
               onWebview?.call(key.data,payment.tag == 'pay-fast');
             }, failure: (e) {

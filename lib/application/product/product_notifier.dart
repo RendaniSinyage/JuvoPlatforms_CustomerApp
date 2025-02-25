@@ -379,7 +379,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
     final productLink =
         '${AppConstants.webUrl}/shop/$shopId?product=${state.productData?.uuid}/';
 
-    const dynamicLink =
+    final dynamicLink =
         'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';
 
     final dataShare = {
@@ -413,7 +413,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
 
   Future shareProduct() async {
     await Share.share(shareLink ?? '',
-      subject: state.productData?.translation?.title ?? "Foodyman",
+      subject: state.productData?.translation?.title ?? "Juvo",
       // title: state.productData?.translation?.description ?? "",
     );
   }

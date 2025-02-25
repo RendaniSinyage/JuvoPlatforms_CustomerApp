@@ -414,7 +414,6 @@ class ProductsRepository implements ProductsRepositoryFacade {
     }
   }
 
-  @override
   Future<ApiResult<ProductsPaginateResponse>> getDiscountProducts({
     int? shopId,
     int? brandId,
@@ -431,14 +430,112 @@ class ProductsRepository implements ProductsRepositoryFacade {
       'perPage': 14,
       'lang': LocalStorage.getLanguage()?.locale,
     };
+
     try {
       final client = dioHttp.client(requireAuth: false);
       final response = await client.get(
         '/api/v1/rest/products/discount',
         queryParameters: data,
       );
+
+      // Process the response to filter invalid discounts
+      final responseData = response.data;
+      if (responseData is Map && responseData['data'] is List) {
+        final List<dynamic> productsData = responseData['data'];
+        final List<dynamic> validProducts = [];
+
+        final now = DateTime.now();
+        debugPrint("Processing ${productsData.length} discount products from API...");
+
+        for (var i = 0; i < productsData.length; i++) {
+          var product = productsData[i];
+
+          // If product has stocks array but no stock field, use the first item in stocks
+          if (product is Map && product['stocks'] is List && product['stocks'].isNotEmpty && product['stock'] == null) {
+            product['stock'] = product['stocks'][0];
+          }
+
+          // Verify this product has valid price discount (at least 5%)
+          bool isValidDiscount = false;
+
+          // Check price difference
+          if (product['stock'] != null) {
+            final originalPrice = double.tryParse(product['stock']['price']?.toString() ?? '0') ?? 0;
+            final discountedPrice = double.tryParse(product['stock']['total_price']?.toString() ?? '0') ?? 0;
+
+            // Must have at least 5% discount
+            isValidDiscount = originalPrice > 0 &&
+                discountedPrice > 0 &&
+                discountedPrice <= (originalPrice * 0.95);
+
+            final discountPercent = originalPrice > 0
+                ? ((originalPrice - discountedPrice) / originalPrice * 100).toStringAsFixed(2)
+                : "0";
+
+            debugPrint("Product #${product['id']}: Original price: $originalPrice, Discounted: $discountedPrice, Discount: $discountPercent%, Has price discount: $isValidDiscount");
+          }
+
+          // Check discount dates if available
+          bool hasValidDates = true;
+          if (product['discounts'] is List && product['discounts'].isNotEmpty) {
+            final discount = product['discounts'][0];
+
+            // Check discount type
+            final discountType = discount['type'];
+            debugPrint("Product #${product['id']}: Discount type: $discountType");
+
+            // Check active flag
+            if (discount['active'] != null) {
+              hasValidDates = hasValidDates && (discount['active'] == 1 || discount['active'] == true);
+              if (!hasValidDates) {
+                debugPrint("Product #${product['id']}: Discount marked as inactive");
+              }
+            }
+
+            // Check start date
+            if (discount['start'] != null && discount['start'] is String) {
+              try {
+                final startDate = DateTime.parse("${discount['start']}T00:00:00Z");
+                hasValidDates = hasValidDates && now.isAfter(startDate);
+                if (!hasValidDates) {
+                  debugPrint("Product #${product['id']}: Discount hasn't started yet. Start: ${discount['start']}");
+                }
+              } catch (e) {
+                debugPrint("Product #${product['id']}: Error parsing start date: ${discount['start']} - $e");
+                hasValidDates = false;
+              }
+            }
+
+            // Check end date
+            if (discount['end'] != null && discount['end'] is String) {
+              try {
+                final endDate = DateTime.parse("${discount['end']}T23:59:59Z");
+                hasValidDates = hasValidDates && now.isBefore(endDate);
+                if (!hasValidDates) {
+                  debugPrint("Product #${product['id']}: Discount has expired. End: ${discount['end']}");
+                }
+              } catch (e) {
+                debugPrint("Product #${product['id']}: Error parsing end date: ${discount['end']} - $e");
+                hasValidDates = false;
+              }
+            }
+          }
+
+          // Only include products with both price discount and valid dates
+          if (isValidDiscount && hasValidDates) {
+            validProducts.add(product);
+          } else {
+            debugPrint("Product #${product['id']}: Filtered out. Has price discount: $isValidDiscount, Has valid dates: $hasValidDates");
+          }
+        }
+
+        // Replace original data with filtered valid products
+        responseData['data'] = validProducts;
+        debugPrint("Filtered ${productsData.length} discount products to ${validProducts.length} valid ones");
+      }
+
       return ApiResult.success(
-        data: ProductsPaginateResponse.fromJson(response.data),
+        data: ProductsPaginateResponse.fromJson(responseData),
       );
     } catch (e) {
       debugPrint('==> get discount products failure: $e');

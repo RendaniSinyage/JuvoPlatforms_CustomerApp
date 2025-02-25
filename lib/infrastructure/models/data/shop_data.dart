@@ -76,6 +76,21 @@ class ShopData {
   List<ShopPayment?>? shopPayments;
 
   factory ShopData.fromJson(Map<String, dynamic> json) {
+    bool? openValue;
+    if (json["open"] != null) {
+      if (json["open"] is bool) {
+        openValue = json["open"];
+      } else if (json["open"] is int) {
+        openValue = json["open"] == 1;
+      } else if (json["open"] is String) {
+        openValue = json["open"] == '1' || json["open"].toLowerCase() == 'true';
+      } else {
+        openValue = false;
+      }
+    } else {
+      openValue = true; // Default value
+    }
+
     return ShopData(
       id: json["id"] ?? 0,
       // uuid: json["uuid"] ?? 0,
@@ -86,7 +101,8 @@ class ShopData {
       percentage: json["percentage"] ?? 0,
       phone: json["phone"].toString() ,
       visibility: json["visibility"],
-      open: (json["open"].runtimeType == int ? (json["open"] == 1) : json["open"]) ?? true,
+      //open: (json["open"].runtimeType == int ? (json["open"] == 1) : json["open"]) ?? true,
+      open: openValue,
       verify: (json["verify"].runtimeType == int ? (json["verify"] == 1) : json["verify"]) ?? false,
       openTime: json["open_time"] ?? "00:00",
       closeTime: json["close_time"] ?? "00:00",

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/components/buttons/animation_button_effect2.dart';
-import 'package:riverpodtemp/presentation/components/custom_toggle2.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart'; // Import the AppStyle class
+import 'package:foodyman/presentation/components/buttons/animation_button_effect2.dart';
+import 'package:foodyman/presentation/components/custom_toggle2.dart';
+import 'package:foodyman/presentation/theme/theme.dart'; // Import the AppStyle class
 
 class ButtonItem extends StatelessWidget {
   final IconData icon;
