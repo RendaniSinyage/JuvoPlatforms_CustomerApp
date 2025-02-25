@@ -15,6 +15,7 @@ import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:foodyman/domain/interface/user.dart';
+import '../../main/main_provider.dart';
 import 'register_confirmation_state.dart';
 
 class RegisterConfirmationNotifier
@@ -37,10 +38,13 @@ class RegisterConfirmationNotifier
         isConfirm: code.toString().length == 6);
   }
 
-  Future<void> confirmCodeWithPhone(
-      {required BuildContext context,
-      required String verificationId,
-      VoidCallback? onSuccess}) async {
+  // For phone confirmation
+  Future<void> confirmCodeWithPhone({
+    required BuildContext context,
+    required String verificationId,
+    VoidCallback? onSuccess,
+    required WidgetRef ref,
+  }) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       state = state.copyWith(isLoading: true, isSuccess: false);
@@ -54,6 +58,7 @@ class RegisterConfirmationNotifier
           );
 
           await FirebaseAuth.instance.signInWithCredential(credential);
+          ref.read(mainProvider.notifier).resetToInitialPage();
           onSuccess?.call();
           state = state.copyWith(
               isLoading: false, isSuccess: onSuccess == null ? true : false);
@@ -78,6 +83,7 @@ class RegisterConfirmationNotifier
         );
         response.when(
           success: (data) async {
+            ref.read(mainProvider.notifier).resetToInitialPage();
             state = state.copyWith(isLoading: false, isSuccess: true);
             _timer?.cancel();
             LocalStorage.setToken(data.data?.token);
@@ -135,7 +141,8 @@ class RegisterConfirmationNotifier
     }
   }
 
-  Future<void> confirmCode(BuildContext context) async {
+  // For email confirmation
+  Future<void> confirmCode(BuildContext context, WidgetRef ref) async {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       state = state.copyWith(isLoading: true, isSuccess: false);
@@ -144,6 +151,7 @@ class RegisterConfirmationNotifier
       );
       response.when(
         success: (data) async {
+          ref.read(mainProvider.notifier).resetToInitialPage();
           state = state.copyWith(isLoading: false, isSuccess: true);
           _timer?.cancel();
         },

@@ -28,7 +28,9 @@ class ProfileState with _$ProfileState {
     @Default(null) Translation? policy,
     @Default(null) Translation? term,
     @Default([]) List<String> filepath,
+    @Default(false) bool isEmptyWallet,
   }) = _ProfileState;
 
   const ProfileState._();
+
 }

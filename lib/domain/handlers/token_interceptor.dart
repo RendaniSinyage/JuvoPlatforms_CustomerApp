@@ -8,13 +8,18 @@ class TokenInterceptor extends Interceptor {
 
   @override
   void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
+      RequestOptions options,
+      RequestInterceptorHandler handler,
+      ) async {
+    // Always add the mobile client header
+    options.headers.addAll({'X-Client-Type': 'mobile'});
+
+    // Add authentication token if needed
     final String token = LocalStorage.getToken();
     if (token.isNotEmpty && requireAuth) {
       options.headers.addAll({'Authorization': 'Bearer  $token'});
     }
+
     handler.next(options);
   }
 }

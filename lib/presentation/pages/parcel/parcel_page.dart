@@ -1,6 +1,4 @@
 // ignore_for_file: unused_result
-
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
@@ -24,9 +22,12 @@ import 'widgets/parcel_payments.dart';
 import 'widgets/time_and_type.dart';
 
 
+
 @RoutePage()
 class ParcelPage extends ConsumerStatefulWidget {
-  const ParcelPage({super.key});
+  final bool isBackButton;
+  const ParcelPage({super.key,
+    this.isBackButton = true});
 
   @override
   ConsumerState<ParcelPage> createState() => _ParcelPageState();
@@ -34,7 +35,7 @@ class ParcelPage extends ConsumerStatefulWidget {
 
 class _ParcelPageState extends ConsumerState<ParcelPage> {
   final TextEditingController fromUsername =
-      TextEditingController(text: LocalStorage.getUser()?.firstname ?? '');
+  TextEditingController(text: LocalStorage.getUser()?.firstname ?? '');
   final TextEditingController fromPhone = TextEditingController(text: LocalStorage.getUser()?.phone ?? '');
   final TextEditingController fromHouse = TextEditingController();
   final TextEditingController fromFloor = TextEditingController();
@@ -66,129 +67,129 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
           children: [
             CommonAppBar(
                 child: Text(
-              AppHelpers.getTranslation(TrKeys.doorToDoor),
-              style: AppStyle.interNoSemi(
-                size: 18,
-                color: AppStyle.black,
-              ),
-            )),
+                  AppHelpers.getTranslation(TrKeys.doorToDoor),
+                  style: AppStyle.interNoSemi(
+                    size: 18,
+                    color: AppStyle.black,
+                  ),
+                )),
             AppHelpers.getParcel()
                 ? Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.only(top: 16.r),
-                      shrinkWrap: true,
-                      children: [
-                        Container(
-                          color: AppStyle.white,
-                          padding: EdgeInsets.all(16.r),
-                          child: Form(
-                            key: formKey,
-                            child: Column(
-                              children: [
-                                Row(
+              child: ListView(
+                padding: EdgeInsets.only(top: 16.r),
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    color: AppStyle.white,
+                    padding: EdgeInsets.all(16.r),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
                                   children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          SenderWidget(
-                                            state: state,
-                                            event: event,
-                                            username: fromUsername,
-                                            phone: fromPhone,
-                                            house: fromHouse,
-                                            flour: fromFloor,
-                                            comment: comment,
-                                          ),
-                                          10.verticalSpace,
-                                          RecipientWidget(
-                                            state: state,
-                                            event: event,
-                                            username: toUsername,
-                                            phone: toPhone,
-                                            house: toHouse,
-                                            flour: toFloor,
-                                            description: note,
-                                            addInstruction: instruction,
-                                            value: itemValue,
-                                          ),
-                                        ],
-                                      ),
+                                    SenderWidget(
+                                      state: state,
+                                      event: event,
+                                      username: fromUsername,
+                                      phone: fromPhone,
+                                      house: fromHouse,
+                                      flour: fromFloor,
+                                      comment: comment,
                                     ),
-                                    if (state.addressTo != null &&
-                                        state.addressFrom != null &&
-                                        !state.expand)
-                                      InkWell(
-                                        onTap: () => event.switchAddress(
-                                            context: context),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Icon(
-                                              FlutterRemix.arrow_up_down_line),
-                                        ),
-                                      )
+                                    10.verticalSpace,
+                                    RecipientWidget(
+                                      state: state,
+                                      event: event,
+                                      username: toUsername,
+                                      phone: toPhone,
+                                      house: toHouse,
+                                      flour: toFloor,
+                                      description: note,
+                                      addInstruction: instruction,
+                                      value: itemValue,
+                                    ),
                                   ],
                                 ),
-                                10.verticalSpace,
-                                if(state.expand)
-                                CustomButton(
-                                    icon: const Icon(
-                                      FlutterRemix.wallet_2_line,
-                                      color: AppStyle.black,
+                              ),
+                              if (state.addressTo != null &&
+                                  state.addressFrom != null &&
+                                  !state.expand)
+                                InkWell(
+                                  onTap: () => event.switchAddress(
+                                      context: context),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(
+                                        FlutterRemix.arrow_up_down_line),
+                                  ),
+                                )
+                            ],
+                          ),
+                          10.verticalSpace,
+                          if(state.expand)
+                            CustomButton(
+                                icon: const Icon(
+                                  FlutterRemix.wallet_2_line,
+                                  color: AppStyle.black,
+                                ),
+                                background: AppStyle.bgGrey,
+                                isLoading: state.isButtonLoading,
+                                title: AppHelpers.getTranslation(state
+                                    .selectPayment
+                                    ?.tag ??
+                                    TrKeys.paymentMethods),
+                                onPressed: () {
+                                  AppHelpers.showCustomModalBottomSheet(
+                                    paddingTop:
+                                    MediaQuery.of(context).padding.top,
+                                    context: context,
+                                    modal: ParcelPayments(
+                                      payLater: (payment) async {
+                                        event.setPayment(payment);
+                                      },
                                     ),
-                                    background: AppStyle.bgGrey,
-                                    isLoading: state.isButtonLoading,
-                                    title: AppHelpers.getTranslation(state
-                                            .selectPayment
-                                            ?.tag ??
-                                        TrKeys.paymentMethods),
-                                    onPressed: () {
-                                      AppHelpers.showCustomModalBottomSheet(
-                                        paddingTop:
-                                            MediaQuery.paddingOf(context).top,
-                                        context: context,
-                                        modal: ParcelPayments(
-                                          payLater: (payment) async {
-                                            event.setPayment(payment);
-                                          },
-                                        ),
-                                        isDarkMode: false,
-                                        isDrag: true,
-                                        radius: 12,
-                                      );
-                                    }),
-                                if (state.addressTo == null &&
-                                    state.addressFrom == null)
-                                  _infoWidget(),
-                              ],
-                            ),
-                          ),
-                        ),
-                        if (state.addressTo != null ||
-                            state.addressFrom != null)
-                          TypeAndTime(
-                            event: event,
-                            state: state,
-                          ),
-                        96.verticalSpace
-                      ],
-                    ),
-                  )
-                : Column(
-                    children: [
-                      32.verticalSpace,
-                      Lottie.asset("assets/lottie/not_found_page.json"),
-                      24.verticalSpace,
-                      Padding(
-                        padding: EdgeInsets.all(16.r),
-                        child: Text(
-                          AppHelpers.getTranslation(
-                              TrKeys.ifYouWantToUseThisService),
-                          style: AppStyle.interNormal(),
-                          textAlign: TextAlign.center,
-                        ),
+                                    isDarkMode: false,
+                                    isDrag: true,
+                                    radius: 12,
+                                  );
+                                }),
+                          if (state.addressTo == null &&
+                              state.addressFrom == null)
+                            _infoWidget(),
+                        ],
                       ),
-                    ],
-                  )
+                    ),
+                  ),
+                  if (state.addressTo != null ||
+                      state.addressFrom != null)
+                    TypeAndTime(
+                      event: event,
+                      state: state,
+                    ),
+                  96.verticalSpace
+                ],
+              ),
+            )
+                : Column(
+              children: [
+                32.verticalSpace,
+                Lottie.asset("assets/lottie/not_found_page.json"),
+                24.verticalSpace,
+                Padding(
+                  padding: EdgeInsets.all(16.r),
+                  child: Text(
+                    AppHelpers.getTranslation(
+                        TrKeys.ifYouWantToUseThisService),
+                    style: AppStyle.interNormal(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -197,7 +198,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
-            const PopButton(),
+            if(widget.isBackButton) const PopButton(),
             if (state.types.isNotEmpty &&
                 (state.addressFrom?.isNotEmpty??false) &&
                 (state.addressTo?.isNotEmpty??false))
@@ -206,11 +207,11 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
                   padding: EdgeInsets.only(left: 16.r),
                   child: CustomButton(
                     borderColor:
-                        !state.error ? AppStyle.transparent : AppStyle.textGrey,
+                    !state.error ? AppStyle.transparent : AppStyle.textGrey,
                     background: !state.error ? AppStyle.primary : AppStyle.white,
                     textColor: !state.error ? AppStyle.black : AppStyle.textGrey,
                     title:
-                        "${state.expand ? AppHelpers.getTranslation(TrKeys.order) : AppHelpers.getTranslation(TrKeys.continueText)} ${AppHelpers.numberFormat(number: state.calculate?.data?.price ?? 0)}",
+                    "${state.expand ? AppHelpers.getTranslation(TrKeys.order) : AppHelpers.getTranslation(TrKeys.continueText)} ${AppHelpers.numberFormat(number: state.calculate?.data?.price ?? 0)}",
                     onPressed: () {
                       if (state.error) {
                         return;
@@ -239,7 +240,7 @@ class _ParcelPageState extends ConsumerState<ParcelPage> {
                     isLoading: state.isLoading,
                   ),
                 ),
-              )
+              ), 180.verticalSpace
           ],
         ),
       ),

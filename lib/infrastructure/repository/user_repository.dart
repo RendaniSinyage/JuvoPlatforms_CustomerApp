@@ -11,6 +11,10 @@ import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/domain/handlers/handlers.dart';
 
+import '../models/data/user.dart';
+import '../models/response/search_user_response.dart';
+import '../services/app_validators.dart';
+
 class UserRepository implements UserRepositoryFacade {
   @override
   Future<ApiResult<ProfileResponse>> getProfileDetails() async {
@@ -46,7 +50,7 @@ class UserRepository implements UserRepositoryFacade {
 
       final client = dioHttp.client(requireAuth: true);
       final response =
-          await client.get('/api/v1/rest/referral', queryParameters: data);
+      await client.get('/api/v1/rest/referral', queryParameters: data);
       return ApiResult.success(
         data: ReferralModel.fromJson(response.data["data"]),
       );
@@ -60,8 +64,104 @@ class UserRepository implements UserRepositoryFacade {
   }
 
   @override
-  Future<ApiResult<ProfileResponse>> editProfile(
-      {required EditProfile? user}) async {
+  Future<ApiResult<dynamic>> saveLocation({required AddressNewModel? address}) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.post('/api/v1/dashboard/user/addresses',
+          data: address?.toJson());
+      return const ApiResult.success(data: null);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<dynamic>> updateLocation({
+    required AddressNewModel? address,
+    required int? addressId
+  }) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.put(
+        '/api/v1/dashboard/user/addresses/$addressId',
+        data: address?.toJson(),
+      );
+      return const ApiResult.success(data: null);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<dynamic>> setActiveAddress({required int id}) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.post('/api/v1/dashboard/user/address/set-active/$id');
+      return const ApiResult.success(data: null);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<dynamic>> deleteAddress({required int id}) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.delete('/api/v1/dashboard/user/addresses/delete?ids[0]=$id');
+      return const ApiResult.success(data: null);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<dynamic>> deleteAccount() async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.delete(
+        '/api/v1/dashboard/user/profile/delete',
+      );
+      return const ApiResult.success(data: null);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<dynamic>> logoutAccount({required String fcm}) async {
+    try {
+      final client = dioHttp.client(requireAuth: true);
+      await client.post(
+        '/api/v1/auth/logout',
+        data: {"firebase_token": fcm},
+      );
+      LocalStorage.logout();
+      return const ApiResult.success(data: null);
+    } catch (e) {
+      return ApiResult.failure(
+        error: AppHelpers.errorHandler(e),
+        statusCode: NetworkExceptions.getDioStatus(e),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<ProfileResponse>> editProfile({required EditProfile? user}) async {
     final data = user?.toJson();
     debugPrint('===> update general info data ${jsonEncode(data)}');
     try {
@@ -137,9 +237,7 @@ class UserRepository implements UserRepositoryFacade {
   }
 
   @override
-  Future<ApiResult<WalletHistoriesResponse>> getWalletHistories(
-    int page,
-  ) async {
+  Future<ApiResult<WalletHistoriesResponse>> getWalletHistories(int page) async {
     final data = {
       'page': page,
       if (LocalStorage.getSelectedCurrency() != null)
@@ -184,97 +282,46 @@ class UserRepository implements UserRepositoryFacade {
   }
 
   @override
-  Future<ApiResult> deleteAccount() async {
-    try {
-      final client = dioHttp.client(requireAuth: true);
-      await client.delete(
-        '/api/v1/dashboard/user/profile/delete',
-      );
-      return const ApiResult.success(data: null);
-    } catch (e) {
-      return ApiResult.failure(
-        error: AppHelpers.errorHandler(e),
-        statusCode: NetworkExceptions.getDioStatus(e),
-      );
+  Future<dynamic> searchUser({
+    required String name, // Renamed from searchTerm to name to match interface
+    required int page
+  }) async {
+    // Only search if we have a valid email or phone
+    if (name.trim().isEmpty) {
+      return <UserModel>[];
     }
-  }
 
-  @override
-  Future<ApiResult> logoutAccount({required String fcm}) async {
-    try {
-      final client = dioHttp.client(requireAuth: true);
-      await client.post(
-        '/api/v1/auth/logout',
-        data: {"firebase_token": fcm},
-      );
-      LocalStorage.logout();
-      return const ApiResult.success(data: null);
-    } catch (e) {
-      return ApiResult.failure(
-        error: AppHelpers.errorHandler(e),
-        statusCode: NetworkExceptions.getDioStatus(e),
-      );
+    // Determine if it's an email or phone
+    bool isEmail = AppValidators.isValidEmail(name.trim());
+    bool isPhone = name.trim().replaceAll(RegExp(r'[^0-9]'), '').length >= 7;
+
+    if (!isEmail && !isPhone) {
+      return <UserModel>[]; // Don't search if input is neither valid email nor phone
     }
-  }
 
-  @override
-  Future<ApiResult> saveLocation({required AddressNewModel? address}) async {
+    final data = {
+      'page': page,
+      // Use the appropriate parameter based on input type
+      isEmail ? 'email' : 'phone': name.trim(),
+      'currency_id': LocalStorage.getSelectedCurrency()?.id,
+    };
+
     try {
       final client = dioHttp.client(requireAuth: true);
-      await client.post('/api/v1/dashboard/user/addresses',
-          data: address?.toJson());
-      return const ApiResult.success(data: null);
-    } catch (e) {
-      return ApiResult.failure(
-        error: AppHelpers.errorHandler(e),
-        statusCode: NetworkExceptions.getDioStatus(e),
-      );
-    }
-  }
 
-  @override
-  Future<ApiResult> updateLocation(
-      {required AddressNewModel? address, required int? addressId}) async {
-    try {
-      final client = dioHttp.client(requireAuth: true);
-      await client.put(
-        '/api/v1/dashboard/user/addresses/$addressId',
-        data: address?.toJson(),
-      );
-      return const ApiResult.success(data: null);
-    } catch (e) {
-      return ApiResult.failure(
-        error: AppHelpers.errorHandler(e),
-        statusCode: NetworkExceptions.getDioStatus(e),
-      );
-    }
-  }
+      debugPrint('==> Searching users with: $data');
 
-  @override
-  Future<ApiResult> setActiveAddress({required int id}) async {
-    try {
-      final client = dioHttp.client(requireAuth: true);
-      await client.post('/api/v1/dashboard/user/address/set-active/$id');
-      return const ApiResult.success(data: null);
-    } catch (e) {
-      return ApiResult.failure(
-        error: AppHelpers.errorHandler(e),
-        statusCode: NetworkExceptions.getDioStatus(e),
+      final response = await client.get(
+        '/api/v1/dashboard/user/search-sending',
+        queryParameters: data,
       );
-    }
-  }
 
-  @override
-  Future<ApiResult> deleteAddress({required int id}) async {
-    try {
-      final client = dioHttp.client(requireAuth: true);
-      await client.delete('/api/v1/dashboard/user/addresses/delete?ids[0]=$id');
-      return const ApiResult.success(data: null);
+      // Convert to your model
+      final searchResponse = SearchUserResponse.fromJson(response.data);
+      return searchResponse.data ?? <UserModel>[];
     } catch (e) {
-      return ApiResult.failure(
-        error: AppHelpers.errorHandler(e),
-        statusCode: NetworkExceptions.getDioStatus(e),
-      );
+      debugPrint('==> search user failure: $e');
+      return AppHelpers.errorHandler(e);
     }
   }
 }

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:foodyman/domain/di/dependency_manager.dart';
 import 'package:foodyman/domain/interface/payments.dart';
@@ -6,16 +7,26 @@ import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/domain/handlers/handlers.dart';
 
+
 class PaymentsRepository implements PaymentsRepositoryFacade {
+
   @override
   Future<ApiResult<PaymentsResponse>> getPayments() async {
     final data = {'lang': LocalStorage.getLanguage()?.locale};
     try {
-      final client = dioHttp.client(requireAuth: false);
+      final client = dioHttp.client(requireAuth: true);
+
+      // Add debug logging to see what's happening
+      debugPrint('==> Getting payments');
+
       final response = await client.get(
         '/api/v1/rest/payments',
         queryParameters: data,
       );
+
+      // Debug log the response
+      debugPrint('==> Payments response: ${response.data}');
+
       return ApiResult.success(
         data: PaymentsResponse.fromJson(response.data),
       );

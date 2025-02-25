@@ -23,7 +23,8 @@ class BottomNavigatorOne extends StatelessWidget {
         onTap: onTap,
         items: [
           BottomNavigationBarItem(
-              icon: const Icon(FlutterRemix.home_smile_fill),
+                   //  icon: const Icon(FlutterRemix.home_smile_fill),
+		 icon: const Icon(FlutterRemix.home_fill), //changed
               label: AppHelpers.getTranslation(TrKeys.home)),
           BottomNavigationBarItem(
               icon: const Icon(FlutterRemix.apps_2_line),
@@ -35,7 +36,8 @@ class BottomNavigatorOne extends StatelessWidget {
               ),
               label: AppHelpers.getTranslation(TrKeys.fosend)),
           BottomNavigationBarItem(
-              icon: const Icon(FlutterRemix.shopping_bag_3_line),
+                  //  icon: const Icon(FlutterRemix.shopping_bag_3_line),
+		icon: const Icon(FlutterRemix.shopping_basket_2_line), //changed
               label: AppHelpers.getTranslation(TrKeys.cart)),
         ]);
   }

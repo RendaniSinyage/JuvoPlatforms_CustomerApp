@@ -89,14 +89,16 @@ class _RegisterConfirmationPageState
       child: AbsorbPointer(
         absorbing: state.isLoading || state.isResending,
         child: KeyboardDismisser(
-          child: Container(
-            margin: MediaQuery.of(context).viewInsets,
-            decoration: BoxDecoration(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              margin: MediaQuery.of(context).viewInsets,
+              decoration: BoxDecoration(
                 color: AppStyle.bgGrey.withOpacity(0.96),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16.r),
-                  topRight: Radius.circular(16.r),
-                )),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(40.r),
+                ),
+              ),
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -203,58 +205,51 @@ class _RegisterConfirmationPageState
                               }
                             },
                             weight: (MediaQuery.sizeOf(context).width - 40) / 3,
-                            background: AppStyle.black,
+                            background: AppStyle.primary,
                             textColor: AppStyle.white,
                           ),
                           CustomButton(
                             isLoading: state.isLoading,
-                            title:
-                                AppHelpers.getTranslation(TrKeys.confirmation),
+                            title: AppHelpers.getTranslation(TrKeys.confirmation),
                             onPressed: () {
                               if (state.confirmCode.length == 6) {
                                 if (widget.isResetPassword) {
                                   widget.verificationId.isEmpty
                                       ? notifier.confirmCodeResetPassword(
-                                          context, widget.userModel.email ?? "")
-                                      : notifier
-                                          .confirmCodeResetPasswordWithPhone(
-                                              context,
-                                              widget.userModel.email ?? "",
-                                              widget.verificationId);
+                                      context, widget.userModel.email ?? "")
+                                      : notifier.confirmCodeResetPasswordWithPhone(
+                                      context,
+                                      widget.userModel.email ?? "",
+                                      widget.verificationId);
                                 } else {
                                   widget.verificationId.isEmpty
-                                      ? notifier.confirmCode(context)
+                                      ? notifier.confirmCode(context, ref)  // Pass ref here
                                       : notifier.confirmCodeWithPhone(
-                                          context: context,
-                                          verificationId: widget.verificationId,
-                                          onSuccess: widget.editPhone
-                                              ? () {
-                                                  if (widget.editPhone) {
-                                                    ref
-                                                        .read(
-                                                            editProfileProvider
-                                                                .notifier)
-                                                        .editProfile(
-                                                            context,
-                                                            ProfileData(
-                                                                phone: widget
-                                                                    .userModel
-                                                                    .email,
-                                                                firstname: ref
-                                                                        .watch(
-                                                                            profileProvider)
-                                                                        .userData
-                                                                        ?.firstname ??
-                                                                    ""));
-                                                    return;
-                                                  }
-                                                }
-                                              : null);
+                                      context: context,
+                                      verificationId: widget.verificationId,
+                                      ref: ref,  // Pass ref here
+                                      onSuccess: widget.editPhone
+                                          ? () {
+                                        if (widget.editPhone) {
+                                          ref
+                                              .read(editProfileProvider.notifier)
+                                              .editProfile(
+                                              context,
+                                              ProfileData(
+                                                  phone: widget.userModel.email,
+                                                  firstname: ref
+                                                      .watch(profileProvider)
+                                                      .userData
+                                                      ?.firstname ??
+                                                      ""));
+                                          return;
+                                        }
+                                      }
+                                          : null);
                                 }
                               }
                             },
-                            weight:
-                                2 * (MediaQuery.sizeOf(context).width - 40) / 3,
+                            weight: 2 * (MediaQuery.sizeOf(context).width - 40) / 3,
                             background: state.isConfirm
                                 ? AppStyle.primary
                                 : AppStyle.white,
@@ -270,6 +265,7 @@ class _RegisterConfirmationPageState
               ),
             ),
           ),
+        ),
         ),
       ),
     );

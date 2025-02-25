@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-//import 'package:gshop/presentation/style/theme/theme_warpper.dart';
+
+import '../theme/theme.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? hint;
@@ -13,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   final VoidCallback? onTap;
   final String? Function(String?)? validation;
   final TextInputType? inputType;
+  final List<TextInputFormatter>? inputFormatters;
   final String? initialText;
   final bool readOnly;
   final bool isError;
@@ -33,28 +35,30 @@ class CustomTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.isError = false,
     this.hint = "",
-     this.radius =  16,  this.autoFocus = false,
+    this.radius = 16,
+    this.autoFocus = false,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ThemeWrapper(builder: (colors, c) {
       return TextFormField(
         autofocus: autoFocus,
         onTap: onTap,
         maxLength: 200,
         onChanged: onChanged,
         autocorrect: true,
+        inputFormatters: inputFormatters,
         obscureText: !(obscure ?? true),
         obscuringCharacter: '*',
         controller: controller,
         validator: validation,
-        style: CustomStyle.interNormal(
+        style: AppStyle.interNormal(
           size: 14.sp,
-          color: colors.textBlack,
+          color: AppStyle.textGrey,
         ),
         cursorWidth: 1,
-        cursorColor: colors.textBlack,
+        cursorColor: AppStyle.textGrey,
         keyboardType: inputType,
         initialValue: initialText,
         readOnly: readOnly,
@@ -62,47 +66,53 @@ class CustomTextFormField extends StatelessWidget {
           counterText: "",
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.r,vertical: 16.r),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 16.r, vertical: 16.r),
           hintText: hint,
-          hintStyle: CustomStyle.interNormal(
+          hintStyle: AppStyle.interNormal(
             size: 14.sp,
-            color: CustomStyle.textHint,
+            color: AppStyle.hintColor,
           ),
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          fillColor: CustomStyle.black,
+          fillColor: AppStyle.black,
           filled: false,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide.merge(
-                  const BorderSide(color: CustomStyle.icon),
-                  const BorderSide(color: CustomStyle.icon)),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+              ),
               borderRadius: BorderRadius.circular(radius.r)),
           errorBorder: OutlineInputBorder(
               borderSide: BorderSide.merge(
-                  const BorderSide(color: CustomStyle.icon),
-                  const BorderSide(color: CustomStyle.icon)),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+              ),
               borderRadius: BorderRadius.circular(radius.r)),
           border: OutlineInputBorder(
               borderSide: BorderSide.merge(
-                  const BorderSide(color: CustomStyle.icon),
-                  const BorderSide(color: CustomStyle.icon)),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+              ),
               borderRadius: BorderRadius.circular(radius.r)),
           focusedErrorBorder: OutlineInputBorder(
               borderSide: BorderSide.merge(
-                  const BorderSide(color: CustomStyle.icon),
-                  const BorderSide(color: CustomStyle.icon)),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+              ),
               borderRadius: BorderRadius.circular(radius.r)),
           disabledBorder: OutlineInputBorder(
               borderSide: BorderSide.merge(
-                  const BorderSide(color: CustomStyle.icon),
-                  const BorderSide(color: CustomStyle.icon)),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+              ),
               borderRadius: BorderRadius.circular(radius.r)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide.merge(
-                  const BorderSide(color: CustomStyle.icon),
-                  const BorderSide(color: CustomStyle.icon)),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+                const BorderSide(color: AppStyle.iconButtonBack, width: 0.9),
+              ),
               borderRadius: BorderRadius.circular(radius.r)),
         ),
       );
-    });
   }
 }

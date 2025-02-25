@@ -4,6 +4,8 @@ import 'package:foodyman/infrastructure/models/request/edit_profile.dart';
 import 'package:foodyman/domain/handlers/handlers.dart';
 import 'package:foodyman/infrastructure/models/models.dart';
 
+import '../../infrastructure/models/data/user.dart';
+
 abstract class UserRepositoryFacade {
   Future<ApiResult<ProfileResponse>> getProfileDetails();
 
@@ -37,4 +39,9 @@ abstract class UserRepositoryFacade {
   Future<ApiResult<WalletHistoriesResponse>> getWalletHistories(int page);
 
   Future<ApiResult<void>> updateFirebaseToken(String? token);
+
+  Future<dynamic> searchUser({
+    required String name,
+    required int page
+  });
 }

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.foodyman">
+    package="app.juvo.food">
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission
@@ -29,12 +29,13 @@
         </intent>
     </queries>
     <application
+        android:name=".JuvoApplication"
         android:icon="@mipmap/ic_launcher"
-        android:label="Foodyman"
+        android:label="JUVO"
         tools:replace="android:label">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value=""/>
+            android:value="AIzaSyDJjLCq6HBCe7xae6l0D9DW1MWpE4900GU"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -51,6 +52,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
+	    android:alwaysRetainTaskState="true"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -59,6 +61,17 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"/>
+
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@drawable/notification_icon" />
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_channel_icon"
+    android:resource="@drawable/notification_icon" />
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_color"
+    android:resource="@color/custom_notification_color" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -67,8 +80,9 @@
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <data
-                    android:host="foodyman.page.link"
+                    android:host="juvofood.page.link"
                     android:scheme="https" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

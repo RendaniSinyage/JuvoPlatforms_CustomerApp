@@ -25,6 +25,7 @@ import '../shop/widgets/bonus_screen.dart';
 import 'widgets/images_list_one.dart';
 import 'widgets/p_main_button.dart';
 import 'widgets/w_product_extras.dart';
+import 'package:foodyman/presentation/components/loading.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {
   final ProductData? data;
@@ -176,7 +177,9 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
               topRight: Radius.circular(16.r),
             )),
         width: double.infinity,
-        child: SingleChildScrollView(
+        child: state.isLoading
+            ? const Loading()
+            : SingleChildScrollView(
                 controller: widget.controller,
                 child: Column(
                   children: [
@@ -228,45 +231,35 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                             children: [
                               SizedBox(
                                 height: 200.r,
-                                child: (state.productData?.galleries
-                                            ?.isNotEmpty ??
-                                        false)
-                                    ? PageView.builder(
-                                        itemCount: state.productData?.galleries
-                                                ?.length ??
+                                child: PageView.builder(
+                                    itemCount:
+                                        state.productData?.galleries?.length ??
                                             0,
-                                        controller: controller,
-                                        onPageChanged: (index) {
-                                          event.changeImage(state.productData
-                                                  ?.galleries?[index] ??
-                                              Galleries());
-                                        },
-                                        itemBuilder: (context, index) {
-                                          return CustomNetworkImage(
-                                              url: state.selectImage?.path ??
-                                                  state.activeImageUrl,
-                                              height: 200,
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                              radius: 10);
-                                        })
-                                    : CustomNetworkImage(
-                                        url: state.selectImage?.path ??
-                                            state.activeImageUrl,
-                                        height: 200,
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        radius: 10),
+                                    controller: controller,
+                                    onPageChanged: (index) {
+                                      event.changeImage(state
+                                              .productData?.galleries?[index] ??
+                                          Galleries());
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return CustomNetworkImage(
+                                          url: state.selectImage?.path ??
+                                              state.activeImageUrl,
+                                          height: 200,
+                                          fit: BoxFit.contain,
+                                          width: double.infinity,
+                                          radius: 10);
+                                    }),
+
                               ),
-                              if ((state.productData?.galleries?.length ?? 0) >
-                                  1)
-                                Positioned(
-                                  bottom: 8.r,
-                                  child: ImagesOneList(
-                                    list: state.productData?.galleries,
-                                    selectImageId: state.selectImage?.id,
-                                  ),
-                                )
+                              if((state.productData?.galleries?.length ?? 0) > 1)
+                              Positioned(
+                                bottom: 8.r,
+                                child: ImagesOneList(
+                                  list: state.productData?.galleries,
+                                  selectImageId: state.selectImage?.id,
+                                ),
+                              )
                             ],
                           ),
                           state.selectedStock?.bonus != null
@@ -322,7 +315,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               : const SizedBox.shrink(),
                           15.verticalSpace,
                           SizedBox(
-                            width: MediaQuery.sizeOf(context).width,
+                            width: MediaQuery.of(context).size.width,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -339,6 +332,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 ),
                                 Column(
                                   children: [
+
                                     Text(
                                       AppHelpers.numberFormat(
                                           number: (state.selectedStock?.price ??

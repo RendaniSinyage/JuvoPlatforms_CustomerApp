@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$LikeState {
   bool get isShopLoading => throw _privateConstructorUsedError;
   List<ShopData> get shops => throw _privateConstructorUsedError;
+  int get likedShopsCount => throw _privateConstructorUsedError;
 
   /// Create a copy of LikeState
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +32,7 @@ abstract class $LikeStateCopyWith<$Res> {
   factory $LikeStateCopyWith(LikeState value, $Res Function(LikeState) then) =
       _$LikeStateCopyWithImpl<$Res, LikeState>;
   @useResult
-  $Res call({bool isShopLoading, List<ShopData> shops});
+  $Res call({bool isShopLoading, List<ShopData> shops, int likedShopsCount});
 }
 
 /// @nodoc
@@ -51,6 +52,7 @@ class _$LikeStateCopyWithImpl<$Res, $Val extends LikeState>
   $Res call({
     Object? isShopLoading = null,
     Object? shops = null,
+    Object? likedShopsCount = null,
   }) {
     return _then(_value.copyWith(
       isShopLoading: null == isShopLoading
@@ -61,6 +63,10 @@ class _$LikeStateCopyWithImpl<$Res, $Val extends LikeState>
           ? _value.shops
           : shops // ignore: cast_nullable_to_non_nullable
               as List<ShopData>,
+      likedShopsCount: null == likedShopsCount
+          ? _value.likedShopsCount
+          : likedShopsCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -73,7 +79,7 @@ abstract class _$$LikeStateImplCopyWith<$Res>
       __$$LikeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isShopLoading, List<ShopData> shops});
+  $Res call({bool isShopLoading, List<ShopData> shops, int likedShopsCount});
 }
 
 /// @nodoc
@@ -91,6 +97,7 @@ class __$$LikeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isShopLoading = null,
     Object? shops = null,
+    Object? likedShopsCount = null,
   }) {
     return _then(_$LikeStateImpl(
       isShopLoading: null == isShopLoading
@@ -101,6 +108,10 @@ class __$$LikeStateImplCopyWithImpl<$Res>
           ? _value._shops
           : shops // ignore: cast_nullable_to_non_nullable
               as List<ShopData>,
+      likedShopsCount: null == likedShopsCount
+          ? _value.likedShopsCount
+          : likedShopsCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -109,7 +120,9 @@ class __$$LikeStateImplCopyWithImpl<$Res>
 
 class _$LikeStateImpl extends _LikeState {
   const _$LikeStateImpl(
-      {this.isShopLoading = true, final List<ShopData> shops = const []})
+      {this.isShopLoading = true,
+      final List<ShopData> shops = const [],
+      this.likedShopsCount = 0})
       : _shops = shops,
         super._();
 
@@ -126,8 +139,12 @@ class _$LikeStateImpl extends _LikeState {
   }
 
   @override
+  @JsonKey()
+  final int likedShopsCount;
+
+  @override
   String toString() {
-    return 'LikeState(isShopLoading: $isShopLoading, shops: $shops)';
+    return 'LikeState(isShopLoading: $isShopLoading, shops: $shops, likedShopsCount: $likedShopsCount)';
   }
 
   @override
@@ -137,12 +154,14 @@ class _$LikeStateImpl extends _LikeState {
             other is _$LikeStateImpl &&
             (identical(other.isShopLoading, isShopLoading) ||
                 other.isShopLoading == isShopLoading) &&
-            const DeepCollectionEquality().equals(other._shops, _shops));
+            const DeepCollectionEquality().equals(other._shops, _shops) &&
+            (identical(other.likedShopsCount, likedShopsCount) ||
+                other.likedShopsCount == likedShopsCount));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, isShopLoading, const DeepCollectionEquality().hash(_shops));
+  int get hashCode => Object.hash(runtimeType, isShopLoading,
+      const DeepCollectionEquality().hash(_shops), likedShopsCount);
 
   /// Create a copy of LikeState
   /// with the given fields replaced by the non-null parameter values.
@@ -155,13 +174,17 @@ class _$LikeStateImpl extends _LikeState {
 
 abstract class _LikeState extends LikeState {
   const factory _LikeState(
-      {final bool isShopLoading, final List<ShopData> shops}) = _$LikeStateImpl;
+      {final bool isShopLoading,
+      final List<ShopData> shops,
+      final int likedShopsCount}) = _$LikeStateImpl;
   const _LikeState._() : super._();
 
   @override
   bool get isShopLoading;
   @override
   List<ShopData> get shops;
+  @override
+  int get likedShopsCount;
 
   /// Create a copy of LikeState
   /// with the given fields replaced by the non-null parameter values.

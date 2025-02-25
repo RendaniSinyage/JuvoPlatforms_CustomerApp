@@ -174,7 +174,7 @@ class OrderActiveModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson({bool isPayment = true}) => {
         "id": id,
         "user_id": userId,
         "total_price": totalPrice,

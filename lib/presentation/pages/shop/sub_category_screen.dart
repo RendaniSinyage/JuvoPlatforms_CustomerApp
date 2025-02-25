@@ -250,7 +250,7 @@
 //                         child: AnimationButtonEffect(
 //                           child: Container(
 //                             decoration: BoxDecoration(
-//                               color: AppStyle.brandGreen,
+//                               color: AppStyle.primary,
 //                               borderRadius: BorderRadius.all(
 //                                 Radius.circular(10.r),
 //                               ),

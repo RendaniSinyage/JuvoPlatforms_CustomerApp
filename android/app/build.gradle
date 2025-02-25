@@ -32,17 +32,21 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.foodyman"
+    namespace "app.juvo.food"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
+        freeCompilerArgs += [
+                '-Xskip-metadata-version-check',
+                '-opt-in=kotlin.RequiresOptIn'
+        ]
     }
 
     sourceSets {
@@ -50,7 +54,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.foodyman"
+        applicationId "app.juvo.food"
         minSdkVersion 23
         multiDexEnabled true
         targetSdkVersion 34
@@ -72,6 +76,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
+        }
     }
 }
 
@@ -80,7 +89,10 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:32.7.2')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // Common dependencies for all build types
+    implementation 'androidx.multidex:multidex:2.0.1'
 
+    // Release-only dependencies
+    releaseImplementation platform('com.google.firebase:firebase-bom:32.7.2')
+    releaseImplementation 'com.google.firebase:firebase-analytics-ktx'
 }

@@ -16,6 +16,8 @@ class HomeState with _$HomeState {
     @Default(true) bool isRestaurantNewLoading,
     @Default(true) bool isStoryLoading,
     @Default(true) bool isShopRecommendLoading,
+    @Default([]) List<ProductData> discountProducts,
+    @Default(true) bool isDiscountProductsLoading,
     @Default(-1) int totalShops,
     @Default(-1) int selectIndexCategory,
     @Default(-1) int selectIndexSubCategory,
@@ -32,9 +34,8 @@ class HomeState with _$HomeState {
     @Default([]) List<ShopData> shopsRecommend,
     @Default([]) List<ShopData> filterShops,
     @Default([]) List<ShopData> filterMarket,
+    @Default([]) List<BrandData> brands,
   }) = _HomeState;
 
   const HomeState._();
-
-
 }

@@ -165,7 +165,7 @@
 //                           : Style.textGrey,
 // =======
 //                       background:
-//                           state.isActiveCard ? AppStyle.brandGreen : AppStyle.white,
+//                           state.isActiveCard ? AppStyle.primary : AppStyle.white,
 //                       textColor:
 //                           state.isActiveCard ? AppStyle.black : AppStyle.textGrey,
 // >>>>>>> Stashed changes

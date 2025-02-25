@@ -23,6 +23,7 @@ mixin _$ShopState {
   bool get isProductLoading => throw _privateConstructorUsedError;
   bool get isProductCategoryLoading => throw _privateConstructorUsedError;
   bool get isPopularProduct => throw _privateConstructorUsedError;
+  bool get isBrandsLoading => throw _privateConstructorUsedError;
   bool get isLike => throw _privateConstructorUsedError;
   bool get showWeekTime => throw _privateConstructorUsedError;
   bool get showBranch => throw _privateConstructorUsedError;
@@ -72,6 +73,7 @@ abstract class $ShopStateCopyWith<$Res> {
       bool isProductLoading,
       bool isProductCategoryLoading,
       bool isPopularProduct,
+      bool isBrandsLoading,
       bool isLike,
       bool showWeekTime,
       bool showBranch,
@@ -122,6 +124,7 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
     Object? isProductLoading = null,
     Object? isProductCategoryLoading = null,
     Object? isPopularProduct = null,
+    Object? isBrandsLoading = null,
     Object? isLike = null,
     Object? showWeekTime = null,
     Object? showBranch = null,
@@ -177,6 +180,10 @@ class _$ShopStateCopyWithImpl<$Res, $Val extends ShopState>
       isPopularProduct: null == isPopularProduct
           ? _value.isPopularProduct
           : isPopularProduct // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isBrandsLoading: null == isBrandsLoading
+          ? _value.isBrandsLoading
+          : isBrandsLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       isLike: null == isLike
           ? _value.isLike
@@ -302,6 +309,7 @@ abstract class _$$ShopStateImplCopyWith<$Res>
       bool isProductLoading,
       bool isProductCategoryLoading,
       bool isPopularProduct,
+      bool isBrandsLoading,
       bool isLike,
       bool showWeekTime,
       bool showBranch,
@@ -350,6 +358,7 @@ class __$$ShopStateImplCopyWithImpl<$Res>
     Object? isProductLoading = null,
     Object? isProductCategoryLoading = null,
     Object? isPopularProduct = null,
+    Object? isBrandsLoading = null,
     Object? isLike = null,
     Object? showWeekTime = null,
     Object? showBranch = null,
@@ -405,6 +414,10 @@ class __$$ShopStateImplCopyWithImpl<$Res>
       isPopularProduct: null == isPopularProduct
           ? _value.isPopularProduct
           : isPopularProduct // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isBrandsLoading: null == isBrandsLoading
+          ? _value.isBrandsLoading
+          : isBrandsLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       isLike: null == isLike
           ? _value.isLike
@@ -525,6 +538,7 @@ class _$ShopStateImpl extends _ShopState {
       this.isProductLoading = true,
       this.isProductCategoryLoading = false,
       this.isPopularProduct = false,
+      this.isBrandsLoading = true,
       this.isLike = false,
       this.showWeekTime = false,
       this.showBranch = false,
@@ -582,6 +596,9 @@ class _$ShopStateImpl extends _ShopState {
   @override
   @JsonKey()
   final bool isPopularProduct;
+  @override
+  @JsonKey()
+  final bool isBrandsLoading;
   @override
   @JsonKey()
   final bool isLike;
@@ -723,7 +740,7 @@ class _$ShopStateImpl extends _ShopState {
 
   @override
   String toString() {
-    return 'ShopState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, isCategoryLoading: $isCategoryLoading, isPopularLoading: $isPopularLoading, isProductLoading: $isProductLoading, isProductCategoryLoading: $isProductCategoryLoading, isPopularProduct: $isPopularProduct, isLike: $isLike, showWeekTime: $showWeekTime, showBranch: $showBranch, isMapLoading: $isMapLoading, isGroupOrder: $isGroupOrder, isJoinOrder: $isJoinOrder, isSearchEnabled: $isSearchEnabled, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isNestedScrollDisabled: $isNestedScrollDisabled, userUuid: $userUuid, searchText: $searchText, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, currentIndex: $currentIndex, subCategoryIndex: $subCategoryIndex, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, shopData: $shopData, categoryProducts: $categoryProducts, allData: $allData, category: $category, brands: $brands, branches: $branches, brandIds: $brandIds, sortIndex: $sortIndex)';
+    return 'ShopState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, isCategoryLoading: $isCategoryLoading, isPopularLoading: $isPopularLoading, isProductLoading: $isProductLoading, isProductCategoryLoading: $isProductCategoryLoading, isPopularProduct: $isPopularProduct, isBrandsLoading: $isBrandsLoading, isLike: $isLike, showWeekTime: $showWeekTime, showBranch: $showBranch, isMapLoading: $isMapLoading, isGroupOrder: $isGroupOrder, isJoinOrder: $isJoinOrder, isSearchEnabled: $isSearchEnabled, isTodayWorkingDay: $isTodayWorkingDay, isTomorrowWorkingDay: $isTomorrowWorkingDay, isNestedScrollDisabled: $isNestedScrollDisabled, userUuid: $userUuid, searchText: $searchText, startTodayTime: $startTodayTime, endTodayTime: $endTodayTime, currentIndex: $currentIndex, subCategoryIndex: $subCategoryIndex, shopMarkers: $shopMarkers, polylineCoordinates: $polylineCoordinates, shopData: $shopData, categoryProducts: $categoryProducts, allData: $allData, category: $category, brands: $brands, branches: $branches, brandIds: $brandIds, sortIndex: $sortIndex)';
   }
 
   @override
@@ -746,6 +763,8 @@ class _$ShopStateImpl extends _ShopState {
                 other.isProductCategoryLoading == isProductCategoryLoading) &&
             (identical(other.isPopularProduct, isPopularProduct) ||
                 other.isPopularProduct == isPopularProduct) &&
+            (identical(other.isBrandsLoading, isBrandsLoading) ||
+                other.isBrandsLoading == isBrandsLoading) &&
             (identical(other.isLike, isLike) || other.isLike == isLike) &&
             (identical(other.showWeekTime, showWeekTime) ||
                 other.showWeekTime == showWeekTime) &&
@@ -804,6 +823,7 @@ class _$ShopStateImpl extends _ShopState {
         isProductLoading,
         isProductCategoryLoading,
         isPopularProduct,
+        isBrandsLoading,
         isLike,
         showWeekTime,
         showBranch,
@@ -850,6 +870,7 @@ abstract class _ShopState extends ShopState {
       final bool isProductLoading,
       final bool isProductCategoryLoading,
       final bool isPopularProduct,
+      final bool isBrandsLoading,
       final bool isLike,
       final bool showWeekTime,
       final bool showBranch,
@@ -892,6 +913,8 @@ abstract class _ShopState extends ShopState {
   bool get isProductCategoryLoading;
   @override
   bool get isPopularProduct;
+  @override
+  bool get isBrandsLoading;
   @override
   bool get isLike;
   @override

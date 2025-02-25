@@ -13,6 +13,8 @@ class ChatState with _$ChatState {
     @Default([]) List<ChatMessageData> chats,
     @Default('') String chatId,
     TextEditingController? textController,
+    @Default(false) bool isEditing, // Add this for editing state
+    String? editingMessageId, // Store the messageId of the message being edited
   }) = _ChatState;
 
   const ChatState._();

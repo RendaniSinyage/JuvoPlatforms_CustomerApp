@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$IntroState {
   int get currentIndex => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of IntroState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $IntroStateCopyWith<IntroState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$IntroStateCopyWithImpl<$Res, $Val extends IntroState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of IntroState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$IntroStateImplCopyWithImpl<$Res>
       _$IntroStateImpl _value, $Res Function(_$IntroStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of IntroState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,7 +121,9 @@ class _$IntroStateImpl extends _IntroState {
   @override
   int get hashCode => Object.hash(runtimeType, currentIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of IntroState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$IntroStateImplCopyWith<_$IntroStateImpl> get copyWith =>
@@ -128,8 +136,11 @@ abstract class _IntroState extends IntroState {
 
   @override
   int get currentIndex;
+
+  /// Create a copy of IntroState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$IntroStateImplCopyWith<_$IntroStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

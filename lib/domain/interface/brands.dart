@@ -8,5 +8,8 @@ abstract class BrandsRepositoryFacade {
 
   Future<ApiResult<SingleBrandResponse>> getSingleBrand(int id);
 
-  Future<ApiResult<BrandsPaginateResponse>> getAllBrands({required int categoryId});
+  Future<ApiResult<BrandsPaginateResponse>> getAllBrands({
+    int? categoryId,
+    String? shopId,
+  });
 }
