@@ -33,6 +33,7 @@ mixin _$ProfileState {
   Translation? get policy => throw _privateConstructorUsedError;
   Translation? get term => throw _privateConstructorUsedError;
   List<String> get filepath => throw _privateConstructorUsedError;
+  bool get isEmptyWallet => throw _privateConstructorUsedError;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -64,7 +65,8 @@ abstract class $ProfileStateCopyWith<$Res> {
       bool isPolicyLoading,
       Translation? policy,
       Translation? term,
-      List<String> filepath});
+      List<String> filepath,
+      bool isEmptyWallet});
 }
 
 /// @nodoc
@@ -99,6 +101,7 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
     Object? policy = freezed,
     Object? term = freezed,
     Object? filepath = null,
+    Object? isEmptyWallet = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -169,6 +172,10 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
           ? _value.filepath
           : filepath // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      isEmptyWallet: null == isEmptyWallet
+          ? _value.isEmptyWallet
+          : isEmptyWallet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -198,7 +205,8 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
       bool isPolicyLoading,
       Translation? policy,
       Translation? term,
-      List<String> filepath});
+      List<String> filepath,
+      bool isEmptyWallet});
 }
 
 /// @nodoc
@@ -231,6 +239,7 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
     Object? policy = freezed,
     Object? term = freezed,
     Object? filepath = null,
+    Object? isEmptyWallet = null,
   }) {
     return _then(_$ProfileStateImpl(
       isLoading: null == isLoading
@@ -301,6 +310,10 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
           ? _value._filepath
           : filepath // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      isEmptyWallet: null == isEmptyWallet
+          ? _value.isEmptyWallet
+          : isEmptyWallet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -325,7 +338,8 @@ class _$ProfileStateImpl extends _ProfileState {
       this.isPolicyLoading = false,
       this.policy = null,
       this.term = null,
-      final List<String> filepath = const []})
+      final List<String> filepath = const [],
+      this.isEmptyWallet = false})
       : _walletHistory = walletHistory,
         _filepath = filepath,
         super._();
@@ -396,8 +410,12 @@ class _$ProfileStateImpl extends _ProfileState {
   }
 
   @override
+  @JsonKey()
+  final bool isEmptyWallet;
+
+  @override
   String toString() {
-    return 'ProfileState(isLoading: $isLoading, isReferralLoading: $isReferralLoading, isSaveLoading: $isSaveLoading, isLoadingHistory: $isLoadingHistory, typeIndex: $typeIndex, selectAddress: $selectAddress, bgImage: $bgImage, logoImage: $logoImage, addressModel: $addressModel, userData: $userData, referralData: $referralData, walletHistory: $walletHistory, isTermLoading: $isTermLoading, isPolicyLoading: $isPolicyLoading, policy: $policy, term: $term, filepath: $filepath)';
+    return 'ProfileState(isLoading: $isLoading, isReferralLoading: $isReferralLoading, isSaveLoading: $isSaveLoading, isLoadingHistory: $isLoadingHistory, typeIndex: $typeIndex, selectAddress: $selectAddress, bgImage: $bgImage, logoImage: $logoImage, addressModel: $addressModel, userData: $userData, referralData: $referralData, walletHistory: $walletHistory, isTermLoading: $isTermLoading, isPolicyLoading: $isPolicyLoading, policy: $policy, term: $term, filepath: $filepath, isEmptyWallet: $isEmptyWallet)';
   }
 
   @override
@@ -434,7 +452,9 @@ class _$ProfileStateImpl extends _ProfileState {
                 other.isPolicyLoading == isPolicyLoading) &&
             (identical(other.policy, policy) || other.policy == policy) &&
             (identical(other.term, term) || other.term == term) &&
-            const DeepCollectionEquality().equals(other._filepath, _filepath));
+            const DeepCollectionEquality().equals(other._filepath, _filepath) &&
+            (identical(other.isEmptyWallet, isEmptyWallet) ||
+                other.isEmptyWallet == isEmptyWallet));
   }
 
   @override
@@ -456,7 +476,8 @@ class _$ProfileStateImpl extends _ProfileState {
       isPolicyLoading,
       policy,
       term,
-      const DeepCollectionEquality().hash(_filepath));
+      const DeepCollectionEquality().hash(_filepath),
+      isEmptyWallet);
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -485,7 +506,8 @@ abstract class _ProfileState extends ProfileState {
       final bool isPolicyLoading,
       final Translation? policy,
       final Translation? term,
-      final List<String> filepath}) = _$ProfileStateImpl;
+      final List<String> filepath,
+      final bool isEmptyWallet}) = _$ProfileStateImpl;
   const _ProfileState._() : super._();
 
   @override
@@ -522,6 +544,8 @@ abstract class _ProfileState extends ProfileState {
   Translation? get term;
   @override
   List<String> get filepath;
+  @override
+  bool get isEmptyWallet;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.

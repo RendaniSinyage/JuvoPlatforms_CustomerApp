@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:foodyman/presentation/components/title_icon.dart';
-
-import 'package:foodyman/infrastructure/services/app_helpers.dart';
-import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import '../../../../../infrastructure/services/app_helpers.dart';
+import '../../../../../infrastructure/services/tr_keys.dart';
 import 'market_two_shimmer.dart';
 
 class AllShopTwoShimmer extends StatelessWidget {
@@ -18,7 +18,15 @@ class AllShopTwoShimmer extends StatelessWidget {
       children: [
         isTitle
             ? TitleAndIcon(
-                title: AppHelpers.getTranslation(TrKeys.allRestaurants),
+                rightTitle: AppHelpers.getTranslation(TrKeys.seeAll),
+                isIcon: true,
+                title: AppHelpers.getTranslation(TrKeys.popularNearYou),
+                titleColor: AppStyle.shimmerBase,
+                rightTitleColor: AppStyle.white,
+                containerColor: AppStyle.shimmerBase,
+                borderColor: AppStyle.shimmerBase,
+                iconColor: AppStyle.white,
+                onRightTap: () {},
               )
             : const SizedBox.shrink(),
         AnimationLimiter(
@@ -35,10 +43,9 @@ class AllShopTwoShimmer extends StatelessWidget {
               right: 16,
             ),
             shrinkWrap: true,
-            
             physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
-            itemCount: 6,
+            itemCount: 2,
             itemBuilder: (context, index) =>
                 AnimationConfiguration.staggeredList(
               position: index,

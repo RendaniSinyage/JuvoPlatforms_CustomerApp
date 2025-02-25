@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppStyle {
   AppStyle._();
-  
-  static const Color primary = Color(0xFF83EA00);
+
+  static const Color primary = Color(0xFFFF6600);//changed
   static const Color bottomNavigationBarColor = Color(0xFF191919);
   static const Color enterOrderButton = Color(0xFFF4F8F7);
   static const Color tabBarBorderColor = Color(0xFFDEDFE1);
@@ -146,5 +146,76 @@ abstract class AppStyle {
           letterSpacing: letterSpacing.sp,
           decoration: textDecoration);
 
+  ///Juvo Font Styles - Using Montserrat
+  static logoFontBold({
+    double size = 18,
+    Color color = AppStyle.black,
+    double letterSpacing = 0
+  }) =>
+      GoogleFonts.montserrat(
+          fontSize: size.sp,
+          fontWeight: FontWeight.w700, // Bold 700
+          color: color,
+          letterSpacing: letterSpacing.sp,
+          decoration: TextDecoration.none
+      );
+
+  static logoFontBoldItalic({
+    double size = 18,
+    Color color = AppStyle.black,
+    double letterSpacing = 0
+  }) =>
+      GoogleFonts.montserrat(
+          fontSize: size.sp,
+          fontWeight: FontWeight.w700, // Bold 700
+          fontStyle: FontStyle.italic,
+          color: color,
+          letterSpacing: letterSpacing.sp,
+          decoration: TextDecoration.none
+      );
+
+  static logoFontBlackItalic({
+    double size = 18,
+    Color color = AppStyle.black,
+    double letterSpacing = 0
+  }) =>
+      GoogleFonts.montserrat(
+          fontSize: size.sp,
+          fontWeight: FontWeight.w900, // Black 900
+          fontStyle: FontStyle.italic,
+          color: color,
+          letterSpacing: letterSpacing.sp,
+          decoration: TextDecoration.none
+      );
+
+// Logo Motto styles - Using Montserrat
+  static logoMottoRegular({
+    double size = 16,
+    Color color = AppStyle.black,
+    TextDecoration textDecoration = TextDecoration.none,
+    double letterSpacing = 0
+  }) =>
+      GoogleFonts.montserrat(
+          fontSize: size.sp,
+          fontWeight: FontWeight.w400, // Regular 400
+          color: color,
+          letterSpacing: letterSpacing.sp,
+          decoration: textDecoration
+      );
+
+  static logoMottoRegularItalic({
+    double size = 16,
+    Color color = AppStyle.black,
+    TextDecoration textDecoration = TextDecoration.none,
+    double letterSpacing = 0
+  }) =>
+      GoogleFonts.montserrat(
+          fontSize: size.sp,
+          fontWeight: FontWeight.w400, // Regular 400
+          fontStyle: FontStyle.italic,
+          color: color,
+          letterSpacing: letterSpacing.sp,
+          decoration: textDecoration
+      );
 
 }

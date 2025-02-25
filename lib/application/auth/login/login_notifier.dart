@@ -22,6 +22,7 @@ import 'package:foodyman/presentation/routes/app_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:foodyman/domain/interface/settings.dart';
+
 import 'login_state.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
@@ -33,7 +34,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     this._authRepository,
     this._settingsRepository,
     this._userRepositoryFacade,
-  ) : super(const LoginState());
+    ) : super(const LoginState());
 
   void setPassword(String text) {
     state = state.copyWith(
@@ -64,8 +65,47 @@ class LoginNotifier extends StateNotifier<LoginState> {
   Future<void> checkLanguage(BuildContext context) async {
     final lang = LocalStorage.getLanguage();
     if (lang == null) {
-      state = state.copyWith(isSelectLanguage: false);
+      // No language selected yet, check available languages
+      final connect = await AppConnectivity.connectivity();
+      if (connect) {
+        final response = await _settingsRepository.getLanguages();
+        response.when(
+          success: (data) {
+            final List<LanguageData> languages = data.data ?? [];
+            state = state.copyWith(list: languages);
+
+            // Auto-select if there's only one language
+            if (languages.length == 1) {
+              // Set as selected language
+              LocalStorage.setLanguageData(languages[0]);
+              LocalStorage.setLangLtr(languages[0].backward);
+              LocalStorage.setLanguageSelected(true);
+
+              // Get translations for this language
+              _getTranslations(context, languages[0]);
+
+              // Update state to skip language selection screen
+              state = state.copyWith(isSelectLanguage: true);
+            } else {
+              // Multiple languages available, show selection screen
+              state = state.copyWith(isSelectLanguage: false);
+            }
+          },
+          failure: (failure, status) {
+            state = state.copyWith(isSelectLanguage: false);
+            AppHelpers.showCheckTopSnackBar(
+              context,
+              failure,
+            );
+          },
+        );
+      } else {
+        if (context.mounted) {
+          AppHelpers.showNoConnectionSnackBar(context);
+        }
+      }
     } else {
+      // Language already selected, verify it exists in available languages
       final connect = await AppConnectivity.connectivity();
       if (connect) {
         final response = await _settingsRepository.getLanguages();
@@ -94,6 +134,26 @@ class LoginNotifier extends StateNotifier<LoginState> {
         if (context.mounted) {
           AppHelpers.showNoConnectionSnackBar(context);
         }
+      }
+    }
+  }
+
+// Helper method to get translations
+  Future<void> _getTranslations(BuildContext context, LanguageData language) async {
+    final connect = await AppConnectivity.connectivity();
+    if (connect) {
+      final response = await _settingsRepository.getMobileTranslations();
+      response.when(
+        success: (data) {
+          LocalStorage.setTranslations(data.data);
+        },
+        failure: (failure, status) {
+          AppHelpers.showCheckTopSnackBar(context, failure);
+        },
+      );
+    } else {
+      if (context.mounted) {
+        AppHelpers.showNoConnectionSnackBar(context);
       }
     }
   }

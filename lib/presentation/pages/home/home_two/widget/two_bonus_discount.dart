@@ -46,7 +46,7 @@ class TwoBonusDiscountPopular extends StatelessWidget {
                     child: Icon(
                       FlutterRemix.gift_2_fill,
                       size: 16.r,
-                      color: AppStyle.black,
+                      color: AppStyle.white,
                     ),
                   ),
                 ],
@@ -115,7 +115,7 @@ class TwoBonusDiscountPopular extends StatelessWidget {
                             child: Icon(
                               FlutterRemix.gift_2_fill,
                               size: 16.r,
-                              color: AppStyle.black,
+                              color: AppStyle.white,
                             ),
                           ),
                         ],
@@ -132,7 +132,7 @@ class TwoBonusDiscountPopular extends StatelessWidget {
                                 child: Icon(
                                   FlutterRemix.gift_2_fill,
                                   size: 16.r,
-                                  color: AppStyle.black,
+                                  color: AppStyle.white,
                                 ),
                               ),
                               8.horizontalSpace,
@@ -179,7 +179,7 @@ class TwoBonusDiscountPopular extends StatelessWidget {
                                               child: Icon(
                                                 FlutterRemix.gift_2_fill,
                                                 size: 16.r,
-                                                color: AppStyle.black,
+                                                color: AppStyle.white,
                                               ),
                                             )
                                           : isPopular
@@ -231,7 +231,7 @@ class TwoBonusDiscountPopular extends StatelessWidget {
                     child: Icon(
                       FlutterRemix.gift_2_fill,
                       size: 16.r,
-                      color: AppStyle.black,
+                      color: AppStyle.white,
                     ),
                   )
                 : isPopular
@@ -283,7 +283,7 @@ class TwoBonusDiscountPopular extends StatelessWidget {
                                 child: Icon(
                                   FlutterRemix.gift_2_fill,
                                   size: 16.r,
-                                  color: AppStyle.black,
+                                  color: AppStyle.white,
                                 ),
                               ),
                             ],

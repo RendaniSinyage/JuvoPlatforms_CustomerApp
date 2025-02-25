@@ -46,13 +46,27 @@ class BrandsRepository implements BrandsRepositoryFacade {
   }
 
   @override
-  Future<ApiResult<BrandsPaginateResponse>> getAllBrands(
-      {required int categoryId}) async {
+  Future<ApiResult<BrandsPaginateResponse>> getAllBrands({
+    int? categoryId,
+    String? shopId,
+  }) async {
     final data = {
       'perPage': 100,
-      "category_id": categoryId,
       'lang': LocalStorage.getLanguage()?.locale,
     };
+
+    // Add either category_id or shop_id to the query parameters
+    if (categoryId != null) {
+      data['category_id'] = categoryId;
+    } else if (shopId != null) {
+      data['shop_id'] = shopId;
+    } else {
+      return ApiResult.failure(
+        error: 'Either categoryId or shopId must be provided',
+        statusCode: 400,
+      );
+    }
+
     try {
       final client = dioHttp.client(requireAuth: false);
       final response = await client.get(

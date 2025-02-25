@@ -16,17 +16,21 @@ class BannerScreen extends StatelessWidget {
   final String desc;
   final bool isAds;
   final List<ShopData> list;
+  final String? buttonText;
 
-  const BannerScreen(
-      {super.key,
-      required this.image,
-      required this.desc,
-      required this.list,
-      required this.bannerId,
-      this.isAds = false});
+  const BannerScreen({
+    super.key,
+    required this.image,
+    required this.desc,
+    required this.list,
+    required this.bannerId,
+    this.isAds = false,
+    this.buttonText,
+  });
 
   @override
   Widget build(BuildContext context) {
+    print("Button text being used in BannerScreen: ${buttonText}");
     return Container(
       decoration: BoxDecoration(
         color: AppStyle.white,
@@ -68,21 +72,26 @@ class BannerScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: CustomButton(
-                      background: AppStyle.transparent,
-                      borderColor: AppStyle.tabBarBorderColor,
-                      title: AppHelpers.getTranslation(TrKeys.cancel),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
+                    background: AppStyle.transparent,
+                    borderColor: AppStyle.tabBarBorderColor,
+                    title: AppHelpers.getTranslation(TrKeys.cancel),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
                 10.horizontalSpace,
                 Expanded(
                   child: CustomButton(
-                      title: AppHelpers.getTranslation(TrKeys.orderNow),
-                      onPressed: () {
-                        context.pushRoute(ShopsBannerRoute(
-                            bannerId: bannerId, title: desc, isAds: isAds));
-                      }),
+                    title: buttonText ?? "View",
+                    onPressed: () {
+                      context.pushRoute(ShopsBannerRoute(
+                        bannerId: bannerId,
+                        title: desc,
+                        isAds: isAds,
+                      ));
+                    },
+                  ),
                 ),
               ],
             ),

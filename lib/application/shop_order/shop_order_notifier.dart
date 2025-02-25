@@ -693,7 +693,7 @@ class ShopOrderNotifier extends StateNotifier<ShopOrderState> {
     final productLink =
         "${AppConstants.webUrl}/group/${state.cart?.shopId}?g=${state.cart?.id}&o=${state.cart?.ownerId}&t=${type ?? 'shop'}";
 
-    const dynamicLink =
+    final dynamicLink =
         'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${AppConstants.firebaseWebKey}';
 
     final dataShare = {

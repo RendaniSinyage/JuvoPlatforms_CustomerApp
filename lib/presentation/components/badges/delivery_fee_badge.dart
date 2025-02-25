@@ -10,7 +10,7 @@ import '../../../infrastructure/services/app_helpers.dart';
 //import '../../../infrastructure/services/tr_keys.dart';
 import '../../../infrastructure/services/tr_keys.dart';
 import '../../theme/app_style.dart';
-//import 'package:riverpodtemp/application/shop/shop_provider.dart';
+//import 'package:foodyman/application/shop/shop_provider.dart';
 //import '../../../infrastructure/services/local_storage.dart';
 //import '../../../utils/utils.dart';
 
@@ -34,7 +34,7 @@ class DeliveryFeeBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = (shop.deliveryRange! > 0 || shop.price! > 0)
+    Color color = (shop.pricePerKm! > 0 || shop.minPrice! > 0)
         ? AppStyle.black.withOpacity(0.3)
         : AppStyle.red;
     return Positioned(
@@ -78,7 +78,7 @@ class DeliveryFeeBadge extends StatelessWidget {
                 :
             Row(
               children: [
-                (shop.deliveryRange! > 0 || shop.price! > 0)
+                (shop.pricePerKm! > 0 || shop.minPrice! > 0)
                     ?  Row(
                         children: [
                           Row(
@@ -88,7 +88,7 @@ class DeliveryFeeBadge extends StatelessWidget {
                                   color: AppStyle.white, size: 12),
                               5.horizontalSpace,
                               Text(
-                                "from ${AppHelpers.numberFormat(number: shop.price)}",
+                                "from ${AppHelpers.numberFormat(number: shop.minPrice)}",
                                 style: AppStyle.interNormal(
                                   size: 13,
                                   color: AppStyle.white,

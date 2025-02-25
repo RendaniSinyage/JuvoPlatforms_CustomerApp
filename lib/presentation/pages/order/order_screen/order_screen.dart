@@ -5,8 +5,6 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,15 +14,12 @@ import 'package:foodyman/application/order/order_notifier.dart';
 import 'package:foodyman/application/order/order_provider.dart';
 import 'package:foodyman/application/order/order_state.dart';
 import 'package:foodyman/application/shop_order/shop_order_state.dart';
-import 'package:foodyman/game/game.dart';
-import 'package:foodyman/game/game_bloc/game_bloc.dart';
 import 'package:foodyman/app_constants.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/enums.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
-import 'package:foodyman/presentation/components/buttons/custom_button.dart';
 import 'package:foodyman/presentation/components/buttons/pop_button.dart';
 import 'package:foodyman/presentation/components/keyboard_dismisser.dart';
 import 'package:foodyman/presentation/components/loading.dart';
@@ -196,27 +191,6 @@ class _OrderPageState extends ConsumerState<OrderPage>
         children: [
           const PopButton(),
           16.horizontalSpace,
-          state.orderData != null
-              ? Expanded(
-                  child: CustomButton(
-                      icon: const Icon(
-                        FlutterRemix.gamepad_fill,
-                        color: AppStyle.black,
-                      ),
-                      title: AppHelpers.getTranslation(TrKeys.wantToPlayGame),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider(
-                              create: (context) =>
-                                  GameBloc()..add(const GameEvent.init()),
-                              child: const Game(),
-                            ),
-                          ),
-                        );
-                      }),
-                )
-              : const Spacer(),
         ],
       ),
     );

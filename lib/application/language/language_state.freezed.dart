@@ -20,6 +20,7 @@ mixin _$LanguageState {
   int get index => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
+  bool get autoSelected => throw _privateConstructorUsedError;
 
   /// Create a copy of LanguageState
   /// with the given fields replaced by the non-null parameter values.
@@ -35,7 +36,11 @@ abstract class $LanguageStateCopyWith<$Res> {
       _$LanguageStateCopyWithImpl<$Res, LanguageState>;
   @useResult
   $Res call(
-      {List<LanguageData> list, int index, bool isLoading, bool isSuccess});
+      {List<LanguageData> list,
+      int index,
+      bool isLoading,
+      bool isSuccess,
+      bool autoSelected});
 }
 
 /// @nodoc
@@ -57,6 +62,7 @@ class _$LanguageStateCopyWithImpl<$Res, $Val extends LanguageState>
     Object? index = null,
     Object? isLoading = null,
     Object? isSuccess = null,
+    Object? autoSelected = null,
   }) {
     return _then(_value.copyWith(
       list: null == list
@@ -75,6 +81,10 @@ class _$LanguageStateCopyWithImpl<$Res, $Val extends LanguageState>
           ? _value.isSuccess
           : isSuccess // ignore: cast_nullable_to_non_nullable
               as bool,
+      autoSelected: null == autoSelected
+          ? _value.autoSelected
+          : autoSelected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -88,7 +98,11 @@ abstract class _$$LanguageStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<LanguageData> list, int index, bool isLoading, bool isSuccess});
+      {List<LanguageData> list,
+      int index,
+      bool isLoading,
+      bool isSuccess,
+      bool autoSelected});
 }
 
 /// @nodoc
@@ -108,6 +122,7 @@ class __$$LanguageStateImplCopyWithImpl<$Res>
     Object? index = null,
     Object? isLoading = null,
     Object? isSuccess = null,
+    Object? autoSelected = null,
   }) {
     return _then(_$LanguageStateImpl(
       list: null == list
@@ -126,6 +141,10 @@ class __$$LanguageStateImplCopyWithImpl<$Res>
           ? _value.isSuccess
           : isSuccess // ignore: cast_nullable_to_non_nullable
               as bool,
+      autoSelected: null == autoSelected
+          ? _value.autoSelected
+          : autoSelected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -137,7 +156,8 @@ class _$LanguageStateImpl extends _LanguageState {
       {final List<LanguageData> list = const [],
       this.index = 0,
       this.isLoading = true,
-      this.isSuccess = false})
+      this.isSuccess = false,
+      this.autoSelected = false})
       : _list = list,
         super._();
 
@@ -159,10 +179,13 @@ class _$LanguageStateImpl extends _LanguageState {
   @override
   @JsonKey()
   final bool isSuccess;
+  @override
+  @JsonKey()
+  final bool autoSelected;
 
   @override
   String toString() {
-    return 'LanguageState(list: $list, index: $index, isLoading: $isLoading, isSuccess: $isSuccess)';
+    return 'LanguageState(list: $list, index: $index, isLoading: $isLoading, isSuccess: $isSuccess, autoSelected: $autoSelected)';
   }
 
   @override
@@ -175,12 +198,19 @@ class _$LanguageStateImpl extends _LanguageState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isSuccess, isSuccess) ||
-                other.isSuccess == isSuccess));
+                other.isSuccess == isSuccess) &&
+            (identical(other.autoSelected, autoSelected) ||
+                other.autoSelected == autoSelected));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_list), index, isLoading, isSuccess);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_list),
+      index,
+      isLoading,
+      isSuccess,
+      autoSelected);
 
   /// Create a copy of LanguageState
   /// with the given fields replaced by the non-null parameter values.
@@ -196,7 +226,8 @@ abstract class _LanguageState extends LanguageState {
       {final List<LanguageData> list,
       final int index,
       final bool isLoading,
-      final bool isSuccess}) = _$LanguageStateImpl;
+      final bool isSuccess,
+      final bool autoSelected}) = _$LanguageStateImpl;
   const _LanguageState._() : super._();
 
   @override
@@ -207,6 +238,8 @@ abstract class _LanguageState extends LanguageState {
   bool get isLoading;
   @override
   bool get isSuccess;
+  @override
+  bool get autoSelected;
 
   /// Create a copy of LanguageState
   /// with the given fields replaced by the non-null parameter values.

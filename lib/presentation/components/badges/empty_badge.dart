@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/presentation/theme/theme.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/presentation/theme/theme.dart';
 import 'package:lottie/lottie.dart';
 
 class EmptyBadge extends StatelessWidget {
@@ -50,7 +50,7 @@ class EmptyBadge extends StatelessWidget {
                 TextSpan(
                   text: ' $linkText',
                   style: const TextStyle(
-                    color: AppStyle.brandGreen,
+                    color: AppStyle.primary,
                     decoration: TextDecoration.underline,
                   ),
                   recognizer: TapGestureRecognizer()..onTap = onLinkTap,

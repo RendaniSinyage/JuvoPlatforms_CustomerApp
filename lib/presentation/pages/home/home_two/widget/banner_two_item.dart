@@ -5,7 +5,7 @@ import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/presentation/components/custom_network_image.dart';
 import 'package:foodyman/presentation/pages/home/widgets/banner_screen.dart';
 
-import 'package:foodyman/presentation/theme/app_style.dart';
+import '../../../../theme/theme.dart';
 
 class BannerTwoItem extends StatelessWidget {
   final BannerData banner;

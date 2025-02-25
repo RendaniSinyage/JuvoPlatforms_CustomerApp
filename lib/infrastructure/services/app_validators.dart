@@ -30,7 +30,14 @@ abstract class AppValidators {
     }
     return null;
   }
-
+  static String? isValidPrice(String? title) {
+    if (title?.isEmpty ?? true) {
+      return AppHelpers.getTranslation(TrKeys.thisFieldIsRequired);
+    } else  if ((num.tryParse(title ?? "0") ?? 0) <= 0 ) {
+      return AppHelpers.getTranslation(TrKeys.thisFieldIsNotMinusOrZero);
+    }
+    return null;
+  }
   static bool isValidConfirmPassword(String password,String confirmPassword) => password == confirmPassword;
 
   static bool arePasswordsTheSame(String password, String confirmPassword) =>

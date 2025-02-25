@@ -16,15 +16,13 @@ import 'package:foodyman/application/shop_order/shop_order_provider.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
+
 import 'package:foodyman/presentation/components/text_fields/search_text_field.dart';
 import 'package:foodyman/presentation/components/title_icon.dart';
 import 'package:foodyman/presentation/routes/app_router.dart';
 import 'package:foodyman/presentation/theme/theme.dart';
-import 'banner_three.dart';
-import 'widgets/door_three.dart';
-import 'widgets/market_three_item.dart';
-import 'widgets/shop_see_all.dart';
 import 'app_bar_home_three.dart';
+import 'banner_three.dart';
 import 'category_screen_three.dart';
 import 'filter_category_shop_three.dart';
 import 'shimmer/all_shop_shimmer.dart';
@@ -32,9 +30,12 @@ import 'shimmer/banner_shimmer.dart';
 import 'shimmer/news_shop_shimmer.dart';
 import 'shimmer/recommend_shop_shimmer.dart';
 import 'shimmer/shop_shimmer_three.dart';
+import 'widgets/door_three.dart';
 import 'widgets/explore_three.dart';
+import 'widgets/market_three_item.dart';
 import 'widgets/recommended_three_item.dart';
 import 'widgets/shop_bar_item_three.dart';
+import 'widgets/shop_see_all.dart';
 
 class HomePageThree extends ConsumerStatefulWidget {
   const HomePageThree({super.key});
@@ -102,19 +103,19 @@ class _HomePageState extends ConsumerState<HomePageThree> {
   void _onRefresh() {
     ref.watch(homeProvider).selectIndexCategory == -1
         ? (event
-          ..fetchBannerPage(context, _restaurantController, isRefresh: true)
-          ..fetchRestaurantPage(context, _restaurantController, isRefresh: true)
-          ..fetchCategoriesPage(context, _restaurantController, isRefresh: true)
-          ..fetchStorePage(context, _restaurantController, isRefresh: true)
-          ..fetchShopPage(context, _restaurantController, isRefresh: true)
-          ..fetchAds(context)
-          ..fetchRestaurantPageNew(context, _restaurantController,
-              isRefresh: true)
-          ..fetchShopPageRecommend(context, _restaurantController,
-              isRefresh: true))
-        : event.fetchFilterRestaurant(context,
-            controller: _restaurantController, isRefresh: true);
+      ..fetchBannerPage(context, _restaurantController, isRefresh: true)
+      ..fetchRestaurantPage(context, _restaurantController, isRefresh: true)
+      ..fetchCategoriesPage(context, _restaurantController, isRefresh: true)
+      ..fetchStorePage(context, _restaurantController, isRefresh: true)
+      ..fetchShopPage(context, _restaurantController, isRefresh: true)
+      ..fetchAds(context)
+      ..fetchRestaurantPageNew(context, _restaurantController,
+          isRefresh: true)
+      ..fetchShopPageRecommend(context, _restaurantController,
+          isRefresh: true))
+        : event.fetchFilterRestaurant(context, controller: _restaurantController,isRefresh: true);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,11 +163,11 @@ class _HomePageState extends ConsumerState<HomePageThree> {
               state.isBannerLoading
                   ? const BannerShimmer()
                   : BannerThree(
-                      bannerController: _bannerController,
-                      pageController: _pageController,
-                      banners: state.banners,
-                      notifier: event,
-                    ),
+                bannerController: _bannerController,
+                pageController: _pageController,
+                banners: state.banners,
+                notifier: event,
+              ),
               CategoryScreenThree(
                 state: state,
                 categoryController: _categoryController,
@@ -176,9 +177,9 @@ class _HomePageState extends ConsumerState<HomePageThree> {
               state.selectIndexCategory == -1
                   ? _body(state, event, context)
                   : FilterCategoryShopThree(
-                      state: state,
-                      event: event,
-                      shopController: _restaurantController),
+                  state: state,
+                  event: event,
+                  shopController: _restaurantController),
             ],
           ),
         ),
@@ -239,7 +240,8 @@ class _HomePageState extends ConsumerState<HomePageThree> {
                     ],
                   )
                 : const SizedBox.shrink(),
-        if (AppHelpers.getParcel()) const DoorThree(),
+        if(AppHelpers.getParcel())
+        const DoorThree(),
         state.story?.isNotEmpty ?? false
             ? SizedBox(
                 height: 224.r,
@@ -254,6 +256,7 @@ class _HomePageState extends ConsumerState<HomePageThree> {
                   child: AnimationLimiter(
                     child: ListView.builder(
                       shrinkWrap: true,
+                      
                       scrollDirection: Axis.horizontal,
                       itemCount: state.story?.length ?? 0,
                       padding: EdgeInsets.only(left: 16.w),
@@ -339,6 +342,7 @@ class _HomePageState extends ConsumerState<HomePageThree> {
                           child: AnimationLimiter(
                             child: ListView.builder(
                               shrinkWrap: false,
+                              
                               scrollDirection: Axis.horizontal,
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
                               itemCount: state.shopsRecommend.length,
@@ -377,6 +381,7 @@ class _HomePageState extends ConsumerState<HomePageThree> {
                           child: ListView.builder(
                             padding: EdgeInsets.only(top: 6.h),
                             shrinkWrap: true,
+                            
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             itemCount: state.restaurant.length,

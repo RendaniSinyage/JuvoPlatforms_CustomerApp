@@ -37,3 +37,9 @@ enum BannerType { banner, look }
 enum LookProductStockStatus { outOfStock, alreadyAdded, notAdded }
 
 enum SignUpType { phone, email, both }
+
+// Enums for payment methods
+enum PaymentMethodType {
+  directCard,
+  savedCard,
+}

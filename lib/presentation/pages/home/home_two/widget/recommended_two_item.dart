@@ -1,5 +1,3 @@
-
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,10 +11,12 @@ import 'package:foodyman/presentation/theme/theme.dart';
 
 class RecommendedTwoItem extends StatelessWidget {
   final ShopData shop;
+  final bool bgImg; // New parameter for optional background image
 
   const RecommendedTwoItem({
     super.key,
     required this.shop,
+    this.bgImg = true, // Default to true to maintain backward compatibility
   });
 
   @override
@@ -27,18 +27,31 @@ class RecommendedTwoItem extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(left: 0, right: 9.r),
-        width: MediaQuery.sizeOf(context).width / 3,
+        width: MediaQuery.of(context).size.width / 3,
         height: 190.h,
         decoration: BoxDecoration(
             color: AppStyle.recommendBg,
-            borderRadius: BorderRadius.circular(10.r)),
+            borderRadius: BorderRadius.all(Radius.circular(10.r)),
+            // Add border when background image is disabled
+            border: !bgImg ? Border.all(color: AppStyle.textGrey) : null),
         child: Stack(
           children: [
-            CustomNetworkImage(
-                url: shop.backgroundImg ?? "",
-                width: MediaQuery.sizeOf(context).width / 2,
-                height: 190.h,
-                radius: 10.r),
+            // Background image or Container with border - only construct the widget we need
+            if (bgImg)
+              CustomNetworkImage(
+                  url: shop.backgroundImg ?? "",
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 190.h,
+                  radius: 10.r)
+            else
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: AppStyle.textGrey.withOpacity(0.5),
+                ),
+              ),
             Padding(
               padding: EdgeInsets.all(12.r),
               child: Column(
@@ -72,7 +85,7 @@ class RecommendedTwoItem extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: AppStyle.black.withOpacity(0.8),
                         borderRadius:
-                            BorderRadius.all(Radius.circular(100.r))),
+                        BorderRadius.all(Radius.circular(100.r))),
                     child: Text(
                       "${shop.productsCount ?? 0}  ${AppHelpers.getTranslation(TrKeys.products)}",
                       style: AppStyle.interNormal(

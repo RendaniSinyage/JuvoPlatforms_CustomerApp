@@ -11,8 +11,7 @@ import 'package:foodyman/presentation/components/loading.dart';
 import 'package:foodyman/presentation/components/tab_bar_item.dart';
 import 'package:foodyman/presentation/components/title_icon.dart';
 import 'package:foodyman/presentation/pages/home/filter/filter_page.dart';
-import 'package:foodyman/presentation/theme/app_style.dart';
-
+import '../../../theme/theme.dart';
 import 'widget/market_two_item.dart';
 
 class FilterCategoryShopTwo extends StatelessWidget {

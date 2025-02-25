@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ClosedState {
   int get currentIndex => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ClosedState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ClosedStateCopyWith<ClosedState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$ClosedStateCopyWithImpl<$Res, $Val extends ClosedState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ClosedState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$ClosedStateImplCopyWithImpl<$Res>
       _$ClosedStateImpl _value, $Res Function(_$ClosedStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ClosedState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,7 +121,9 @@ class _$ClosedStateImpl extends _ClosedState {
   @override
   int get hashCode => Object.hash(runtimeType, currentIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ClosedState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ClosedStateImplCopyWith<_$ClosedStateImpl> get copyWith =>
@@ -128,8 +136,11 @@ abstract class _ClosedState extends ClosedState {
 
   @override
   int get currentIndex;
+
+  /// Create a copy of ClosedState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ClosedStateImplCopyWith<_$ClosedStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

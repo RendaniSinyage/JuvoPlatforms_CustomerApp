@@ -81,6 +81,25 @@ class ChatRouteArgs {
 }
 
 /// generated route for
+/// [ClosedPage]
+class ClosedRoute extends PageRouteInfo<void> {
+  const ClosedRoute({List<PageRouteInfo>? children})
+      : super(
+          ClosedRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ClosedRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ClosedPage();
+    },
+  );
+}
+
+/// generated route for
 /// [CreateShopPage]
 class CreateShopRoute extends PageRouteInfo<void> {
   const CreateShopRoute({List<PageRouteInfo>? children})
@@ -98,7 +117,6 @@ class CreateShopRoute extends PageRouteInfo<void> {
     },
   );
 }
-
 
 /// generated route for
 /// [HelpPage]
@@ -163,6 +181,25 @@ class InfoRouteArgs {
   String toString() {
     return 'InfoRouteArgs{key: $key, index: $index}';
   }
+}
+
+/// generated route for
+/// [IntroPage]
+class IntroRoute extends PageRouteInfo<void> {
+  const IntroRoute({List<PageRouteInfo>? children})
+      : super(
+          IntroRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'IntroRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const IntroPage();
+    },
+  );
 }
 
 /// generated route for
@@ -393,6 +430,25 @@ class OrdersListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [OrdersMainPage]
+class OrdersMainRoute extends PageRouteInfo<void> {
+  const OrdersMainRoute({List<PageRouteInfo>? children})
+      : super(
+          OrdersMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrdersMainRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OrdersMainPage();
+    },
+  );
+}
+
+/// generated route for
 /// [ParcelListPage]
 class ParcelListRoute extends PageRouteInfo<void> {
   const ParcelListRoute({List<PageRouteInfo>? children})
@@ -413,10 +469,17 @@ class ParcelListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ParcelPage]
-class ParcelRoute extends PageRouteInfo<void> {
-  const ParcelRoute({List<PageRouteInfo>? children})
-      : super(
+class ParcelRoute extends PageRouteInfo<ParcelRouteArgs> {
+  ParcelRoute({
+    Key? key,
+    bool isBackButton = true,
+    List<PageRouteInfo>? children,
+  }) : super(
           ParcelRoute.name,
+          args: ParcelRouteArgs(
+            key: key,
+            isBackButton: isBackButton,
+          ),
           initialChildren: children,
         );
 
@@ -425,9 +488,30 @@ class ParcelRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ParcelPage();
+      final args =
+          data.argsAs<ParcelRouteArgs>(orElse: () => const ParcelRouteArgs());
+      return ParcelPage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
     },
   );
+}
+
+class ParcelRouteArgs {
+  const ParcelRouteArgs({
+    this.key,
+    this.isBackButton = true,
+  });
+
+  final Key? key;
+
+  final bool isBackButton;
+
+  @override
+  String toString() {
+    return 'ParcelRouteArgs{key: $key, isBackButton: $isBackButton}';
+  }
 }
 
 /// generated route for
@@ -716,6 +800,7 @@ class RecommendedTwoRoute extends PageRouteInfo<RecommendedTwoRouteArgs> {
     bool isNewsOfPage = false,
     bool isShop = false,
     bool isPopular = false,
+    bool bgImg = true,
     List<PageRouteInfo>? children,
   }) : super(
           RecommendedTwoRoute.name,
@@ -724,6 +809,7 @@ class RecommendedTwoRoute extends PageRouteInfo<RecommendedTwoRouteArgs> {
             isNewsOfPage: isNewsOfPage,
             isShop: isShop,
             isPopular: isPopular,
+            bgImg: bgImg,
           ),
           initialChildren: children,
         );
@@ -740,6 +826,7 @@ class RecommendedTwoRoute extends PageRouteInfo<RecommendedTwoRouteArgs> {
         isNewsOfPage: args.isNewsOfPage,
         isShop: args.isShop,
         isPopular: args.isPopular,
+        bgImg: args.bgImg,
       );
     },
   );
@@ -751,6 +838,7 @@ class RecommendedTwoRouteArgs {
     this.isNewsOfPage = false,
     this.isShop = false,
     this.isPopular = false,
+    this.bgImg = true,
   });
 
   final Key? key;
@@ -761,9 +849,11 @@ class RecommendedTwoRouteArgs {
 
   final bool isPopular;
 
+  final bool bgImg;
+
   @override
   String toString() {
-    return 'RecommendedTwoRouteArgs{key: $key, isNewsOfPage: $isNewsOfPage, isShop: $isShop, isPopular: $isPopular}';
+    return 'RecommendedTwoRouteArgs{key: $key, isNewsOfPage: $isNewsOfPage, isShop: $isShop, isPopular: $isPopular, bgImg: $bgImg}';
   }
 }
 
@@ -1517,10 +1607,17 @@ class ViewMapRouteArgs {
 
 /// generated route for
 /// [WalletHistoryPage]
-class WalletHistoryRoute extends PageRouteInfo<void> {
-  const WalletHistoryRoute({List<PageRouteInfo>? children})
-      : super(
+class WalletHistoryRoute extends PageRouteInfo<WalletHistoryRouteArgs> {
+  WalletHistoryRoute({
+    Key? key,
+    bool isBackButton = true,
+    List<PageRouteInfo>? children,
+  }) : super(
           WalletHistoryRoute.name,
+          args: WalletHistoryRouteArgs(
+            key: key,
+            isBackButton: isBackButton,
+          ),
           initialChildren: children,
         );
 
@@ -1529,7 +1626,28 @@ class WalletHistoryRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const WalletHistoryPage();
+      final args = data.argsAs<WalletHistoryRouteArgs>(
+          orElse: () => const WalletHistoryRouteArgs());
+      return WalletHistoryPage(
+        key: args.key,
+        isBackButton: args.isBackButton,
+      );
     },
   );
+}
+
+class WalletHistoryRouteArgs {
+  const WalletHistoryRouteArgs({
+    this.key,
+    this.isBackButton = true,
+  });
+
+  final Key? key;
+
+  final bool isBackButton;
+
+  @override
+  String toString() {
+    return 'WalletHistoryRouteArgs{key: $key, isBackButton: $isBackButton}';
+  }
 }

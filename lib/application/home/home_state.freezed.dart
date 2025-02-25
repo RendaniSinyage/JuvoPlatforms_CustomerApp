@@ -23,6 +23,8 @@ mixin _$HomeState {
   bool get isRestaurantNewLoading => throw _privateConstructorUsedError;
   bool get isStoryLoading => throw _privateConstructorUsedError;
   bool get isShopRecommendLoading => throw _privateConstructorUsedError;
+  List<ProductData> get discountProducts => throw _privateConstructorUsedError;
+  bool get isDiscountProductsLoading => throw _privateConstructorUsedError;
   int get totalShops => throw _privateConstructorUsedError;
   int get selectIndexCategory => throw _privateConstructorUsedError;
   int get selectIndexSubCategory => throw _privateConstructorUsedError;
@@ -39,6 +41,7 @@ mixin _$HomeState {
   List<ShopData> get shopsRecommend => throw _privateConstructorUsedError;
   List<ShopData> get filterShops => throw _privateConstructorUsedError;
   List<ShopData> get filterMarket => throw _privateConstructorUsedError;
+  List<BrandData> get brands => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -60,6 +63,8 @@ abstract class $HomeStateCopyWith<$Res> {
       bool isRestaurantNewLoading,
       bool isStoryLoading,
       bool isShopRecommendLoading,
+      List<ProductData> discountProducts,
+      bool isDiscountProductsLoading,
       int totalShops,
       int selectIndexCategory,
       int selectIndexSubCategory,
@@ -75,7 +80,8 @@ abstract class $HomeStateCopyWith<$Res> {
       List<List<StoryModel?>?>? story,
       List<ShopData> shopsRecommend,
       List<ShopData> filterShops,
-      List<ShopData> filterMarket});
+      List<ShopData> filterMarket,
+      List<BrandData> brands});
 }
 
 /// @nodoc
@@ -100,6 +106,8 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? isRestaurantNewLoading = null,
     Object? isStoryLoading = null,
     Object? isShopRecommendLoading = null,
+    Object? discountProducts = null,
+    Object? isDiscountProductsLoading = null,
     Object? totalShops = null,
     Object? selectIndexCategory = null,
     Object? selectIndexSubCategory = null,
@@ -116,6 +124,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? shopsRecommend = null,
     Object? filterShops = null,
     Object? filterMarket = null,
+    Object? brands = null,
   }) {
     return _then(_value.copyWith(
       isCategoryLoading: null == isCategoryLoading
@@ -145,6 +154,14 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       isShopRecommendLoading: null == isShopRecommendLoading
           ? _value.isShopRecommendLoading
           : isShopRecommendLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      discountProducts: null == discountProducts
+          ? _value.discountProducts
+          : discountProducts // ignore: cast_nullable_to_non_nullable
+              as List<ProductData>,
+      isDiscountProductsLoading: null == isDiscountProductsLoading
+          ? _value.isDiscountProductsLoading
+          : isDiscountProductsLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       totalShops: null == totalShops
           ? _value.totalShops
@@ -210,6 +227,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.filterMarket
           : filterMarket // ignore: cast_nullable_to_non_nullable
               as List<ShopData>,
+      brands: null == brands
+          ? _value.brands
+          : brands // ignore: cast_nullable_to_non_nullable
+              as List<BrandData>,
     ) as $Val);
   }
 }
@@ -230,6 +251,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool isRestaurantNewLoading,
       bool isStoryLoading,
       bool isShopRecommendLoading,
+      List<ProductData> discountProducts,
+      bool isDiscountProductsLoading,
       int totalShops,
       int selectIndexCategory,
       int selectIndexSubCategory,
@@ -245,7 +268,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       List<List<StoryModel?>?>? story,
       List<ShopData> shopsRecommend,
       List<ShopData> filterShops,
-      List<ShopData> filterMarket});
+      List<ShopData> filterMarket,
+      List<BrandData> brands});
 }
 
 /// @nodoc
@@ -268,6 +292,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? isRestaurantNewLoading = null,
     Object? isStoryLoading = null,
     Object? isShopRecommendLoading = null,
+    Object? discountProducts = null,
+    Object? isDiscountProductsLoading = null,
     Object? totalShops = null,
     Object? selectIndexCategory = null,
     Object? selectIndexSubCategory = null,
@@ -284,6 +310,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? shopsRecommend = null,
     Object? filterShops = null,
     Object? filterMarket = null,
+    Object? brands = null,
   }) {
     return _then(_$HomeStateImpl(
       isCategoryLoading: null == isCategoryLoading
@@ -313,6 +340,14 @@ class __$$HomeStateImplCopyWithImpl<$Res>
       isShopRecommendLoading: null == isShopRecommendLoading
           ? _value.isShopRecommendLoading
           : isShopRecommendLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      discountProducts: null == discountProducts
+          ? _value._discountProducts
+          : discountProducts // ignore: cast_nullable_to_non_nullable
+              as List<ProductData>,
+      isDiscountProductsLoading: null == isDiscountProductsLoading
+          ? _value.isDiscountProductsLoading
+          : isDiscountProductsLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       totalShops: null == totalShops
           ? _value.totalShops
@@ -378,6 +413,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._filterMarket
           : filterMarket // ignore: cast_nullable_to_non_nullable
               as List<ShopData>,
+      brands: null == brands
+          ? _value._brands
+          : brands // ignore: cast_nullable_to_non_nullable
+              as List<BrandData>,
     ));
   }
 }
@@ -393,6 +432,8 @@ class _$HomeStateImpl extends _HomeState {
       this.isRestaurantNewLoading = true,
       this.isStoryLoading = true,
       this.isShopRecommendLoading = true,
+      final List<ProductData> discountProducts = const [],
+      this.isDiscountProductsLoading = true,
       this.totalShops = -1,
       this.selectIndexCategory = -1,
       this.selectIndexSubCategory = -1,
@@ -408,8 +449,10 @@ class _$HomeStateImpl extends _HomeState {
       final List<List<StoryModel?>?>? story = const [],
       final List<ShopData> shopsRecommend = const [],
       final List<ShopData> filterShops = const [],
-      final List<ShopData> filterMarket = const []})
-      : _categories = categories,
+      final List<ShopData> filterMarket = const [],
+      final List<BrandData> brands = const []})
+      : _discountProducts = discountProducts,
+        _categories = categories,
         _banners = banners,
         _ads = ads,
         _shops = shops,
@@ -419,6 +462,7 @@ class _$HomeStateImpl extends _HomeState {
         _shopsRecommend = shopsRecommend,
         _filterShops = filterShops,
         _filterMarket = filterMarket,
+        _brands = brands,
         super._();
 
   @override
@@ -442,6 +486,19 @@ class _$HomeStateImpl extends _HomeState {
   @override
   @JsonKey()
   final bool isShopRecommendLoading;
+  final List<ProductData> _discountProducts;
+  @override
+  @JsonKey()
+  List<ProductData> get discountProducts {
+    if (_discountProducts is EqualUnmodifiableListView)
+      return _discountProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_discountProducts);
+  }
+
+  @override
+  @JsonKey()
+  final bool isDiscountProductsLoading;
   @override
   @JsonKey()
   final int totalShops;
@@ -552,9 +609,18 @@ class _$HomeStateImpl extends _HomeState {
     return EqualUnmodifiableListView(_filterMarket);
   }
 
+  final List<BrandData> _brands;
+  @override
+  @JsonKey()
+  List<BrandData> get brands {
+    if (_brands is EqualUnmodifiableListView) return _brands;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_brands);
+  }
+
   @override
   String toString() {
-    return 'HomeState(isCategoryLoading: $isCategoryLoading, isBannerLoading: $isBannerLoading, isShopLoading: $isShopLoading, isRestaurantLoading: $isRestaurantLoading, isRestaurantNewLoading: $isRestaurantNewLoading, isStoryLoading: $isStoryLoading, isShopRecommendLoading: $isShopRecommendLoading, totalShops: $totalShops, selectIndexCategory: $selectIndexCategory, selectIndexSubCategory: $selectIndexSubCategory, isSelectCategoryLoading: $isSelectCategoryLoading, addressData: $addressData, categories: $categories, banners: $banners, ads: $ads, banner: $banner, shops: $shops, restaurant: $restaurant, newRestaurant: $newRestaurant, story: $story, shopsRecommend: $shopsRecommend, filterShops: $filterShops, filterMarket: $filterMarket)';
+    return 'HomeState(isCategoryLoading: $isCategoryLoading, isBannerLoading: $isBannerLoading, isShopLoading: $isShopLoading, isRestaurantLoading: $isRestaurantLoading, isRestaurantNewLoading: $isRestaurantNewLoading, isStoryLoading: $isStoryLoading, isShopRecommendLoading: $isShopRecommendLoading, discountProducts: $discountProducts, isDiscountProductsLoading: $isDiscountProductsLoading, totalShops: $totalShops, selectIndexCategory: $selectIndexCategory, selectIndexSubCategory: $selectIndexSubCategory, isSelectCategoryLoading: $isSelectCategoryLoading, addressData: $addressData, categories: $categories, banners: $banners, ads: $ads, banner: $banner, shops: $shops, restaurant: $restaurant, newRestaurant: $newRestaurant, story: $story, shopsRecommend: $shopsRecommend, filterShops: $filterShops, filterMarket: $filterMarket, brands: $brands)';
   }
 
   @override
@@ -576,6 +642,11 @@ class _$HomeStateImpl extends _HomeState {
                 other.isStoryLoading == isStoryLoading) &&
             (identical(other.isShopRecommendLoading, isShopRecommendLoading) ||
                 other.isShopRecommendLoading == isShopRecommendLoading) &&
+            const DeepCollectionEquality()
+                .equals(other._discountProducts, _discountProducts) &&
+            (identical(other.isDiscountProductsLoading,
+                    isDiscountProductsLoading) ||
+                other.isDiscountProductsLoading == isDiscountProductsLoading) &&
             (identical(other.totalShops, totalShops) ||
                 other.totalShops == totalShops) &&
             (identical(other.selectIndexCategory, selectIndexCategory) ||
@@ -603,7 +674,8 @@ class _$HomeStateImpl extends _HomeState {
             const DeepCollectionEquality()
                 .equals(other._filterShops, _filterShops) &&
             const DeepCollectionEquality()
-                .equals(other._filterMarket, _filterMarket));
+                .equals(other._filterMarket, _filterMarket) &&
+            const DeepCollectionEquality().equals(other._brands, _brands));
   }
 
   @override
@@ -616,6 +688,8 @@ class _$HomeStateImpl extends _HomeState {
         isRestaurantNewLoading,
         isStoryLoading,
         isShopRecommendLoading,
+        const DeepCollectionEquality().hash(_discountProducts),
+        isDiscountProductsLoading,
         totalShops,
         selectIndexCategory,
         selectIndexSubCategory,
@@ -631,7 +705,8 @@ class _$HomeStateImpl extends _HomeState {
         const DeepCollectionEquality().hash(_story),
         const DeepCollectionEquality().hash(_shopsRecommend),
         const DeepCollectionEquality().hash(_filterShops),
-        const DeepCollectionEquality().hash(_filterMarket)
+        const DeepCollectionEquality().hash(_filterMarket),
+        const DeepCollectionEquality().hash(_brands)
       ]);
 
   /// Create a copy of HomeState
@@ -652,6 +727,8 @@ abstract class _HomeState extends HomeState {
       final bool isRestaurantNewLoading,
       final bool isStoryLoading,
       final bool isShopRecommendLoading,
+      final List<ProductData> discountProducts,
+      final bool isDiscountProductsLoading,
       final int totalShops,
       final int selectIndexCategory,
       final int selectIndexSubCategory,
@@ -667,7 +744,8 @@ abstract class _HomeState extends HomeState {
       final List<List<StoryModel?>?>? story,
       final List<ShopData> shopsRecommend,
       final List<ShopData> filterShops,
-      final List<ShopData> filterMarket}) = _$HomeStateImpl;
+      final List<ShopData> filterMarket,
+      final List<BrandData> brands}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   @override
@@ -684,6 +762,10 @@ abstract class _HomeState extends HomeState {
   bool get isStoryLoading;
   @override
   bool get isShopRecommendLoading;
+  @override
+  List<ProductData> get discountProducts;
+  @override
+  bool get isDiscountProductsLoading;
   @override
   int get totalShops;
   @override
@@ -716,6 +798,8 @@ abstract class _HomeState extends HomeState {
   List<ShopData> get filterShops;
   @override
   List<ShopData> get filterMarket;
+  @override
+  List<BrandData> get brands;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

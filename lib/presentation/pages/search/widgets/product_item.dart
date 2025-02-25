@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+//import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodyman/infrastructure/models/data/product_data.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/presentation/components/custom_network_image.dart';
 import 'package:foodyman/presentation/theme/theme.dart';
-
 import '../../product/product_page.dart';
+import 'package:foodyman/application/shopname/shop_name_provider.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends ConsumerWidget {
   final ProductData product;
 
   const ProductItem({
@@ -17,7 +20,19 @@ class ProductItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final shopNameAsyncValue = ref.watch(shopNameProvider(product.shopId.toString()));
+
+    return shopNameAsyncValue.when(
+      data: (shopName) {
+        return buildProductItem(context, shopName);
+      },
+      loading: () => CircularProgressIndicator(), // or any other loading indicator
+      error: (error, stackTrace) => Text('Error: $error'),
+    );
+  }
+
+  Widget buildProductItem(BuildContext context, String shopName) {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
       child: InkWell(
@@ -99,6 +114,15 @@ class ProductItem extends StatelessWidget {
                               size: 13,
                               color: AppStyle.black,
                             ),
+                          ),
+                          Text(
+                            'from $shopName',
+                            style: AppStyle.interNormal(
+                              size: 12,
+                              color: AppStyle.textGrey,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           product.stocks?.first.bonus != null
                               ? Container(

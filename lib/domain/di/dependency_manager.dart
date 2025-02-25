@@ -38,7 +38,11 @@ import 'package:foodyman/infrastructure/repository/shops_repository.dart';
 import 'package:foodyman/infrastructure/repository/user_repository.dart';
 import 'package:foodyman/app_constants.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
+import '../../infrastructure/repository/loans_repository.dart';
+import '../../infrastructure/repository/wallet_repository.dart';
 import '../handlers/http_service.dart';
+import '../interface/loans.dart';
+import '../interface/wallet.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -64,6 +68,8 @@ Future<void> setUpDependencies() async {
   getIt.registerSingleton<ParcelRepositoryFacade>(ParcelRepository());
   getIt.registerSingleton<NotificationRepositoryFacade>(NotificationRepositoryImpl());
   getIt.registerSingleton<Map>(LocalStorage.getTranslations());
+  getIt.registerSingleton<WalletRepositoryFacade>(WalletRepository());
+  getIt.registerSingleton<LoansRepositoryFacade>(LoansRepository());
 }
 
 final dioHttp = getIt.get<HttpService>();
@@ -87,3 +93,6 @@ final blogsRepository = getIt.get<BlogsRepositoryFacade>();
 final cartRepository = getIt.get<CartRepositoryFacade>();
 final parcelRepository = getIt.get<ParcelRepositoryFacade>();
 final translation = getIt.get<Map>();
+//final walletRepository = WalletRepository();
+final walletRepository = getIt.get<WalletRepositoryFacade>();
+final loansRepository = getIt.get<LoansRepositoryFacade>();

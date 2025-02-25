@@ -3,6 +3,7 @@ import 'package:foodyman/infrastructure/models/data/address_new_data.dart';
 import 'notification_data.dart';
 import 'shop_data.dart';
 import 'currency_data.dart';
+import 'membership_data.dart';
 
 class ProfileData {
   ProfileData({
@@ -25,6 +26,7 @@ class ProfileData {
     bool? active,
     String? img,
     String? role,
+    MembershipData? membership,
     List<AddressNewModel>? addresses,
     List<NotificationsModel>? notifications,
     ShopData? shop,
@@ -49,6 +51,7 @@ class ProfileData {
     _active = active;
     _img = img;
     _role = role;
+    _membership = membership;
     _addresses = addresses;
     _shop = shop;
     _wallet = wallet;
@@ -74,6 +77,9 @@ class ProfileData {
         ? (json['active'] == 1)
         : json['active'];
     _role = json['role'];
+    _membership = json['membership'] != null
+        ? MembershipData.fromJson(json['membership'])
+        : null;
     _img = json['img'];
     if (json['addresses'] != null) {
       _addresses = [];
@@ -110,6 +116,7 @@ class ProfileData {
   bool? _active;
   String? _img;
   String? _role;
+  MembershipData? _membership;
   List<AddressNewModel>? _addresses;
   List<NotificationsModel>? _notifications;
   ShopData? _shop;
@@ -131,6 +138,7 @@ class ProfileData {
     bool? active,
     String? img,
     String? role,
+    MembershipData? membership,
     List<AddressNewModel>? addresses,
     ShopData? shop,
     Wallet? wallet,
@@ -151,6 +159,7 @@ class ProfileData {
         active: active ?? _active,
         img: img ?? _img,
         role: role ?? _role,
+        membership: membership ?? _membership,
         addresses: addresses ?? _addresses,
         shop: shop ?? _shop,
         wallet: wallet ?? _wallet,
@@ -192,6 +201,8 @@ class ProfileData {
 
   String? get role => _role;
 
+  MembershipData? get membership => _membership;
+
   String? get secondPhone => _secondPhone;
 
   List<AddressNewModel>? get addresses => _addresses;
@@ -227,6 +238,9 @@ class ProfileData {
     map['active'] = _active;
     map['img'] = _img;
     map['role'] = _role;
+    if (_membership != null) {
+      map['membership'] = _membership?.toJson();
+    }
     map['secondPhone'] = _secondPhone;
     if (_addresses != null) {
       map['addresses'] = _addresses?.map((v) => v.toJson()).toList();

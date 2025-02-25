@@ -7,12 +7,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
 
-import 'package:foodyman/application/home/home_notifier.dart';
-import 'package:foodyman/application/home/home_provider.dart';
-import 'package:foodyman/infrastructure/services/app_helpers.dart';
-import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
-import 'package:foodyman/presentation/components/buttons/pop_button.dart';
-import 'package:foodyman/presentation/theme/app_style.dart';
+import '../../../../../application/home/home_notifier.dart';
+import '../../../../../application/home/home_provider.dart';
+import '../../../../../infrastructure/services/app_helpers.dart';
+import '../../../../components/app_bars/common_app_bar.dart';
+import '../../../../components/buttons/pop_button.dart';
+import '../../../../theme/theme.dart';
 import 'market_two_item.dart';
 import 'recommended_two_item.dart';
 
@@ -22,12 +22,14 @@ class RecommendedTwoPage extends ConsumerStatefulWidget {
   final bool isNewsOfPage;
   final bool isShop;
   final bool isPopular;
+  final bool bgImg; // Add this parameter
 
   const RecommendedTwoPage({
     super.key,
     this.isNewsOfPage = false,
     this.isShop = false,
     this.isPopular = false,
+    this.bgImg = true, // Default to true
   });
 
   @override
@@ -101,6 +103,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                                     child: MarketTwoItem(
                                       isShop: true,
                                       shop: state.shops[index],
+                                      bgImg: widget.bgImg,
                                     ),
                                   ),
                                 ),
@@ -111,7 +114,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                       : Column(
                           children: [
                             SizedBox(
-                              height: MediaQuery.sizeOf(context).height / 2,
+                              height: MediaQuery.of(context).size.height / 2,
                               child: SvgPicture.asset(
                                 "assets/svgs/empty.svg",
                               ),
@@ -164,6 +167,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                                         child: MarketTwoItem(
                                           shop: state.restaurant[index],
                                           isSimpleShop: true,
+                                          bgImg: widget.bgImg,
                                         ),
                                       ),
                                     ),
@@ -175,7 +179,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                               children: [
                                 SizedBox(
                                   height:
-                                      MediaQuery.sizeOf(context).height / 2,
+                                      MediaQuery.of(context).size.height / 2,
                                   child: SvgPicture.asset(
                                     "assets/svgs/empty.svg",
                                   ),
@@ -212,6 +216,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                                       child: MarketTwoItem(
                                         shop: state.restaurant[index],
                                         isSimpleShop: true,
+                                        bgImg: widget.bgImg,
                                       ),
                                     ),
                                   ),
@@ -220,7 +225,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                                   children: [
                                     SizedBox(
                                       height:
-                                          MediaQuery.sizeOf(context).height /
+                                          MediaQuery.of(context).size.height /
                                               2,
                                       child: SvgPicture.asset(
                                         "assets/svgs/empty.svg",
@@ -255,6 +260,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                                     itemBuilder: (context, index) =>
                                         RecommendedTwoItem(
                                       shop: state.shopsRecommend[index],
+                                          bgImg: widget.bgImg,
                                     ),
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
@@ -268,7 +274,7 @@ class _RecommendedPageState extends ConsumerState<RecommendedTwoPage> {
                                   children: [
                                     SizedBox(
                                       height:
-                                          MediaQuery.sizeOf(context).height /
+                                          MediaQuery.of(context).size.height /
                                               2,
                                       child: SvgPicture.asset(
                                         "assets/svgs/empty.svg",

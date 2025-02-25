@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/presentation/theme/theme.dart';
 
-class OrderPaymentContainer extends StatelessWidget {
+class OrderPaymentContainer extends ConsumerWidget {
   final Widget icon;
   final String title;
   final bool isActive;
   final VoidCallback onTap;
+  final bool isPayFast;
 
-  const OrderPaymentContainer(
-      {super.key,
-      required this.icon,
-      required this.title,
-      this.isActive = false,
-      required this.onTap});
+  const OrderPaymentContainer({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.isActive = false,
+    required this.onTap,
+    this.isPayFast = false,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        onTap();
+
+        // If this is PayFast and it's been selected, start preloading the WebView
+        if (isPayFast && !isActive) {
+          // We'll implement this logic in the payment selection flow
+        }
+      },
       child: Container(
         width: (MediaQuery.sizeOf(context).width - 42) / 2,
         height: 120.h,

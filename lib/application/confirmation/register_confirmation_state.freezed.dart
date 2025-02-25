@@ -27,7 +27,9 @@ mixin _$RegisterConfirmationState {
   String get verificationCode => throw _privateConstructorUsedError;
   String get timerText => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RegisterConfirmationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RegisterConfirmationStateCopyWith<RegisterConfirmationState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,6 +64,8 @@ class _$RegisterConfirmationStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RegisterConfirmationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -153,6 +157,8 @@ class __$$RegisterConfirmationStateImplCopyWithImpl<$Res>
       $Res Function(_$RegisterConfirmationStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RegisterConfirmationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -305,7 +311,9 @@ class _$RegisterConfirmationStateImpl extends _RegisterConfirmationState {
       verificationCode,
       timerText);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RegisterConfirmationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RegisterConfirmationStateImplCopyWith<_$RegisterConfirmationStateImpl>
@@ -347,8 +355,11 @@ abstract class _RegisterConfirmationState extends RegisterConfirmationState {
   String get verificationCode;
   @override
   String get timerText;
+
+  /// Create a copy of RegisterConfirmationState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RegisterConfirmationStateImplCopyWith<_$RegisterConfirmationStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

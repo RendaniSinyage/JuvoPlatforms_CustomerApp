@@ -17,6 +17,7 @@ class OrderBodyData {
   final String deliveryTime;
   final String? username;
   final String? phone;
+  final String? email;  // Add this field
   final List<ProductNote> notes;
 
   OrderBodyData({
@@ -34,6 +35,7 @@ class OrderBodyData {
     this.note,
     this.username,
     this.phone,
+    this.email,  // Add this parameter
   });
 
   Map toJson() {
@@ -44,13 +46,13 @@ class OrderBodyData {
       "shop_id": shopId,
       if (username != null) "username": username,
       if (phone?.isNotEmpty ?? false) "phone": phone,
+      if (email?.isNotEmpty ?? false) "email": email,  // Include email in JSON
       if (paymentId != null) "payment_id": paymentId,
       "delivery_fee": deliveryFee,
-      // "address_id": addressId,
       "delivery_type":
-          deliveryType == DeliveryTypeEnum.delivery ? "delivery" : "pickup",
+      deliveryType == DeliveryTypeEnum.delivery ? "delivery" : "pickup",
       if(coupon != null && (coupon?.trim().isNotEmpty ?? false))
-      "coupon": coupon,
+        "coupon": coupon,
       "location": location.toJson(),
       "address": address.toJson(),
       "delivery_date": deliveryDate,

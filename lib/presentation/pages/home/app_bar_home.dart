@@ -3,20 +3,20 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpodtemp/application/home/home_notifier.dart';
-import 'package:riverpodtemp/application/home/home_state.dart';
-import 'package:riverpodtemp/infrastructure/services/app_helpers.dart';
-import 'package:riverpodtemp/infrastructure/services/local_storage.dart';
-import 'package:riverpodtemp/infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/infrastructure/services/app_assets.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar2.dart';
-import 'package:riverpodtemp/presentation/components/sellect_address_screen.dart';
-import 'package:riverpodtemp/presentation/routes/app_router.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-import 'package:riverpodtemp/application/shop_order/shop_order_provider.dart';
+import 'package:foodyman/application/home/home_notifier.dart';
+import 'package:foodyman/application/home/home_state.dart';
+import 'package:foodyman/infrastructure/services/app_helpers.dart';
+import 'package:foodyman/infrastructure/services/local_storage.dart';
+import 'package:foodyman/infrastructure/services/tr_keys.dart';
+import 'package:foodyman/infrastructure/services/app_assets.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar2.dart';
+import 'package:foodyman/presentation/components/sellect_address_screen.dart';
+import 'package:foodyman/presentation/routes/app_router.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import 'package:foodyman/application/shop_order/shop_order_provider.dart';
 import 'package:flutter/gestures.dart';
+import '../../../app_constants.dart';
 import '../../../application/orders_list/orders_list_provider.dart';
-import '../../components/badges.dart';
 
 class AppBarHome extends ConsumerStatefulWidget {
   final HomeState state;
@@ -28,10 +28,13 @@ class AppBarHome extends ConsumerStatefulWidget {
   ConsumerState<AppBarHome> createState() => _AppBarHomeState();
 }
 
-class _AppBarHomeState extends ConsumerState<AppBarHome> {
+class _AppBarHomeState extends ConsumerState<AppBarHome> with SingleTickerProviderStateMixin {
   late StreamController<bool> _toggleStreamController;
   late StreamController<bool> _alternateAppNameController;
   late UniqueKey _welcomeTextKey;
+  late AnimationController _tooltipAnimationController;
+  late Animation<double> _tooltipAnimation;
+  Timer? _tooltipTimer;
 
   @override
   void initState() {
@@ -39,16 +42,55 @@ class _AppBarHomeState extends ConsumerState<AppBarHome> {
     _toggleStreamController = StreamController<bool>.broadcast();
     _alternateAppNameController = StreamController<bool>.broadcast();
     _welcomeTextKey = UniqueKey();
+
+    // Animation controller for tooltip
+    _tooltipAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _tooltipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _tooltipAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
     _startAlternating();
     _alternateAppName();
+
+    // Show tooltip briefly when using default coordinates after 5 seconds
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(const Duration(seconds: 5), () {
+        _showTemporaryTooltip();
+      });
+    });
+  }
+
+  void _showTemporaryTooltip() {
+    // Only show if using default coordinates
+    if (AppHelpers.isUsingDefaultCoordinates()) {
+      _tooltipAnimationController.forward();
+
+      // Cancel any existing timer
+      _tooltipTimer?.cancel();
+
+      // Hide tooltip after 5 seconds
+      _tooltipTimer = Timer(const Duration(seconds: 15), () {
+        _tooltipAnimationController.reverse();
+      });
+    }
   }
 
   @override
   void dispose() {
     _toggleStreamController.close();
     _alternateAppNameController.close();
+    _tooltipAnimationController.dispose();
+    _tooltipTimer?.cancel();
     super.dispose();
   }
+
 
   void _startAlternating() async {
     while (true) {
@@ -88,13 +130,32 @@ class _AppBarHomeState extends ConsumerState<AppBarHome> {
     final ordersState = ref.watch(ordersListProvider);
     final mostRecentOrder = ordersState.activeOrders.isNotEmpty ? ordersState.activeOrders.first : null;
 
+    final addressData = LocalStorage.getAddressSelected();
+    final currentLat = addressData?.location?.latitude;
+    final currentLng = addressData?.location?.longitude;
+    final defaultLat = AppConstants.demoLatitude;
+    final defaultLng = AppConstants.demoLongitude;
+
+    debugPrint("Current coordinates: $currentLat, $currentLng");
+    debugPrint("Default coordinates: $defaultLat, $defaultLng");
+    debugPrint("Difference lat: ${(currentLat ?? 0) - defaultLat}, lng: ${(currentLng ?? 0) - defaultLng}");
+    debugPrint("Address title: ${addressData?.title}");
+    debugPrint("Address text: ${addressData?.address}");
+
+    // Check if using default coordinates
+    final bool isUsingDefaultCoordinates = AppHelpers.isUsingDefaultCoordinates();
+    debugPrint("Using default coordinates: $isUsingDefaultCoordinates");
+
     return Stack(
       children: [
+        // Background
         Positioned.fill(
           child: Container(
-            color: AppStyle.brandGreen.withOpacity(0.28),
+            color: AppStyle.primary.withOpacity(0.28),
           ),
         ),
+
+        // Main content
         Column(
           children: [
             CommonAppBar2(
@@ -122,7 +183,7 @@ class _AppBarHomeState extends ConsumerState<AppBarHome> {
                         ((orders.userCarts?.isEmpty ?? true)
                             ? true
                             : (orders.userCarts?.first.cartDetails?.isEmpty ?? true)) ||
-                        orders.ownerId != LocalStorage.getUserId();
+                        orders.ownerId != LocalStorage.getUser()?.id;
 
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -188,12 +249,79 @@ class _AppBarHomeState extends ConsumerState<AppBarHome> {
               ),
             ),
 
-            WelcomeText(key: _welcomeTextKey),
-              const UpComingList(),
+            Stack(
+              children: [
+                // Welcome text and other content
+                Column(
+                  children: [
+                    WelcomeText(key: _welcomeTextKey),
+                    8.verticalSpace,
+                  ],
+                ),
 
-            8.verticalSpace,
+                // Positioned tooltip that you can easily adjust
+                if (isUsingDefaultCoordinates)
+                  Positioned(
+                    top: 0, // Adjust this value to move up/down
+                    left: 16.w, // Adjust this value to move left/right
+                    right: 16.w,
+                    child: AnimatedBuilder(
+                      animation: _tooltipAnimation,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: _tooltipAnimation.value,
+                          child: Transform.translate(
+                            offset: Offset(0, 10 * (1 - _tooltipAnimation.value)),
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                // Main container
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+                                  decoration: BoxDecoration(
+                                    color: AppStyle.primary,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Text(
+                                    AppHelpers.getTranslation(TrKeys.usingDefaultLocation),
+                                    style: AppStyle.interRegular(
+                                      size: 14,
+                                      color: AppStyle.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+
+                                // Triangle pointer
+                                Positioned(
+                                  top: -5.h,
+                                  left: 70.w, // Position under the address text
+                                  child: Transform.rotate(
+                                    angle: 3.14159,
+                                    child: ClipPath(
+                                      clipper: TriangleClipper(),
+                                      child: Container(
+                                        width: 10.h,
+                                        height: 6.h,
+                                        color: AppStyle.primary,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
+
+        // Bottom part
         Positioned(
           bottom: 0,
           left: 0,
@@ -245,7 +373,7 @@ class WelcomeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = LocalStorage.getToken().isNotEmpty;
-    final firstName = LocalStorage.getFirstName();
+    final firstName = LocalStorage.getUser()?.firstname ?? "";
     String greetingText = '';
     String signedText = '';
 
@@ -316,7 +444,7 @@ class WelcomeText extends StatelessWidget {
                       TextSpan(
                         text: 'login',
                         style: const TextStyle(
-                          color: AppStyle.brandGreen,
+                          color: AppStyle.primary,
                           decoration: TextDecoration.underline,
                         ),
                         recognizer: TapGestureRecognizer()
@@ -328,7 +456,7 @@ class WelcomeText extends StatelessWidget {
                       TextSpan(
                         text: 'signup',
                         style: const TextStyle(
-                          color: AppStyle.brandGreen,
+                          color: AppStyle.primary,
                           decoration: TextDecoration.underline,
                         ),
                         recognizer: TapGestureRecognizer()
@@ -346,4 +474,19 @@ class WelcomeText extends StatelessWidget {
       ),
     );
   }
+}
+// Custom clipper for creating the triangle pointer
+class TriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 2, size.height);
+    path.lineTo(0, 0);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TriangleClipper oldClipper) => false;
 }

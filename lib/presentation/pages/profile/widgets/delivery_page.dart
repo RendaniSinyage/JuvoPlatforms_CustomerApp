@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:riverpodtemp/presentation/components/loading.dart';
-import 'package:riverpodtemp/presentation/theme/app_style.dart';
-import 'package:riverpodtemp/presentation/components/buttons/pop_button.dart';
+import 'package:foodyman/presentation/components/loading.dart';
+import 'package:foodyman/presentation/theme/app_style.dart';
+import 'package:foodyman/presentation/components/buttons/pop_button.dart';
 //import '../../../../infrastructure/services/app_helpers.dart';
 //import '../../../../infrastructure/services/tr_keys.dart';
-import 'package:riverpodtemp/infrastructure/services/app_assets.dart';
-import 'package:riverpodtemp/presentation/components/app_bars/common_app_bar.dart';
-import 'package:riverpodtemp/application/delivery/delivery_provider.dart';
+import 'package:foodyman/infrastructure/services/app_assets.dart';
+import 'package:foodyman/presentation/components/app_bars/common_app_bar.dart';
+import 'package:foodyman/application/delivery/delivery_provider.dart';
 
 class DeliveryPage extends ConsumerStatefulWidget {
   const DeliveryPage({super.key});
@@ -44,7 +44,7 @@ class _DeliveryPageState extends ConsumerState<DeliveryPage> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   "Looking for delivery driver jobs?",
-                                  style: AppStyle.interSemi(color: AppStyle.brandGreen),
+                                  style: AppStyle.interSemi(color: AppStyle.primary),
                                 ),
                               ),
                             ),
@@ -69,7 +69,7 @@ class _DeliveryPageState extends ConsumerState<DeliveryPage> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   "Looking for delivery driver jobs?",
-                                  style: AppStyle.interSemi(color: AppStyle.brandGreen),
+                                  style: AppStyle.interSemi(color: AppStyle.primary),
                                 ),
                               ),
                             ),

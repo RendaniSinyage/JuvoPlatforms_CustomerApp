@@ -3,15 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:intl/intl.dart' as intl;
 import 'package:foodyman/application/edit_profile/edit_profile_provider.dart';
 import 'package:foodyman/application/profile/profile_provider.dart';
 import 'package:foodyman/infrastructure/models/models.dart';
-import 'package:foodyman/app_constants.dart';
 import 'package:foodyman/infrastructure/services/app_helpers.dart';
 import 'package:foodyman/infrastructure/services/app_validators.dart';
 import 'package:foodyman/infrastructure/services/local_storage.dart';
-import 'package:foodyman/infrastructure/services/time_service.dart';
 import 'package:foodyman/infrastructure/services/tr_keys.dart';
 import 'package:foodyman/presentation/components/buttons/custom_button.dart';
 import 'package:foodyman/presentation/components/custom_network_image.dart';
@@ -22,6 +20,7 @@ import 'package:foodyman/presentation/components/text_fields/underline_drop_down
 import 'package:foodyman/presentation/components/title_icon.dart';
 import 'package:foodyman/presentation/theme/theme.dart';
 
+import '../../../app_constants.dart';
 import 'phone_verify.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -43,15 +42,19 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   void initState() {
     birthDay = TextEditingController(
-        text: TimeService.dateFormatYMD(DateTime.tryParse(
-            ref.read(profileProvider).userData?.birthday ?? "")));
+        text: intl.DateFormat("yyyy-MM-dd").format(DateTime.tryParse(
+                    ref.read(profileProvider).userData?.birthday ?? "")
+                ?.toLocal() ??
+            DateTime.now()));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(editProfileProvider.notifier)
           .setPhone(ref.read(profileProvider).userData?.phone ?? "");
-      ref.read(editProfileProvider.notifier).setBirth(TimeService.dateFormatYMD(
-          DateTime.tryParse(
-              ref.read(profileProvider).userData?.birthday ?? "")));
+      ref.read(editProfileProvider.notifier).setBirth(
+          intl.DateFormat("yyyy-MM-dd").format(DateTime.tryParse(
+                      ref.read(profileProvider).userData?.birthday ?? "")
+                  ?.toLocal() ??
+              DateTime.now()));
     });
     super.initState();
   }
@@ -192,7 +195,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 children: [
                                   SizedBox(
                                     width: (MediaQuery.sizeOf(context).width -
-                                            40) /
+                                            88) /
                                         2,
                                     child: OutlinedBorderTextField(
                                       label: AppHelpers.getTranslation(
@@ -267,12 +270,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                                     DateTime.now(),
                                             maximumDate: DateTime.now(),
                                             mode: CupertinoDatePickerMode.date,
-                                            use24hFormat: AppConstants.use24Format,
+                                            use24hFormat: true,
                                             onDateTimeChanged:
                                                 (DateTime newDate) {
                                               birthDay.text =
-                                                  TimeService.dateFormatYMD(
-                                                      newDate);
+                                                  intl.DateFormat("yyyy-MM-dd")
+                                                      .format(newDate);
                                               event
                                                   .setBirth(newDate.toString());
                                             },
@@ -293,7 +296,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               UnderlineDropDown(
                                 value: user?.gender,
                                 hint:
-                                    AppHelpers.getTranslation(TrKeys.typeHere),
+                                AppHelpers.getTranslation(TrKeys.typeHere),
                                 label: AppHelpers.getTranslation(TrKeys.gender)
                                     .toUpperCase(),
                                 list: AppConstants.genderList,
@@ -310,7 +313,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                bottom: MediaQuery.paddingOf(context).bottom +
+                                bottom: MediaQuery.of(context).padding.bottom +
                                     24.h,
                                 top: 24.h),
                             child: CustomButton(
@@ -328,7 +331,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   ),
                 ),
         ),
-      ),
-    );
+    ));
   }
 }
